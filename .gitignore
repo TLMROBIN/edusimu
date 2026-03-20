@@ -1,0 +1,39 @@
+# ===== 敏感信息 =====
+backend/.env
+backend/edusimu.db
+edusimu.db
+
+# ===== 运行时数据 =====
+backend/uploads/
+backend/__pycache__/
+backend/app/__pycache__/
+backend/app/routers/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===== Python 虚拟环境 =====
+backend/venv/
+
+# ===== 前端依赖和构建 =====
+frontend/node_modules/
+frontend/dist/
+frontend/dist-local/
+
+# ===== 临时部署脚本（单次使用）=====
+deploy_*.sh
+fix_*.sh
+final_deploy*.sh
+init_db_sql.sh
+change_port.sh
+manual_deploy_commands.sh
+migrate_add_author.sh
+reinit_database.sh
+数据库权限修复命令.txt
+部署命令列表.txt
+
+# ===== 临时文件 =====
+tmp/
+*.log
+.DS_Store

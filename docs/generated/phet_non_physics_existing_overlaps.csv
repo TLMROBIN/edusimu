@@ -1,0 +1,42 @@
+project_name,display_title,english_title,official_subjects,has_official_zh_cn,recommended_run_url,already_in_system,existing_animation_id,existing_subject_name,existing_title
+build-a-nucleus,Build a Nucleus,Build a Nucleus,"Chemistry,Physics",no,/sims/html/build-a-nucleus/latest/build-a-nucleus_en.html,yes,17,physics,PhET 构造原子核
+calculus-grapher,Calculus Grapher,Calculus Grapher,"Math & Statistics,Physics",no,/sims/html/calculus-grapher/latest/calculus-grapher_en.html,yes,104,physics,微积分绘图器
+fourier-making-waves,Fourier: Making Waves,Fourier: Making Waves,"Math & Statistics,Chemistry,Physics",no,/sims/html/fourier-making-waves/latest/fourier-making-waves_en.html,yes,123,physics,傅里叶：造波
+keplers-laws,Kepler's Laws,Kepler's Laws,"Math & Statistics,Earth & Space,Physics",no,/sims/html/keplers-laws/latest/keplers-laws_en.html,yes,135,physics,开普勒定律
+magnet-and-compass,Magnet and Compass,Magnet and Compass,"Earth & Space,Physics",no,/sims/html/magnet-and-compass/latest/magnet-and-compass_en.html,yes,136,physics,磁铁和指南针
+models-of-the-hydrogen-atom,Models of the Hydrogen Atom,Models of the Hydrogen Atom,"Chemistry,Physics",no,/sims/html/models-of-the-hydrogen-atom/latest/models-of-the-hydrogen-atom_en.html,yes,140,physics,氢原子模型
+my-solar-system,My Solar System,My Solar System,"Earth & Space,Physics",no,/sims/html/my-solar-system/latest/my-solar-system_en.html,yes,142,physics,我的太阳系
+projectile-data-lab,Projectile Data Lab,Projectile Data Lab,"Math & Statistics,Physics",no,/sims/html/projectile-data-lab/latest/projectile-data-lab_en.html,yes,146,physics,抛体运动数据实验室
+quantum-coin-toss,Quantum Coin Toss,Quantum Coin Toss,"Chemistry,Physics",no,/sims/html/quantum-coin-toss/latest/quantum-coin-toss_en.html,yes,148,physics,量子抛硬币
+quantum-measurement,Quantum Measurement,Quantum Measurement,"Chemistry,Physics",no,/sims/html/quantum-measurement/latest/quantum-measurement_en.html,yes,149,physics,量子测量
+gravity-force-lab,万有引力实验,Gravity Force Lab,"Earth & Space,Physics",yes,/sims/html/gravity-force-lab/latest/gravity-force-lab_zh_CN.html,yes,131,physics,万有引力实验
+plinko-probability,二项分布弹珠台几率,Plinko Probability,"Math & Statistics,Physics",yes,/sims/html/plinko-probability/latest/plinko-probability_zh_CN.html,yes,145,physics,二项分布弹珠台几率
+color-vision,光的混合,Color Vision,"Biology,Physics",yes,/sims/html/color-vision/latest/color-vision_zh_CN.html,yes,112,physics,光的混合
+molecules-and-light,分子与光,Molecules and Light,"Earth & Space,Chemistry,Physics",yes,/sims/html/molecules-and-light/latest/molecules-and-light_zh_CN.html,yes,141,physics,分子与光
+rutherford-scattering,卢瑟福散射,Rutherford Scattering,"Chemistry,Physics",yes,/sims/html/rutherford-scattering/latest/rutherford-scattering_zh_CN.html,yes,151,physics,卢瑟福散射
+build-an-atom,原子模型,Build an Atom,"Chemistry,Physics",yes,/sims/html/build-an-atom/latest/build-an-atom_zh_CN.html,yes,16,physics,PhET 构造原子
+atomic-interactions,原子的相互作用,Atomic Interactions,"Chemistry,Physics",yes,/sims/html/atomic-interactions/latest/atomic-interactions_zh_CN.html,yes,95,physics,原子的相互作用
+under-pressure,受到压力,Under Pressure,"Earth & Space,Physics",yes,/sims/html/under-pressure/latest/under-pressure_zh_CN.html,yes,154,physics,受到压力
+vector-addition,向量相加,Vector Addition,"Math & Statistics,Physics",yes,/sims/html/vector-addition/latest/vector-addition_zh_CN.html,yes,155,physics,向量相加
+density,密度,Density,"Earth & Space,Chemistry,Biology,Physics",yes,/sims/html/density/latest/density_zh_CN.html,yes,115,physics,密度
+balancing-act,平衡探究实验,Balancing Act,"Math & Statistics,Physics",yes,/sims/html/balancing-act/latest/balancing-act_zh_CN.html,yes,96,physics,平衡探究实验
+coulombs-law,库仑定律,Coulomb's Law,"Chemistry,Physics",yes,/sims/html/coulombs-law/latest/coulombs-law_zh_CN.html,yes,113,physics,库仑定律
+gravity-force-lab-basics,引力实验室：基础,Gravity Force Lab: Basics,"Earth & Space,Physics",yes,/sims/html/gravity-force-lab-basics/latest/gravity-force-lab-basics_zh_CN.html,yes,132,physics,引力实验室：基础
+diffusion,扩散,Diffusion,"Earth & Space,Chemistry,Physics",yes,/sims/html/diffusion/latest/diffusion_zh_CN.html,yes,116,physics,扩散
+projectile-motion,斜抛运动,Projectile Motion,"Math & Statistics,Physics",yes,/sims/html/projectile-motion/latest/projectile-motion_zh_CN.html,yes,10,physics,PhET 抛体运动
+curve-fitting,曲线拟合,Curve Fitting,"Math & Statistics,Physics",yes,/sims/html/curve-fitting/latest/curve-fitting_zh_CN.html,yes,114,physics,曲线拟合
+gases-intro,气体基础,Gases Intro,"Earth & Space,Chemistry,Physics",yes,/sims/html/gases-intro/latest/gases-intro_zh_CN.html,yes,126,physics,气体基础
+gas-properties,气体性质,Gas Properties,"Earth & Space,Chemistry,Physics",yes,/sims/html/gas-properties/latest/gas-properties_zh_CN.html,yes,22,physics,PhET 气体性质
+balloons-and-static-electricity,气球和静电（摩擦起电）,Balloons and Static Electricity,"Earth & Space,Chemistry,Physics",yes,/sims/html/balloons-and-static-electricity/latest/balloons-and-static-electricity_zh_CN.html,yes,97,physics,气球和静电（摩擦起电）
+waves-intro,波动入门,Waves Intro,"Earth & Space,Physics",yes,/sims/html/waves-intro/latest/waves-intro_zh_CN.html,yes,158,physics,波动入门
+wave-interference,波的干涉,Wave Interference,"Earth & Space,Physics",yes,/sims/html/wave-interference/latest/wave-interference_zh_CN.html,yes,11,physics,PhET 波的干涉
+states-of-matter,物质状态,States of Matter,"Chemistry,Physics",yes,/sims/html/states-of-matter/latest/states-of-matter_zh_CN.html,yes,23,physics,PhET 物质状态
+states-of-matter-basics,物质状态：基础,States of Matter: Basics,"Chemistry,Physics",yes,/sims/html/states-of-matter-basics/latest/states-of-matter-basics_zh_CN.html,yes,153,physics,物质状态：基础
+resistance-in-a-wire,电线的电阻,Resistance in a Wire,"Math & Statistics,Physics",yes,/sims/html/resistance-in-a-wire/latest/resistance-in-a-wire_zh_CN.html,yes,150,physics,电线的电阻
+wave-on-a-string,绳波,Wave on a String,"Math & Statistics,Earth & Space,Chemistry,Physics",yes,/sims/html/wave-on-a-string/latest/wave-on-a-string_zh_CN.html,yes,19,physics,PhET 绳波
+energy-forms-and-changes,能量的形式和转换,Energy Forms and Changes,"Chemistry,Physics",yes,/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_zh_CN.html,yes,117,physics,能量的形式和转换
+masses-and-springs,质量和弹簧,Masses and Springs,"Math & Statistics,Physics",yes,/sims/html/masses-and-springs/latest/masses-and-springs_zh_CN.html,yes,14,physics,PhET 弹簧和质量
+ohms-law,部分电路欧姆定律,Ohm's Law,"Math & Statistics,Physics",yes,/sims/html/ohms-law/latest/ohms-law_zh_CN.html,yes,8,physics,PhET 欧姆定律
+gravity-and-orbits,重力和轨道,Gravity and Orbits,"Earth & Space,Physics",yes,/sims/html/gravity-and-orbits/latest/gravity-and-orbits_zh_CN.html,yes,27,physics,PhET 引力与轨道
+pendulum-lab,钟摆实验,Pendulum Lab,"Math & Statistics,Physics",yes,/sims/html/pendulum-lab/latest/pendulum-lab_zh_CN.html,yes,144,physics,钟摆实验
+blackbody-spectrum,黑体辐射,Blackbody Spectrum,"Earth & Space,Chemistry,Physics",yes,/sims/html/blackbody-spectrum/latest/blackbody-spectrum_zh_CN.html,yes,26,physics,PhET 黑体辐射光谱

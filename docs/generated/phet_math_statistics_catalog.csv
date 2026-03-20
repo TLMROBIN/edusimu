@@ -1,0 +1,52 @@
+project_name,display_title,english_title,official_subjects,has_official_zh_cn,recommended_run_url,already_in_system,existing_animation_id,existing_subject_name,existing_title
+calculus-grapher,Calculus Grapher,Calculus Grapher,"Math & Statistics,Physics",no,/sims/html/calculus-grapher/latest/calculus-grapher_en.html,yes,104,physics,微积分绘图器
+center-and-variability,Center and Variability,Center and Variability,Math & Statistics,no,/sims/html/center-and-variability/latest/center-and-variability_en.html,no,,,
+fourier-making-waves,Fourier: Making Waves,Fourier: Making Waves,"Math & Statistics,Chemistry,Physics",no,/sims/html/fourier-making-waves/latest/fourier-making-waves_en.html,yes,123,physics,傅里叶：造波
+keplers-laws,Kepler's Laws,Kepler's Laws,"Math & Statistics,Earth & Space,Physics",no,/sims/html/keplers-laws/latest/keplers-laws_en.html,yes,135,physics,开普勒定律
+mean-share-and-balance,Mean: Share and Balance,Mean: Share and Balance,Math & Statistics,no,/sims/html/mean-share-and-balance/latest/mean-share-and-balance_en.html,no,,,
+number-compare,Number Compare,Number Compare,Math & Statistics,yes,/sims/html/number-compare/latest/number-compare_zh_CN.html,no,,,
+number-pairs,Number Pairs,Number Pairs,Math & Statistics,no,/sims/html/number-pairs/latest/number-pairs_en.html,no,,,
+projectile-data-lab,Projectile Data Lab,Projectile Data Lab,"Math & Statistics,Physics",no,/sims/html/projectile-data-lab/latest/projectile-data-lab_en.html,yes,146,physics,抛体运动数据实验室
+projectile-sampling-distributions,Projectile Sampling Distributions,Projectile Sampling Distributions,Math & Statistics,no,/sims/html/projectile-sampling-distributions/latest/projectile-sampling-distributions_en.html,no,,,
+quadrilateral,Quadrilateral,Quadrilateral,Math & Statistics,no,/sims/html/quadrilateral/latest/quadrilateral_en.html,no,,,
+least-squares-regression,一次线性函数的拟合,Least-Squares Regression,Math & Statistics,yes,/sims/html/least-squares-regression/latest/least-squares-regression_zh_CN.html,no,,,
+trig-tour,三角函数之旅,Trig Tour,Math & Statistics,yes,/sims/html/trig-tour/latest/trig-tour_zh_CN.html,no,,,
+graphing-quadratics,二次函数图像,Graphing Quadratics,Math & Statistics,yes,/sims/html/graphing-quadratics/latest/graphing-quadratics_zh_CN.html,no,,,
+plinko-probability,二项分布弹珠台几率,Plinko Probability,"Math & Statistics,Physics",yes,/sims/html/plinko-probability/latest/plinko-probability_zh_CN.html,yes,145,physics,二项分布弹珠台几率
+function-builder-basics,函数构造器:基础,Function Builder: Basics,Math & Statistics,yes,/sims/html/function-builder-basics/latest/function-builder-basics_zh_CN.html,no,,,
+fraction-matcher,分数配对,Fraction Matcher,Math & Statistics,yes,/sims/html/fraction-matcher/latest/fraction-matcher_zh_CN.html,no,,,
+fractions-intro,分数：入门,Fractions: Intro,Math & Statistics,yes,/sims/html/fractions-intro/latest/fractions-intro_zh_CN.html,no,,,
+fractions-mixed-numbers,分数：带分数,Fractions: Mixed Numbers,Math & Statistics,yes,/sims/html/fractions-mixed-numbers/latest/fractions-mixed-numbers_zh_CN.html,no,,,
+fractions-equality,分数：等式,Fractions: Equality,Math & Statistics,yes,/sims/html/fractions-equality/latest/fractions-equality_zh_CN.html,no,,,
+area-builder,区域建造者,Area Builder,Math & Statistics,yes,/sims/html/area-builder/latest/area-builder_zh_CN.html,no,,,
+unit-rates,单位价格,Unit Rates,Math & Statistics,yes,/sims/html/unit-rates/latest/unit-rates_zh_CN.html,no,,,
+vector-addition-equations,向量的和：等式,Vector Addition: Equations,Math & Statistics,yes,/sims/html/vector-addition-equations/latest/vector-addition-equations_zh_CN.html,no,,,
+vector-addition,向量相加,Vector Addition,"Math & Statistics,Physics",yes,/sims/html/vector-addition/latest/vector-addition_zh_CN.html,yes,155,physics,向量相加
+arithmetic,四则运算,Arithmetic,Math & Statistics,yes,/sims/html/arithmetic/latest/arithmetic_zh_CN.html,no,,,
+balancing-act,平衡探究实验,Balancing Act,"Math & Statistics,Physics",yes,/sims/html/balancing-act/latest/balancing-act_zh_CN.html,yes,96,physics,平衡探究实验
+function-builder,建立方程,Function Builder,Math & Statistics,yes,/sims/html/function-builder/latest/function-builder_zh_CN.html,no,,,
+number-play,数字游戏,Number Play,Math & Statistics,yes,/sims/html/number-play/latest/number-play_zh_CN.html,no,,,
+number-line-integers,数轴：整数,Number Line: Integers,Math & Statistics,yes,/sims/html/number-line-integers/latest/number-line-integers_zh_CN.html,no,,,
+number-line-distance,数轴：距离,Number Line: Distance,Math & Statistics,yes,/sims/html/number-line-distance/latest/number-line-distance_zh_CN.html,no,,,
+number-line-operations,数轴：运算,Number Line: Operations,Math & Statistics,yes,/sims/html/number-line-operations/latest/number-line-operations_zh_CN.html,no,,,
+projectile-motion,斜抛运动,Projectile Motion,"Math & Statistics,Physics",yes,/sims/html/projectile-motion/latest/projectile-motion_zh_CN.html,yes,10,physics,PhET 抛体运动
+curve-fitting,曲线拟合,Curve Fitting,"Math & Statistics,Physics",yes,/sims/html/curve-fitting/latest/curve-fitting_zh_CN.html,yes,114,physics,曲线拟合
+build-a-fraction,构建一个分数,Build a Fraction,Math & Statistics,yes,/sims/html/build-a-fraction/latest/build-a-fraction_zh_CN.html,no,,,
+proportion-playground,比例游乐场,Proportion Playground,Math & Statistics,yes,/sims/html/proportion-playground/latest/proportion-playground_zh_CN.html,no,,,
+ratio-and-proportion,比率和比例,Ratio and Proportion,Math & Statistics,yes,/sims/html/ratio-and-proportion/latest/ratio-and-proportion_zh_CN.html,no,,,
+resistance-in-a-wire,电线的电阻,Resistance in a Wire,"Math & Statistics,Physics",yes,/sims/html/resistance-in-a-wire/latest/resistance-in-a-wire_zh_CN.html,yes,150,physics,电线的电阻
+graphing-lines,直线图形,Graphing Lines,Math & Statistics,yes,/sims/html/graphing-lines/latest/graphing-lines_zh_CN.html,no,,,
+equality-explorer,等式探索,Equality Explorer,Math & Statistics,yes,/sims/html/equality-explorer/latest/equality-explorer_zh_CN.html,no,,,
+equality-explorer-two-variables,等式探索:两个变量,Equality Explorer: Two Variables,Math & Statistics,yes,/sims/html/equality-explorer-two-variables/latest/equality-explorer-two-variables_zh_CN.html,no,,,
+equality-explorer-basics,等式探索:基础,Equality Explorer: Basics,Math & Statistics,yes,/sims/html/equality-explorer-basics/latest/equality-explorer-basics_zh_CN.html,no,,,
+graphing-slope-intercept,绘图:斜率与截距,Graphing Slope-Intercept,Math & Statistics,yes,/sims/html/graphing-slope-intercept/latest/graphing-slope-intercept_zh_CN.html,no,,,
+wave-on-a-string,绳波,Wave on a String,"Math & Statistics,Earth & Space,Chemistry,Physics",yes,/sims/html/wave-on-a-string/latest/wave-on-a-string_zh_CN.html,yes,19,physics,PhET 绳波
+make-a-ten,获得一个10,Make a Ten,Math & Statistics,yes,/sims/html/make-a-ten/latest/make-a-ten_zh_CN.html,no,,,
+expression-exchange,表达式变换,Expression Exchange,Math & Statistics,yes,/sims/html/expression-exchange/latest/expression-exchange_zh_CN.html,no,,,
+masses-and-springs,质量和弹簧,Masses and Springs,"Math & Statistics,Physics",yes,/sims/html/masses-and-springs/latest/masses-and-springs_zh_CN.html,yes,14,physics,PhET 弹簧和质量
+ohms-law,部分电路欧姆定律,Ohm's Law,"Math & Statistics,Physics",yes,/sims/html/ohms-law/latest/ohms-law_zh_CN.html,yes,8,physics,PhET 欧姆定律
+pendulum-lab,钟摆实验,Pendulum Lab,"Math & Statistics,Physics",yes,/sims/html/pendulum-lab/latest/pendulum-lab_zh_CN.html,yes,144,physics,钟摆实验
+area-model-multiplication,面积模型乘法,Area Model Multiplication,Math & Statistics,yes,/sims/html/area-model-multiplication/latest/area-model-multiplication_zh_CN.html,no,,,
+area-model-algebra,面积模型代数,Area Model Algebra,Math & Statistics,yes,/sims/html/area-model-algebra/latest/area-model-algebra_zh_CN.html,no,,,
+area-model-introduction,面积模型入门,Area Model Introduction,Math & Statistics,yes,/sims/html/area-model-introduction/latest/area-model-introduction_zh_CN.html,no,,,
+area-model-decimals,面积模型：小数,Area Model Decimals,Math & Statistics,yes,/sims/html/area-model-decimals/latest/area-model-decimals_zh_CN.html,no,,,

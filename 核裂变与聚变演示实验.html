@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>核裂变与聚变演示实验</title>
+  <style>
+    :root {
+      --bg: #f2f7fc;
+      --card: rgba(255,255,255,0.92);
+      --line: rgba(101, 128, 166, 0.16);
+      --text: #17304c;
+      --muted: #5b728f;
+      --primary: #276dff;
+      --teal: #12b3c8;
+      --orange: #f49d3f;
+      --danger: #df5c65;
+      --success: #179667;
+      --shadow: 0 18px 42px rgba(29, 55, 97, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(18, 179, 200, 0.16), transparent 22%),
+        radial-gradient(circle at top right, rgba(39, 109, 255, 0.12), transparent 26%),
+        linear-gradient(180deg, #f8fbff 0%, #edf4fb 100%);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      touch-action: manipulation;
+    }
+
+    body {
+      padding: 14px;
+    }
+
+    .page {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero,
+    .content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero {
+      grid-template-columns: 1.3fr 0.9fr;
+    }
+
+    .content {
+      grid-template-columns: 360px 1fr;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero-main,
+    .hero-side,
+    .sidebar,
+    .main-panel {
+      padding: 20px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(39, 109, 255, 0.1);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 14px 0 12px;
+      font-size: 32px;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .goal-list,
+    .metrics,
+    .control-stack,
+    .result-grid,
+    .quiz-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .goal-list,
+    .metrics {
+      margin-top: 16px;
+    }
+
+    .goal-item,
+    .metric,
+    .control-box,
+    .panel-box,
+    .result-card,
+    .quiz-box,
+    .log-item {
+      border-radius: 18px;
+      border: 1px solid rgba(95, 126, 167, 0.14);
+      background: rgba(255,255,255,0.88);
+    }
+
+    .goal-item,
+    .metric,
+    .control-box,
+    .panel-box,
+    .quiz-box,
+    .log-item {
+      padding: 14px 16px;
+    }
+
+    .metric strong,
+    .result-card strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 20px;
+    }
+
+    .metric span,
+    .result-card span,
+    .control-label,
+    .section-title {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .section-title {
+      margin-bottom: 12px;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .control-stack {
+      gap: 14px;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 16px;
+      min-height: 48px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      touch-action: manipulation;
+    }
+
+    button:hover,
+    button:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(22, 97, 255, 0.16);
+      outline: none;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--primary), var(--teal));
+      color: #fff;
+    }
+
+    button.ghost {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid rgba(86, 123, 168, 0.18);
+    }
+
+    button.active {
+      background: linear-gradient(135deg, rgba(39, 109, 255, 0.14), rgba(18, 179, 200, 0.12));
+      color: var(--primary);
+      border: 1px solid rgba(39, 109, 255, 0.26);
+    }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    .slider-value {
+      min-width: 72px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(39, 109, 255, 0.08);
+      color: var(--primary);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .tip {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .main-panel {
+      display: grid;
+      gap: 14px;
+    }
+
+    .sim-shell {
+      border-radius: 24px;
+      border: 1px solid rgba(90, 122, 168, 0.14);
+      background:
+        radial-gradient(circle at top center, rgba(244, 157, 63, 0.14), transparent 24%),
+        linear-gradient(180deg, #fdfefe 0%, #eef5ff 56%, #edf3fa 100%);
+      padding: 18px;
+      min-height: 520px;
+    }
+
+    .sim-stage {
+      position: relative;
+      height: 330px;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(96, 125, 165, 0.16);
+      background:
+        radial-gradient(circle at center, rgba(255, 216, 111, 0.14), transparent 26%),
+        linear-gradient(180deg, #09182f 0%, #122544 42%, #1b3259 100%);
+    }
+
+    .nucleus-shell {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 170px;
+      height: 170px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 237, 196, 0.2), rgba(245, 154, 66, 0.14) 48%, rgba(255,255,255,0.04) 76%);
+      border: 2px solid rgba(255, 224, 170, 0.18);
+      box-shadow: 0 0 42px rgba(244, 157, 63, 0.24);
+    }
+
+    .nucleus-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 108px;
+      height: 108px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 28%, #fff4de, #f59d3f 48%, #d4584b 100%);
+      box-shadow: 0 0 26px rgba(244, 157, 63, 0.5);
+      transition: width 0.45s ease, height 0.45s ease, opacity 0.45s ease;
+      z-index: 3;
+    }
+
+    .split-fragment {
+      position: absolute;
+      top: 50%;
+      width: 64px;
+      height: 64px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff4e1, #f39b52 54%, #cf5660 100%);
+      box-shadow: 0 0 22px rgba(243, 155, 82, 0.42);
+      opacity: 0;
+      z-index: 4;
+    }
+
+    .fragment-left {
+      left: 50%;
+    }
+
+    .fragment-right {
+      left: 50%;
+    }
+
+    .fragment-active.fragment-left {
+      animation: fragmentLeft 1.2s ease forwards;
+    }
+
+    .fragment-active.fragment-right {
+      animation: fragmentRight 1.2s ease forwards;
+    }
+
+    @keyframes fragmentLeft {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+      16% { opacity: 1; }
+      100% { opacity: 1; transform: translate(-180px, -50%) scale(1); }
+    }
+
+    @keyframes fragmentRight {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+      16% { opacity: 1; }
+      100% { opacity: 1; transform: translate(118px, -50%) scale(1); }
+    }
+
+    .particle {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      opacity: 0;
+      z-index: 5;
+    }
+
+    .particle.neutron {
+      background: radial-gradient(circle, #f5fbff, #73cbff 65%, #2f84e7 100%);
+      box-shadow: 0 0 10px rgba(115, 203, 255, 0.72);
+    }
+
+    .particle.proton {
+      background: radial-gradient(circle, #fff0ef, #ff9083 65%, #df5c65 100%);
+      box-shadow: 0 0 10px rgba(223, 92, 101, 0.62);
+    }
+
+    .particle.energy {
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, #fff6d5, #ffd66c 62%, #f49d3f 100%);
+      box-shadow: 0 0 12px rgba(244, 157, 63, 0.76);
+    }
+
+    .particle.active {
+      animation: particleFly 1s linear forwards;
+    }
+
+    @keyframes particleFly {
+      0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+      10% { opacity: 1; }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.1); }
+    }
+
+    .fusion-shell {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 220px;
+      height: 120px;
+      transform: translate(-50%, -50%);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 3;
+    }
+
+    .fusion-shell.active {
+      display: flex;
+    }
+
+    .fusion-core {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff2dd, #ffa45f 60%, #d85a52 100%);
+      box-shadow: 0 0 18px rgba(255, 164, 95, 0.48);
+      transition: transform 0.6s ease, opacity 0.3s ease;
+    }
+
+    .fusion-core.combine-left {
+      animation: fusionLeft 1s ease forwards;
+    }
+
+    .fusion-core.combine-right {
+      animation: fusionRight 1s ease forwards;
+    }
+
+    @keyframes fusionLeft {
+      0% { transform: translateX(0) scale(1); opacity: 1; }
+      100% { transform: translateX(68px) scale(0.88); opacity: 0.1; }
+    }
+
+    @keyframes fusionRight {
+      0% { transform: translateX(0) scale(1); opacity: 1; }
+      100% { transform: translateX(-68px) scale(0.88); opacity: 0.1; }
+    }
+
+    .fusion-result {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 90px;
+      height: 90px;
+      transform: translate(-50%, -50%) scale(0.6);
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7e5, #ffd26f 54%, #f06462 100%);
+      box-shadow: 0 0 28px rgba(255, 210, 111, 0.56);
+      opacity: 0;
+      z-index: 4;
+    }
+
+    .fusion-result.active {
+      animation: fusionResult 1s ease forwards;
+    }
+
+    @keyframes fusionResult {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+      35% { opacity: 1; }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .beamline {
+      position: absolute;
+      left: 110px;
+      top: 160px;
+      width: 540px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.14), rgba(255,255,255,0.03));
+      opacity: 0.44;
+    }
+
+    .mode-tag,
+    .energy-tag {
+      position: absolute;
+      padding: 8px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(230, 238, 255, 0.16);
+      background: rgba(255,255,255,0.1);
+      color: rgba(238, 244, 255, 0.92);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .mode-tag {
+      left: 22px;
+      top: 18px;
+    }
+
+    .energy-tag {
+      right: 22px;
+      top: 18px;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .status-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(39, 109, 255, 0.08);
+      color: var(--primary);
+    }
+
+    .status-pill.ok {
+      background: rgba(23, 150, 103, 0.12);
+      color: var(--success);
+    }
+
+    .status-pill.warn {
+      background: rgba(223, 92, 101, 0.1);
+      color: var(--danger);
+    }
+
+    .result-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .result-card {
+      padding: 14px 16px;
+    }
+
+    .quiz-option {
+      text-align: left;
+      background: #fff;
+      border: 1px solid rgba(86, 123, 168, 0.14);
+      color: var(--text);
+    }
+
+    .quiz-feedback {
+      min-height: 24px;
+      margin-top: 10px;
+      font-weight: 700;
+    }
+
+    .observation-log {
+      display: grid;
+      gap: 10px;
+      max-height: 220px;
+      overflow: auto;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 10px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .sidebar,
+      .main-panel {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .button-grid,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sim-stage {
+        height: 300px;
+      }
+
+      .nucleus-shell {
+        width: 150px;
+        height: 150px;
+      }
+
+      .fusion-shell {
+        width: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="card hero-main">
+        <div class="chip">NUCLEAR ENERGY</div>
+        <h1>核裂变与聚变演示实验</h1>
+        <p>
+          通过切换核裂变与核聚变两种模式，调节中子数量、约束条件和温度，观察原子核分裂或聚合时释放粒子与能量的现象，
+          建立“质量亏损转化为能量”的基本认识。
+        </p>
+        <div class="goal-list">
+          <div class="goal-item">目标 1：理解核裂变通常由重核吸收中子后发生，并可形成链式反应。</div>
+          <div class="goal-item">目标 2：理解核聚变需要极高温度和足够约束条件，轻核结合后释放巨大能量。</div>
+          <div class="goal-item">目标 3：能区分裂变与聚变在条件、产物和能量释放方式上的差异。</div>
+        </div>
+      </div>
+
+      <div class="card hero-side">
+        <div class="section-title">当前实验状态</div>
+        <div class="metrics">
+          <div class="metric">
+            <span>当前模式</span>
+            <strong id="metricMode">核裂变</strong>
+          </div>
+          <div class="metric">
+            <span>反应条件</span>
+            <strong id="metricCondition">可以发生</strong>
+          </div>
+          <div class="metric">
+            <span>释放能量</span>
+            <strong id="metricEnergy">较强</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+      <aside class="card sidebar">
+        <div class="section-title">实验控制台</div>
+        <div class="control-stack">
+          <div class="control-box">
+            <div class="control-label">步骤 1：选择实验模式</div>
+            <div class="button-grid">
+              <button class="active" data-mode="fission" type="button">核裂变</button>
+              <button class="ghost" data-mode="fusion" type="button">核聚变</button>
+            </div>
+            <div class="tip">先观察重核裂变，再比较轻核聚变需要的条件和粒子变化。</div>
+          </div>
+
+          <div class="control-box">
+            <div class="control-label">步骤 2：调节入射中子/粒子条件</div>
+            <div class="slider-row">
+              <input id="particleSlider" type="range" min="1" max="5" value="3" />
+              <div class="slider-value" id="particleValue">3 个</div>
+            </div>
+            <div class="tip">裂变模式下表示入射中子数量，聚变模式下表示粒子碰撞活跃程度。</div>
+          </div>
+
+          <div class="control-box">
+            <div class="control-label">步骤 3：调节温度 / 约束程度</div>
+            <div class="slider-row">
+              <input id="conditionSlider" type="range" min="1" max="5" value="3" />
+              <div class="slider-value" id="conditionValue">中等</div>
+            </div>
+            <div class="tip">聚变特别依赖高温和约束条件；裂变链式反应也受控制程度影响。</div>
+          </div>
+
+          <div class="control-box">
+            <div class="control-label">步骤 4：控制方式</div>
+            <div class="button-grid">
+              <button class="active" data-control="stable" type="button">受控状态</button>
+              <button class="ghost" data-control="intense" type="button">增强状态</button>
+            </div>
+            <div class="tip">受控状态更接近稳定实验装置，增强状态更容易出现更强能量释放现象。</div>
+          </div>
+
+          <div class="control-box">
+            <div class="control-label">步骤 5：开始演示</div>
+            <div class="button-grid">
+              <button id="runBtn" class="primary" type="button">开始反应</button>
+              <button id="resetBtn" class="ghost" type="button">重置实验</button>
+            </div>
+            <div class="tip">建议先固定控制方式，分别观察裂变和聚变；再调节条件比较反应是否发生。</div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="card main-panel">
+        <div class="section-title">实验现象区</div>
+        <div class="sim-shell">
+          <div class="sim-stage">
+            <div class="beamline"></div>
+            <div class="mode-tag" id="modeTag">模式：核裂变</div>
+            <div class="energy-tag" id="energyTag">释放能量：较强</div>
+
+            <div class="nucleus-shell" id="nucleusShell">
+              <div class="nucleus-core" id="nucleusCore"></div>
+              <div class="split-fragment fragment-left" id="fragmentLeft"></div>
+              <div class="split-fragment fragment-right" id="fragmentRight"></div>
+            </div>
+
+            <div class="fusion-shell" id="fusionShell">
+              <div class="fusion-core" id="fusionLeft"></div>
+              <div class="fusion-core" id="fusionRight"></div>
+            </div>
+            <div class="fusion-result" id="fusionResult"></div>
+
+            <div id="particleLayer"></div>
+          </div>
+
+          <div class="status-row">
+            <div class="status-pill" id="statusReaction">满足反应条件</div>
+            <div class="status-pill ok" id="statusProduct">有粒子与新核产生</div>
+            <div class="status-pill" id="statusChain">链式/持续性较弱</div>
+          </div>
+        </div>
+
+        <div class="panel-box">
+          <div class="section-title">本次实验判定</div>
+          <div class="result-grid">
+            <div class="result-card">
+              <span>反应类型</span>
+              <strong id="resultMode">核裂变</strong>
+            </div>
+            <div class="result-card">
+              <span>是否发生明显反应</span>
+              <strong id="resultReaction">发生</strong>
+            </div>
+            <div class="result-card">
+              <span>释放能量水平</span>
+              <strong id="resultEnergy">较强</strong>
+            </div>
+            <div class="result-card">
+              <span>主要产物特征</span>
+              <strong id="resultProduct">新核 + 粒子</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-box">
+          <div class="section-title">即时判断题</div>
+          <div>下面哪一项更符合核聚变发生的典型条件？</div>
+          <div class="quiz-options">
+            <button class="quiz-option" data-answer="a" type="button">重核吸收一个中子后分裂成两个中等质量核</button>
+            <button class="quiz-option" data-answer="b" type="button">轻核在极高温度和足够约束下结合成较重的新核</button>
+          </div>
+          <div class="quiz-feedback" id="quizFeedback"></div>
+        </div>
+
+        <div>
+          <div class="section-title">观察记录</div>
+          <div class="observation-log" id="observationLog"></div>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <script>
+    const state = {
+      mode: 'fission',
+      particleLevel: 3,
+      conditionLevel: 3,
+      control: 'stable',
+      running: false,
+      runCount: 0,
+      timers: []
+    }
+
+    const particleLabels = {
+      1: '1 个',
+      2: '2 个',
+      3: '3 个',
+      4: '4 个',
+      5: '5 个'
+    }
+
+    const conditionLabels = {
+      1: '较低',
+      2: '偏低',
+      3: '中等',
+      4: '较高',
+      5: '很高'
+    }
+
+    const metricMode = document.getElementById('metricMode')
+    const metricCondition = document.getElementById('metricCondition')
+    const metricEnergy = document.getElementById('metricEnergy')
+    const modeTag = document.getElementById('modeTag')
+    const energyTag = document.getElementById('energyTag')
+    const particleSlider = document.getElementById('particleSlider')
+    const conditionSlider = document.getElementById('conditionSlider')
+    const particleValue = document.getElementById('particleValue')
+    const conditionValue = document.getElementById('conditionValue')
+    const statusReaction = document.getElementById('statusReaction')
+    const statusProduct = document.getElementById('statusProduct')
+    const statusChain = document.getElementById('statusChain')
+    const resultMode = document.getElementById('resultMode')
+    const resultReaction = document.getElementById('resultReaction')
+    const resultEnergy = document.getElementById('resultEnergy')
+    const resultProduct = document.getElementById('resultProduct')
+    const observationLog = document.getElementById('observationLog')
+    const quizFeedback = document.getElementById('quizFeedback')
+    const particleLayer = document.getElementById('particleLayer')
+    const nucleusCore = document.getElementById('nucleusCore')
+    const fragmentLeft = document.getElementById('fragmentLeft')
+    const fragmentRight = document.getElementById('fragmentRight')
+    const fusionShell = document.getElementById('fusionShell')
+    const fusionLeft = document.getElementById('fusionLeft')
+    const fusionRight = document.getElementById('fusionRight')
+    const fusionResult = document.getElementById('fusionResult')
+    const nucleusShell = document.getElementById('nucleusShell')
+
+    function sendInteraction(type, data) {
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          type: 'ANIMATION_INTERACTION',
+          interactionType: type,
+          data,
+          timestamp: Date.now()
+        }, '*')
+      }
+    }
+
+    function getReactionResult() {
+      const thresholdBase = state.mode === 'fission' ? 2 : 4
+      const effectiveValue = state.particleLevel + state.conditionLevel + (state.control === 'intense' ? 1 : 0)
+      const triggered = effectiveValue >= thresholdBase + 2
+      const energyIndex = triggered
+        ? Math.min(3, Math.max(1, effectiveValue - thresholdBase))
+        : 0
+      const energyText = energyIndex >= 3 ? '很强' : energyIndex === 2 ? '较强' : energyIndex === 1 ? '较弱' : '很弱'
+      const productText = state.mode === 'fission'
+        ? '较重原子核分裂成两个中等质量核并放出中子'
+        : '两个轻核结合成较重的新核并释放能量'
+      const chainText = state.mode === 'fission'
+        ? (state.control === 'intense' && triggered ? '链式反应更明显' : '链式反应较弱')
+        : (triggered ? '持续聚变条件较好' : '聚变条件不足')
+
+      return {
+        triggered,
+        energyText,
+        reactionText: triggered ? '发生' : '未明显发生',
+        productText,
+        conditionText: triggered ? '可以发生' : '条件不足',
+        chainText
+      }
+    }
+
+    function clearTimers() {
+      state.timers.forEach((timer) => window.clearTimeout(timer))
+      state.timers = []
+    }
+
+    function clearParticles() {
+      particleLayer.innerHTML = ''
+      fragmentLeft.classList.remove('fragment-active')
+      fragmentRight.classList.remove('fragment-active')
+      fusionLeft.classList.remove('combine-left')
+      fusionRight.classList.remove('combine-right')
+      fusionResult.classList.remove('active')
+      fragmentLeft.style.opacity = '0'
+      fragmentRight.style.opacity = '0'
+      nucleusCore.style.opacity = '1'
+      nucleusCore.style.transform = 'translate(-50%, -50%) scale(1)'
+    }
+
+    function updateButtons() {
+      document.querySelectorAll('[data-mode]').forEach((button) => {
+        button.className = button.dataset.mode === state.mode ? 'active' : 'ghost'
+      })
+      document.querySelectorAll('[data-control]').forEach((button) => {
+        button.className = button.dataset.control === state.control ? 'active' : 'ghost'
+      })
+    }
+
+    function updateSceneMode() {
+      const isFission = state.mode === 'fission'
+      nucleusShell.style.display = isFission ? 'block' : 'none'
+      fusionShell.classList.toggle('active', !isFission)
+    }
+
+    function updateResultPanel() {
+      const result = getReactionResult()
+      const modeText = state.mode === 'fission' ? '核裂变' : '核聚变'
+      metricMode.textContent = modeText
+      metricCondition.textContent = result.conditionText
+      metricEnergy.textContent = result.energyText
+      modeTag.textContent = `模式：${modeText}`
+      energyTag.textContent = `释放能量：${result.energyText}`
+
+      statusReaction.textContent = result.conditionText
+      statusReaction.className = `status-pill ${result.triggered ? 'ok' : 'warn'}`
+      statusProduct.textContent = result.triggered ? '有粒子与新核产生' : '几乎无明显产物变化'
+      statusProduct.className = `status-pill ${result.triggered ? 'ok' : 'warn'}`
+      statusChain.textContent = result.chainText
+      statusChain.className = `status-pill ${result.triggered ? '' : 'warn'}`
+
+      resultMode.textContent = modeText
+      resultReaction.textContent = result.reactionText
+      resultEnergy.textContent = result.energyText
+      resultProduct.textContent = state.mode === 'fission' ? '裂变碎片 + 中子' : '较重核 + 能量'
+    }
+
+    function spawnParticle(kind, left, top, dx, dy) {
+      const particle = document.createElement('div')
+      particle.className = `particle ${kind}`
+      particle.style.left = `${left}px`
+      particle.style.top = `${top}px`
+      particle.style.setProperty('--dx', `${dx}px`)
+      particle.style.setProperty('--dy', `${dy}px`)
+      particleLayer.appendChild(particle)
+      const timer = window.setTimeout(() => particle.classList.add('active'), 20)
+      state.timers.push(timer)
+    }
+
+    function animateFission(result) {
+      clearParticles()
+      if (!result.triggered) {
+        spawnParticle('neutron', 196, 157, 220, 0)
+        return
+      }
+
+      nucleusCore.style.opacity = '0.12'
+      fragmentLeft.classList.add('fragment-active')
+      fragmentRight.classList.add('fragment-active')
+      const count = state.control === 'intense' ? 4 : 2
+      for (let i = 0; i < count; i += 1) {
+        const spread = -70 + i * 40
+        spawnParticle('neutron', 380, 154, 160 + i * 36, spread)
+        spawnParticle('energy', 380, 154, -150 - i * 24, spread / 1.6)
+      }
+    }
+
+    function animateFusion(result) {
+      clearParticles()
+      if (!result.triggered) {
+        spawnParticle('proton', 266, 156, 56, 0)
+        spawnParticle('proton', 490, 156, -56, 0)
+        return
+      }
+
+      fusionLeft.classList.add('combine-left')
+      fusionRight.classList.add('combine-right')
+      fusionResult.classList.add('active')
+      for (let i = 0; i < 4; i += 1) {
+        spawnParticle('energy', 380, 154, -120 + i * 80, -90 + i * 30)
+      }
+      spawnParticle('neutron', 380, 154, 150, -10)
+    }
+
+    function runExperiment() {
+      if (state.running) return
+      state.running = true
+      state.runCount += 1
+      clearTimers()
+      updateSceneMode()
+      const result = getReactionResult()
+      if (state.mode === 'fission') {
+        animateFission(result)
+      } else {
+        animateFusion(result)
+      }
+      updateResultPanel()
+      logObservation()
+      sendInteraction('nuclear_reaction_run', {
+        mode: state.mode,
+        particleLevel: state.particleLevel,
+        conditionLevel: state.conditionLevel,
+        control: state.control,
+        result
+      })
+      const timer = window.setTimeout(() => {
+        state.running = false
+      }, 1400)
+      state.timers.push(timer)
+    }
+
+    function logObservation() {
+      const result = getReactionResult()
+      const item = document.createElement('div')
+      item.className = 'log-item'
+      item.innerHTML = `
+        <strong>第 ${state.runCount} 次实验</strong><br>
+        模式：${state.mode === 'fission' ? '核裂变' : '核聚变'}；粒子条件：${particleLabels[state.particleLevel]}；温度/约束：${conditionLabels[state.conditionLevel]}；控制方式：${state.control === 'stable' ? '受控状态' : '增强状态'}。<br>
+        现象：${result.reactionText}，释放能量${result.energyText}，${result.chainText}。
+      `
+      observationLog.prepend(item)
+    }
+
+    function resetExperiment() {
+      clearTimers()
+      state.mode = 'fission'
+      state.particleLevel = 3
+      state.conditionLevel = 3
+      state.control = 'stable'
+      state.running = false
+      particleSlider.value = '3'
+      conditionSlider.value = '3'
+      particleValue.textContent = particleLabels[3]
+      conditionValue.textContent = conditionLabels[3]
+      clearParticles()
+      updateButtons()
+      updateSceneMode()
+      updateResultPanel()
+      quizFeedback.textContent = ''
+      quizFeedback.style.color = ''
+      sendInteraction('nuclear_reaction_reset', {})
+    }
+
+    document.querySelectorAll('[data-mode]').forEach((button) => {
+      button.addEventListener('click', () => {
+        state.mode = button.dataset.mode
+        updateButtons()
+        updateSceneMode()
+        updateResultPanel()
+        sendInteraction('nuclear_set_mode', { mode: state.mode })
+      })
+    })
+
+    document.querySelectorAll('[data-control]').forEach((button) => {
+      button.addEventListener('click', () => {
+        state.control = button.dataset.control
+        updateButtons()
+        updateResultPanel()
+        sendInteraction('nuclear_set_control', { control: state.control })
+      })
+    })
+
+    particleSlider.addEventListener('input', (event) => {
+      state.particleLevel = Number(event.target.value)
+      particleValue.textContent = particleLabels[state.particleLevel]
+      updateResultPanel()
+      sendInteraction('nuclear_set_particle_level', { particleLevel: state.particleLevel })
+    })
+
+    conditionSlider.addEventListener('input', (event) => {
+      state.conditionLevel = Number(event.target.value)
+      conditionValue.textContent = conditionLabels[state.conditionLevel]
+      updateResultPanel()
+      sendInteraction('nuclear_set_condition_level', { conditionLevel: state.conditionLevel })
+    })
+
+    document.getElementById('runBtn').addEventListener('click', runExperiment)
+    document.getElementById('resetBtn').addEventListener('click', resetExperiment)
+
+    document.querySelectorAll('.quiz-option').forEach((button) => {
+      button.addEventListener('click', () => {
+        const correct = button.dataset.answer === 'b'
+        quizFeedback.textContent = correct
+          ? '判断正确：核聚变通常是轻核在极高温度和足够约束下结合。'
+          : '再想一想：你选的描述更接近核裂变，不是核聚变。'
+        quizFeedback.style.color = correct ? 'var(--success)' : 'var(--danger)'
+        sendInteraction('nuclear_quiz_answer', {
+          answer: button.dataset.answer,
+          correct
+        })
+      })
+    })
+
+    observationLog.innerHTML = `
+      <div class="log-item">
+        <strong>实验提示</strong><br>
+        先在受控状态下比较核裂变和核聚变，再逐步提高粒子条件与温度/约束程度，观察两种反应对条件敏感性的差异。
+      </div>
+    `
+
+    updateButtons()
+    updateSceneMode()
+    updateResultPanel()
+  </script>
+</body>
+</html>

@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>光电效应演示实验</title>
+  <style>
+    :root {
+      --bg: #f3f7fc;
+      --card: rgba(255, 255, 255, 0.92);
+      --line: rgba(99, 126, 164, 0.18);
+      --text: #17304f;
+      --muted: #59708f;
+      --primary: #1f73ff;
+      --teal: #11b3c8;
+      --gold: #f2b94b;
+      --danger: #e05a68;
+      --success: #1f9c69;
+      --shadow: 0 18px 42px rgba(29, 55, 97, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(17, 179, 200, 0.16), transparent 24%),
+        radial-gradient(circle at top right, rgba(31, 115, 255, 0.14), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      touch-action: manipulation;
+    }
+
+    body {
+      padding: 14px;
+    }
+
+    .page {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero,
+    .content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero {
+      grid-template-columns: 1.3fr 0.9fr;
+    }
+
+    .content {
+      grid-template-columns: 360px 1fr;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main,
+    .hero-side,
+    .sidebar,
+    .main-panel {
+      padding: 20px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(31, 115, 255, 0.1);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 14px 0 12px;
+      font-size: 32px;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .goal-list,
+    .metrics,
+    .control-stack,
+    .result-grid,
+    .quiz-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .goal-list,
+    .metrics {
+      margin-top: 16px;
+    }
+
+    .goal-item,
+    .metric,
+    .control-box,
+    .result-card,
+    .panel-box,
+    .log-item,
+    .quiz-box {
+      border-radius: 18px;
+      border: 1px solid rgba(95, 126, 167, 0.14);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .goal-item,
+    .metric,
+    .control-box,
+    .quiz-box,
+    .panel-box,
+    .log-item {
+      padding: 14px 16px;
+    }
+
+    .metric strong,
+    .result-card strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 20px;
+    }
+
+    .metric span,
+    .result-card span,
+    .control-label,
+    .section-title {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .section-title {
+      margin-bottom: 12px;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .control-stack {
+      gap: 14px;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 16px;
+      min-height: 48px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      touch-action: manipulation;
+    }
+
+    button:hover,
+    button:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(22, 97, 255, 0.16);
+      outline: none;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--primary), var(--teal));
+      color: #fff;
+    }
+
+    button.ghost {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid rgba(86, 123, 168, 0.18);
+    }
+
+    button.active {
+      background: linear-gradient(135deg, rgba(31, 115, 255, 0.14), rgba(17, 179, 200, 0.12));
+      color: var(--primary);
+      border: 1px solid rgba(31, 115, 255, 0.28);
+    }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    .slider-value {
+      min-width: 68px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(31, 115, 255, 0.08);
+      color: var(--primary);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .tip {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .main-panel {
+      display: grid;
+      gap: 14px;
+    }
+
+    .sim-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(90, 122, 168, 0.14);
+      background:
+        radial-gradient(circle at top, rgba(54, 92, 160, 0.18), transparent 44%),
+        linear-gradient(180deg, #fdfefe 0%, #eef5ff 54%, #edf3fa 100%);
+      min-height: 520px;
+      padding: 18px;
+    }
+
+    .sim-stage {
+      position: relative;
+      height: 330px;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(96, 125, 165, 0.16);
+      background:
+        radial-gradient(circle at 18% 28%, rgba(255, 229, 106, 0.26), transparent 10%),
+        linear-gradient(180deg, #0c1d3a 0%, #132b52 40%, #1c355f 100%);
+    }
+
+    .light-beam {
+      position: absolute;
+      left: 110px;
+      top: 140px;
+      width: 300px;
+      height: 24px;
+      transform-origin: left center;
+      transform: skewX(-16deg);
+      border-radius: 999px;
+      opacity: 0.88;
+      filter: blur(0.4px);
+      transition: background 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+      box-shadow: 0 0 28px currentColor;
+    }
+
+    .lamp {
+      position: absolute;
+      left: 26px;
+      top: 110px;
+      width: 110px;
+      height: 110px;
+      border-radius: 32px;
+      background: linear-gradient(160deg, #173d72, #0b2041);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 30px rgba(0, 0, 0, 0.22);
+    }
+
+    .lamp::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 22px;
+      background: radial-gradient(circle, rgba(255, 238, 166, 0.94), rgba(255, 213, 64, 0.32) 52%, transparent 72%);
+      box-shadow: 0 0 36px rgba(255, 216, 87, 0.5);
+    }
+
+    .lamp-label {
+      position: absolute;
+      left: 22px;
+      bottom: 14px;
+      font-size: 12px;
+      color: rgba(229, 238, 255, 0.88);
+      font-weight: 700;
+    }
+
+    .vacuum-tube {
+      position: absolute;
+      left: 350px;
+      top: 68px;
+      width: 320px;
+      height: 190px;
+      border-radius: 100px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(205, 225, 255, 0.08));
+      border: 2px solid rgba(208, 223, 255, 0.52);
+      box-shadow: inset 0 0 32px rgba(180, 214, 255, 0.12), 0 18px 30px rgba(7, 17, 36, 0.18);
+    }
+
+    .vacuum-tube::after {
+      content: "真空光电管";
+      position: absolute;
+      right: 24px;
+      top: 14px;
+      font-size: 12px;
+      color: rgba(228, 238, 255, 0.84);
+      font-weight: 700;
+    }
+
+    .metal-plate {
+      position: absolute;
+      top: 48px;
+      width: 28px;
+      height: 94px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #d8e1ec, #8ea4bd);
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.32);
+    }
+
+    .cathode {
+      left: 58px;
+    }
+
+    .anode {
+      right: 58px;
+      background: linear-gradient(180deg, #d7ebff, #79a8e6);
+    }
+
+    .electrons-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .electron {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #69d6ff 58%, #1c7de7 100%);
+      box-shadow: 0 0 10px rgba(105, 214, 255, 0.74);
+      opacity: 0;
+    }
+
+    .electron.active {
+      animation: electronFly 1.1s linear forwards;
+    }
+
+    @keyframes electronFly {
+      0% { opacity: 0; transform: translate(0, 0) scale(0.8); }
+      12% { opacity: 1; }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.08); }
+    }
+
+    .wire-layer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .wire-path {
+      fill: none;
+      stroke: rgba(220, 233, 255, 0.88);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .ammeter {
+      position: absolute;
+      right: 34px;
+      bottom: 26px;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 4px solid rgba(232, 240, 255, 0.9);
+      background: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 12px 24px rgba(7, 17, 36, 0.22);
+      color: #f4f8ff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .meter-pointer {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 3px;
+      height: 30px;
+      background: var(--danger);
+      transform-origin: center bottom;
+      transform: translate(-50%, -100%) rotate(0deg);
+      border-radius: 999px;
+      transition: transform 0.35s ease;
+      box-shadow: 0 0 10px rgba(224, 90, 104, 0.6);
+    }
+
+    .meter-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #f6fbff;
+    }
+
+    .voltage-tag {
+      position: absolute;
+      left: 24px;
+      bottom: 22px;
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(230, 238, 255, 0.16);
+      color: rgba(235, 242, 255, 0.92);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .photon-badge {
+      position: absolute;
+      left: 146px;
+      top: 124px;
+      min-width: 84px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(240, 248, 255, 0.94);
+      font-size: 12px;
+      font-weight: 700;
+      transition: left 0.4s ease;
+    }
+
+    .result-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .result-card {
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .status-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(31, 115, 255, 0.08);
+      color: var(--primary);
+    }
+
+    .status-pill.warn {
+      background: rgba(224, 90, 104, 0.1);
+      color: var(--danger);
+    }
+
+    .status-pill.ok {
+      background: rgba(31, 156, 105, 0.12);
+      color: var(--success);
+    }
+
+    .observation-log {
+      display: grid;
+      gap: 10px;
+      max-height: 220px;
+      overflow: auto;
+    }
+
+    .quiz-option {
+      text-align: left;
+      background: #fff;
+      border: 1px solid rgba(86, 123, 168, 0.14);
+      color: var(--text);
+    }
+
+    .quiz-feedback {
+      min-height: 24px;
+      margin-top: 10px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 10px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .sidebar,
+      .main-panel {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .button-grid,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sim-stage {
+        height: 300px;
+      }
+
+      .lamp {
+        left: 18px;
+        width: 82px;
+        height: 82px;
+      }
+
+      .light-beam {
+        left: 86px;
+        top: 132px;
+        width: 170px;
+      }
+
+      .vacuum-tube {
+        left: 210px;
+        width: 170px;
+        height: 176px;
+      }
+
+      .cathode {
+        left: 32px;
+      }
+
+      .anode {
+        right: 32px;
+      }
+
+      .photon-badge {
+        left: 98px;
+        top: 114px;
+      }
+
+      .ammeter {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="card hero-main">
+        <div class="chip">PHOTOELECTRIC EFFECT</div>
+        <h1>光电效应演示实验</h1>
+        <p>
+          通过调节入射光频率、光强、金属材料和遏止电压，观察是否有光电子逸出以及光电流变化，
+          建立“是否逸出由频率决定，光电流大小与光强相关”的核心认识。
+        </p>
+        <div class="goal-list">
+          <div class="goal-item">目标 1：理解只有入射光频率超过截止频率时，才会发生光电效应。</div>
+          <div class="goal-item">目标 2：区分光强与频率各自影响的是光电子数量还是最大初动能。</div>
+          <div class="goal-item">目标 3：会用遏止电压和实验现象解释光电效应的实验规律。</div>
+        </div>
+      </div>
+
+      <div class="card hero-side">
+        <div class="section-title">当前实验状态</div>
+        <div class="metrics">
+          <div class="metric">
+            <span>当前金属</span>
+            <strong id="metricMetal">钠</strong>
+          </div>
+          <div class="metric">
+            <span>当前入射光</span>
+            <strong id="metricLight">紫光</strong>
+          </div>
+          <div class="metric">
+            <span>当前逸出状态</span>
+            <strong id="metricEmission">发生光电效应</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+      <aside class="card sidebar">
+        <div class="section-title">实验控制台</div>
+        <div class="control-stack">
+          <div class="control-box">
+            <div class="control-label">步骤 1：选择金属材料</div>
+            <div class="button-grid">
+              <button class="active" data-metal="sodium" type="button">钠</button>
+              <button class="ghost" data-metal="zinc" type="button">锌</button>
+              <button class="ghost" data-metal="copper" type="button">铜</button>
+              <button class="ghost" data-metal="platinum" type="button">铂</button>
+            </div>
+            <div class="tip">不同金属的逸出功不同，对应截止频率也不同。</div>
+          </div>
+
+          <div class="control-box">
+            <div class="control-label">步骤 2：选择入射光颜色（频率）</div>
+            <div class="button-grid">
+              <button class="ghost" data-light="red" type="button">红光</button>
+              <button class="ghost" data-light="green" type="button">绿光</button>
+              <button class="active" data-light="violet" type="button">紫光</button>
+              <button class="ghost" data-light="ultraviolet" type="button">紫外线</button>
+            </div>
+            <div class="tip">颜色越偏紫，频率越高，单个光子的能量越大。</div>
+          </div>
+
+          <div class="control-box">
+            <div class="control-label">步骤 3：调节光强</div>
+            <div class="slider-row">
+              <input id="intensitySlider" type="range" min="1" max="5" value="3" />
+              <div class="slider-value" id="intensityValue">中等</div>
+            </div>
+            <div class="tip">光强增大时，若已发生光电效应，通常逸出电子数会增多。</div>
+          </div>
+
+          <div class="control-box">
+            <div class="control-label">步骤 4：调节遏止电压</div>
+            <div class="slider-row">
+              <input id="voltageSlider" type="range" min="-3" max="3" step="0.1" value="0" />
+              <div class="slider-value" id="voltageValue">0.0 V</div>
+            </div>
+            <div class="tip">负向电压越大，越不利于电子到达阳极；当电流降到零时，对应遏止电压。</div>
+          </div>
+
+          <div class="control-box">
+            <div class="control-label">步骤 5：开始演示</div>
+            <div class="button-grid">
+              <button id="runBtn" class="primary" type="button">开始照射</button>
+              <button id="resetBtn" class="ghost" type="button">重置实验</button>
+            </div>
+            <div class="tip">建议先固定金属材料，比较不同颜色的光，再改变光强和电压。</div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="card main-panel">
+        <div class="section-title">实验现象区</div>
+        <div class="sim-shell">
+          <div class="sim-stage">
+            <div class="lamp">
+              <div class="lamp-label">光源</div>
+            </div>
+            <div class="light-beam" id="lightBeam"></div>
+            <div class="photon-badge" id="photonBadge">紫光光子</div>
+            <div class="vacuum-tube">
+              <div class="metal-plate cathode" id="cathode"></div>
+              <div class="metal-plate anode"></div>
+            </div>
+            <div class="electrons-layer" id="electronsLayer"></div>
+            <svg class="wire-layer" viewBox="0 0 760 330" preserveAspectRatio="none" aria-hidden="true">
+              <path class="wire-path" d="M 414 242 C 410 286, 246 290, 210 290 L 110 290"></path>
+              <path class="wire-path" d="M 608 242 C 636 242, 654 252, 676 272"></path>
+              <path class="wire-path" d="M 676 272 C 714 300, 710 312, 680 312 L 118 312 C 84 312, 84 292, 110 290"></path>
+            </svg>
+            <div class="ammeter">
+              A
+              <div class="meter-pointer" id="meterPointer"></div>
+              <div class="meter-center"></div>
+            </div>
+            <div class="voltage-tag" id="voltageTag">遏止电压：0.0 V</div>
+          </div>
+
+          <div class="status-row">
+            <div class="status-pill" id="statusThreshold">频率高于截止频率</div>
+            <div class="status-pill ok" id="statusCurrent">有光电流</div>
+            <div class="status-pill" id="statusEnergy">电子最大初动能较大</div>
+          </div>
+        </div>
+
+        <div class="panel-box">
+          <div class="section-title">本次实验判定</div>
+          <div class="result-grid">
+            <div class="result-card">
+              <span>截止频率比较</span>
+              <strong id="resultThreshold">高于截止频率</strong>
+            </div>
+            <div class="result-card">
+              <span>是否发生光电效应</span>
+              <strong id="resultEmission">发生</strong>
+            </div>
+            <div class="result-card">
+              <span>光电流强弱</span>
+              <strong id="resultCurrent">中等</strong>
+            </div>
+            <div class="result-card">
+              <span>电子最大初动能</span>
+              <strong id="resultKinetic">较大</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-box">
+          <div class="section-title">即时判断题</div>
+          <div>如果金属材料不变，入射光频率低于截止频率，那么即使继续增大光强，会不会有光电子逸出？</div>
+          <div class="quiz-options">
+            <button class="quiz-option" data-answer="yes" type="button">会，因为光强大了总能把电子打出来</button>
+            <button class="quiz-option" data-answer="no" type="button">不会，因为单个光子能量仍不足以克服逸出功</button>
+          </div>
+          <div class="quiz-feedback" id="quizFeedback"></div>
+        </div>
+
+        <div>
+          <div class="section-title">观察记录</div>
+          <div class="observation-log" id="observationLog"></div>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <script>
+    const metals = {
+      sodium: { name: '钠', threshold: 2.3 },
+      zinc: { name: '锌', threshold: 3.1 },
+      copper: { name: '铜', threshold: 4.2 },
+      platinum: { name: '铂', threshold: 5.1 }
+    }
+
+    const lights = {
+      red: { name: '红光', energy: 1.8, color: '#ff7373' },
+      green: { name: '绿光', energy: 2.6, color: '#5ee28d' },
+      violet: { name: '紫光', energy: 4.3, color: '#8c7dff' },
+      ultraviolet: { name: '紫外线', energy: 5.7, color: '#6cc7ff' }
+    }
+
+    const state = {
+      metal: 'sodium',
+      light: 'violet',
+      intensity: 3,
+      voltage: 0,
+      running: false,
+      runCount: 0,
+      timers: []
+    }
+
+    const lightBeam = document.getElementById('lightBeam')
+    const photonBadge = document.getElementById('photonBadge')
+    const electronsLayer = document.getElementById('electronsLayer')
+    const meterPointer = document.getElementById('meterPointer')
+    const voltageTag = document.getElementById('voltageTag')
+    const intensitySlider = document.getElementById('intensitySlider')
+    const voltageSlider = document.getElementById('voltageSlider')
+    const intensityValue = document.getElementById('intensityValue')
+    const voltageValue = document.getElementById('voltageValue')
+    const observationLog = document.getElementById('observationLog')
+    const quizFeedback = document.getElementById('quizFeedback')
+
+    const metricMetal = document.getElementById('metricMetal')
+    const metricLight = document.getElementById('metricLight')
+    const metricEmission = document.getElementById('metricEmission')
+
+    const resultThreshold = document.getElementById('resultThreshold')
+    const resultEmission = document.getElementById('resultEmission')
+    const resultCurrent = document.getElementById('resultCurrent')
+    const resultKinetic = document.getElementById('resultKinetic')
+
+    const statusThreshold = document.getElementById('statusThreshold')
+    const statusCurrent = document.getElementById('statusCurrent')
+    const statusEnergy = document.getElementById('statusEnergy')
+
+    const intensityLabels = {
+      1: '很弱',
+      2: '较弱',
+      3: '中等',
+      4: '较强',
+      5: '很强'
+    }
+
+    function sendInteraction(type, data) {
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          type: 'ANIMATION_INTERACTION',
+          interactionType: type,
+          data,
+          timestamp: Date.now()
+        }, '*')
+      }
+    }
+
+    function getExperimentResult() {
+      const metal = metals[state.metal]
+      const light = lights[state.light]
+      const emitted = light.energy >= metal.threshold
+      const energyGap = Math.max(0, light.energy - metal.threshold)
+      const currentBase = emitted ? Math.max(0, state.intensity * 0.55 - Math.max(0, -state.voltage) * 0.7) : 0
+      const currentLevel = currentBase > 2.2 ? '较强' : currentBase > 0.9 ? '中等' : currentBase > 0.2 ? '较弱' : '无'
+      const kineticLevel = !emitted ? '无' : energyGap > 1.8 ? '很大' : energyGap > 0.9 ? '较大' : '较小'
+      const stopped = emitted && state.voltage <= -(0.6 + energyGap * 0.55)
+      const finalCurrent = stopped ? '无' : currentLevel
+      const pointerAngle = finalCurrent === '较强' ? 34 : finalCurrent === '中等' ? 20 : finalCurrent === '较弱' ? 10 : 0
+
+      return {
+        metalName: metal.name,
+        lightName: light.name,
+        emitted,
+        energyGap,
+        thresholdState: emitted ? '高于截止频率' : '低于截止频率',
+        currentLevel: finalCurrent,
+        kineticLevel,
+        pointerAngle,
+        stopped
+      }
+    }
+
+    function updateBeam() {
+      const light = lights[state.light]
+      const alpha = 0.26 + state.intensity * 0.11
+      lightBeam.style.background = `linear-gradient(90deg, rgba(255,255,255,0.02), ${hexToRgba(light.color, alpha)})`
+      lightBeam.style.color = light.color
+      lightBeam.style.opacity = String(0.42 + state.intensity * 0.1)
+      photonBadge.textContent = `${light.name}光子`
+      photonBadge.style.borderColor = hexToRgba(light.color, 0.36)
+      photonBadge.style.color = '#f6fbff'
+      document.getElementById('cathode').style.boxShadow = `0 0 ${state.intensity * 10}px ${hexToRgba(light.color, 0.3)}`
+    }
+
+    function hexToRgba(hex, alpha) {
+      const normalized = hex.replace('#', '')
+      const value = normalized.length === 3
+        ? normalized.split('').map((item) => item + item).join('')
+        : normalized
+      const bigint = parseInt(value, 16)
+      const r = (bigint >> 16) & 255
+      const g = (bigint >> 8) & 255
+      const b = bigint & 255
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`
+    }
+
+    function updateLabels() {
+      const result = getExperimentResult()
+      metricMetal.textContent = result.metalName
+      metricLight.textContent = lights[state.light].name
+      metricEmission.textContent = result.emitted ? '发生光电效应' : '不发生光电效应'
+
+      resultThreshold.textContent = result.thresholdState
+      resultEmission.textContent = result.emitted ? '发生' : '不发生'
+      resultCurrent.textContent = result.currentLevel
+      resultKinetic.textContent = result.kineticLevel
+
+      statusThreshold.textContent = result.thresholdState
+      statusThreshold.className = `status-pill ${result.emitted ? 'ok' : 'warn'}`
+      statusCurrent.textContent = result.currentLevel === '无' ? '无明显光电流' : `光电流${result.currentLevel}`
+      statusCurrent.className = `status-pill ${result.currentLevel === '无' ? 'warn' : 'ok'}`
+      statusEnergy.textContent = result.emitted ? `电子最大初动能${result.kineticLevel}` : '没有逸出电子'
+      statusEnergy.className = `status-pill ${result.emitted ? '' : 'warn'}`
+
+      meterPointer.style.transform = `translate(-50%, -100%) rotate(${result.pointerAngle}deg)`
+      voltageTag.textContent = `遏止电压：${state.voltage.toFixed(1)} V`
+    }
+
+    function clearTimers() {
+      state.timers.forEach((timer) => window.clearTimeout(timer))
+      state.timers = []
+    }
+
+    function clearElectrons() {
+      electronsLayer.innerHTML = ''
+    }
+
+    function spawnElectrons() {
+      clearElectrons()
+      const result = getExperimentResult()
+      if (!result.emitted || result.currentLevel === '无') return
+
+      const count = result.currentLevel === '较强' ? 8 : result.currentLevel === '中等' ? 5 : 3
+      for (let i = 0; i < count; i += 1) {
+        const electron = document.createElement('div')
+        electron.className = 'electron'
+        electron.style.left = `${424 + Math.random() * 18}px`
+        electron.style.top = `${104 + Math.random() * 82}px`
+        electron.style.setProperty('--dx', `${90 + Math.random() * 80}px`)
+        electron.style.setProperty('--dy', `${-18 + Math.random() * 36}px`)
+        electronsLayer.appendChild(electron)
+        const timer = window.setTimeout(() => {
+          electron.classList.add('active')
+        }, i * 120)
+        state.timers.push(timer)
+      }
+    }
+
+    function logObservation() {
+      const result = getExperimentResult()
+      const item = document.createElement('div')
+      item.className = 'log-item'
+      item.innerHTML = `
+        <strong>第 ${state.runCount} 次实验</strong><br>
+        金属：${result.metalName}；入射光：${result.lightName}；光强：${intensityLabels[state.intensity]}；遏止电压：${state.voltage.toFixed(1)} V。<br>
+        现象：${result.emitted ? '有光电子逸出' : '无光电子逸出'}，光电流${result.currentLevel}，电子最大初动能${result.kineticLevel}。
+      `
+      observationLog.prepend(item)
+    }
+
+    function runExperiment() {
+      if (state.running) return
+      state.running = true
+      state.runCount += 1
+      clearTimers()
+      spawnElectrons()
+      updateLabels()
+      logObservation()
+      sendInteraction('photoelectric_run', {
+        metal: state.metal,
+        light: state.light,
+        intensity: state.intensity,
+        voltage: state.voltage,
+        result: getExperimentResult()
+      })
+
+      const timer = window.setTimeout(() => {
+        state.running = false
+      }, 1400)
+      state.timers.push(timer)
+    }
+
+    function resetExperiment() {
+      clearTimers()
+      state.metal = 'sodium'
+      state.light = 'violet'
+      state.intensity = 3
+      state.voltage = 0
+      state.running = false
+      intensitySlider.value = '3'
+      voltageSlider.value = '0'
+      intensityValue.textContent = intensityLabels[3]
+      voltageValue.textContent = '0.0 V'
+      clearElectrons()
+      updateButtons()
+      updateBeam()
+      updateLabels()
+      quizFeedback.textContent = ''
+      quizFeedback.style.color = ''
+      sendInteraction('photoelectric_reset', {})
+    }
+
+    function updateButtons() {
+      document.querySelectorAll('[data-metal]').forEach((button) => {
+        button.className = button.dataset.metal === state.metal ? 'active' : 'ghost'
+      })
+      document.querySelectorAll('[data-light]').forEach((button) => {
+        button.className = button.dataset.light === state.light ? 'active' : 'ghost'
+      })
+    }
+
+    document.querySelectorAll('[data-metal]').forEach((button) => {
+      button.addEventListener('click', () => {
+        state.metal = button.dataset.metal
+        updateButtons()
+        updateLabels()
+        sendInteraction('photoelectric_set_metal', { metal: state.metal })
+      })
+    })
+
+    document.querySelectorAll('[data-light]').forEach((button) => {
+      button.addEventListener('click', () => {
+        state.light = button.dataset.light
+        updateButtons()
+        updateBeam()
+        updateLabels()
+        sendInteraction('photoelectric_set_light', { light: state.light })
+      })
+    })
+
+    intensitySlider.addEventListener('input', (event) => {
+      state.intensity = Number(event.target.value)
+      intensityValue.textContent = intensityLabels[state.intensity]
+      updateBeam()
+      updateLabels()
+      sendInteraction('photoelectric_set_intensity', { intensity: state.intensity })
+    })
+
+    voltageSlider.addEventListener('input', (event) => {
+      state.voltage = Number(event.target.value)
+      voltageValue.textContent = `${state.voltage.toFixed(1)} V`
+      updateLabels()
+      sendInteraction('photoelectric_set_voltage', { voltage: state.voltage })
+    })
+
+    document.getElementById('runBtn').addEventListener('click', runExperiment)
+    document.getElementById('resetBtn').addEventListener('click', resetExperiment)
+
+    document.querySelectorAll('.quiz-option').forEach((button) => {
+      button.addEventListener('click', () => {
+        const correct = button.dataset.answer === 'no'
+        quizFeedback.textContent = correct
+          ? '判断正确：光强变大只意味着单位时间内光子数增多，但单个光子能量不变。'
+          : '再想一想：决定是否逸出的是单个光子的能量是否足够，不是总光强。'
+        quizFeedback.style.color = correct ? 'var(--success)' : 'var(--danger)'
+        sendInteraction('photoelectric_quiz_answer', {
+          answer: button.dataset.answer,
+          correct
+        })
+      })
+    })
+
+    observationLog.innerHTML = `
+      <div class="log-item">
+        <strong>实验提示</strong><br>
+        先固定金属材料，比较红光、绿光、紫光和紫外线；再固定光的颜色，比较不同金属。最后改变光强和遏止电压，区分它们对光电流和电子初动能的影响。
+      </div>
+    `
+
+    updateButtons()
+    updateBeam()
+    updateLabels()
+  </script>
+</body>
+</html>

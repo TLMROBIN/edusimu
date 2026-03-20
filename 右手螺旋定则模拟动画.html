@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物理交互演示：右手螺旋定则与磁场分布</title>
+    <!-- 引入 Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- 引入 OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #050505; /* 深空黑背景 */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            touch-action: manipulation;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+
+        /* UI 控制面板样式 */
+        #ui-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 320px;
+            background: rgba(30, 30, 35, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid #444;
+            z-index: 10;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #4db8ff;
+            text-align: center;
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        /* 按钮样式 */
+        .btn-group {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            flex: 1;
+            min-height: 44px;
+            padding: 10px 12px;
+            background: #333;
+            border: 1px solid #555;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            touch-action: manipulation;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        button.active {
+            background: #4db8ff;
+            color: #000;
+            font-weight: bold;
+            border-color: #4db8ff;
+        }
+
+        .legend {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #555;
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .color-box {
+            width: 12px;
+            height: 12px;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #888;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 8;
+            background: rgba(8, 8, 10, 0.58);
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        @media (max-width: 1100px) {
+            #ui-panel {
+                top: auto;
+                right: 12px;
+                left: 12px;
+                bottom: 12px;
+                width: auto;
+                max-width: none;
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            .btn-group {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .btn-group button {
+                min-width: calc(50% - 4px);
+            }
+
+            .hint {
+                top: 12px;
+                left: 12px;
+                bottom: auto;
+                max-width: calc(100vw - 24px);
+            }
+        }
+
+        @media (max-width: 700px) {
+            h2 {
+                font-size: 16px;
+            }
+
+            label,
+            .legend,
+            .hint {
+                font-size: 13px;
+            }
+
+            button {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-panel">
+        <h2>右手螺旋定则演示</h2>
+        
+        <div class="control-group">
+            <label>实验对象模型：</label>
+            <div class="btn-group">
+                <button id="btn-wire" class="active" onclick="app.setMode('wire')">通电直导线</button>
+                <button id="btn-solenoid" onclick="app.setMode('solenoid')">通电螺线管</button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>观察视角 (投影方式)：</label>
+            <div class="btn-group">
+                <button id="view-3d" class="active" onclick="app.setView('3d')">3D 立体</button>
+                <button id="view-top" onclick="app.setView('top')">俯视图 (Top)</button>
+                <button id="view-side" onclick="app.setView('side')">侧视图 (Side)</button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>电流方向 (I)：</label>
+            <div class="btn-group">
+                <button id="current-pos" class="active" onclick="app.setCurrentDirection(1)">正向 (+)</button>
+                <button id="current-neg" onclick="app.setCurrentDirection(-1)">反向 (-)</button>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item"><div class="color-box" style="background:#ffaa00"></div>电流 (I)</div>
+            <div class="legend-item"><div class="color-box" style="background:#00ffff"></div>磁场 (B)</div>
+            <div class="legend-item" style="margin-top:5px; color:#aaa;">
+                <span style="font-weight:bold; font-size:16px; margin-right:5px;">⊙</span> 垂直纸面向外 (点)
+            </div>
+            <div class="legend-item" style="color:#aaa;">
+                <span style="font-weight:bold; font-size:16px; margin-right:5px;">⊗</span> 垂直纸面向内 (叉)
+            </div>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+    <div class="hint">单指拖动旋转视角 | 双指缩放 | 双指拖动平移</div>
+
+    <script>
+        class PhysicsApp {
+            constructor() {
+                this.container = document.getElementById('canvas-container');
+                
+                // 状态变量
+                this.mode = 'wire'; // 'wire' | 'solenoid'
+                this.viewMode = '3d'; // '3d' | 'top' | 'side'
+                this.currentDir = 1; // 1 (Up/Right) or -1 (Down/Left)
+                
+                // 场景对象引用
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.controls = null;
+                this.linesGroup = null; 
+                this.arrowsGroup = null; 
+                this.currentArrowsGroup = null; 
+                this.mainObject = null; 
+                this.markers2D = []; 
+                this.currentArrowMesh = null; // 直导线大箭头
+
+                this.fieldCurves = []; 
+                this.arrowObjects = []; // 3D B箭头
+                this.currentArrowObjects = []; // 3D I箭头
+            }
+
+            init() {
+                this.scene = new THREE.Scene();
+                this.scene.fog = new THREE.FogExp2(0x050505, 0.02);
+
+                const aspect = window.innerWidth / window.innerHeight;
+                this.perspectiveCamera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
+                this.orthoCamera = new THREE.OrthographicCamera(-10 * aspect, 10 * aspect, 10, -10, 0.1, 1000);
+                
+                this.camera = this.perspectiveCamera;
+                this.camera.position.set(20, 20, 20);
+                this.camera.lookAt(0, 0, 0);
+
+                this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                this.container.appendChild(this.renderer.domElement);
+
+                this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+                this.controls.enableDamping = true;
+                this.controls.dampingFactor = 0.08;
+                this.controls.screenSpacePanning = true;
+                this.controls.rotateSpeed = 0.9;
+                this.controls.zoomSpeed = 1.05;
+                this.controls.panSpeed = 0.9;
+                this.controls.enablePan = true;
+                this.controls.enableZoom = true;
+
+                const ambientLight = new THREE.AmbientLight(0x606060);
+                this.scene.add(ambientLight);
+                const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+                dirLight.position.set(10, 20, 10);
+                this.scene.add(dirLight);
+
+                // 纹理生成
+                this.textureDot = this.createSymbolTexture('dot');
+                this.textureCross = this.createSymbolTexture('cross');
+                this.textureArrow2D = this.create2DArrowTexture(); 
+
+                this.buildScene();
+                this.animate();
+
+                window.addEventListener('resize', () => this.onWindowResize(), false);
+            }
+
+            createSymbolTexture(type) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 64;
+                canvas.height = 64;
+                const ctx = canvas.getContext('2d');
+                ctx.lineWidth = 6;
+                ctx.strokeStyle = '#00ffff'; 
+                if (type.includes('current')) ctx.strokeStyle = '#ffaa00';
+                
+                ctx.beginPath();
+                ctx.arc(32, 32, 28, 0, Math.PI * 2);
+                ctx.stroke();
+
+                ctx.fillStyle = ctx.strokeStyle;
+                if (type.includes('dot')) {
+                    ctx.beginPath(); ctx.arc(32, 32, 8, 0, Math.PI * 2); ctx.fill();
+                } else {
+                    ctx.lineWidth = 5;
+                    ctx.beginPath(); 
+                    ctx.moveTo(18, 18); ctx.lineTo(46, 46);
+                    ctx.moveTo(46, 18); ctx.lineTo(18, 46);
+                    ctx.stroke();
+                }
+                return new THREE.CanvasTexture(canvas);
+            }
+
+            create2DArrowTexture() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 64;
+                canvas.height = 128;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.moveTo(22, 128); ctx.lineTo(42, 128);
+                ctx.lineTo(42, 40); ctx.lineTo(64, 40);
+                ctx.lineTo(32, 0); ctx.lineTo(0, 40);
+                ctx.lineTo(22, 40); ctx.closePath();
+                ctx.fill();
+                return new THREE.CanvasTexture(canvas);
+            }
+
+            create3DArrowMesh(colorHex, scale=1.0) {
+                const group = new THREE.Group();
+                const material = new THREE.MeshPhongMaterial({ color: colorHex, shininess: 50 });
+
+                const shaftGeo = new THREE.CylinderGeometry(0.08 * scale, 0.08 * scale, 0.6 * scale, 8);
+                shaftGeo.rotateX(Math.PI / 2); 
+                shaftGeo.translate(0, 0, -0.3 * scale);
+                const shaft = new THREE.Mesh(shaftGeo, material);
+                group.add(shaft);
+
+                const headGeo = new THREE.ConeGeometry(0.25 * scale, 0.6 * scale, 12);
+                headGeo.rotateX(Math.PI / 2);
+                headGeo.translate(0, 0, 0.3 * scale);
+                const head = new THREE.Mesh(headGeo, material);
+                group.add(head);
+
+                return group;
+            }
+
+            buildScene() {
+                if(this.mainObject) this.scene.remove(this.mainObject);
+                if(this.linesGroup) this.scene.remove(this.linesGroup);
+                if(this.arrowsGroup) this.scene.remove(this.arrowsGroup);
+                if(this.currentArrowsGroup) this.scene.remove(this.currentArrowsGroup);
+                this.clear2DMarkers();
+
+                this.mainObject = new THREE.Group();
+                this.linesGroup = new THREE.Group(); 
+                this.arrowsGroup = new THREE.Group();
+                this.currentArrowsGroup = new THREE.Group();
+                
+                this.fieldCurves = []; 
+                this.arrowObjects = [];
+                this.currentArrowObjects = [];
+
+                const materialWire = new THREE.MeshPhongMaterial({ color: 0x333333, specular: 0x333333, shininess: 30 });
+
+                if (this.mode === 'wire') {
+                    // --- 直导线 ---
+                    const geometry = new THREE.CylinderGeometry(0.4, 0.4, 30, 32);
+                    const mesh = new THREE.Mesh(geometry, materialWire);
+                    this.mainObject.add(mesh);
+                    
+                    // 3D 大电流箭头
+                    this.addMainCurrentArrow(this.mainObject);
+
+                    // 磁感线
+                    const radii = [3, 5, 8];
+                    const heights = [-10, -5, 0, 5, 10];
+                    heights.forEach(y => {
+                        radii.forEach(r => {
+                            const curve = new THREE.EllipseCurve(0, 0, r, r, 0, 2 * Math.PI, false, 0);
+                            const circleCurve = new THREE.CatmullRomCurve3(
+                                curve.getPoints(60).map(v => new THREE.Vector3(v.x, y, v.y)), true 
+                            );
+                            this.fieldCurves.push(circleCurve);
+                            this.addStaticLine(circleCurve);
+                            this.addArrowsToCurve(circleCurve, 8, 0x00ffff, 'B'); 
+                        });
+                    });
+
+                } else if (this.mode === 'solenoid') {
+                    // --- 螺线管 ---
+                    // 修正：使用 z = -sin 来创建逆时针 (CCW) 螺旋。
+                    // 这样当 t 增加 (电流向上) 时，螺旋方向是 CCW。
+                    // CCW 产生向上的磁场 (B=Up)。物理逻辑统一。
+                    class HelixCurve extends THREE.Curve {
+                        getPoint(t) {
+                            const r = 3; 
+                            const h = 12; 
+                            const turns = 8;
+                            const angle = 2 * Math.PI * turns * t; 
+                            const x = r * Math.cos(angle);
+                            const z = -r * Math.sin(angle); // 负号：变为逆时针 (CCW)
+                            const y = (t - 0.5) * h;
+                            return new THREE.Vector3(x, y, z);
+                        }
+                    }
+                    const helixPath = new HelixCurve();
+                    const geometry = new THREE.TubeGeometry(helixPath, 150, 0.25, 8, false);
+                    const mesh = new THREE.Mesh(geometry, materialWire);
+                    this.mainObject.add(mesh);
+
+                    this.addSolenoidCurrentArrows(helixPath);
+
+                    // 磁感线
+                    const slices = 8;
+                    const layers = 2;
+                    for (let s = 0; s < slices; s++) {
+                        const angleOffset = (s / slices) * Math.PI * 2;
+                        for (let l = 0; l < layers; l++) {
+                            const r_in = 0.5 + l * 1.5; 
+                            const r_out = 5.5 + l * 4.5;   
+                            const h_half = 7;          
+
+                            // 这里的路径构建了内部向上，外部向下的闭合回路
+                            const points = [
+                                new THREE.Vector3(r_in, -h_half, 0),
+                                new THREE.Vector3(r_in, 0, 0),
+                                new THREE.Vector3(r_in, h_half, 0),
+                                new THREE.Vector3(r_out * 0.6, h_half * 1.5, 0),
+                                new THREE.Vector3(r_out, 0, 0),
+                                new THREE.Vector3(r_out * 0.6, -h_half * 1.5, 0)
+                            ];
+
+                            const rotatedPoints = points.map(p => {
+                                const x = p.x * Math.cos(angleOffset) - p.z * Math.sin(angleOffset);
+                                const z = p.x * Math.sin(angleOffset) + p.z * Math.cos(angleOffset);
+                                return new THREE.Vector3(x, p.y, z);
+                            });
+
+                            const curve = new THREE.CatmullRomCurve3(rotatedPoints, true, 'catmullrom', 0.1);
+                            this.fieldCurves.push(curve);
+                            this.addStaticLine(curve);
+                            this.addArrowsToCurve(curve, 10, 0x00ffff, 'B'); 
+                        }
+                    }
+                    // 中心轴线
+                    const centerCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(0, -20, 0), new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 20, 0)
+                    ]);
+                    this.fieldCurves.push(centerCurve);
+                    this.addStaticLine(centerCurve);
+                    this.addArrowsToCurve(centerCurve, 6, 0x00ffff, 'B');
+                }
+
+                this.scene.add(this.mainObject);
+                this.scene.add(this.linesGroup);
+                this.scene.add(this.arrowsGroup);
+                this.scene.add(this.currentArrowsGroup);
+
+                this.updateAllArrows();
+                this.updateViewVisuals();
+            }
+
+            addMainCurrentArrow(parent) {
+                // 仅用于 Wire 模式 3D 视图
+                this.currentArrowMesh = this.create3DArrowMesh(0xffaa00, 3); // 大尺寸
+                this.currentArrowMesh.position.set(0, 0, 0.8); // 浮在表面
+                // 修复：默认显示状态应跟随 viewMode
+                this.currentArrowMesh.visible = (this.viewMode === '3d'); 
+                parent.add(this.currentArrowMesh);
+            }
+
+            addSolenoidCurrentArrows(path) {
+                const count = 30; 
+                for(let i=0; i<count; i++) {
+                    const t = (i + 0.5) / count;
+                    const arrowMesh = this.create3DArrowMesh(0xffaa00, 1.2); 
+                    this.currentArrowsGroup.add(arrowMesh);
+                    this.currentArrowObjects.push({
+                        obj: arrowMesh,
+                        curve: path,
+                        t: t,
+                        offset: 0.4
+                    });
+                }
+            }
+
+            addStaticLine(curve) {
+                const points = curve.getPoints(60);
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const material = new THREE.LineBasicMaterial({ color: 0x00ffff, opacity: 0.2, transparent: true });
+                const line = new THREE.LineLoop(geometry, material);
+                this.linesGroup.add(line);
+            }
+
+            addArrowsToCurve(curve, count, color, type) {
+                for (let i = 0; i < count; i++) {
+                    const t = i / count;
+                    const arrowMesh = this.create3DArrowMesh(color, 0.8);
+                    this.arrowsGroup.add(arrowMesh);
+                    this.arrowObjects.push({ obj: arrowMesh, curve: curve, t: t, type: type });
+                }
+            }
+
+            updateAllArrows() {
+                // 1. 磁场箭头 (B)
+                // 直导线：I=Up -> 逆时针 -> dirB=-1 (因EllipseCurve特性)
+                // 螺线管：I=Up -> CCW -> dirB=1 (Curve定义是向上)
+                
+                let dirB;
+                if (this.mode === 'wire') {
+                    dirB = this.currentDir * -1; 
+                } else {
+                    dirB = this.currentDir * 1; 
+                }
+
+                this.arrowObjects.forEach(item => {
+                    const { obj, curve, t } = item;
+                    const position = curve.getPoint(t);
+                    const tangent = curve.getTangent(t);
+                    const target = position.clone().add(tangent.multiplyScalar(dirB));
+                    obj.position.copy(position);
+                    obj.lookAt(target);
+                });
+
+                // 2. 直导线中心箭头 (3D用)
+                if(this.currentArrowMesh) {
+                    // 旋转到 Y 轴
+                    const baseRotX = -Math.PI / 2;
+                    const flipRot = this.currentDir === 1 ? 0 : Math.PI;
+                    this.currentArrowMesh.rotation.set(baseRotX + flipRot, 0, 0);
+                }
+
+                // 3. 螺线管电流箭头
+                this.currentArrowObjects.forEach(item => {
+                    const { obj, curve, t, offset } = item;
+                    const position = curve.getPoint(t);
+                    const tangent = curve.getTangent(t);
+                    const radial = new THREE.Vector3(position.x, 0, position.z).normalize().multiplyScalar(offset);
+                    const displayPos = position.clone().add(radial);
+                    
+                    const dirI = this.currentDir; 
+                    const target = displayPos.clone().add(tangent.multiplyScalar(dirI));
+                    obj.position.copy(displayPos);
+                    obj.lookAt(target);
+                });
+            }
+
+            setView(viewType) {
+                this.viewMode = viewType;
+                document.querySelectorAll('#ui-panel button').forEach(b => {
+                    if (b.id.startsWith('view-')) b.classList.remove('active');
+                });
+                document.getElementById('view-' + viewType).classList.add('active');
+
+                const aspect = window.innerWidth / window.innerHeight;
+                if (viewType === '3d') {
+                    this.camera = this.perspectiveCamera;
+                    this.controls.enabled = true;
+                    this.mainObject.visible = true;
+                    this.linesGroup.visible = true;
+                    this.arrowsGroup.visible = true;
+                    this.currentArrowsGroup.visible = true;
+                    if(this.mode === 'wire' && this.currentArrowMesh) this.currentArrowMesh.visible = true;
+                    this.clear2DMarkers();
+                } else if (viewType === 'top') {
+                    this.camera = this.orthoCamera;
+                    this.camera.position.set(0, 20, 0); 
+                    this.camera.lookAt(0, 0, 0);
+                    this.camera.zoom = 1.2;
+                    this.camera.updateProjectionMatrix();
+                    this.controls.enabled = false; 
+                    this.updateViewVisuals();
+                } else if (viewType === 'side') {
+                    this.camera = this.orthoCamera;
+                    this.camera.position.set(0, 0, 20); 
+                    this.camera.lookAt(0, 0, 0);
+                    this.camera.zoom = 1.2;
+                    this.camera.updateProjectionMatrix();
+                    this.controls.enabled = false;
+                    this.updateViewVisuals();
+                }
+            }
+
+            clear2DMarkers() {
+                this.markers2D.forEach(m => this.scene.remove(m));
+                this.markers2D = [];
+            }
+
+            add2DSymbol(x, y, z, type, scale=1) {
+                const map = this.createSymbolTexture(type);
+                const material = new THREE.SpriteMaterial({ map: map });
+                const sprite = new THREE.Sprite(material);
+                sprite.position.set(x, y, z);
+                sprite.scale.set(scale, scale, 1);
+                this.scene.add(sprite);
+                this.markers2D.push(sprite);
+            }
+
+            add2DArrowSprite(x, y, z, rotationZ, color, scale=1) {
+                const map = this.textureArrow2D;
+                const material = new THREE.SpriteMaterial({ map: map, color: color, rotation: rotationZ });
+                const sprite = new THREE.Sprite(material);
+                sprite.position.set(x, y, z);
+                sprite.scale.set(scale, scale * 2, 1); 
+                this.scene.add(sprite);
+                this.markers2D.push(sprite);
+            }
+
+            updateViewVisuals() {
+                if (this.viewMode === '3d') return;
+
+                this.arrowsGroup.visible = false;
+                this.currentArrowsGroup.visible = false; 
+                if(this.currentArrowMesh) this.currentArrowMesh.visible = false;
+                this.linesGroup.visible = true; 
+
+                this.clear2DMarkers();
+
+                const isUp = (this.currentDir === 1); 
+
+                if (this.mode === 'wire') {
+                    if (this.viewMode === 'top') {
+                        // --- 直导线 俯视图 ---
+                        const iType = isUp ? 'current_dot' : 'current_cross';
+                        this.add2DSymbol(0, 0, 0, iType, 2.0);
+
+                        // B: 逆时针 (CCW) if Up
+                        // 0度箭头指向屏幕上方(-Z)
+                        const r = 5; 
+                        const rotRight = isUp ? 0 : Math.PI; 
+                        this.add2DArrowSprite(r, 0, 0, rotRight, 0x00ffff, 1.5);
+                        const rotTop = isUp ? Math.PI/2 : -Math.PI/2;
+                        this.add2DArrowSprite(0, 0, -r, rotTop, 0x00ffff, 1.5);
+                        const rotLeft = isUp ? Math.PI : 0;
+                        this.add2DArrowSprite(-r, 0, 0, rotLeft, 0x00ffff, 1.5);
+                        const rotBottom = isUp ? -Math.PI/2 : Math.PI/2;
+                        this.add2DArrowSprite(0, 0, r, rotBottom, 0x00ffff, 1.5);
+
+                    } else if (this.viewMode === 'side') {
+                        // --- 直导线 侧视图 ---
+                        const rotI = isUp ? 0 : Math.PI;
+                        this.add2DArrowSprite(1.5, 0, 5, rotI, 0xffaa00, 3.0);
+                        const leftType = isUp ? 'dot' : 'cross';
+                        const rightType = isUp ? 'cross' : 'dot';
+                        for(let y = -8; y <= 8; y += 4) {
+                            this.add2DSymbol(-4, y, 0, leftType, 1.2);
+                            this.add2DSymbol(4, y, 0, rightType, 1.2);
+                        }
+                    }
+                } else if (this.mode === 'solenoid') {
+                    if (this.viewMode === 'top') {
+                        // --- 螺线管 俯视图 (End View) ---
+                        // 1. 内部磁场 (中心)
+                        // 物理修正：I=Up -> 对应逆时针螺旋 (CCW) -> B=Up (Dot)
+                        const bType = isUp ? 'dot' : 'cross';
+                        this.add2DSymbol(0, 0, 0, bType, 2.0);
+
+                        // 2. 线圈电流方向 (圆周切线)
+                        // CCW (逆时针) if Up.
+                        // 右侧切线向上(-Z). Sprite 0 deg is Up(-Z). So rot=0.
+                        const r = 3.5;
+                        const rotRight = isUp ? 0 : Math.PI; 
+                        this.add2DArrowSprite(r, 0, 0, rotRight, 0xffaa00, 1.5); 
+                        
+                        // 左侧切线向下(+Z). Sprite need PI.
+                        const rotLeft = isUp ? Math.PI : 0;
+                        this.add2DArrowSprite(-r, 0, 0, rotLeft, 0xffaa00, 1.5);
+
+                    } else if (this.viewMode === 'side') {
+                        // --- 螺线管 侧视图 (Cross Section) ---
+                        // 1. 内部磁场 (垂直箭头)
+                        // I=Up -> B=Up
+                        const rotB = isUp ? 0 : Math.PI;
+                        this.add2DArrowSprite(0, 0, 5, rotB, 0x00ffff, 2.5);
+
+                        // 2. 线圈电流方向 (橙色箭头)
+                        // CCW: Right -> Back -> Left -> Front.
+                        // Front (Z>0): Left -> Right.
+                        // Sprite 0 is Up. -PI/2 is Right.
+                        const rotI = isUp ? -Math.PI/2 : Math.PI/2; 
+                        
+                        for(let y = -6; y <= 6; y += 3) {
+                            this.add2DArrowSprite(0, y, 8, rotI, 0xffaa00, 1.5);
+                        }
+                    }
+                }
+            }
+
+            setMode(mode) {
+                this.mode = mode;
+                document.getElementById('btn-wire').classList.toggle('active', mode === 'wire');
+                document.getElementById('btn-solenoid').classList.toggle('active', mode === 'solenoid');
+                this.buildScene();
+            }
+
+            setCurrentDirection(dir) {
+                this.currentDir = dir;
+                document.getElementById('current-pos').classList.toggle('active', dir === 1);
+                document.getElementById('current-neg').classList.toggle('active', dir === -1);
+                
+                this.updateAllArrows(); 
+                if (this.viewMode !== '3d') this.updateViewVisuals();
+            }
+
+            onWindowResize() {
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+                const aspect = w / h;
+                
+                this.perspectiveCamera.aspect = aspect;
+                this.perspectiveCamera.updateProjectionMatrix();
+
+                this.orthoCamera.left = -10 * aspect;
+                this.orthoCamera.right = 10 * aspect;
+                this.orthoCamera.top = 10;
+                this.orthoCamera.bottom = -10;
+                this.orthoCamera.updateProjectionMatrix();
+
+                this.renderer.setSize(w, h);
+            }
+
+            animate() {
+                requestAnimationFrame(() => this.animate());
+                if(this.controls.enabled) this.controls.update();
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+
+        const app = new PhysicsApp();
+        app.init();
+
+    </script>
+</body>
+</html>

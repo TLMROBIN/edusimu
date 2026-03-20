@@ -1,0 +1,35 @@
+project_name,display_title,english_title,official_subjects,has_official_zh_cn,recommended_run_url,already_in_system,existing_animation_id,existing_subject_name,existing_title
+build-a-nucleus,Build a Nucleus,Build a Nucleus,"Chemistry,Physics",no,/sims/html/build-a-nucleus/latest/build-a-nucleus_en.html,yes,17,physics,PhET 构造原子核
+fourier-making-waves,Fourier: Making Waves,Fourier: Making Waves,"Math & Statistics,Chemistry,Physics",no,/sims/html/fourier-making-waves/latest/fourier-making-waves_en.html,yes,123,physics,傅里叶：造波
+membrane-transport,Membrane Transport,Membrane Transport,"Chemistry,Biology",no,/sims/html/membrane-transport/latest/membrane-transport_en.html,no,,,
+models-of-the-hydrogen-atom,Models of the Hydrogen Atom,Models of the Hydrogen Atom,"Chemistry,Physics",no,/sims/html/models-of-the-hydrogen-atom/latest/models-of-the-hydrogen-atom_en.html,yes,140,physics,氢原子模型
+ph-scale,PH值 ,pH Scale,"Earth & Space,Chemistry,Biology",yes,/sims/html/ph-scale/latest/ph-scale_zh_CN.html,no,,,
+quantum-coin-toss,Quantum Coin Toss,Quantum Coin Toss,"Chemistry,Physics",no,/sims/html/quantum-coin-toss/latest/quantum-coin-toss_en.html,yes,148,physics,量子抛硬币
+quantum-measurement,Quantum Measurement,Quantum Measurement,"Chemistry,Physics",no,/sims/html/quantum-measurement/latest/quantum-measurement_en.html,yes,149,physics,量子测量
+ph-scale-basics,pH值:基础,pH Scale: Basics,Chemistry,yes,/sims/html/ph-scale-basics/latest/ph-scale-basics_zh_CN.html,no,,,
+molecules-and-light,分子与光,Molecules and Light,"Earth & Space,Chemistry,Physics",yes,/sims/html/molecules-and-light/latest/molecules-and-light_zh_CN.html,yes,141,physics,分子与光
+molecule-shapes,分子形状,Molecule Shapes,Chemistry,yes,/sims/html/molecule-shapes/latest/molecule-shapes_zh_CN.html,no,,,
+molecule-shapes-basics,分子形状:基础,Molecule Shapes: Basics,Chemistry,yes,/sims/html/molecule-shapes-basics/latest/molecule-shapes-basics_zh_CN.html,no,,,
+molecule-polarity,分子极性,Molecule Polarity,"Chemistry,Biology",yes,/sims/html/molecule-polarity/latest/molecule-polarity_zh_CN.html,no,,,
+build-a-molecule,创造一个分子,Build a Molecule,Chemistry,yes,/sims/html/build-a-molecule/latest/build-a-molecule_zh_CN.html,no,,,
+rutherford-scattering,卢瑟福散射,Rutherford Scattering,"Chemistry,Physics",yes,/sims/html/rutherford-scattering/latest/rutherford-scattering_zh_CN.html,yes,151,physics,卢瑟福散射
+build-an-atom,原子模型,Build an Atom,"Chemistry,Physics",yes,/sims/html/build-an-atom/latest/build-an-atom_zh_CN.html,yes,16,physics,PhET 构造原子
+atomic-interactions,原子的相互作用,Atomic Interactions,"Chemistry,Physics",yes,/sims/html/atomic-interactions/latest/atomic-interactions_zh_CN.html,yes,95,physics,原子的相互作用
+reactants-products-and-leftovers,反应物，生成物及未反应物,"Reactants, Products and Leftovers",Chemistry,yes,/sims/html/reactants-products-and-leftovers/latest/reactants-products-and-leftovers_zh_CN.html,no,,,
+isotopes-and-atomic-mass,同位素和原子的质量,Isotopes and Atomic Mass,Chemistry,yes,/sims/html/isotopes-and-atomic-mass/latest/isotopes-and-atomic-mass_zh_CN.html,no,,,
+density,密度,Density,"Earth & Space,Chemistry,Biology,Physics",yes,/sims/html/density/latest/density_zh_CN.html,yes,115,physics,密度
+coulombs-law,库仑定律,Coulomb's Law,"Chemistry,Physics",yes,/sims/html/coulombs-law/latest/coulombs-law_zh_CN.html,yes,113,physics,库仑定律
+diffusion,扩散,Diffusion,"Earth & Space,Chemistry,Physics",yes,/sims/html/diffusion/latest/diffusion_zh_CN.html,yes,116,physics,扩散
+molarity,摩尔浓度,Molarity,Chemistry,yes,/sims/html/molarity/latest/molarity_zh_CN.html,no,,,
+beers-law-lab,比尔定律实验,Beer's Law Lab,Chemistry,yes,/sims/html/beers-law-lab/latest/beers-law-lab_zh_CN.html,no,,,
+gases-intro,气体基础,Gases Intro,"Earth & Space,Chemistry,Physics",yes,/sims/html/gases-intro/latest/gases-intro_zh_CN.html,yes,126,physics,气体基础
+gas-properties,气体性质,Gas Properties,"Earth & Space,Chemistry,Physics",yes,/sims/html/gas-properties/latest/gas-properties_zh_CN.html,yes,22,physics,PhET 气体性质
+balloons-and-static-electricity,气球和静电（摩擦起电）,Balloons and Static Electricity,"Earth & Space,Chemistry,Physics",yes,/sims/html/balloons-and-static-electricity/latest/balloons-and-static-electricity_zh_CN.html,yes,97,physics,气球和静电（摩擦起电）
+concentration,浓度,Concentration,Chemistry,yes,/sims/html/concentration/latest/concentration_zh_CN.html,no,,,
+states-of-matter,物质状态,States of Matter,"Chemistry,Physics",yes,/sims/html/states-of-matter/latest/states-of-matter_zh_CN.html,yes,23,physics,PhET 物质状态
+states-of-matter-basics,物质状态：基础,States of Matter: Basics,"Chemistry,Physics",yes,/sims/html/states-of-matter-basics/latest/states-of-matter-basics_zh_CN.html,yes,153,physics,物质状态：基础
+wave-on-a-string,绳波,Wave on a String,"Math & Statistics,Earth & Space,Chemistry,Physics",yes,/sims/html/wave-on-a-string/latest/wave-on-a-string_zh_CN.html,yes,19,physics,PhET 绳波
+energy-forms-and-changes,能量的形式和转换,Energy Forms and Changes,"Chemistry,Physics",yes,/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_zh_CN.html,yes,117,physics,能量的形式和转换
+balancing-chemical-equations,配平化学方程式,Balancing Chemical Equations,Chemistry,yes,/sims/html/balancing-chemical-equations/latest/balancing-chemical-equations_zh_CN.html,no,,,
+acid-base-solutions,酸碱溶液,Acid-Base Solutions,Chemistry,yes,/sims/html/acid-base-solutions/latest/acid-base-solutions_zh_CN.html,no,,,
+blackbody-spectrum,黑体辐射,Blackbody Spectrum,"Earth & Space,Chemistry,Physics",yes,/sims/html/blackbody-spectrum/latest/blackbody-spectrum_zh_CN.html,yes,26,physics,PhET 黑体辐射光谱

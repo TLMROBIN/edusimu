@@ -1,0 +1,9 @@
+project_name,display_title,english_title,official_subjects,has_official_zh_cn,recommended_run_url,already_in_system,existing_animation_id,existing_subject_name,existing_title
+membrane-transport,Membrane Transport,Membrane Transport,"Chemistry,Biology",no,/sims/html/membrane-transport/latest/membrane-transport_en.html,no,,,
+ph-scale,PH值 ,pH Scale,"Earth & Space,Chemistry,Biology",yes,/sims/html/ph-scale/latest/ph-scale_zh_CN.html,no,,,
+color-vision,光的混合,Color Vision,"Biology,Physics",yes,/sims/html/color-vision/latest/color-vision_zh_CN.html,yes,112,physics,光的混合
+molecule-polarity,分子极性,Molecule Polarity,"Chemistry,Biology",yes,/sims/html/molecule-polarity/latest/molecule-polarity_zh_CN.html,no,,,
+gene-expression-essentials,基因表达基础,Gene Expression Essentials,Biology,yes,/sims/html/gene-expression-essentials/latest/gene-expression-essentials_zh_CN.html,no,,,
+density,密度,Density,"Earth & Space,Chemistry,Biology,Physics",yes,/sims/html/density/latest/density_zh_CN.html,yes,115,physics,密度
+neuron,神经元,Neuron,Biology,yes,/sims/html/neuron/latest/neuron_zh_CN.html,no,,,
+natural-selection,自然选择,Natural Selection,Biology,yes,/sims/html/natural-selection/latest/natural-selection_zh_CN.html,no,,,

@@ -1,0 +1,20 @@
+project_name,display_title,english_title,official_subjects,has_official_zh_cn,recommended_run_url,already_in_system,existing_animation_id,existing_subject_name,existing_title
+greenhouse-effect,Greenhouse Effect,Greenhouse Effect,Earth & Space,no,/sims/html/greenhouse-effect/latest/greenhouse-effect_en.html,no,,,
+keplers-laws,Kepler's Laws,Kepler's Laws,"Math & Statistics,Earth & Space,Physics",no,/sims/html/keplers-laws/latest/keplers-laws_en.html,yes,135,physics,开普勒定律
+magnet-and-compass,Magnet and Compass,Magnet and Compass,"Earth & Space,Physics",no,/sims/html/magnet-and-compass/latest/magnet-and-compass_en.html,yes,136,physics,磁铁和指南针
+my-solar-system,My Solar System,My Solar System,"Earth & Space,Physics",no,/sims/html/my-solar-system/latest/my-solar-system_en.html,yes,142,physics,我的太阳系
+ph-scale,PH值 ,pH Scale,"Earth & Space,Chemistry,Biology",yes,/sims/html/ph-scale/latest/ph-scale_zh_CN.html,no,,,
+gravity-force-lab,万有引力实验,Gravity Force Lab,"Earth & Space,Physics",yes,/sims/html/gravity-force-lab/latest/gravity-force-lab_zh_CN.html,yes,131,physics,万有引力实验
+molecules-and-light,分子与光,Molecules and Light,"Earth & Space,Chemistry,Physics",yes,/sims/html/molecules-and-light/latest/molecules-and-light_zh_CN.html,yes,141,physics,分子与光
+under-pressure,受到压力,Under Pressure,"Earth & Space,Physics",yes,/sims/html/under-pressure/latest/under-pressure_zh_CN.html,yes,154,physics,受到压力
+density,密度,Density,"Earth & Space,Chemistry,Biology,Physics",yes,/sims/html/density/latest/density_zh_CN.html,yes,115,physics,密度
+gravity-force-lab-basics,引力实验室：基础,Gravity Force Lab: Basics,"Earth & Space,Physics",yes,/sims/html/gravity-force-lab-basics/latest/gravity-force-lab-basics_zh_CN.html,yes,132,physics,引力实验室：基础
+diffusion,扩散,Diffusion,"Earth & Space,Chemistry,Physics",yes,/sims/html/diffusion/latest/diffusion_zh_CN.html,yes,116,physics,扩散
+gases-intro,气体基础,Gases Intro,"Earth & Space,Chemistry,Physics",yes,/sims/html/gases-intro/latest/gases-intro_zh_CN.html,yes,126,physics,气体基础
+gas-properties,气体性质,Gas Properties,"Earth & Space,Chemistry,Physics",yes,/sims/html/gas-properties/latest/gas-properties_zh_CN.html,yes,22,physics,PhET 气体性质
+balloons-and-static-electricity,气球和静电（摩擦起电）,Balloons and Static Electricity,"Earth & Space,Chemistry,Physics",yes,/sims/html/balloons-and-static-electricity/latest/balloons-and-static-electricity_zh_CN.html,yes,97,physics,气球和静电（摩擦起电）
+waves-intro,波动入门,Waves Intro,"Earth & Space,Physics",yes,/sims/html/waves-intro/latest/waves-intro_zh_CN.html,yes,158,physics,波动入门
+wave-interference,波的干涉,Wave Interference,"Earth & Space,Physics",yes,/sims/html/wave-interference/latest/wave-interference_zh_CN.html,yes,11,physics,PhET 波的干涉
+wave-on-a-string,绳波,Wave on a String,"Math & Statistics,Earth & Space,Chemistry,Physics",yes,/sims/html/wave-on-a-string/latest/wave-on-a-string_zh_CN.html,yes,19,physics,PhET 绳波
+gravity-and-orbits,重力和轨道,Gravity and Orbits,"Earth & Space,Physics",yes,/sims/html/gravity-and-orbits/latest/gravity-and-orbits_zh_CN.html,yes,27,physics,PhET 引力与轨道
+blackbody-spectrum,黑体辐射,Blackbody Spectrum,"Earth & Space,Chemistry,Physics",yes,/sims/html/blackbody-spectrum/latest/blackbody-spectrum_zh_CN.html,yes,26,physics,PhET 黑体辐射光谱
