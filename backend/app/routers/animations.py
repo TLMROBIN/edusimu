@@ -26,6 +26,7 @@ from ..schemas import (
     AiPromptSuggestion,
     AnimationResponse,
     AnimationUpdate,
+    GeoGebraImportRequest,
     InteractionCreate,
     TextbookImportRequest,
     TextbookNodeCreate,
@@ -96,6 +97,20 @@ STATIC_EXTENSIONS = {
 }
 ALLOWED_UPLOAD_EXTENSIONS = {".html", ".zip"}
 VALID_SOURCE_TYPES = {"phet", "original", "geogebra"}
+GEOGEBRA_MATERIAL_URL_PATTERNS = [
+    re.compile(r"geogebra\.org/m/(?P<id>[A-Za-z0-9]+)", re.IGNORECASE),
+    re.compile(r"geogebra\.org/material/show/id/(?P<id>[A-Za-z0-9]+)", re.IGNORECASE),
+]
+GEOGEBRA_TITLE_RE = re.compile(r"<title>(?P<title>.*?)</title>", re.IGNORECASE | re.DOTALL)
+GEOGEBRA_META_TAG_RE = re.compile(r"<meta\b[^>]*>", re.IGNORECASE)
+GEOGEBRA_META_ATTR_RE = re.compile(
+    r'(?P<name>[a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*(?:"(?P<dq>[^"]*)"|\'(?P<sq>[^\']*)\'|(?P<bare>[^\s>]+))',
+    re.IGNORECASE,
+)
+GEOGEBRA_DOWNLOAD_CANDIDATES = [
+    "https://www.geogebra.org/material/download/format/file/id/{material_id}",
+    "https://www.geogebra.org/material/download/id/{material_id}",
+]
 
 
 def build_file_url(file_path: str) -> str:
@@ -327,6 +342,30 @@ def save_upload_file(content: bytes, subject_id: int) -> tuple[str, int]:
     return file_path, len(content)
 
 
+def save_generated_courseware_package(subject_id: int, entry_html: str, assets: dict[str, bytes]) -> tuple[str, int]:
+    subject_dir = os.path.join(settings.upload_dir, str(subject_id))
+    os.makedirs(subject_dir, exist_ok=True)
+
+    timestamp = int(time.time() * 1000)
+    random_id = random.randint(1000, 9999)
+    package_dir = os.path.join(subject_dir, f"pkg_{timestamp}_{random_id}")
+    os.makedirs(package_dir, exist_ok=True)
+
+    total_size = 0
+    for relative_path, content in assets.items():
+        safe_name = ensure_safe_zip_member(relative_path)
+        destination = os.path.join(package_dir, safe_name)
+        os.makedirs(os.path.dirname(destination), exist_ok=True)
+        Path(destination).write_bytes(content)
+        total_size += len(content)
+
+    entry_path = os.path.join(package_dir, "index.html")
+    entry_bytes = entry_html.encode("utf-8")
+    Path(entry_path).write_bytes(entry_bytes)
+    total_size += len(entry_bytes)
+    return entry_path, total_size
+
+
 def ensure_safe_zip_member(member_name: str) -> str:
     normalized = member_name.replace("\\", "/").strip("/")
     if not normalized or normalized.startswith("../") or "/../" in normalized:
@@ -553,6 +592,366 @@ def localize_external_resources(content: bytes, subject_id: int) -> tuple[bytes,
         warnings.append(f"系统已自动本地化 {state['count']} 个外链静态资源。")
 
     return localized_html.encode("utf-8"), errors, warnings
+
+
+def extract_geogebra_material_id(link: str) -> Optional[str]:
+    normalized_link = (link or "").strip()
+    for pattern in GEOGEBRA_MATERIAL_URL_PATTERNS:
+        matched = pattern.search(normalized_link)
+        if matched:
+            return matched.group("id")
+
+    parsed = urllib_parse.urlparse(normalized_link)
+    query_id = urllib_parse.parse_qs(parsed.query).get("id", [])
+    if query_id and re.fullmatch(r"[A-Za-z0-9]+", query_id[0]):
+        return query_id[0]
+    return None
+
+
+def read_remote_response_bytes(response, size_limit: int) -> bytes:
+    chunks = []
+    total = 0
+    while True:
+        chunk = response.read(65536)
+        if not chunk:
+            break
+        total += len(chunk)
+        if total > size_limit:
+            raise ValueError(f"GeoGebra 课件文件超过限制 {size_limit} 字节")
+        chunks.append(chunk)
+    return b"".join(chunks)
+
+
+def clean_geogebra_title(raw_title: str) -> Optional[str]:
+    title = re.sub(r"\s+", " ", raw_title or "").strip()
+    if not title:
+        return None
+    title = re.sub(r"\s+[–-]\s+GeoGebra$", "", title, flags=re.IGNORECASE).strip()
+    return title or None
+
+
+def extract_html_title(html_bytes: bytes) -> Optional[str]:
+    html_text = html_bytes.decode("utf-8", errors="ignore")
+    meta_candidates: dict[str, str] = {}
+    for tag_match in GEOGEBRA_META_TAG_RE.finditer(html_text):
+        attrs: dict[str, str] = {}
+        for attr_match in GEOGEBRA_META_ATTR_RE.finditer(tag_match.group(0)):
+            raw_value = attr_match.group("dq")
+            if raw_value is None:
+                raw_value = attr_match.group("sq")
+            if raw_value is None:
+                raw_value = attr_match.group("bare")
+            attrs[attr_match.group("name").strip().lower()] = raw_value or ""
+
+        meta_key = (attrs.get("property") or attrs.get("name") or "").strip().lower()
+        meta_content = clean_geogebra_title(attrs.get("content") or "")
+        if meta_key and meta_content:
+            meta_candidates.setdefault(meta_key, meta_content)
+
+    for preferred_key in ("og:title", "twitter:title", "title"):
+        if meta_candidates.get(preferred_key):
+            return meta_candidates[preferred_key]
+
+    matched = GEOGEBRA_TITLE_RE.search(html_text)
+    if not matched:
+        return None
+    return clean_geogebra_title(matched.group("title"))
+
+
+def build_geogebra_import_html(title: str, description: str, original_link: str, material_filename: str) -> str:
+    safe_title = title.strip() or "GeoGebra 课件"
+    safe_description = description.strip() or "由线上 GeoGebra 链接导入并本地化保存。"
+    escaped_title = safe_title.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    escaped_description = safe_description.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    escaped_link = original_link.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    escaped_material_filename = material_filename.replace("\\", "/").replace("'", "\\'")
+    return f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{escaped_title}</title>
+  <style>
+    :root {{
+      color-scheme: light;
+      --bg: #eef5ff;
+      --panel: rgba(255, 255, 255, 0.95);
+      --line: rgba(80, 124, 196, 0.18);
+      --text: #10233f;
+      --muted: #617897;
+      --accent: #1661ff;
+      --accent-soft: #12a9c4;
+      --shadow: 0 22px 50px rgba(16, 35, 63, 0.14);
+    }}
+    * {{ box-sizing: border-box; }}
+    html, body {{
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(18, 169, 196, 0.12), transparent 32%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }}
+    body {{ touch-action: manipulation; }}
+    .page {{
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 14px;
+      padding: 16px;
+    }}
+    .panel {{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }}
+    .header {{
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }}
+    .eyebrow {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }}
+    .eyebrow::before {{
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    }}
+    h1 {{ margin: 0; font-size: clamp(24px, 3vw, 34px); line-height: 1.2; }}
+    .desc {{
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }}
+    .actions {{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }}
+    button {{
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }}
+    .primary {{
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      color: #fff;
+    }}
+    .secondary {{
+      background: #f7faff;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }}
+    .content {{
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 14px;
+      min-height: 0;
+    }}
+    .stage {{
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }}
+    .canvas {{
+      flex: 1;
+      min-height: 520px;
+      border-radius: 18px;
+      border: 1px solid rgba(80, 124, 196, 0.14);
+      background: linear-gradient(180deg, rgba(250, 252, 255, 0.96), rgba(240, 246, 255, 0.92));
+      overflow: hidden;
+    }}
+    #ggb-element, #ggb-element > div {{
+      width: 100%;
+      height: 100%;
+    }}
+    .side {{
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }}
+    .side-title {{
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }}
+    .side-card {{
+      border: 1px solid rgba(80, 124, 196, 0.12);
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(247, 250, 255, 0.92);
+    }}
+    .status {{
+      font-weight: 700;
+      color: var(--accent);
+    }}
+    .link {{
+      word-break: break-all;
+      line-height: 1.6;
+      color: var(--muted);
+    }}
+    @media (max-width: 980px) {{
+      .content {{
+        grid-template-columns: 1fr;
+      }}
+      .canvas {{
+        min-height: 420px;
+      }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="panel header">
+      <div>
+        <div class="eyebrow">GeoGebra Import</div>
+        <h1>{escaped_title}</h1>
+        <div class="desc">{escaped_description}</div>
+      </div>
+      <div class="actions">
+        <button class="secondary" id="reload-button" type="button">重新载入</button>
+        <button class="primary" id="reset-button" type="button">重置课件</button>
+      </div>
+    </section>
+    <section class="content">
+      <div class="panel stage">
+        <div class="canvas">
+          <div id="ggb-element"></div>
+        </div>
+      </div>
+      <aside class="panel side">
+        <div class="side-card">
+          <div class="side-title">状态</div>
+          <div id="status-text" class="status">正在加载本地 GeoGebra 课件…</div>
+        </div>
+        <div class="side-card">
+          <div class="side-title">来源链接</div>
+          <div class="link"><a href="{escaped_link}" rel="noreferrer">{escaped_link}</a></div>
+        </div>
+        <div class="side-card">
+          <div class="side-title">说明</div>
+          <div class="link">该课件已将 GeoGebra 数据保存到本地包内，运行时使用站内 `/geogebra` 引擎，不依赖 GeoGebra 官方运行脚本。</div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <script src="/geogebra/GeoGebra/deployggb.js"></script>
+  <script>
+    (() => {{
+      const statusText = document.getElementById('status-text')
+      const setStatus = message => {{
+        statusText.textContent = message
+      }}
+      const applet = new window.GGBApplet({{
+        filename: './{escaped_material_filename}',
+        appName: 'classic',
+        showToolBar: true,
+        showAlgebraInput: false,
+        showMenuBar: false,
+        showResetIcon: false,
+        showZoomButtons: true,
+        enableRightClick: false,
+        enableLabelDrags: true,
+        enableShiftDragZoom: false,
+        useBrowserForJS: true,
+        language: 'zh',
+        country: 'CN',
+        borderColor: '#dce7f7',
+        appletOnLoad: api => {{
+          window.ggbApplet = api
+          setStatus('GeoGebra 课件已加载完成。')
+        }}
+      }}, true)
+
+      if (typeof applet.setHTML5Codebase === 'function') {{
+        applet.setHTML5Codebase('/geogebra/GeoGebra/HTML5/5.0/web3d/')
+      }}
+
+      document.getElementById('reset-button').addEventListener('click', () => {{
+        if (window.ggbApplet && typeof window.ggbApplet.reset === 'function') {{
+          window.ggbApplet.reset()
+          setStatus('课件已重置到初始状态。')
+        }}
+      }})
+
+      document.getElementById('reload-button').addEventListener('click', () => {{
+        window.location.reload()
+      }})
+
+      window.addEventListener('error', event => {{
+        setStatus('运行时错误：' + (event.message || '未知错误'))
+      }})
+
+      if (typeof window.GGBApplet !== 'function') {{
+        setStatus('未检测到本地 GeoGebra 运行库。')
+        return
+      }}
+
+      applet.inject('ggb-element', 'preferhtml5')
+    }})()
+  </script>
+</body>
+</html>"""
+
+
+def download_geogebra_material(link: str) -> tuple[bytes, str, Optional[str]]:
+    normalized_link = (link or "").strip()
+    if not normalized_link:
+        raise HTTPException(status_code=400, detail="GeoGebra 链接不能为空")
+
+    material_id = extract_geogebra_material_id(normalized_link)
+    if not material_id:
+        raise HTTPException(status_code=400, detail="暂不支持该 GeoGebra 链接格式，请提供 geogebra.org/m/... 或 material/show/id/... 链接")
+
+    page_title: Optional[str] = None
+    page_request = urllib_request.Request(normalized_link, headers={"User-Agent": "EduSimuGeoGebraImporter/1.0"})
+    try:
+        with urllib_request.urlopen(page_request, timeout=8) as response:
+            page_title = extract_html_title(read_remote_response_bytes(response, 2 * 1024 * 1024))
+    except Exception:
+        page_title = None
+
+    for url_template in GEOGEBRA_DOWNLOAD_CANDIDATES:
+        candidate_url = url_template.format(material_id=material_id)
+        request = urllib_request.Request(candidate_url, headers={"User-Agent": "EduSimuGeoGebraImporter/1.0"})
+        try:
+            with urllib_request.urlopen(request, timeout=12) as response:
+                content = read_remote_response_bytes(response, settings.max_file_size)
+                if content[:2] != b"PK":
+                    continue
+                filename = f"geogebra-material-{material_id}.ggb"
+                return content, filename, page_title
+        except (urllib_error.URLError, TimeoutError, ValueError):
+            continue
+
+    raise HTTPException(status_code=400, detail="未能从该链接下载 GeoGebra 课件数据，请确认链接公开可访问，且资源允许下载")
 
 
 def remove_file_if_exists(file_path: Optional[str]):
@@ -1055,8 +1454,74 @@ async def get_animation_count(
         is_published=is_published,
         review_status=review_status,
         validation_status=validation_status,
-    )
+)
     return {"total": query.count()}
+
+
+@router.post("/import-geogebra-link", response_model=AnimationResponse, status_code=status.HTTP_201_CREATED)
+async def import_geogebra_link(
+    payload: GeoGebraImportRequest,
+    current_user: User = Depends(require_role(["teacher", "admin"])),
+    db: Session = Depends(get_db),
+):
+    subject = db.query(Subject).filter(Subject.id == payload.subject_id).first()
+    if not subject:
+        raise HTTPException(status_code=404, detail="学科不存在")
+
+    validate_required_textbook_node(db, payload.subject_id, payload.textbook_node_id)
+
+    if payload.force_publish and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="只有管理员可以强制发布")
+
+    material_bytes, material_filename, remote_title = download_geogebra_material(payload.link)
+    animation_title = (payload.title or remote_title or "GeoGebra 导入课件").strip()
+    animation_description = (payload.description or "由线上 GeoGebra 链接导入并本地化保存。").strip()
+    entry_html = build_geogebra_import_html(
+        title=animation_title,
+        description=animation_description,
+        original_link=payload.link.strip(),
+        material_filename=material_filename,
+    )
+    file_path, saved_size = save_generated_courseware_package(
+        payload.subject_id,
+        entry_html,
+        {material_filename: material_bytes},
+    )
+
+    validation_status, validation_summary, validation_errors, validation_warnings = validate_courseware(entry_html.encode("utf-8"))
+    validation_warnings.append("课件内容由线上 GeoGebra 链接导入，若原资源被设置为私有或禁止下载，后续重新导入可能失败。")
+    validation_status = "passed" if not validation_errors else "failed"
+    validation_summary = f"校验{'通过' if validation_status == 'passed' else '未通过'}：{len(validation_errors)} 个问题，{len(validation_warnings)} 条提醒"
+
+    should_publish, review_status_value = compute_review_state(
+        current_user, payload.is_published, validation_status, force_publish=payload.force_publish
+    )
+
+    animation = Animation(
+        title=animation_title,
+        subject_id=payload.subject_id,
+        textbook_node_id=payload.textbook_node_id,
+        description=animation_description,
+        author=current_user.real_name or current_user.username,
+        file_path=file_path,
+        thumbnail=None,
+        grade_level=payload.grade_level,
+        keywords=payload.keywords,
+        source_type="geogebra",
+        is_published=should_publish,
+        review_status=review_status_value,
+        validation_status=validation_status,
+        validation_summary=validation_summary,
+        validation_errors=json.dumps(validation_errors, ensure_ascii=False),
+        validation_warnings=json.dumps(validation_warnings, ensure_ascii=False),
+        file_size=saved_size,
+        created_by=current_user.id,
+    )
+
+    db.add(animation)
+    db.commit()
+    db.refresh(animation)
+    return serialize_animation(animation, db)
 
 
 @router.get("/{animation_id}", response_model=AnimationResponse)

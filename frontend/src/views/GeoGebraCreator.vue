@@ -208,6 +208,9 @@
                   <el-button :disabled="!runtimeReady || renderingPreview" @click="resetDraft">
                     {{ isEditing ? '还原当前课件' : '重置草稿' }}
                   </el-button>
+                  <el-button :disabled="uploadingCourseware" @click="importGeoGebraLink">
+                    导入线上链接
+                  </el-button>
                   <el-button type="primary" :disabled="!runtimeReady || renderingPreview" @click="renderPreview">
                     {{ renderingPreview ? '生成中…' : '渲染预览' }}
                   </el-button>
@@ -701,6 +704,69 @@ const saveCourseware = async () => {
 
 const publishCourseware = async () => {
   await submitCourseware({ publishRequested: true })
+}
+
+const importGeoGebraLink = async () => {
+  if (!form.value.subject_id) {
+    ElMessage.error('请先选择学科')
+    return
+  }
+  if (!form.value.textbook_path_ids.length) {
+    ElMessage.error('请先选择所属章节')
+    return
+  }
+
+  let promptResult
+  try {
+    promptResult = await ElMessageBox.prompt(
+      '请输入公开可访问的 GeoGebra 课件链接，系统会尝试下载并保存到本地课件系统。',
+      '导入线上 GeoGebra 链接',
+      {
+        confirmButtonText: '开始导入',
+        cancelButtonText: '取消',
+        inputPlaceholder: 'https://www.geogebra.org/m/xxxxx',
+        inputPattern: /^https?:\/\/.+/i,
+        inputErrorMessage: '请输入有效的 http/https 链接'
+      }
+    )
+  } catch {
+    return
+  }
+
+  const link = String(promptResult.value || '').trim()
+  if (!link) {
+    return
+  }
+
+  uploadingCourseware.value = true
+  try {
+    const response = await axios.post('/api/animations/import-geogebra-link', {
+      link,
+      title: form.value.title?.trim() || undefined,
+      subject_id: form.value.subject_id,
+      textbook_node_id: form.value.textbook_path_ids[form.value.textbook_path_ids.length - 1],
+      description: form.value.description?.trim() || undefined,
+      grade_level: form.value.grade_level?.trim() || undefined,
+      keywords: form.value.keywords?.trim() || undefined,
+      is_published: isAdmin.value ? !!form.value.is_published : false
+    })
+
+    const animation = response.data
+    if (animation.validation_status === 'failed') {
+      ElMessage.warning(animation.validation_summary || 'GeoGebra 链接已导入，但校验未通过')
+    } else if (animation.review_status === 'pending_review') {
+      ElMessage.success('GeoGebra 链接已导入，等待审核')
+    } else {
+      ElMessage.success('GeoGebra 链接已导入到展示系统')
+    }
+
+    router.push('/admin/animations')
+  } catch (error) {
+    console.error('导入 GeoGebra 链接失败:', error)
+    ElMessage.error(error.response?.data?.detail || '导入 GeoGebra 链接失败')
+  } finally {
+    uploadingCourseware.value = false
+  }
 }
 
 const resetScriptTemplate = async () => {

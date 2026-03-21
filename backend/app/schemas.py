@@ -44,6 +44,18 @@ class AnimationBase(BaseModel):
 class AnimationCreate(AnimationBase):
     pass
 
+
+class GeoGebraImportRequest(BaseModel):
+    link: str = Field(..., min_length=1, max_length=1000)
+    subject_id: int
+    textbook_node_id: int
+    title: Optional[str] = Field(None, max_length=200)
+    description: Optional[str] = None
+    grade_level: Optional[str] = Field(None, max_length=50)
+    keywords: Optional[str] = None
+    is_published: bool = False
+    force_publish: bool = False
+
 class AnimationUpdate(BaseModel):
     title: Optional[str] = Field(None, max_length=200)
     author: Optional[str] = Field(None, max_length=100)
