@@ -23,6 +23,7 @@ frontend/dist-local/
 
 # ===== 临时部署脚本（单次使用）=====
 deploy_*.sh
+!scripts/deploy_live_frontend.sh
 fix_*.sh
 final_deploy*.sh
 init_db_sql.sh
