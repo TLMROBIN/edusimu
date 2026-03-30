@@ -322,6 +322,58 @@ const userMetrics = computed(() => ({
   active: users.value.filter(user => user.is_active).length
 }))
 
+const normalizeCellValue = (value) => String(value ?? '').trim()
+
+const buildBaseUsername = (realName, className) => {
+  const classNumber = className.replace(/[^0-9]/g, '') || '1'
+  const namePinyin = pinyin(realName, { toneType: 'none', type: 'array' })
+    .join('')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+
+  return (namePinyin || 'user') + classNumber
+}
+
+const generateUniqueUsername = (baseUsername, usedUsernames) => {
+  const trimmedBase = baseUsername.slice(0, 50) || 'user'
+  if (!usedUsernames.has(trimmedBase)) {
+    usedUsernames.add(trimmedBase)
+    return trimmedBase
+  }
+
+  let suffix = 2
+  while (suffix < 10000) {
+    const suffixText = String(suffix)
+    const candidate = trimmedBase.slice(0, 50 - suffixText.length) + suffixText
+    if (!usedUsernames.has(candidate)) {
+      usedUsernames.add(candidate)
+      return candidate
+    }
+    suffix += 1
+  }
+
+  throw new Error(`无法为用户名 ${trimmedBase} 生成唯一值`)
+}
+
+const showBatchCreateResult = async (result, successTitle) => {
+  const errors = result.errors || []
+  const summary = result.message || successTitle
+
+  if (errors.length === 0) {
+    ElMessage.success(summary)
+    return
+  }
+
+  await ElMessageBox.alert(
+    [summary, ...errors.slice(0, 20)].join('\n'),
+    result.created_count > 0 ? '部分成功' : '导入失败',
+    {
+      confirmButtonText: '知道了',
+      type: result.created_count > 0 ? 'warning' : 'error'
+    }
+  )
+}
+
 const filterUsers = () => {
   let result = [...users.value]
 
@@ -396,19 +448,24 @@ const parseExcel = () => {
       const sheetName = workbook.SheetNames[0]
       const worksheet = workbook.Sheets[sheetName]
       const jsonData = XLSX.utils.sheet_to_json(worksheet)
-      
+
+      const usedUsernames = new Set(
+        users.value.map(user => user.username).filter(Boolean)
+      )
+
       excelPreview.value = jsonData.map(row => {
-        const realName = row['学生姓名'] || row['姓名'] || ''
-        const gradeLevel = row['年级'] || ''
-        const className = row['班级'] || ''
+        const realName = normalizeCellValue(row['学生姓名'] || row['姓名'])
+        const gradeLevel = normalizeCellValue(row['年级'])
+        const className = normalizeCellValue(row['班级'])
 
         if (!realName || !gradeLevel || !className) {
           return null
         }
-        
-        const classNumber = className.replace(/[^0-9]/g, '') || '1'
-        const namePinyin = pinyin(realName, { toneType: 'none', type: 'array' }).join('').toLowerCase()
-        const username = namePinyin + classNumber
+
+        const username = generateUniqueUsername(
+          buildBaseUsername(realName, className),
+          usedUsernames
+        )
         
         return {
           real_name: realName,
@@ -423,7 +480,7 @@ const parseExcel = () => {
       if (excelPreview.value.length === 0) {
         ElMessage.warning('Excel文件中没有找到有效数据')
       } else {
-        ElMessage.success(`成功解析 ${excelPreview.value.length} 条学生数据`)
+        ElMessage.success(`成功解析 ${excelPreview.value.length} 条学生数据，已自动避开重名用户名`)
       }
     } catch (error) {
       console.error('解析Excel失败:', error)
@@ -481,25 +538,40 @@ const importFromExcel = async () => {
     }
     
     const response = await axios.post('/api/users/batch-create', usersData)
-    
-    ElMessage.success(response.data.message)
+
+    await showBatchCreateResult(response.data, '导入完成')
     resetExcelDialog()
-    loadUsers()
+    await loadUsers()
   } catch (error) {
     if (error !== 'cancel') {
       console.error('导入失败:', error)
-      ElMessage.error('导入失败，请重试')
+      ElMessage.error(error.response?.data?.detail || '导入失败，请重试')
     }
   }
 }
 
 const loadUsers = async () => {
   try {
-    const response = await axios.get('/api/users/', {
-      params: { limit: 100 }
-    })
-    users.value = response.data
-    filteredUsers.value = response.data
+    const pageSize = 500
+    let skip = 0
+    const allUsers = []
+
+    while (true) {
+      const response = await axios.get('/api/users/', {
+        params: { skip, limit: pageSize }
+      })
+      const pageUsers = response.data || []
+      allUsers.push(...pageUsers)
+
+      if (pageUsers.length < pageSize) {
+        break
+      }
+
+      skip += pageSize
+    }
+
+    users.value = allUsers
+    filterUsers()
   } catch (error) {
     console.error('加载用户失败:', error)
   }
@@ -575,12 +647,12 @@ const batchCreateUsers = async () => {
     const response = await axios.post('/api/users/batch-create', {
       users: users_data
     })
-    ElMessage.success(response.data.message)
+    await showBatchCreateResult(response.data, '批量创建完成')
     showBatchDialog.value = false
-    loadUsers()
+    await loadUsers()
   } catch (error) {
     console.error('批量创建失败:', error)
-    ElMessage.error('批量创建失败')
+    ElMessage.error(error.response?.data?.detail || '批量创建失败')
   }
 }
 

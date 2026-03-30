@@ -1,6 +1,8 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from ..auth import get_password_hash, require_role
 from ..database import get_db
 from ..models import User
@@ -58,18 +60,45 @@ async def batch_create_users(
     current_user: User = Depends(require_role(["admin"])),
     db: Session = Depends(get_db)
 ):
+    total_count = len(users_data.users)
     created_count = 0
     errors = []
-    
-    for user_data in users_data.users:
+
+    if total_count == 0:
+        return {
+            "message": "没有可导入的用户数据",
+            "total_count": 0,
+            "created_count": 0,
+            "error_count": 0,
+            "errors": []
+        }
+
+    requested_usernames = {
+        user_data.username.strip()
+        for user_data in users_data.users
+        if user_data.username and user_data.username.strip()
+    }
+    existing_usernames = set(
+        db.scalars(
+            select(User.username).where(User.username.in_(requested_usernames))
+        ).all()
+    )
+    seen_usernames = set(existing_usernames)
+
+    for index, user_data in enumerate(users_data.users, start=1):
+        username = user_data.username.strip()
+
+        if username in existing_usernames:
+            errors.append(f"第 {index} 条用户名 {username} 已存在")
+            continue
+
+        if username in seen_usernames:
+            errors.append(f"第 {index} 条用户名 {username} 在本次导入中重复")
+            continue
+
         try:
-            db_user = db.query(User).filter(User.username == user_data.username).first()
-            if db_user:
-                errors.append(f"用户名 {user_data.username} 已存在")
-                continue
-            
             user = User(
-                username=user_data.username,
+                username=username,
                 password_hash=get_password_hash(user_data.password),
                 role=user_data.role,
                 real_name=user_data.real_name,
@@ -78,16 +107,30 @@ async def batch_create_users(
                 is_active=True
             )
             db.add(user)
+            db.commit()
+            seen_usernames.add(username)
             created_count += 1
+        except IntegrityError:
+            db.rollback()
+            errors.append(f"第 {index} 条用户名 {username} 已存在")
         except Exception as e:
-            errors.append(f"创建用户 {user_data.username} 失败: {str(e)}")
-    
-    db.commit()
-    
+            db.rollback()
+            errors.append(f"第 {index} 条创建失败: {str(e)}")
+
+    error_count = len(errors)
+    if created_count == total_count:
+        message = f"成功创建 {created_count} 个用户"
+    elif created_count > 0:
+        message = f"成功创建 {created_count} 个用户，失败 {error_count} 个"
+    else:
+        message = f"未创建任何用户，失败 {error_count} 个"
+
     return {
-        "message": f"成功创建 {created_count} 个用户",
+        "message": message,
+        "total_count": total_count,
         "created_count": created_count,
-        "errors": errors if errors else None
+        "error_count": error_count,
+        "errors": errors
     }
 
 @router.put("/{user_id}", response_model=UserResponse)
