@@ -118,7 +118,14 @@ def build_file_url(file_path: str) -> str:
     upload_root = os.path.abspath(settings.upload_dir)
     if normalized_path.startswith(upload_root):
         relative_path = os.path.relpath(normalized_path, upload_root).replace(os.sep, "/")
-        return f"/uploads/{relative_path}"
+        url = f"/uploads/{relative_path}"
+        if normalized_path.lower().endswith(".html"):
+            try:
+                version = int(os.path.getmtime(normalized_path))
+                return f"{url}?v={version}"
+            except OSError:
+                return url
+        return url
     return file_path
 
 
