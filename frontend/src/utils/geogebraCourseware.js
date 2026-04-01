@@ -175,6 +175,15 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
     .title-block {
       min-width: 0;
       flex: 1 1 320px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .title-copy {
+      min-width: 0;
+      flex: 1 1 240px;
     }
 
     .eyebrow {
@@ -204,12 +213,22 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
       line-height: 1.2;
     }
 
-    .description {
-      margin-top: 8px;
-      font-size: 14px;
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(98, 139, 186, 0.16);
+      background: rgba(245, 249, 255, 0.96);
+    }
+
+    .status-label {
+      font-size: 12px;
+      font-weight: 700;
       color: var(--muted);
-      line-height: 1.6;
-      white-space: pre-wrap;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .header-actions {
@@ -262,18 +281,10 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
       overflow: hidden;
     }
 
-    .stage-status {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 18px 0;
-      flex-wrap: wrap;
-    }
-
     .status-text {
       font-size: 13px;
       color: var(--muted);
+      font-weight: 700;
     }
 
     .status-text[data-level="success"] {
@@ -368,6 +379,14 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
         padding: 12px;
       }
 
+      .header-actions {
+        width: 100%;
+      }
+
+      .header-actions button {
+        flex: 1;
+      }
+
       .content-grid {
         grid-template-columns: 1fr;
       }
@@ -382,9 +401,14 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
   <div class="page-shell" id="courseware-root">
     <section class="panel header-panel">
       <div class="title-block">
-        <div class="eyebrow">GeoGebra Local Courseware</div>
-        <h1>${escapeHtml(title)}</h1>
-        <div class="description">${escapeHtml(description)}</div>
+        <div class="title-copy">
+          <div class="eyebrow">GeoGebra Local Courseware</div>
+          <h1>${escapeHtml(title)}</h1>
+        </div>
+        <div class="status-pill">
+          <span class="status-label">状态</span>
+          <div class="status-text" id="status-text" data-level="info">正在准备本地 GeoGebra 引擎…</div>
+        </div>
       </div>
       <div class="header-actions">
         <button id="rerun-button" class="secondary" type="button">重新执行脚本</button>
@@ -394,9 +418,6 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
 
     <section class="content-grid">
       <div class="panel stage-panel">
-        <div class="stage-status">
-          <div class="status-text" id="status-text" data-level="info">正在准备本地 GeoGebra 引擎…</div>
-        </div>
         <div class="applet-shell">
           <div id="ggb-element"></div>
         </div>
@@ -413,11 +434,6 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
         </div>
 
         <div class="info-block">
-          <div class="info-label">教学说明</div>
-          <div class="info-value">${escapeHtml(description)}</div>
-        </div>
-
-        <div class="info-block">
           <div class="info-label">关键词</div>
           <div class="info-value">${escapeHtml(keywords || '未填写')}</div>
         </div>
@@ -431,7 +447,6 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
   </div>
 
   <script id="edusimu-geogebra-manifest" type="application/json">${escapeScriptText(JSON.stringify(manifest))}</script>
-  <script src="${GEOGEBRA_RUNTIME_SCRIPT_URL}"></script>
   <script>
     (() => {
       const manifestElement = document.getElementById('edusimu-geogebra-manifest')
@@ -611,9 +626,61 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
         return outputCanvas.toDataURL('image/png')
       }
 
-      const mountApplet = () => {
+      const resolveRuntimeUrl = (value, fallback) => {
+        const rawValue = typeof value === 'string' && value.trim() ? value.trim() : fallback
+
+        try {
+          return new URL(rawValue, window.location.origin).toString()
+        } catch (error) {
+          console.warn('GeoGebra 运行库地址解析失败，将回退到默认地址。', error)
+          return new URL(fallback, window.location.origin).toString()
+        }
+      }
+
+      const runtimeDeployUrl = resolveRuntimeUrl(
+        manifest.runtime && manifest.runtime.deployUrl,
+        '${GEOGEBRA_RUNTIME_SCRIPT_URL}'
+      )
+      const runtimeCodebase = resolveRuntimeUrl(
+        manifest.runtime && manifest.runtime.codebase,
+        '${GEOGEBRA_HTML5_CODEBASE}'
+      )
+
+      const ensureRuntimeLoaded = () => {
+        if (typeof window.GGBApplet === 'function') {
+          return Promise.resolve()
+        }
+
+        return new Promise((resolve, reject) => {
+          const existingScript = document.querySelector('script[data-geogebra-runtime="true"]')
+          if (existingScript) {
+            existingScript.addEventListener('load', () => resolve(), { once: true })
+            existingScript.addEventListener('error', () => reject(new Error('GeoGebra 运行库脚本加载失败。')), { once: true })
+            return
+          }
+
+          const script = document.createElement('script')
+          script.src = runtimeDeployUrl
+          script.async = true
+          script.dataset.geogebraRuntime = 'true'
+          script.addEventListener('load', () => resolve(), { once: true })
+          script.addEventListener('error', () => reject(new Error('GeoGebra 运行库脚本加载失败。')), { once: true })
+          document.head.appendChild(script)
+        })
+      }
+
+      const mountApplet = async () => {
+        try {
+          await ensureRuntimeLoaded()
+        } catch (error) {
+          setStatus('error', 'GeoGebra 运行库加载失败：' + runtimeDeployUrl, {
+            detail: error && error.message ? error.message : String(error)
+          })
+          return
+        }
+
         if (typeof window.GGBApplet !== 'function') {
-          setStatus('error', '未检测到本地 GeoGebra 运行库，请检查 /geogebra 目录。')
+          setStatus('error', '未检测到 GeoGebra 运行库：' + runtimeDeployUrl)
           return
         }
 
@@ -655,7 +722,7 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
         }, true)
 
         if (typeof applet.setHTML5Codebase === 'function') {
-          applet.setHTML5Codebase((manifest.runtime && manifest.runtime.codebase) || '${GEOGEBRA_HTML5_CODEBASE}')
+          applet.setHTML5Codebase(runtimeCodebase)
         }
 
         applet.inject('ggb-element', 'preferhtml5')
@@ -703,7 +770,9 @@ export function buildGeoGebraCoursewareHtml(payload = {}) {
         setStatus('error', '脚本 Promise 拒绝：' + reason)
       })
 
-      window.addEventListener('load', mountApplet)
+      window.addEventListener('load', () => {
+        void mountApplet()
+      })
     })()
   </script>
 </body>

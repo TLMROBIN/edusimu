@@ -47,17 +47,9 @@
           <div class="creator-hero-actions">
             <span class="summary-tag">{{ isEditing ? '编辑模式' : '新建模式' }}</span>
             <span class="summary-tag">{{ previewReady ? '预览已通过' : '待预览确认' }}</span>
-            <span class="summary-tag">{{ runtimeReady ? '本地引擎可用' : runtimeChecking ? '检查中' : '本地引擎缺失' }}</span>
+            <span class="summary-tag">{{ runtimeChecking ? '检查中' : '可直接预览' }}</span>
           </div>
         </section>
-
-        <el-alert
-          v-if="!runtimeReady"
-          :title="runtimeChecking ? '正在检查本地 GeoGebra 运行库…' : '未检测到本地 GeoGebra 运行库，请先确认 `frontend/public/geogebra` 已部署。'"
-          :type="runtimeChecking ? 'info' : 'error'"
-          :closable="false"
-          style="margin-bottom: 16px"
-        />
 
         <div class="creator-grid">
           <section class="creator-column">
@@ -205,18 +197,18 @@
                   </div>
                 </div>
                 <div class="preview-toolbar-actions">
-                  <el-button :disabled="!runtimeReady || renderingPreview" @click="resetDraft">
+                  <el-button :disabled="renderingPreview" @click="resetDraft">
                     {{ isEditing ? '还原当前课件' : '重置草稿' }}
                   </el-button>
                   <el-button :disabled="uploadingCourseware" @click="importGeoGebraLink">
                     导入线上链接
                   </el-button>
-                  <el-button type="primary" :disabled="!runtimeReady || renderingPreview" @click="renderPreview">
+                  <el-button type="primary" :disabled="renderingPreview" @click="renderPreview">
                     {{ renderingPreview ? '生成中…' : '渲染预览' }}
                   </el-button>
                   <el-button
                     type="success"
-                    :disabled="!runtimeReady || uploadingCourseware"
+                    :disabled="uploadingCourseware"
                     @click="saveCourseware"
                   >
                     {{ uploadingCourseware ? '提交中…' : isAdmin ? (isEditing ? '保存修改' : '保存到展示系统') : (isEditing ? '提交修改审核' : '提交审核') }}
@@ -224,7 +216,7 @@
                   <el-button
                     v-if="isAdmin"
                     type="warning"
-                    :disabled="!runtimeReady || uploadingCourseware"
+                    :disabled="uploadingCourseware"
                     @click="publishCourseware"
                   >
                     {{ uploadingCourseware ? '发布中…' : '一键发布' }}
@@ -555,13 +547,13 @@ const checkRuntime = async () => {
   runtimeChecking.value = true
   try {
     const response = await fetch(GEOGEBRA_RUNTIME_SCRIPT_URL, { cache: 'no-store' })
-    runtimeReady.value = response.ok
+    runtimeReady.value = true
     if (!response.ok) {
-      pushLog('error', '本地 GeoGebra 运行库检查失败。')
+      pushLog('warning', '本地 GeoGebra 运行库预检查未通过，渲染时将继续尝试加载。')
     }
   } catch (error) {
-    runtimeReady.value = false
-    pushLog('error', '无法访问本地 GeoGebra 运行库。')
+    runtimeReady.value = true
+    pushLog('warning', '无法完成本地 GeoGebra 运行库预检查，渲染时将继续尝试加载。')
   } finally {
     runtimeChecking.value = false
   }
@@ -569,8 +561,7 @@ const checkRuntime = async () => {
 
 const renderPreview = async () => {
   if (!runtimeReady.value) {
-    ElMessage.error('本地 GeoGebra 运行库不可用')
-    return
+    pushLog('warning', '本地 GeoGebra 运行库预检查未通过，继续尝试渲染预览。')
   }
 
   renderingPreview.value = true

@@ -660,10 +660,7 @@ def extract_html_title(html_bytes: bytes) -> Optional[str]:
 
 def build_geogebra_import_html(title: str, description: str, original_link: str, material_filename: str) -> str:
     safe_title = title.strip() or "GeoGebra 课件"
-    safe_description = description.strip() or "由线上 GeoGebra 链接导入并本地化保存。"
     escaped_title = safe_title.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-    escaped_description = safe_description.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-    escaped_link = original_link.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     escaped_material_filename = material_filename.replace("\\", "/").replace("'", "\\'")
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -735,11 +732,31 @@ def build_geogebra_import_html(title: str, description: str, original_link: str,
       background: linear-gradient(135deg, var(--accent), var(--accent-soft));
     }}
     h1 {{ margin: 0; font-size: clamp(24px, 3vw, 34px); line-height: 1.2; }}
-    .desc {{
-      margin-top: 8px;
+    .header-main {{
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }}
+    .header-copy {{
+      min-width: 0;
+    }}
+    .status-wrap {{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(80, 124, 196, 0.12);
+      background: rgba(247, 250, 255, 0.92);
+    }}
+    .status-label {{
+      font-size: 12px;
       color: var(--muted);
-      line-height: 1.6;
-      white-space: pre-wrap;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }}
     .actions {{
       display: flex;
@@ -765,9 +782,6 @@ def build_geogebra_import_html(title: str, description: str, original_link: str,
       border: 1px solid var(--line);
     }}
     .content {{
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 280px;
-      gap: 14px;
       min-height: 0;
     }}
     .stage {{
@@ -788,37 +802,19 @@ def build_geogebra_import_html(title: str, description: str, original_link: str,
       width: 100%;
       height: 100%;
     }}
-    .side {{
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }}
-    .side-title {{
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }}
-    .side-card {{
-      border: 1px solid rgba(80, 124, 196, 0.12);
-      border-radius: 16px;
-      padding: 14px;
-      background: rgba(247, 250, 255, 0.92);
-    }}
     .status {{
       font-weight: 700;
       color: var(--accent);
     }}
-    .link {{
-      word-break: break-all;
-      line-height: 1.6;
-      color: var(--muted);
-    }}
     @media (max-width: 980px) {{
-      .content {{
-        grid-template-columns: 1fr;
+      .header {{
+        align-items: stretch;
+      }}
+      .actions {{
+        width: 100%;
+      }}
+      .actions button {{
+        flex: 1;
       }}
       .canvas {{
         min-height: 420px;
@@ -829,10 +825,15 @@ def build_geogebra_import_html(title: str, description: str, original_link: str,
 <body>
   <div class="page">
     <section class="panel header">
-      <div>
-        <div class="eyebrow">GeoGebra Import</div>
-        <h1>{escaped_title}</h1>
-        <div class="desc">{escaped_description}</div>
+      <div class="header-main">
+        <div class="header-copy">
+          <div class="eyebrow">GeoGebra Import</div>
+          <h1>{escaped_title}</h1>
+        </div>
+        <div class="status-wrap">
+          <span class="status-label">状态</span>
+          <span id="status-text" class="status">正在加载本地 GeoGebra 课件…</span>
+        </div>
       </div>
       <div class="actions">
         <button class="secondary" id="reload-button" type="button">重新载入</button>
@@ -845,20 +846,6 @@ def build_geogebra_import_html(title: str, description: str, original_link: str,
           <div id="ggb-element"></div>
         </div>
       </div>
-      <aside class="panel side">
-        <div class="side-card">
-          <div class="side-title">状态</div>
-          <div id="status-text" class="status">正在加载本地 GeoGebra 课件…</div>
-        </div>
-        <div class="side-card">
-          <div class="side-title">来源链接</div>
-          <div class="link"><a href="{escaped_link}" rel="noreferrer">{escaped_link}</a></div>
-        </div>
-        <div class="side-card">
-          <div class="side-title">说明</div>
-          <div class="link">该课件已将 GeoGebra 数据保存到本地包内，运行时使用站内 `/geogebra` 引擎，不依赖 GeoGebra 官方运行脚本。</div>
-        </div>
-      </aside>
     </section>
   </div>
 
