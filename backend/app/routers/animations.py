@@ -1,6 +1,7 @@
 import io
 import json
 import mimetypes
+from dataclasses import dataclass, field
 import os
 import random
 import re
@@ -8,7 +9,7 @@ import shutil
 import time
 import zipfile
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Set
 from urllib import error as urllib_error
 from urllib import parse as urllib_parse
 from urllib import request as urllib_request
@@ -76,11 +77,14 @@ COMMON_AI_CONSTRAINTS = (
 )
 HTML_EXTERNAL_RESOURCE_RE = re.compile(
     r'(?P<prefix><(?P<tag>script|img|source|audio|video|link)\b[^>]*?\b(?P<attr>src|href)\s*=\s*["\'])'
-    r'(?P<url>https?://[^"\']+)'
+    r'(?P<url>(?:https?:)?//[^"\']+)'
     r'(?P<suffix>["\'])',
     re.IGNORECASE,
 )
 CSS_URL_RE = re.compile(r'url\((?P<quote>["\']?)(?P<url>[^)"\']+)(?P=quote)\)', re.IGNORECASE)
+LINK_HREF_RE = re.compile(r'<link\b[^>]*\bhref\s*=\s*["\'](?P<href>[^"\']+)["\'][^>]*>', re.IGNORECASE)
+WORKSPACE_TEXT_EXTENSIONS = {'.html', '.css', '.js', '.mjs'}
+LOCALIZED_ASSET_DIRNAME = '_localized'
 STATIC_CONTENT_TYPE_PREFIXES = ("image/", "audio/", "video/", "font/")
 STATIC_EXACT_CONTENT_TYPES = {
     "text/css",
@@ -334,22 +338,39 @@ def render_default_thumbnail_image(thumbnail_path: str, subject_id: int) -> None
     img.save(thumbnail_path, "PNG", quality=85)
 
 
-def save_upload_file(content: bytes, subject_id: int) -> tuple[str, int]:
-    subject_dir = os.path.join(settings.upload_dir, str(subject_id))
-    os.makedirs(subject_dir, exist_ok=True)
-
-    timestamp = int(time.time() * 1000)
-    random_id = random.randint(1000, 9999)
-    filename = f"{timestamp}_{random_id}.html"
-    file_path = os.path.join(subject_dir, filename)
-
-    with open(file_path, "wb") as buffer:
-        buffer.write(content)
-
-    return file_path, len(content)
+@dataclass
+class CoursewareWorkspace:
+    package_dir: str
+    entry_path: str
+    html_paths: List[str]
+    total_size: int = 0
 
 
-def save_generated_courseware_package(subject_id: int, entry_html: str, assets: dict[str, bytes]) -> tuple[str, int]:
+@dataclass
+class LocalizationState:
+    package_dir: str
+    asset_dir: str
+    cache: dict[str, str] = field(default_factory=dict)
+    used_names: Set[str] = field(default_factory=set)
+    count: int = 0
+    bytes: int = 0
+    warnings: List[str] = field(default_factory=list)
+    errors: List[str] = field(default_factory=list)
+    localized_assets: List[str] = field(default_factory=list)
+
+
+def ensure_safe_upload_filename(filename: str, default_name: str = "index.html") -> str:
+    candidate = os.path.basename((filename or "").strip()) or default_name
+    stem, extension = os.path.splitext(candidate)
+    if extension.lower() != ".html":
+        candidate = default_name
+        stem, extension = os.path.splitext(candidate)
+    safe_stem = re.sub(r"[^A-Za-z0-9._-]+", "-", stem).strip("-._") or "index"
+    safe_name = f"{safe_stem}{extension or '.html'}"
+    return ensure_safe_zip_member(safe_name)
+
+
+def create_courseware_package_dir(subject_id: int) -> str:
     subject_dir = os.path.join(settings.upload_dir, str(subject_id))
     os.makedirs(subject_dir, exist_ok=True)
 
@@ -357,6 +378,27 @@ def save_generated_courseware_package(subject_id: int, entry_html: str, assets: 
     random_id = random.randint(1000, 9999)
     package_dir = os.path.join(subject_dir, f"pkg_{timestamp}_{random_id}")
     os.makedirs(package_dir, exist_ok=True)
+    return package_dir
+
+
+def create_courseware_workspace_from_html(content: bytes, subject_id: int, filename: str) -> CoursewareWorkspace:
+    package_dir = create_courseware_package_dir(subject_id)
+    entry_name = ensure_safe_upload_filename(filename)
+    entry_path = os.path.join(package_dir, entry_name)
+    Path(entry_path).write_bytes(content)
+    return CoursewareWorkspace(package_dir=package_dir, entry_path=entry_path, html_paths=[entry_path], total_size=len(content))
+
+
+def calculate_directory_size(path: str) -> int:
+    total = 0
+    for file_path in Path(path).rglob("*"):
+        if file_path.is_file():
+            total += file_path.stat().st_size
+    return total
+
+
+def save_generated_courseware_package(subject_id: int, entry_html: str, assets: dict[str, bytes]) -> tuple[str, int]:
+    package_dir = create_courseware_package_dir(subject_id)
 
     total_size = 0
     for relative_path, content in assets.items():
@@ -380,14 +422,8 @@ def ensure_safe_zip_member(member_name: str) -> str:
     return normalized
 
 
-def extract_courseware_package(content: bytes, subject_id: int) -> tuple[str, bytes, int]:
-    subject_dir = os.path.join(settings.upload_dir, str(subject_id))
-    os.makedirs(subject_dir, exist_ok=True)
-
-    timestamp = int(time.time() * 1000)
-    random_id = random.randint(1000, 9999)
-    package_dir = os.path.join(subject_dir, f"pkg_{timestamp}_{random_id}")
-    os.makedirs(package_dir, exist_ok=True)
+def extract_courseware_package(content: bytes, subject_id: int) -> CoursewareWorkspace:
+    package_dir = create_courseware_package_dir(subject_id)
 
     try:
         with zipfile.ZipFile(io.BytesIO(content)) as archive:
@@ -431,11 +467,280 @@ def extract_courseware_package(content: bytes, subject_id: int) -> tuple[str, by
                 raise ValueError("ZIP 包内存在多个 HTML 文件，请确保入口文件命名为 index.html。")
 
         entry_path = os.path.join(package_dir, entry_relative)
-        entry_content = Path(entry_path).read_bytes()
-        return entry_path, entry_content, total_size
+        html_paths = [os.path.join(package_dir, relative_path) for relative_path in html_candidates]
+        return CoursewareWorkspace(package_dir=package_dir, entry_path=entry_path, html_paths=html_paths, total_size=total_size)
     except Exception:
         shutil.rmtree(package_dir, ignore_errors=True)
         raise
+
+
+def build_validation_summary(errors: List[str], warnings: List[str]) -> str:
+    validation_status = "passed" if not errors else "failed"
+    return f"校验{'通过' if validation_status == 'passed' else '未通过'}：{len(errors)} 个问题，{len(warnings)} 条提醒"
+
+
+def unique_messages(messages: List[str]) -> List[str]:
+    seen: Set[str] = set()
+    unique: List[str] = []
+    for message in messages:
+        normalized = (message or "").strip()
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        unique.append(normalized)
+    return unique
+
+
+def make_browser_relative_path(target_path: str, source_dir: str) -> str:
+    relative_path = os.path.relpath(target_path, source_dir).replace(os.sep, "/")
+    if relative_path.startswith("../"):
+        return relative_path
+    if relative_path.startswith("./"):
+        return relative_path
+    return f"./{relative_path}"
+
+
+def normalize_external_url(url: str) -> str:
+    normalized = (url or "").strip()
+    if normalized.startswith("//"):
+        return f"https:{normalized}"
+    return normalized
+
+
+def resolve_resource_url(raw_url: str, base_reference: Optional[str] = None) -> Optional[str]:
+    candidate = (raw_url or "").strip()
+    if not candidate or candidate.startswith(("data:", "javascript:", "mailto:", "#")):
+        return None
+    if candidate.startswith(("http://", "https://", "//")):
+        return normalize_external_url(candidate)
+    if base_reference and base_reference.startswith(("http://", "https://")):
+        return normalize_external_url(urllib_parse.urljoin(base_reference, candidate))
+    return None
+
+
+def build_asset_filename(url: str, extension: str, state: LocalizationState) -> str:
+    parsed = urllib_parse.urlparse(url)
+    basename = urllib_parse.unquote(os.path.basename(parsed.path)) or "asset"
+    stem, original_extension = os.path.splitext(basename)
+    final_extension = extension or original_extension or ".bin"
+    if final_extension == ".jpe":
+        final_extension = ".jpg"
+    safe_stem = re.sub(r"[^A-Za-z0-9._-]+", "-", stem).strip("-._") or f"asset_{state.count + 1}"
+    candidate = f"{safe_stem}{final_extension}"
+    suffix = 1
+    lowered = candidate.lower()
+    while lowered in state.used_names or os.path.exists(os.path.join(state.asset_dir, candidate)):
+        candidate = f"{safe_stem}_{suffix}{final_extension}"
+        lowered = candidate.lower()
+        suffix += 1
+    state.used_names.add(lowered)
+    return candidate
+
+
+def is_local_path_inside_workspace(candidate_path: Path, workspace: CoursewareWorkspace) -> bool:
+    try:
+        candidate_path.resolve().relative_to(Path(workspace.package_dir).resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def localize_css_text(
+    css_text: str,
+    css_path: str,
+    state: LocalizationState,
+    base_reference: Optional[str] = None,
+) -> str:
+    def replace_css_url(match: re.Match[str]) -> str:
+        raw_url = match.group("url").strip()
+        resolved_url = resolve_resource_url(raw_url, base_reference=base_reference)
+        if not resolved_url:
+            return match.group(0)
+        try:
+            asset_path = download_asset_to_workspace(resolved_url, css_path, state)
+        except ValueError as exc:
+            state.errors.append(str(exc))
+            return match.group(0)
+        local_url = make_browser_relative_path(asset_path, os.path.dirname(css_path))
+        return f"url('{local_url}')"
+
+    return CSS_URL_RE.sub(replace_css_url, css_text)
+
+
+def download_asset_to_workspace(url: str, source_path: str, state: LocalizationState) -> str:
+    normalized_url = normalize_external_url(url)
+    cached = state.cache.get(normalized_url)
+    if cached:
+        return cached
+
+    if state.count >= MAX_EXTERNAL_RESOURCE_COUNT:
+        raise ValueError(f"外链资源数量超过 {MAX_EXTERNAL_RESOURCE_COUNT} 个，无法自动本地化：{normalized_url}")
+
+    request = urllib_request.Request(normalized_url, headers={"User-Agent": "EduSimuCoursewareLocalizer/2.0"})
+    try:
+        with urllib_request.urlopen(request, timeout=8) as response:
+            content_type = response.headers.get("Content-Type", "")
+            extension = guess_extension_from_response(normalized_url, content_type)
+            if not is_allowed_external_response(content_type, extension):
+                raise ValueError(f"资源类型不允许自动本地化：{normalized_url}")
+
+            chunks: list[bytes] = []
+            total = 0
+            while True:
+                chunk = response.read(65536)
+                if not chunk:
+                    break
+                total += len(chunk)
+                if total > MAX_EXTERNAL_RESOURCE_SIZE:
+                    raise ValueError(f"单个外链资源超过 {MAX_EXTERNAL_RESOURCE_SIZE // (1024 * 1024)}MB：{normalized_url}")
+                if state.bytes + total > MAX_EXTERNAL_TOTAL_SIZE:
+                    raise ValueError("外链资源总大小超过 25MB，无法自动本地化。")
+                chunks.append(chunk)
+    except (urllib_error.URLError, TimeoutError) as exc:
+        raise ValueError(f"下载外链资源失败：{normalized_url}") from exc
+
+    filename = build_asset_filename(normalized_url, extension, state)
+    absolute_path = os.path.join(state.asset_dir, filename)
+    state.cache[normalized_url] = absolute_path
+
+    content_bytes = b"".join(chunks)
+    if extension == ".css":
+        css_text = content_bytes.decode("utf-8", errors="ignore")
+        css_text = localize_css_text(css_text, absolute_path, state, base_reference=normalized_url)
+        content_bytes = css_text.encode("utf-8")
+
+    with open(absolute_path, "wb") as buffer:
+        buffer.write(content_bytes)
+
+    state.count += 1
+    state.bytes += len(content_bytes)
+    browser_path = make_browser_relative_path(absolute_path, os.path.dirname(source_path))
+    state.localized_assets.append(f"{normalized_url} -> {browser_path}")
+    return absolute_path
+
+
+def collect_local_stylesheet_paths(html_text: str, html_path: str, workspace: CoursewareWorkspace) -> Set[str]:
+    css_paths: Set[str] = set()
+    html_dir = Path(html_path).resolve().parent
+    for match in LINK_HREF_RE.finditer(html_text):
+        full_tag = match.group(0).lower()
+        if "stylesheet" not in full_tag:
+            continue
+        href = match.group("href").strip()
+        if href.startswith(("http://", "https://", "//", "data:", "javascript:")):
+            continue
+        href_path = href.split("#", 1)[0].split("?", 1)[0]
+        if not href_path or not href_path.lower().endswith(".css"):
+            continue
+        candidate = (html_dir / urllib_parse.unquote(href_path)).resolve()
+        if candidate.is_file() and is_local_path_inside_workspace(candidate, workspace):
+            css_paths.add(str(candidate))
+    return css_paths
+
+
+def localize_html_file(html_path: str, workspace: CoursewareWorkspace, state: LocalizationState) -> Set[str]:
+    html_text = Path(html_path).read_text(encoding="utf-8", errors="ignore")
+    local_css_paths = collect_local_stylesheet_paths(html_text, html_path, workspace)
+
+    def replace_html_resource(match: re.Match[str]) -> str:
+        tag = (match.group("tag") or "").lower()
+        full_tag = match.group(0).lower()
+        url = match.group("url")
+        if tag == "link" and "stylesheet" not in full_tag:
+            return match.group(0)
+        resolved_url = resolve_resource_url(url)
+        if not resolved_url:
+            return match.group(0)
+        try:
+            asset_path = download_asset_to_workspace(resolved_url, html_path, state)
+        except ValueError as exc:
+            state.errors.append(str(exc))
+            return match.group(0)
+        local_url = make_browser_relative_path(asset_path, os.path.dirname(html_path))
+        return f"{match.group('prefix')}{local_url}{match.group('suffix')}"
+
+    localized_html = HTML_EXTERNAL_RESOURCE_RE.sub(replace_html_resource, html_text)
+    if localized_html != html_text:
+        Path(html_path).write_text(localized_html, encoding="utf-8")
+    local_css_paths.update(collect_local_stylesheet_paths(localized_html, html_path, workspace))
+    return local_css_paths
+
+
+def localize_css_file(css_path: str, state: LocalizationState) -> None:
+    css_text = Path(css_path).read_text(encoding="utf-8", errors="ignore")
+    localized_css = localize_css_text(css_text, css_path, state)
+    if localized_css == css_text:
+        return
+    Path(css_path).write_text(localized_css, encoding="utf-8")
+
+
+def localize_courseware_workspace(workspace: CoursewareWorkspace) -> tuple[List[str], List[str]]:
+    asset_dir = os.path.join(workspace.package_dir, LOCALIZED_ASSET_DIRNAME)
+    os.makedirs(asset_dir, exist_ok=True)
+    state = LocalizationState(package_dir=workspace.package_dir, asset_dir=asset_dir)
+
+    css_paths: Set[str] = set()
+    for html_path in workspace.html_paths:
+        css_paths.update(localize_html_file(html_path, workspace, state))
+
+    for css_path in sorted(css_paths):
+        localize_css_file(css_path, state)
+
+    if state.count > 0:
+        state.warnings.append(f"系统已自动本地化 {state.count} 个外链静态资源。")
+        state.warnings.extend([f"已自动本地化资源：{item}" for item in state.localized_assets])
+
+    if not any(Path(asset_dir).iterdir()):
+        Path(asset_dir).rmdir()
+
+    return unique_messages(state.errors), unique_messages(state.warnings)
+
+
+def scan_workspace_for_validation_issues(workspace: CoursewareWorkspace) -> tuple[List[str], List[str]]:
+    errors: List[str] = []
+    warnings: List[str] = []
+    package_root = Path(workspace.package_dir).resolve()
+
+    for file_path in sorted(package_root.rglob("*")):
+        if not file_path.is_file() or file_path.suffix.lower() not in WORKSPACE_TEXT_EXTENSIONS:
+            continue
+        relative_path = file_path.resolve().relative_to(package_root).as_posix()
+        text = file_path.read_text(encoding="utf-8", errors="ignore")
+        lower_text = text.lower()
+        extension = file_path.suffix.lower()
+
+        if extension == ".html":
+            if re.search(r"<(?:script|img|source|audio|video|link|iframe|embed)\b[^>]*\b(?:src|href)\s*=\s*[\"'](?:https?:)?//[^\"']+[\"']", lower_text):
+                errors.append(f"检测到外链资源：{relative_path} 中仍存在远程 src/href，请改为包内本地资源。")
+            if re.search(r"<(?:iframe|embed)\b[^>]*\b(?:src|href)\s*=\s*[\"'](?:https?:)?//[^\"']+[\"']", lower_text):
+                errors.append(f"检测到外链资源：{relative_path} 中包含 iframe/embed 远程嵌入，请改为本地可运行实现。")
+
+        if extension == ".css":
+            if re.search(r"url\(\s*[\"']?(?:https?:)?//", lower_text) or re.search(r"@import\s+(?:url\(\s*)?[\"'](?:https?:)?//", lower_text):
+                errors.append(f"检测到外链资源：{relative_path} 中仍存在 CSS 远程资源，请改为包内本地资源。")
+
+        if extension in {".html", ".js", ".mjs"}:
+            if re.search(r"fetch\s*\(\s*[\"']https?://", lower_text):
+                errors.append(f"检测到外部网络请求：{relative_path} 中存在 fetch 远程请求，请改为本地内置数据。")
+            if re.search(r"xmlhttprequest[\s\S]{0,400}\.open\s*\([^)]*[\"']https?://", lower_text):
+                errors.append(f"检测到外部网络请求：{relative_path} 中存在 XHR 远程请求，请改为本地内置数据。")
+            if re.search(r"new\s+websocket\s*\(\s*[\"']wss?://", lower_text):
+                errors.append(f"检测到外部网络请求：{relative_path} 中存在 WebSocket 远程连接，请改为本地实现。")
+            if re.search(r"sendbeacon\s*\(\s*[\"']https?://", lower_text):
+                errors.append(f"检测到外部网络请求：{relative_path} 中存在 sendBeacon 远程上报，请移除联网依赖。")
+
+    return unique_messages(errors), unique_messages(warnings)
+
+
+def build_upload_failure_detail(summary: str, errors: List[str], warnings: List[str]) -> dict:
+    prompts = build_issue_prompts(errors, warnings)
+    return {
+        "summary": summary,
+        "validation_errors": errors,
+        "validation_warnings": warnings,
+        "ai_guidance": build_ai_guidance(errors, warnings),
+        "ai_prompts": [prompt.model_dump() for prompt in prompts],
+    }
 
 
 def process_courseware_upload(content: bytes, filename: str, subject_id: int) -> tuple[str, int, str, str, List[str], List[str]]:
@@ -443,30 +748,31 @@ def process_courseware_upload(content: bytes, filename: str, subject_id: int) ->
     if extension not in ALLOWED_UPLOAD_EXTENSIONS:
         raise HTTPException(status_code=400, detail="只支持 HTML 文件或 ZIP 课件包")
 
-    if extension == ".zip":
-        try:
-            file_path, file_content, saved_size = extract_courseware_package(content, subject_id)
-        except ValueError as exc:
-            raise HTTPException(status_code=400, detail=str(exc)) from exc
-    else:
-        file_content, localization_errors, localization_warnings = localize_external_resources(content, subject_id)
-        validation_status, validation_summary, validation_errors, validation_warnings = validate_courseware(file_content)
-        validation_errors.extend(localization_errors)
-        validation_warnings.extend(localization_warnings)
-        validation_status = "passed" if not validation_errors else "failed"
-        validation_summary = f"校验{'通过' if validation_status == 'passed' else '未通过'}：{len(validation_errors)} 个问题，{len(validation_warnings)} 条提醒"
-        file_path, saved_size = save_upload_file(file_content, subject_id)
-        return file_path, saved_size, validation_status, validation_summary, validation_errors, validation_warnings
+    try:
+        workspace = extract_courseware_package(content, subject_id) if extension == ".zip" else create_courseware_workspace_from_html(content, subject_id, filename)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    file_content, localization_errors, localization_warnings = localize_external_resources(file_content, subject_id)
-    validation_status, validation_summary, validation_errors, validation_warnings = validate_courseware(file_content)
-    validation_errors.extend(localization_errors)
-    validation_warnings.extend(localization_warnings)
-    validation_status = "passed" if not validation_errors else "failed"
-    validation_summary = f"校验{'通过' if validation_status == 'passed' else '未通过'}：{len(validation_errors)} 个问题，{len(validation_warnings)} 条提醒"
-    if localization_errors or localization_warnings or file_content != Path(file_path).read_bytes():
-        Path(file_path).write_bytes(file_content)
-    return file_path, saved_size, validation_status, validation_summary, validation_errors, validation_warnings
+    try:
+        localization_errors, localization_warnings = localize_courseware_workspace(workspace)
+        entry_content = Path(workspace.entry_path).read_bytes()
+        _, _, validation_errors, validation_warnings = validate_courseware(entry_content)
+        workspace_errors, workspace_warnings = scan_workspace_for_validation_issues(workspace)
+
+        all_errors = unique_messages(validation_errors + localization_errors + workspace_errors)
+        all_warnings = unique_messages(localization_warnings + validation_warnings + workspace_warnings)
+        validation_summary = build_validation_summary(all_errors, all_warnings)
+        if all_errors:
+            raise HTTPException(status_code=400, detail=build_upload_failure_detail(validation_summary, all_errors, all_warnings))
+
+        saved_size = calculate_directory_size(workspace.package_dir)
+        return workspace.entry_path, saved_size, "passed", validation_summary, [], all_warnings
+    except HTTPException:
+        remove_courseware_path(workspace.entry_path)
+        raise
+    except Exception:
+        remove_courseware_path(workspace.entry_path)
+        raise
 
 
 def is_allowed_external_response(content_type: str, extension: str) -> bool:
@@ -491,115 +797,6 @@ def guess_extension_from_response(url: str, content_type: str) -> str:
     if guessed:
         return guessed
     return ".bin"
-
-
-def localize_external_resources(content: bytes, subject_id: int) -> tuple[bytes, List[str], List[str]]:
-    html_text = content.decode("utf-8", errors="ignore")
-    if "http://" not in html_text.lower() and "https://" not in html_text.lower():
-        return content, [], []
-
-    warnings: List[str] = []
-    errors: List[str] = []
-    state = {
-        "count": 0,
-        "bytes": 0,
-        "cache": {},
-        "subject_id": subject_id,
-        "dir": os.path.join(
-            settings.upload_dir,
-            "external_cache",
-            str(subject_id),
-            f"{int(time.time() * 1000)}_{random.randint(1000, 9999)}",
-        ),
-    }
-    os.makedirs(state["dir"], exist_ok=True)
-
-    def download_asset(url: str) -> str:
-        cached = state["cache"].get(url)
-        if cached:
-            return cached
-
-        if state["count"] >= MAX_EXTERNAL_RESOURCE_COUNT:
-            raise ValueError(f"外链资源数量超过 {MAX_EXTERNAL_RESOURCE_COUNT} 个，无法自动本地化。")
-
-        request = urllib_request.Request(url, headers={"User-Agent": "EduSimuCoursewareLocalizer/1.0"})
-        try:
-            with urllib_request.urlopen(request, timeout=8) as response:
-                content_type = response.headers.get("Content-Type", "")
-                extension = guess_extension_from_response(url, content_type)
-                if not is_allowed_external_response(content_type, extension):
-                    raise ValueError(f"资源类型不允许自动本地化：{url}")
-
-                chunks = []
-                total = 0
-                while True:
-                    chunk = response.read(65536)
-                    if not chunk:
-                        break
-                    total += len(chunk)
-                    if total > MAX_EXTERNAL_RESOURCE_SIZE:
-                        raise ValueError(f"单个外链资源超过 {MAX_EXTERNAL_RESOURCE_SIZE // (1024 * 1024)}MB：{url}")
-                    if state["bytes"] + total > MAX_EXTERNAL_TOTAL_SIZE:
-                        raise ValueError("外链资源总大小超过 25MB，无法自动本地化。")
-                    chunks.append(chunk)
-        except (urllib_error.URLError, TimeoutError) as exc:
-            raise ValueError(f"下载外链资源失败：{url}") from exc
-
-        state["count"] += 1
-        state["bytes"] += total
-        filename = f"asset_{state['count']}{extension}"
-        absolute_path = os.path.join(state["dir"], filename)
-        content_bytes = b"".join(chunks)
-
-        if extension == ".css":
-            css_text = content_bytes.decode("utf-8", errors="ignore")
-            css_text = localize_css_content(css_text, url)
-            content_bytes = css_text.encode("utf-8")
-
-        with open(absolute_path, "wb") as buffer:
-            buffer.write(content_bytes)
-
-        relative_url = build_file_url(absolute_path)
-        state["cache"][url] = relative_url
-        return relative_url
-
-    def localize_css_content(css_text: str, base_url: str) -> str:
-        def replace_css_url(match: re.Match[str]) -> str:
-            raw_url = match.group("url").strip()
-            if not raw_url or raw_url.startswith("data:"):
-                return match.group(0)
-            absolute_url = urllib_parse.urljoin(base_url, raw_url)
-            if not absolute_url.startswith(("http://", "https://")):
-                return match.group(0)
-            try:
-                local_url = download_asset(absolute_url)
-                return f"url('{local_url}')"
-            except ValueError as exc:
-                warnings.append(str(exc))
-                return match.group(0)
-
-        return CSS_URL_RE.sub(replace_css_url, css_text)
-
-    def replace_html_resource(match: re.Match[str]) -> str:
-        tag = (match.group("tag") or "").lower()
-        full_tag = match.group(0).lower()
-        url = match.group("url")
-        if tag == "link" and "stylesheet" not in full_tag:
-            return match.group(0)
-
-        try:
-            local_url = download_asset(url)
-            return f"{match.group('prefix')}{local_url}{match.group('suffix')}"
-        except ValueError as exc:
-            errors.append(str(exc))
-            return match.group(0)
-
-    localized_html = HTML_EXTERNAL_RESOURCE_RE.sub(replace_html_resource, html_text)
-    if state["count"] > 0:
-        warnings.append(f"系统已自动本地化 {state['count']} 个外链静态资源。")
-
-    return localized_html.encode("utf-8"), errors, warnings
-
 
 def extract_geogebra_material_id(link: str) -> Optional[str]:
     normalized_link = (link or "").strip()
@@ -958,10 +1155,14 @@ def remove_courseware_path(file_path: Optional[str]):
         return
     if not os.path.exists(file_path):
         return
-    parent_dir = os.path.dirname(file_path)
-    if os.path.basename(parent_dir).startswith("pkg_"):
-        shutil.rmtree(parent_dir, ignore_errors=True)
-        return
+    current_path = Path(file_path).resolve()
+    upload_root = Path(settings.upload_dir).resolve()
+    for parent in [current_path.parent, *current_path.parents]:
+        if parent == upload_root:
+            break
+        if parent.name.startswith("pkg_"):
+            shutil.rmtree(parent, ignore_errors=True)
+            return
     os.remove(file_path)
 
 

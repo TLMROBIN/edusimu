@@ -650,6 +650,83 @@ const getValidationTagType = (status) => {
   return map[status] || 'info'
 }
 
+const escapeHtml = (value = '') => String(value)
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;')
+
+const toMessageList = (value) => Array.isArray(value)
+  ? value.filter(item => typeof item === 'string' && item.trim())
+  : []
+
+const parseUploadError = (error, fallbackMessage = '上传失败') => {
+  const responseData = error?.response?.data
+  const payload = responseData?.detail && typeof responseData.detail === 'object'
+    ? responseData.detail
+    : responseData
+
+  if (payload && typeof payload === 'object' && !Array.isArray(payload)) {
+    return {
+      summary: payload.summary || payload.detail || fallbackMessage,
+      errors: toMessageList(payload.validation_errors),
+      warnings: toMessageList(payload.validation_warnings),
+      guidance: typeof payload.ai_guidance === 'string' ? payload.ai_guidance : ''
+    }
+  }
+
+  return {
+    summary: responseData?.detail || fallbackMessage,
+    errors: [],
+    warnings: [],
+    guidance: ''
+  }
+}
+
+const showUploadError = async (error, title = '上传失败') => {
+  const parsed = parseUploadError(error, title)
+  if (!parsed.errors.length && !parsed.warnings.length && !parsed.guidance) {
+    ElMessage.error(parsed.summary)
+    return
+  }
+
+  const sections = [
+    `<div style="font-size: 14px; line-height: 1.7; text-align: left;">`,
+    `<div style="font-weight: 600; margin-bottom: 10px;">${escapeHtml(parsed.summary)}</div>`
+  ]
+
+  if (parsed.errors.length) {
+    sections.push('<div style="margin-bottom: 8px; color: #f56c6c; font-weight: 600;">未通过项</div>')
+    sections.push('<ul style="margin: 0 0 12px 18px; padding: 0;">')
+    parsed.errors.forEach(item => {
+      sections.push(`<li style="margin-bottom: 6px;">${escapeHtml(item)}</li>`)
+    })
+    sections.push('</ul>')
+  }
+
+  if (parsed.warnings.length) {
+    sections.push('<div style="margin-bottom: 8px; color: #e6a23c; font-weight: 600;">提醒项</div>')
+    sections.push('<ul style="margin: 0 0 12px 18px; padding: 0;">')
+    parsed.warnings.forEach(item => {
+      sections.push(`<li style="margin-bottom: 6px;">${escapeHtml(item)}</li>`)
+    })
+    sections.push('</ul>')
+  }
+
+  if (parsed.guidance) {
+    sections.push('<div style="margin-bottom: 8px; color: #409eff; font-weight: 600;">修改建议</div>')
+    sections.push(`<div style="background: #ecf5ff; border-radius: 8px; padding: 10px 12px;">${escapeHtml(parsed.guidance)}</div>`)
+  }
+
+  sections.push('</div>')
+
+  await ElMessageBox.alert(sections.join(''), title, {
+    dangerouslyUseHTMLString: true,
+    confirmButtonText: '知道了'
+  })
+}
+
 const applyFilters = () => {
   let result = [...animations.value]
 
@@ -809,7 +886,7 @@ const uploadAnimation = async () => {
     loadAnimations()
   } catch (error) {
     console.error('上传失败:', error)
-    ElMessage.error(error.response?.data?.detail || '上传失败')
+    await showUploadError(error, '上传失败')
   }
 }
 
@@ -1019,7 +1096,7 @@ const replaceAnimationFile = async () => {
     loadAnimations()
   } catch (error) {
     console.error('上传修订版失败:', error)
-    ElMessage.error(error.response?.data?.detail || '上传修订版失败')
+    await showUploadError(error, '上传修订版失败')
   }
 }
 
