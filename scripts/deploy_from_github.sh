@@ -33,17 +33,17 @@ run_as_project_user() {
 
 cd "${PROJECT_ROOT}"
 
-if ! git diff --quiet || ! git diff --cached --quiet; then
+if ! run_as_project_user git diff --quiet || ! run_as_project_user git diff --cached --quiet; then
   echo "Refusing to deploy over tracked local changes in ${PROJECT_ROOT}." >&2
-  git status --short >&2
+  run_as_project_user git status --short >&2
   exit 1
 fi
 
 echo "[1/5] Fetch ${REMOTE}/${BRANCH}"
 run_as_project_user git fetch --prune "${REMOTE}" "${BRANCH}"
 
-LOCAL_HEAD="$(git rev-parse HEAD)"
-REMOTE_HEAD="$(git rev-parse "${REMOTE}/${BRANCH}")"
+LOCAL_HEAD="$(run_as_project_user git rev-parse HEAD)"
+REMOTE_HEAD="$(run_as_project_user git rev-parse "${REMOTE}/${BRANCH}")"
 
 if [[ "${LOCAL_HEAD}" == "${REMOTE_HEAD}" ]]; then
   echo "Already up to date: ${LOCAL_HEAD:0:7}"
