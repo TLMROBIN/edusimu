@@ -209,7 +209,8 @@ const flushViewRecord = async (useKeepalive = false) => {
   if (!viewRecorded.value || !viewHistoryId.value) return
 
   const payload = getViewPayload()
-  const url = `/api/animations/${route.params.id}/view/${viewHistoryId.value}`
+  const apiBase = import.meta.env.VITE_API_BASE || ''
+  const url = `${apiBase}/api/animations/${route.params.id}/view/${viewHistoryId.value}`
 
   try {
     if (useKeepalive) {

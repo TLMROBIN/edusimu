@@ -114,7 +114,8 @@ const handleLogin = async () => {
 }
 
 const handleSsoLogin = () => {
-  window.location.href = '/api/auth/oidc/login'
+  const apiBase = import.meta.env.VITE_API_BASE || ''
+  window.location.href = `${apiBase}/api/auth/oidc/login`
 }
 </script>
 
