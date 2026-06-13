@@ -58,6 +58,11 @@
               登录
             </el-button>
           </el-form-item>
+          <el-form-item>
+            <el-button plain style="width: 100%" @click="handleSsoLogin">
+              使用统一平台登录
+            </el-button>
+          </el-form-item>
         </el-form>
       </el-card>
     </div>
@@ -106,6 +111,10 @@ const handleLogin = async () => {
       }
     }
   })
+}
+
+const handleSsoLogin = () => {
+  window.location.href = '/api/auth/oidc/login'
 }
 </script>
 

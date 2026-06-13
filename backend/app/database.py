@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     secret_key: str = "your-secret-key-change-this-in-production-please"
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 1440
+    oidc_enabled: bool = False
+    oidc_issuer: str = "http://10.50.159.62/auth/realms/school-platform"
+    oidc_client_id: str = "edusimu"
+    oidc_client_secret: str | None = None
+    oidc_redirect_uri: str = "http://10.50.159.62/edusimu/api/auth/oidc/callback"
+    oidc_scope: str = "openid profile email"
     admin_username: str = "admin"
     admin_password: str = "admin123"
     upload_dir: str = str(DEFAULT_UPLOAD_DIR)

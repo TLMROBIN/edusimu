@@ -1,6 +1,9 @@
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import Request
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.responses import HTMLResponse, RedirectResponse
+import secrets
 from sqlalchemy.orm import Session
 from ..auth import (
     verify_password,
@@ -10,6 +13,7 @@ from ..auth import (
 )
 from ..database import get_db, settings
 from ..models import User
+from ..oidc import OidcAuthError, create_login_state, exchange_code_for_claims, issue_local_token_for_claims
 from ..schemas import ChangePasswordRequest, Token, UserResponse
 
 router = APIRouter(prefix="/api/auth", tags=["认证"])
@@ -35,6 +39,50 @@ async def login(
         expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/oidc/login")
+async def oidc_login():
+    login_state = create_login_state()
+    response = RedirectResponse(login_state["authorization_url"], status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie("edusimu_oidc_state", login_state["state"], httponly=True, samesite="lax", max_age=600, path="/")
+    response.set_cookie(
+        "edusimu_oidc_verifier",
+        login_state["code_verifier"],
+        httponly=True,
+        samesite="lax",
+        max_age=600,
+        path="/",
+    )
+    return response
+
+
+@router.get("/oidc/callback", response_class=HTMLResponse)
+async def oidc_callback(code: str, state: str, request: Request, db: Session = Depends(get_db)):
+    expected_state = request.cookies.get("edusimu_oidc_state")
+    code_verifier = request.cookies.get("edusimu_oidc_verifier")
+    if not expected_state or not code_verifier or not secrets.compare_digest(expected_state, state):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid OIDC state")
+    try:
+        claims = exchange_code_for_claims(code, code_verifier)
+        access_token = issue_local_token_for_claims(db, claims)
+    except OidcAuthError as exc:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)) from exc
+    html = f"""<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>统一认证登录中</title></head>
+<body>
+<p>统一认证成功，正在进入 edusimu...</p>
+<script>
+localStorage.setItem("token", {access_token!r});
+location.replace("/home");
+</script>
+</body>
+</html>"""
+    response = HTMLResponse(html)
+    response.delete_cookie("edusimu_oidc_state", path="/")
+    response.delete_cookie("edusimu_oidc_verifier", path="/")
+    return response
 
 @router.post("/logout")
 async def logout(current_user: User = Depends(get_current_active_user)):
