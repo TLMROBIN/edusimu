@@ -3,7 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi import Request
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import HTMLResponse, RedirectResponse
+import json
 import secrets
+from urllib.parse import urlparse
 from sqlalchemy.orm import Session
 from ..auth import (
     verify_password,
@@ -17,6 +19,32 @@ from ..oidc import OidcAuthError, create_login_state, exchange_code_for_claims, 
 from ..schemas import ChangePasswordRequest, Token, UserResponse
 
 router = APIRouter(prefix="/api/auth", tags=["认证"])
+OIDC_CALLBACK_PATH = "/api/auth/oidc/callback"
+
+
+def _normalize_path_prefix(value: str | None) -> str:
+    if not value:
+        return ""
+    prefix = value.strip()
+    if not prefix or prefix == "/":
+        return ""
+    if not prefix.startswith("/"):
+        prefix = f"/{prefix}"
+    return prefix.rstrip("/")
+
+
+def _frontend_home_path(request: Request) -> str:
+    forwarded_prefix = _normalize_path_prefix(
+        request.headers.get("x-forwarded-prefix") or request.headers.get("x-script-name")
+    )
+    if forwarded_prefix:
+        return f"{forwarded_prefix}/home"
+
+    redirect_path = urlparse(settings.oidc_redirect_uri).path
+    redirect_prefix = ""
+    if redirect_path.endswith(OIDC_CALLBACK_PATH):
+        redirect_prefix = _normalize_path_prefix(redirect_path[: -len(OIDC_CALLBACK_PATH)])
+    return f"{redirect_prefix}/home" if redirect_prefix else "/home"
 
 @router.post("/login", response_model=Token)
 async def login(
@@ -68,14 +96,15 @@ async def oidc_callback(code: str, state: str, request: Request, db: Session = D
         access_token = issue_local_token_for_claims(db, claims)
     except OidcAuthError as exc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)) from exc
+    home_path = _frontend_home_path(request)
     html = f"""<!doctype html>
 <html lang="zh-CN">
 <head><meta charset="utf-8"><title>统一认证登录中</title></head>
 <body>
 <p>统一认证成功，正在进入 edusimu...</p>
 <script>
-localStorage.setItem("token", {access_token!r});
-location.replace("/home");
+localStorage.setItem("token", {json.dumps(access_token)});
+location.replace({json.dumps(home_path)});
 </script>
 </body>
 </html>"""

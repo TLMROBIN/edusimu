@@ -84,6 +84,7 @@ import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { resolveApiBase } from '../utils/apiBase'
 
 const route = useRoute()
 const animation = ref(null)
@@ -209,7 +210,7 @@ const flushViewRecord = async (useKeepalive = false) => {
   if (!viewRecorded.value || !viewHistoryId.value) return
 
   const payload = getViewPayload()
-  const apiBase = import.meta.env.VITE_API_BASE || ''
+  const apiBase = resolveApiBase()
   const url = `${apiBase}/api/animations/${route.params.id}/view/${viewHistoryId.value}`
 
   try {

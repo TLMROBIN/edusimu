@@ -73,6 +73,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
+import { resolveApiBase } from '../utils/apiBase'
 import { ElMessage } from 'element-plus'
 
 const router = useRouter()
@@ -114,7 +115,7 @@ const handleLogin = async () => {
 }
 
 const handleSsoLogin = () => {
-  const apiBase = import.meta.env.VITE_API_BASE || ''
+  const apiBase = resolveApiBase()
   window.location.href = `${apiBase}/api/auth/oidc/login`
 }
 </script>

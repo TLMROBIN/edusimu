@@ -7,8 +7,9 @@ import App from './App.vue'
 import router from './router'
 import './assets/style.css'
 import { useUserStore } from './stores/user'
+import { resolveApiBase } from './utils/apiBase'
 
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE || ''
+axios.defaults.baseURL = resolveApiBase()
 
 const app = createApp(App)
 const pinia = createPinia()
