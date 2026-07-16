@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-16T22:19:14Z",
+  "title": "Design System: edusimu",
+  "extensions": {
+    "colorMeta": {
+      "navigation-blue": {
+        "role": "primary",
+        "displayName": "导航蓝",
+        "canonical": "#1661FF",
+        "tonalRamp": ["oklch(15% 0.24 260)", "oklch(27% 0.24 260)", "oklch(39% 0.24 260)", "oklch(51% 0.24 260)", "oklch(63% 0.24 260)", "oklch(75% 0.24 260)", "oklch(87% 0.24 260)", "oklch(95% 0.24 260)"]
+      },
+      "experiment-cyan": {
+        "role": "secondary",
+        "displayName": "实验青",
+        "canonical": "#12A9C4",
+        "tonalRamp": ["oklch(15% 0.13 211)", "oklch(27% 0.13 211)", "oklch(39% 0.13 211)", "oklch(51% 0.13 211)", "oklch(63% 0.13 211)", "oklch(75% 0.13 211)", "oklch(87% 0.13 211)", "oklch(95% 0.13 211)"]
+      },
+      "textbook-ink": {
+        "role": "neutral",
+        "displayName": "教材墨",
+        "canonical": "#10233F",
+        "tonalRamp": ["oklch(15% 0.06 255)", "oklch(27% 0.06 255)", "oklch(39% 0.06 255)", "oklch(51% 0.06 255)", "oklch(63% 0.06 255)", "oklch(75% 0.06 255)", "oklch(87% 0.06 255)", "oklch(95% 0.06 255)"]
+      },
+      "supporting-ink": {
+        "role": "neutral",
+        "displayName": "辅助墨",
+        "canonical": "#5F7694",
+        "tonalRamp": ["oklch(15% 0.06 251)", "oklch(27% 0.06 251)", "oklch(39% 0.06 251)", "oklch(51% 0.06 251)", "oklch(63% 0.06 251)", "oklch(75% 0.06 251)", "oklch(87% 0.06 251)", "oklch(95% 0.06 251)"]
+      },
+      "page-blue": {
+        "role": "neutral",
+        "displayName": "课堂浅蓝",
+        "canonical": "#F3F8FD",
+        "tonalRamp": ["oklch(15% 0.01 240)", "oklch(27% 0.01 240)", "oklch(39% 0.01 240)", "oklch(51% 0.01 240)", "oklch(63% 0.01 240)", "oklch(75% 0.01 240)", "oklch(87% 0.01 240)", "oklch(95% 0.01 240)"]
+      },
+      "page-blue-strong": {
+        "role": "neutral",
+        "displayName": "结构浅蓝",
+        "canonical": "#E6F0FB",
+        "tonalRamp": ["oklch(15% 0.02 245)", "oklch(27% 0.02 245)", "oklch(39% 0.02 245)", "oklch(51% 0.02 245)", "oklch(63% 0.02 245)", "oklch(75% 0.02 245)", "oklch(87% 0.02 245)", "oklch(95% 0.02 245)"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "清晰表面",
+        "canonical": "#FFFFFFC7",
+        "tonalRamp": ["oklch(15% 0.006 245)", "oklch(27% 0.006 245)", "oklch(39% 0.006 245)", "oklch(51% 0.006 245)", "oklch(63% 0.006 245)", "oklch(75% 0.006 245)", "oklch(87% 0.006 245)", "oklch(95% 0.006 245)"]
+      },
+      "surface-strong": {
+        "role": "neutral",
+        "displayName": "强清晰表面",
+        "canonical": "#FFFFFFEB",
+        "tonalRamp": ["oklch(15% 0.003 245)", "oklch(27% 0.003 245)", "oklch(39% 0.003 245)", "oklch(51% 0.003 245)", "oklch(63% 0.003 245)", "oklch(75% 0.003 245)", "oklch(87% 0.003 245)", "oklch(95% 0.003 245)"]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "冷蓝边界",
+        "canonical": "#547DAD2E",
+        "tonalRamp": ["oklch(15% 0.05 250)", "oklch(27% 0.05 250)", "oklch(39% 0.05 250)", "oklch(51% 0.05 250)", "oklch(63% 0.05 250)", "oklch(75% 0.05 250)", "oklch(87% 0.05 250)", "oklch(95% 0.05 250)"]
+      },
+      "border-strong": {
+        "role": "secondary",
+        "displayName": "互动边界",
+        "canonical": "#2BA8C459",
+        "tonalRamp": ["oklch(15% 0.11 211)", "oklch(27% 0.11 211)", "oklch(39% 0.11 211)", "oklch(51% 0.11 211)", "oklch(63% 0.11 211)", "oklch(75% 0.11 211)", "oklch(87% 0.11 211)", "oklch(95% 0.11 211)"]
+      },
+      "on-dark": {
+        "role": "neutral",
+        "displayName": "深色表面文字",
+        "canonical": "#F5FBFF",
+        "tonalRamp": ["oklch(15% 0.01 230)", "oklch(27% 0.01 230)", "oklch(39% 0.01 230)", "oklch(51% 0.01 230)", "oklch(63% 0.01 230)", "oklch(75% 0.01 230)", "oklch(87% 0.01 230)", "oklch(95% 0.01 230)"]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "风险红",
+        "canonical": "#C7374B",
+        "tonalRamp": ["oklch(15% 0.20 17)", "oklch(27% 0.20 17)", "oklch(39% 0.20 17)", "oklch(51% 0.20 17)", "oklch(63% 0.20 17)", "oklch(75% 0.20 17)", "oklch(87% 0.20 17)", "oklch(95% 0.20 17)"]
+      },
+      "success": {
+        "role": "tertiary",
+        "displayName": "成功绿",
+        "canonical": "#25A870",
+        "tonalRamp": ["oklch(15% 0.15 155)", "oklch(27% 0.15 155)", "oklch(39% 0.15 155)", "oklch(51% 0.15 155)", "oklch(63% 0.15 155)", "oklch(75% 0.15 155)", "oklch(87% 0.15 155)", "oklch(95% 0.15 155)"]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "提醒橙",
+        "canonical": "#E69B2D",
+        "tonalRamp": ["oklch(15% 0.15 75)", "oklch(27% 0.15 75)", "oklch(39% 0.15 75)", "oklch(51% 0.15 75)", "oklch(63% 0.15 75)", "oklch(75% 0.15 75)", "oklch(87% 0.15 75)", "oklch(95% 0.15 75)"]
+      }
+    },
+    "typographyMeta": {
+      "display": {"displayName": "入口展示", "purpose": "登录页等少数产品入口的大标题。"},
+      "headline": {"displayName": "主任务标题", "purpose": "首页主任务和重要页面介绍。"},
+      "title": {"displayName": "面板标题", "purpose": "页面分区、课件和主要面板标题。"},
+      "body": {"displayName": "正文", "purpose": "说明性内容与连续阅读。"},
+      "label": {"displayName": "界面标签", "purpose": "按钮、筛选器、表单与状态元数据。"},
+      "micro": {"displayName": "系统微标", "purpose": "真实系统标识和极短标签。"},
+      "mono": {"displayName": "脚本等宽", "purpose": "GeoGebra 脚本、坐标和技术日志。"}
+    },
+    "shadows": [
+      {"name": "responsive", "value": "0 14px 32px rgba(23, 41, 70, 0.10)", "purpose": "悬停卡片、对话框和短暂抬升状态。"},
+      {"name": "high-layer", "value": "0 24px 60px rgba(28, 55, 90, 0.14)", "purpose": "模态层或覆盖主内容的浮层。"},
+      {"name": "navigation", "value": "0 16px 40px rgba(14, 30, 58, 0.18)", "purpose": "深色顶栏与页面内容分离。"},
+      {"name": "action", "value": "0 12px 24px rgba(22, 97, 255, 0.22)", "purpose": "主要按钮的短暂悬停或按下反馈。"}
+    ],
+    "motion": [
+      {"name": "state-fast", "value": "150ms ease", "purpose": "按钮、焦点和短状态切换。"},
+      {"name": "surface-responsive", "value": "280ms ease", "purpose": "卡片悬停与表面状态变化。"}
+    ],
+    "breakpoints": [
+      {"name": "compact", "value": "768px"},
+      {"name": "tablet-structure", "value": "900px"},
+      {"name": "player-wide", "value": "1180px"},
+      {"name": "creator-stack", "value": "1280px"}
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "每个任务区域的唯一主要行动，适合课堂平板触控。",
+      "html": "<button class=\"ds-btn-primary\">打开课件</button>",
+      "css": ".ds-btn-primary { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 14px; background: linear-gradient(135deg, var(--app-primary, #1661FF), var(--app-primary-soft, #12A9C4)); color: #F5FBFF; font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; letter-spacing: .02em; cursor: pointer; transition: transform 150ms ease, filter 150ms ease; } .ds-btn-primary:hover { filter: brightness(1.04); transform: translateY(-1px); } .ds-btn-primary:active { transform: translateY(0); } .ds-btn-primary:focus-visible { outline: 3px solid rgba(22,97,255,.28); outline-offset: 2px; } .ds-btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; } @media (prefers-reduced-motion: reduce) { .ds-btn-primary { transition: none; } }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "返回、重置与次要操作；结构清晰，不使用常驻宽阴影。",
+      "html": "<button class=\"ds-btn-secondary\">重置筛选</button>",
+      "css": ".ds-btn-secondary { min-height: 44px; padding: 10px 16px; border: 1px solid rgba(84,125,173,.22); border-radius: 14px; background: rgba(255,255,255,.92); color: var(--app-text, #10233F); font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; cursor: pointer; transition: background 150ms ease, border-color 150ms ease; } .ds-btn-secondary:hover { background: #F3F8FD; border-color: rgba(43,168,196,.35); } .ds-btn-secondary:active { background: #E6F0FB; } .ds-btn-secondary:focus-visible { outline: 3px solid rgba(22,97,255,.20); outline-offset: 2px; } .ds-btn-secondary:disabled { opacity: .55; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-secondary { transition: none; } }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "只用于不可逆或高风险操作，并使用明确动词。",
+      "html": "<button class=\"ds-btn-danger\">删除课件</button>",
+      "css": ".ds-btn-danger { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 14px; background: var(--app-danger, #C7374B); color: #F5FBFF; font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; cursor: pointer; transition: filter 150ms ease, transform 150ms ease; } .ds-btn-danger:hover { filter: brightness(.94); } .ds-btn-danger:active { transform: translateY(1px); } .ds-btn-danger:focus-visible { outline: 3px solid #1661FF; outline-offset: 2px; } .ds-btn-danger:disabled { opacity: .55; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-danger { transition: none; } }"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "教材、章节和课件检索的标准输入控件。",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">搜索课件</span><input class=\"ds-input\" placeholder=\"输入标题、关键词或章节\"></label>",
+      "css": ".ds-field { display: grid; gap: 8px; color: var(--app-text, #10233F); font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; } .ds-field-label { color: var(--app-text, #10233F); } .ds-input { min-height: 44px; padding: 10px 12px; border: 1px solid rgba(107,141,181,.18); border-radius: 16px; background: rgba(255,255,255,.92); color: var(--app-text, #10233F); font: 400 14px/1.5 'PingFang SC', 'Microsoft YaHei', sans-serif; } .ds-input::placeholder { color: #5F7694; opacity: 1; } .ds-input:hover { border-color: rgba(43,168,196,.35); } .ds-input:focus { border-color: rgba(22,97,255,.40); outline: 3px solid rgba(22,97,255,.12); outline-offset: 0; } .ds-input:disabled { background: #E6F0FB; color: #5F7694; cursor: not-allowed; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "表达已选学科、来源或章节的短标签。",
+      "html": "<button class=\"ds-chip\" aria-pressed=\"true\">物理 · 已选择</button>",
+      "css": ".ds-chip { min-height: 36px; padding: 6px 10px; border: 1px solid rgba(22,97,255,.18); border-radius: 999px; background: rgba(22,97,255,.10); color: var(--app-primary, #1661FF); font: 700 12px/1.4 'PingFang SC', 'Microsoft YaHei', sans-serif; letter-spacing: .08em; cursor: pointer; } .ds-chip:hover { border-color: rgba(43,168,196,.35); } .ds-chip:focus-visible { outline: 3px solid rgba(22,97,255,.20); outline-offset: 2px; } .ds-chip[aria-pressed='false'] { background: rgba(255,255,255,.92); color: var(--app-text, #10233F); }"
+    },
+    {
+      "name": "Courseware Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "以标题和教材章节为主轴的课件资源卡。",
+      "html": "<article class=\"ds-courseware-card\"><div class=\"ds-courseware-thumb\"><span>HTML</span></div><div class=\"ds-courseware-body\"><h3>法拉第电磁实验室</h3><p>选择性必修二 · 电磁感应</p><small>PhET · 128 次观看</small></div></article>",
+      "css": ".ds-courseware-card { width: min(320px, 100%); overflow: hidden; border: 1px solid rgba(84,125,173,.18); border-radius: 22px; background: rgba(255,255,255,.92); color: var(--app-text, #10233F); font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; transition: transform 280ms ease, border-color 280ms ease, box-shadow 280ms ease; } .ds-courseware-card:hover { transform: translateY(-4px); border-color: rgba(43,168,196,.35); box-shadow: 0 14px 32px rgba(23,41,70,.10); } .ds-courseware-card:focus-within { outline: 3px solid rgba(22,97,255,.20); outline-offset: 2px; } .ds-courseware-thumb { height: 170px; display: flex; align-items: end; padding: 18px; background: #E6F0FB; color: var(--app-primary, #1661FF); font-weight: 700; } .ds-courseware-thumb span { padding: 6px 10px; border-radius: 999px; background: rgba(22,97,255,.10); } .ds-courseware-body { display: grid; gap: 8px; padding: 16px 18px; } .ds-courseware-body h3 { margin: 0; font-size: 17px; line-height: 1.45; } .ds-courseware-body p { margin: 0; color: #5F7694; font-size: 13px; line-height: 1.55; } .ds-courseware-body small { color: #5F7694; font-size: 12px; } @media (max-width: 900px) { .ds-courseware-thumb { height: 148px; } } @media (prefers-reduced-motion: reduce) { .ds-courseware-card { transition: none; } .ds-courseware-card:hover { transform: none; } }"
+    },
+    {
+      "name": "Admin Navigation",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "教师与管理员工具区的稳定任务导航。",
+      "html": "<nav class=\"ds-nav\" aria-label=\"管理导航\"><a href=\"#stats\" aria-current=\"page\">数据统计</a><a href=\"#courseware\">动画管理</a><a href=\"#textbooks\">教材目录</a></nav>",
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 6px; padding: 10px; border: 1px solid rgba(84,125,173,.18); border-radius: 20px; background: rgba(255,255,255,.92); font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; } .ds-nav a { min-height: 44px; display: flex; align-items: center; padding: 10px 14px; border-radius: 14px; color: var(--app-text, #10233F); text-decoration: none; } .ds-nav a:hover { background: #F3F8FD; } .ds-nav a[aria-current='page'] { background: #E6F0FB; color: var(--app-primary, #1661FF); } .ds-nav a:focus-visible { outline: 3px solid rgba(22,97,255,.20); outline-offset: 1px; } @media (max-width: 900px) { .ds-nav { flex-direction: row; overflow-x: auto; } .ds-nav a { flex: 0 0 auto; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "互动实验台",
+    "overview": "edusimu 应像一张为课堂准备好的互动实验台：学生一眼知道课件在哪里、下一步可以触碰什么，教师也能快速完成制作、发布和管理。界面明快、精准、有秩序；现代感来自教材结构、操作反馈和数据状态，而不是视觉炫技。\n\n现有代码中的冷蓝背景、导航蓝、实验青、中文无衬线字体和圆润控件构成识别基础。新界面采用结构分层：静态区域依靠底色、间距和清晰边界建立层级，阴影只服务于悬停、对话框和确有高度变化的状态。明确拒绝炫技型科技展示、低龄卡通化和拥挤灰暗的传统企业管理后台。",
+    "keyCharacteristics": [
+      "学科、教材和章节始终是资源定位的主轴。",
+      "导航蓝负责主要行动，实验青负责互动与状态提示。",
+      "单一中文无衬线字体保持跨设备清晰与高效。",
+      "电脑与平板共享结构，学生可通过触控完成主要操作。",
+      "静态界面结构清楚，动效短促，并始终提供减少动态效果的降级。"
+    ],
+    "rules": [
+      {"name": "The Action Color Rule", "body": "导航蓝和实验青只出现在行动、选中和状态反馈上；如果一块颜色不能解释用户下一步或当前状态，就移除它。", "section": "colors"},
+      {"name": "The Single Gradient Rule", "body": "导航蓝到实验青的渐变只允许出现在主要按钮或短小状态标记中；禁止渐变文字和大面积渐变装饰。", "section": "colors"},
+      {"name": "The One-Family Rule", "body": "产品界面始终以同一中文无衬线字体栈完成主要信息层级；禁止为了“科技感”把显示字体引入按钮、表格或表单。", "section": "typography"},
+      {"name": "The Fixed UI Scale Rule", "body": "只有登录页和首页主标题可以使用已有的响应式字号；后台、播放器与密集工具界面使用固定字号，避免组件内标题随视口漂移。", "section": "typography"},
+      {"name": "The Structure-First Rule", "body": "静态表面默认无宽阴影；先用底色、间距和边界建立结构，再判断是否真的需要抬升。", "section": "elevation"},
+      {"name": "The One-Elevation Rule", "body": "同一组件不得同时依赖 1px 描边和 16px 以上模糊半径的宽阴影进行装饰；两者只能有一个承担主要层级。", "section": "elevation"}
+    ],
+    "dos": [
+      "Do 让学科、教材和章节成为首页筛选、资源卡和播放入口的主要信息线索。",
+      "Do 使用导航蓝表达主要行动，使用实验青表达互动与辅助状态，并为所有状态提供文字或图标说明。",
+      "Do 以底色、间距和 1px 冷蓝边界组织静态结构，只在状态变化和浮层中使用阴影。",
+      "Do 确保文字与状态信息达到 WCAG 2.1 AA 对比度，并在 200% 缩放下保持可读、可操作。",
+      "Do 保证学生能在课堂平板上通过触控完成主要操作，并为所有动画提供 prefers-reduced-motion 降级。"
+    ],
+    "donts": [
+      "Don't 做“依靠大量渐变、发光和玻璃效果吸引注意的炫技型科技展示页”。",
+      "Don't 做“颜色与装饰过度幼稚的低龄卡通学习站”。",
+      "Don't 做“拥挤、灰暗，并让表格与表单压倒主要任务的传统企业管理后台”。",
+      "Don't 使用渐变文字、装饰性网格背景、重复英文眉题或无意义光晕制造科技感。",
+      "Don't 在静态卡片上同时叠加 1px 描边和宽柔阴影，也不要把卡片、输入框或对话框做成 32px 以上圆角。",
+      "Don't 只用颜色表达成功、警告、错误、选中或禁用状态。"
+    ]
+  }
+}

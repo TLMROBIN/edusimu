@@ -14,7 +14,7 @@ from urllib import error as urllib_error
 from urllib import parse as urllib_parse
 from urllib import request as urllib_request
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile, status
 from fastapi.responses import FileResponse
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -1651,6 +1651,47 @@ async def get_animation_count(
         validation_status=validation_status,
 )
     return {"total": query.count()}
+
+
+@router.get("/recent", response_model=List[AnimationResponse])
+async def get_recent_animations(
+    limit: int = Query(4, ge=1, le=12),
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db),
+):
+    """Return the current user's most recently opened, still-accessible courseware."""
+    history_rows = (
+        db.query(ViewHistory.animation_id)
+        .filter(ViewHistory.user_id == current_user.id)
+        .order_by(ViewHistory.viewed_at.desc())
+        .limit(limit * 6)
+        .all()
+    )
+
+    recent_ids = []
+    for (animation_id,) in history_rows:
+        if animation_id not in recent_ids:
+            recent_ids.append(animation_id)
+
+    if not recent_ids:
+        return []
+
+    accessible_animations = (
+        build_animation_query(
+            db=db,
+            current_user=current_user,
+            is_published=True,
+        )
+        .filter(Animation.id.in_(recent_ids))
+        .all()
+    )
+    animations_by_id = {animation.id: animation for animation in accessible_animations}
+    ordered_animations = [
+        serialize_animation(animations_by_id[animation_id], db)
+        for animation_id in recent_ids
+        if animation_id in animations_by_id
+    ]
+    return ordered_animations[:limit]
 
 
 @router.post("/import-geogebra-link", response_model=AnimationResponse, status_code=status.HTTP_201_CREATED)
