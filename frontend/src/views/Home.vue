@@ -300,7 +300,7 @@
                 <span class="thumbnail">
                   <img
                     v-if="animation.thumbnail"
-                    :src="animation.thumbnail"
+                    :src="resolveAssetUrl(animation.thumbnail)"
                     :alt="`${animation.title}课件缩略图`"
                     loading="lazy"
                   />
@@ -369,6 +369,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { resolveAssetUrl } from '../utils/apiBase'
 
 const route = useRoute()
 const router = useRouter()

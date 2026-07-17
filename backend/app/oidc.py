@@ -89,6 +89,7 @@ def exchange_code_for_claims(code: str, code_verifier: str) -> dict:
             algorithms=["RS256"],
             audience=settings.oidc_client_id,
             issuer=settings.oidc_issuer.rstrip("/"),
+            access_token=token_payload.get("access_token"),
         )
     except Exception as exc:
         raise OidcAuthError("OIDC id_token validation failed") from exc

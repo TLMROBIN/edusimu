@@ -17,6 +17,7 @@ export const useUserStore = defineStore('user', () => {
       const response = await axios.post('/api/auth/login', formData)
       token.value = response.data.access_token
       localStorage.setItem('token', response.data.access_token)
+      localStorage.removeItem('edusimu_sso')
       
       axios.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
       
@@ -48,6 +49,11 @@ export const useUserStore = defineStore('user', () => {
       token.value = null
       localStorage.removeItem('token')
       delete axios.defaults.headers.common['Authorization']
+      // SSO（统一认证）登录的用户联动登出 Keycloak；本地密码登录维持原行为
+      if (localStorage.getItem('edusimu_sso')) {
+        localStorage.removeItem('edusimu_sso')
+        window.location.href = 'http://192.168.1.206/auth/realms/school-platform/protocol/openid-connect/logout?client_id=edusimu&post_logout_redirect_uri=http%3A%2F%2F192.168.1.206%2Fedusimu%2F'
+      }
     }
   }
   

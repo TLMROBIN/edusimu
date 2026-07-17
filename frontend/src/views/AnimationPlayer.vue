@@ -84,7 +84,7 @@ import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import { resolveApiBase } from '../utils/apiBase'
+import { resolveApiBase, resolveAssetUrl } from '../utils/apiBase'
 
 const route = useRoute()
 const animation = ref(null)
@@ -110,7 +110,7 @@ const loadAnimation = async () => {
   try {
     const response = await axios.get(`/api/animations/${route.params.id}`)
     animation.value = response.data
-    animationUrl.value = animation.value.file_url || `/api/animations/${route.params.id}/file`
+    animationUrl.value = resolveAssetUrl(animation.value.file_url || `/api/animations/${route.params.id}/file`)
     
     const favResponse = await axios.get('/api/favorites/')
     isFavorited.value = favResponse.data.some(fav => fav.animation_id === parseInt(route.params.id))

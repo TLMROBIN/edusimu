@@ -27,92 +27,21 @@
         <template #header>
           <div class="login-card-header">
             <div class="brand-chip">SECURE ACCESS</div>
-            <h2>账号登录</h2>
-            <p>使用教师、学生或管理员账号进入系统</p>
+            <h2>统一认证登录</h2>
+            <p>本系统已接入学校统一身份认证平台</p>
           </div>
         </template>
 
-        <el-alert
-          title="内测中，尚未开放"
-          type="warning"
-          :closable="false"
-          style="margin-bottom: 16px"
-        />
-        
-        <el-form :model="loginForm" :rules="rules" ref="loginFormRef" label-width="80px">
-          <el-form-item label="用户名" prop="username">
-            <el-input v-model="loginForm.username" placeholder="请输入用户名" />
-          </el-form-item>
-          
-          <el-form-item label="密码" prop="password">
-            <el-input
-              v-model="loginForm.password"
-              type="password"
-              placeholder="请输入密码"
-              @keyup.enter="handleLogin"
-            />
-          </el-form-item>
-          
-          <el-form-item>
-            <el-button type="primary" @click="handleLogin" :loading="loading" style="width: 100%">
-              登录
-            </el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button plain style="width: 100%" @click="handleSsoLogin">
-              使用统一平台登录
-            </el-button>
-          </el-form-item>
-        </el-form>
+        <el-button type="primary" size="large" style="width: 100%" @click="handleSsoLogin">
+          使用统一平台登录
+        </el-button>
       </el-card>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useUserStore } from '../stores/user'
 import { resolveApiBase } from '../utils/apiBase'
-import { ElMessage } from 'element-plus'
-
-const router = useRouter()
-const userStore = useUserStore()
-const loginFormRef = ref(null)
-const loading = ref(false)
-
-const loginForm = ref({
-  username: '',
-  password: ''
-})
-
-const rules = {
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' }
-  ]
-}
-
-const handleLogin = async () => {
-  if (!loginFormRef.value) return
-  
-  await loginFormRef.value.validate(async (valid) => {
-    if (valid) {
-      loading.value = true
-      const success = await userStore.login(loginForm.value.username, loginForm.value.password)
-      loading.value = false
-      
-      if (success) {
-        ElMessage.success('登录成功')
-        router.push('/home')
-      } else {
-        ElMessage.error('用户名或密码错误')
-      }
-    }
-  })
-}
 
 const handleSsoLogin = () => {
   const apiBase = resolveApiBase()

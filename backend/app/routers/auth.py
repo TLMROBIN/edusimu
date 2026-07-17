@@ -46,27 +46,15 @@ def _frontend_home_path(request: Request) -> str:
         redirect_prefix = _normalize_path_prefix(redirect_path[: -len(OIDC_CALLBACK_PATH)])
     return f"{redirect_prefix}/home" if redirect_prefix else "/home"
 
-@router.post("/login", response_model=Token)
+@router.post("/login")
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db)
 ):
-    user = db.query(User).filter(User.username == form_data.username).first()
-    if not user or not verify_password(form_data.password, user.password_hash):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="用户名或密码错误",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    if not user.is_active:
-        raise HTTPException(status_code=400, detail="用户已被禁用")
-    
-    access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
-    access_token = create_access_token(
-        data={"sub": user.username, "role": user.role},
-        expires_delta=access_token_expires
+    # 本系统已切换为统一认证（SSO）登录，本地账号密码登录停用
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="本系统已切换为统一认证登录，请通过统一平台入口登录",
     )
-    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.get("/oidc/login")
@@ -104,6 +92,7 @@ async def oidc_callback(code: str, state: str, request: Request, db: Session = D
 <p>统一认证成功，正在进入 edusimu...</p>
 <script>
 localStorage.setItem("token", {json.dumps(access_token)});
+localStorage.setItem("edusimu_sso", "1");
 location.replace({json.dumps(home_path)});
 </script>
 </body>
