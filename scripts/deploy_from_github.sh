@@ -70,7 +70,7 @@ if [[ -f frontend/package-lock.json ]]; then
 else
   run_as_project_user bash -lc "cd '${PROJECT_ROOT}/frontend' && npm install"
 fi
-run_as_project_user bash -lc "cd '${PROJECT_ROOT}/frontend' && npm run build"
+run_as_project_user bash -lc "cd '${PROJECT_ROOT}/frontend' && VITE_PUBLIC_BASE=/edusimu/ npm run build"
 
 echo "[4/5] Publish backend and frontend"
 bash "${PROJECT_ROOT}/scripts/remote_deploy_bundle.sh"

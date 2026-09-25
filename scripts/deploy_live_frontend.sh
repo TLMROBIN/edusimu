@@ -33,10 +33,10 @@ if [[ "${SKIP_BUILD}" -eq 0 ]]; then
 
   echo "[1/3] 构建前端 dist"
   if [[ "${EUID}" -eq 0 && "${BUILD_USER}" != "root" ]]; then
-    sudo -u "${BUILD_USER}" bash -lc "cd '${SOURCE_FRONTEND_DIR}' && npm run build"
+    sudo -u "${BUILD_USER}" bash -lc "cd '${SOURCE_FRONTEND_DIR}' && VITE_PUBLIC_BASE=/edusimu/ npm run build"
   else
     cd "${SOURCE_FRONTEND_DIR}"
-    npm run build
+    VITE_PUBLIC_BASE=/edusimu/ npm run build
   fi
 else
   echo "[1/3] 跳过前端构建，直接发布现有 dist"
