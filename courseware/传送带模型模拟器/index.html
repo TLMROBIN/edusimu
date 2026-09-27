@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="courseware-type" content="simulator">
+<title>传送带模型模拟器 · 高中物理</title>
+<style>
+:root {
+  --ink: #172126;
+  --muted: #66737a;
+  --paper: #f8faf8;
+  --panel: #ffffff;
+  --line: #dce4df;
+  --teal: #15847d;
+  --coral: #df684c;
+  --gold: #d59b24;
+  --green: #4d8d54;
+  --violet: #7463b6;
+  --blue: #3769aa;
+  --dark: #1f2a32;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --radius: 10px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { font-family: var(--font-sans); color: var(--ink); background: #e8edea; font-size: 14px; line-height: 1.5; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+.app {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr) 360px;
+  grid-template-rows: 52px minmax(0, 1fr);
+  gap: 10px; padding: 10px; height: 100vh;
+}
+.topbar {
+  grid-column: 1 / -1; display: flex; align-items: center; gap: 14px;
+  background: var(--dark); color: #fff; border-radius: var(--radius); padding: 0 14px;
+}
+.topbar h1 { font-size: 19px; margin: 0; letter-spacing: 1px; white-space: nowrap; }
+.topbar .sub { color: #aebbc3; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.topbar .sp { flex: 1; }
+.topbar button { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); color: #fff; border-radius: 8px; padding: 5px 12px; white-space: nowrap; }
+.topbar button:hover { background: rgba(255,255,255,.22); }
+
+.side { background: var(--panel); border-radius: var(--radius); overflow: auto; min-height: 0; padding: 4px 14px 14px; }
+.side h2 { font-size: 15px; margin: 14px 0 8px; display: flex; align-items: center; gap: 6px; }
+.side h2::before { content: ""; width: 4px; height: 16px; border-radius: 2px; background: var(--teal); }
+.hint { color: var(--muted); font-size: 12px; }
+
+/* 预设 */
+.preset-group { font-size: 12px; color: var(--muted); margin: 8px 0 4px; }
+.presets { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.presets button {
+  border: 1px solid var(--line); background: #f6f8f7; border-radius: 7px; padding: 5px 6px;
+  font-size: 12.5px; text-align: left; line-height: 1.3;
+}
+.presets button:hover { border-color: var(--teal); }
+.presets button.on { background: var(--teal); border-color: var(--teal); color: #fff; }
+.stem { background: #f5f8f4; border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; margin-top: 10px; font-size: 13px; }
+.stem .pt { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { display: inline-block; font-size: 11.5px; padding: 1px 7px; border-radius: 99px; background: #e4efec; color: var(--teal); }
+.qa { margin-top: 8px; }
+.qa details { border-top: 1px dashed var(--line); padding: 5px 0; }
+.qa summary { cursor: pointer; font-weight: 600; font-size: 13px; }
+.qa summary::marker { color: var(--coral); }
+.qa .ans { margin-top: 4px; color: #2b4a44; background: #eaf5f2; border-radius: 6px; padding: 5px 8px; font-size: 13px; }
+
+/* 参数 */
+.prow { display: grid; grid-template-columns: 88px minmax(0,1fr) 62px 30px; align-items: center; gap: 6px; margin: 5px 0; }
+.prow label { font-size: 13px; white-space: nowrap; }
+.prow input[type=range] { width: 100%; accent-color: var(--teal); }
+.prow input[type=number] { width: 62px; padding: 2px 4px; border: 1px solid var(--line); border-radius: 5px; text-align: right; }
+.prow .u { font-size: 12px; color: var(--muted); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.seg button { border: 0; background: #fff; padding: 3px 10px; font-size: 12.5px; }
+.seg button.on { background: var(--teal); color: #fff; }
+.checkrow { display: flex; align-items: center; gap: 6px; font-size: 12.5px; margin: 4px 0; }
+.checkrow input { accent-color: var(--teal); }
+
+/* 物块 */
+.blk { border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; margin: 6px 0; }
+.blk.sel { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(21,132,125,.15); }
+.blk-h { display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; }
+.dot { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
+.blk-h .x { margin-left: auto; border: 0; background: none; color: var(--muted); font-size: 16px; line-height: 1; }
+.blk-g { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 4px; margin-top: 4px; }
+.blk-g label { font-size: 11.5px; color: var(--muted); display: flex; flex-direction: column; }
+.blk-g input { width: 100%; padding: 1px 3px; border: 1px solid var(--line); border-radius: 5px; text-align: right; color: var(--ink); }
+.btn { border: 1px solid var(--line); background: #fff; border-radius: 7px; padding: 4px 10px; font-size: 13px; }
+.btn:hover { border-color: var(--teal); color: var(--teal); }
+.btn.pri { background: var(--teal); border-color: var(--teal); color: #fff; }
+.btn.pri:hover { color: #fff; filter: brightness(1.08); }
+select.sel { border: 1px solid var(--line); border-radius: 6px; padding: 2px 4px; background: #fff; font-size: 13px; }
+
+/* 中间区 */
+.center { display: grid; grid-template-rows: minmax(240px, 1fr) auto minmax(210px, 36%); gap: 10px; min-height: 0; min-width: 0; }
+.stage { position: relative; background: #f3f6f8; border-radius: var(--radius); overflow: hidden; min-height: 0; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+.stage .tbig { position: absolute; left: 14px; top: 10px; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; pointer-events: none; }
+.stage .tbig small { font-size: 13px; color: var(--muted); font-weight: 400; margin-left: 8px; }
+.stage.big .tbig { font-size: 30px; }
+.stage.big .tbig small { font-size: 16px; }
+.stage.big .shint { top: 54px; }
+.stage.big .callout { font-size: 15.5px; width: min(440px, 62%); }
+.stage.big .callout h3 { font-size: 17px; }
+.stage .shint { position: absolute; left: 14px; top: 42px; font-size: 12px; color: var(--muted); pointer-events: none; }
+.callout {
+  position: absolute; right: 14px; top: 12px; width: min(380px, 60%); background: #fff; border-radius: 10px;
+  border-left: 5px solid var(--teal); box-shadow: 0 10px 30px rgba(20,40,50,.18); padding: 10px 12px 10px 14px; font-size: 13.5px;
+  display: none;
+}
+.callout.show { display: block; animation: pop .25s ease; }
+@keyframes pop { from { transform: translateY(-6px); opacity: 0; } to { transform: none; opacity: 1; } }
+.callout h3 { margin: 0 0 4px; font-size: 15px; }
+.callout .cx { position: absolute; right: 8px; top: 4px; border: 0; background: none; font-size: 18px; color: var(--muted); }
+.callout .go { margin-top: 6px; }
+
+.transport { background: var(--panel); border-radius: var(--radius); padding: 8px 12px 6px; display: flex; flex-direction: column; gap: 4px; }
+.tp-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tp-row .play { min-width: 76px; }
+.tp-row .tval { font-variant-numeric: tabular-nums; min-width: 110px; font-size: 13px; color: var(--muted); }
+.tl { position: relative; flex: 1; min-width: 180px; height: 34px; }
+.tl input { position: absolute; left: 0; right: 0; top: 0; width: 100%; margin: 0; accent-color: var(--coral); }
+.tl .marks { position: absolute; left: 8px; right: 8px; top: 18px; height: 16px; }
+.tl .mk {
+  position: absolute; transform: translateX(-50%); font-size: 10.5px; line-height: 14px; padding: 0 4px; border-radius: 4px;
+  color: #fff; border: 0; white-space: nowrap; cursor: pointer;
+}
+.tl .mk:hover { z-index: 3; filter: brightness(1.1); }
+
+.charts { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; min-height: 0; }
+.chart { background: var(--panel); border-radius: var(--radius); display: flex; flex-direction: column; min-height: 0; min-width: 0; padding: 6px 8px 4px; }
+.chart-h { display: flex; align-items: center; gap: 6px; }
+.chart-h select { flex: 1; min-width: 0; border: 0; font-weight: 700; font-size: 13.5px; background: transparent; }
+.chart-h button { border: 0; background: #f0f3f2; border-radius: 5px; font-size: 11.5px; padding: 1px 6px; color: var(--muted); }
+.cwrap { position: relative; flex: 1; min-height: 120px; }
+.cwrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+.legend { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 11.5px; min-height: 18px; }
+.legend span { cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 4px; }
+.legend span.off { opacity: .35; text-decoration: line-through; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+
+/* 右侧分析 */
+.card { border: 1px solid var(--line); border-radius: 9px; padding: 9px 11px; margin-bottom: 10px; font-size: 13px; }
+.judge { font-size: 14px; }
+.judge .big { font-size: 17px; font-weight: 700; margin: 2px 0 4px; font-variant-numeric: tabular-nums; }
+.good { color: var(--green); }
+.bad { color: var(--coral); }
+.state-badge { display: inline-block; padding: 1px 9px; border-radius: 99px; color: #fff; font-size: 12.5px; font-weight: 600; }
+.kv { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 2px 12px; margin: 6px 0; font-variant-numeric: tabular-nums; }
+.kv div { display: flex; justify-content: space-between; border-bottom: 1px dotted #e3e8e5; }
+.kv b { font-weight: 600; }
+.chain { margin: 6px 0 0; padding: 0; list-style: none; }
+.chain li { padding: 3px 0 3px 18px; position: relative; }
+.chain li::before { content: "→"; position: absolute; left: 2px; color: var(--teal); font-weight: 700; }
+.chain li:first-child::before { content: "●"; font-size: 10px; top: 5px; }
+.selchips { display: flex; gap: 4px; flex-wrap: wrap; }
+.selchips button { border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: 0 9px; font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; }
+.selchips button.on { border-color: var(--ink); font-weight: 700; }
+.evlist, .seglist { list-style: none; padding: 0; margin: 0; }
+.evlist li, .seglist li { padding: 5px 6px; border-radius: 6px; cursor: pointer; border-bottom: 1px solid #eef2f0; }
+.evlist li:hover, .seglist li:hover { background: #f1f6f4; }
+.evlist li.cur, .seglist li.cur { background: #e6f2ef; }
+.evlist .et, .seglist .et { font-variant-numeric: tabular-nums; font-weight: 700; margin-right: 6px; }
+.seglist .desc { color: #33464c; }
+table.dt { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+table.dt th, table.dt td { padding: 3px 4px; text-align: right; border-bottom: 1px solid #edf1ef; }
+table.dt th:first-child, table.dt td:first-child { text-align: left; }
+.ledger div { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; padding: 1px 0; }
+.ledger .eq { font-weight: 700; border-top: 1px solid var(--line); margin-top: 4px; padding-top: 4px; }
+
+.modal { position: fixed; inset: 0; background: rgba(20,30,35,.45); display: none; align-items: center; justify-content: center; z-index: 50; }
+.modal.show { display: flex; }
+.modal .box { background: #fff; border-radius: 12px; max-width: 640px; width: calc(100% - 30px); max-height: 85vh; overflow: auto; padding: 16px 22px; font-size: 14px; }
+.modal h3 { margin-top: 4px; }
+kbd { background: #eef2f0; border: 1px solid #d5ddd9; border-radius: 4px; padding: 0 5px; font-size: 12px; }
+
+@media (max-width: 1200px) {
+  .app { grid-template-columns: 290px minmax(0,1fr); grid-template-rows: 52px 88vh auto; height: auto; }
+  .side.right { grid-column: 1 / -1; }
+  .side.left { max-height: 88vh; }
+}
+@media (max-width: 780px) {
+  .app { display: flex; flex-direction: column; height: auto; }
+  .topbar { height: 48px; flex: none; }
+  .topbar .sub { display: none; }
+  .topbar { gap: 8px; padding: 0 10px; }
+  .topbar h1 { font-size: 16px; letter-spacing: 0; }
+  .topbar button { padding: 4px 8px; font-size: 13px; }
+  #btnCsv { display: none; }
+  .side.left { max-height: none; }
+  .center { display: flex; flex-direction: column; }
+  .stage { height: 300px; flex: none; }
+  .charts { grid-template-columns: minmax(0,1fr); }
+  .chart { height: 250px; }
+  .callout { width: calc(100% - 20px); right: 10px; }
+}
+</style>
+</head>
+<body class="deck">
+<div class="app slide active" id="app">
+  <span class="tag" hidden>传送带模型模拟器</span>
+  <header class="topbar">
+    <h1>传送带模型模拟器</h1>
+    <span class="sub">分段解析解 · 受力、图像、能量联动 · 点击带面放置物块</span>
+    <span class="sp"></span>
+    <button id="btnHelp" type="button">使用说明</button>
+    <button id="btnCsv" type="button">导出 CSV</button>
+    <button id="btnFull" type="button">全屏</button>
+  </header>
+
+  <aside class="side left" id="left">
+    <h2>经典场景</h2>
+    <div id="presetBox"></div>
+    <div class="stem" id="stem"></div>
+
+    <h2>传送带参数</h2>
+    <div class="checkrow" style="justify-content:space-between">
+      <span>带速</span>
+      <span class="seg" id="beltMode"><button type="button" data-v="const">匀速</button><button type="button" data-v="ramp">变速（启动/制动）</button></span>
+    </div>
+    <div id="paramBox"></div>
+    <label class="checkrow"><input type="checkbox" id="approxTrig">取 sin37°=0.6、cos37°=0.8（53° 同理）</label>
+    <p class="hint">约定：沿带向右（向上）为正；V&lt;0 表示上表面向左（向下）运动。</p>
+
+    <h2>物块</h2>
+    <div id="blockBox"></div>
+    <div class="checkrow" style="flex-wrap:wrap">
+      <button class="btn" id="btnAdd" type="button">＋ 添加物块</button>
+      <span>新物块初速</span><input type="number" id="newU" value="0" step="0.5" style="width:56px;border:1px solid var(--line);border-radius:5px;text-align:right">
+      <span class="hint">m/s</span>
+    </div>
+    <div class="checkrow">
+      <span>多物块</span>
+      <select class="sel" id="collision">
+        <option value="none">无碰撞（互相穿过）</option>
+        <option value="elastic">弹性碰撞</option>
+        <option value="inelastic">完全非弹性（粘合）</option>
+      </select>
+    </div>
+
+    <h2>显示</h2>
+    <label class="checkrow"><input type="checkbox" data-opt="force" checked>受力箭头 G、N、f</label>
+    <label class="checkrow"><input type="checkbox" data-opt="vel" checked>速度箭头 v</label>
+    <label class="checkrow"><input type="checkbox" data-opt="rel" checked>相对带的滑动方向（判摩擦力方向）</label>
+    <label class="checkrow"><input type="checkbox" data-opt="trace" checked>带面痕迹（亮红色，随带移动）</label>
+    <label class="checkrow"><input type="checkbox" data-opt="dim" checked>痕迹范围双向箭头（标出 Δx）</label>
+    <div class="checkrow"><span>标注大小</span><span class="seg" id="zoomSeg"><button type="button" data-z="1">标准</button><button type="button" data-z="2" class="on">大</button><button type="button" data-z="2.8">特大</button></span><span class="hint">教室后排用“大/特大”</span></div>
+    <label class="checkrow"><input type="checkbox" data-opt="autopause" checked>关键时刻自动暂停并讲解</label>
+    <label class="checkrow"><input type="checkbox" data-opt="progressive" checked>图像随动画逐步描绘</label>
+  </aside>
+
+  <main class="center">
+    <div class="stage big" id="stage">
+      <canvas id="scene"></canvas>
+      <div class="tbig" id="tbig">t = 0.00 s</div>
+      <div class="shint">点击带面放置物块 · t=0 时可拖动物块</div>
+      <div class="callout" id="callout"><button class="cx" type="button" aria-label="关闭">×</button><h3></h3><div class="cb"></div></div>
+    </div>
+    <div class="transport">
+      <div class="tp-row">
+        <button class="btn pri play" id="btnPlay" type="button">▶ 播放</button>
+        <button class="btn" id="btnReset" type="button" title="回到 t=0">⏮</button>
+        <button class="btn" id="btnPrevEv" type="button" title="上一个关键时刻">◀◆</button>
+        <button class="btn" id="btnNextEv" type="button" title="下一个关键时刻">◆▶</button>
+        <select class="sel" id="speed">
+          <option value="0.1">0.1×</option><option value="0.25">0.25×</option><option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option>
+        </select>
+        <div class="tl"><input type="range" id="scrub" min="0" max="1" step="0.001" value="0"><div class="marks" id="marks"></div></div>
+        <span class="tval" id="tval"></span>
+      </div>
+    </div>
+    <div class="charts" id="charts"></div>
+  </main>
+
+  <aside class="side right" id="right">
+    <h2>判据</h2>
+    <div class="card judge" id="judge"></div>
+    <h2>此刻分析</h2>
+    <div class="selchips" id="selChips"></div>
+    <div class="card" id="now" style="margin-top:6px"></div>
+    <div id="tableWrap"></div>
+    <h2>关键时刻</h2>
+    <ul class="evlist card" id="evlist"></ul>
+    <h2>分段过程（选中物块）</h2>
+    <ul class="seglist card" id="seglist"></ul>
+    <h2>能量账本</h2>
+    <div class="card ledger" id="ledger"></div>
+  </aside>
+</div>
+
+<div class="modal" id="help">
+  <div class="box">
+    <h3>使用说明</h3>
+    <p><b>课堂演示：</b>左侧选经典场景 → <kbd>空格</kbd> 播放。默认在共速、速度为零、离开、碰撞等关键时刻自动暂停，右上角弹出讲解；再按空格继续。速度可调到 0.25× 慢放。</p>
+    <p><b>看懂摩擦力方向：</b>紫色虚线箭头是物块<b>相对传送带</b>的滑动方向，滑动摩擦力 f 与它相反；相对静止时 f 为静摩擦力，大小由 m(g sinθ + a<sub>带</sub>) 决定。</p>
+    <p><b>图像：</b>每张图可在标题处切换 7 种图像；点击图像跳到该时刻（靠近关键时刻会自动吸附）；点击图例可隐藏某条线；“PNG”按钮保存图片用于命题。</p>
+    <p><b>放物块：</b>点击带面即在该处放一个物块（初速取左侧“新物块初速”）；t=0 时可拖动物块调整位置。</p>
+    <p><b>快捷键：</b><kbd>空格</kbd> 播放/暂停　<kbd>←</kbd><kbd>→</kbd> 逐帧（0.02 s）　<kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd> 跳到上/下一个关键时刻　<kbd>Home</kbd> 回到 0</p>
+    <p><b>模型约定：</b>物块视为质点（以中心到达端点为离开）；各物块与带间 μ 相同，最大静摩擦力等于滑动摩擦力；带的运动由电动机保证，不受物块影响；传送带总长按 2L 计（忽略滚筒弧长），用于计算痕迹是否绕满一圈。</p>
+    <p><b>计算方法：</b>事件驱动的分段解析解——每段加速度恒定，按“共速、到达端点、碰撞、带变速结束”求出精确分段时刻；热量、电动机做功均按解析积分独立计算，再用 W<sub>电</sub> = ΔE<sub>k</sub> + ΔE<sub>p</sub> + Q + 碰撞损耗 校验（差值只剩浮点舍入误差）。</p>
+    <p style="text-align:right"><button class="btn pri" type="button" id="helpClose">知道了</button></p>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+ * 1. 物理引擎：事件驱动的分段解析解（纯函数，无 DOM 依赖）
+ * ===================================================================== */
+const Engine = (() => {
+  const T_EPS = 1e-12;
+
+  function trig(thetaDeg, approx) {
+    if (approx && Math.abs(thetaDeg - 37) < 1e-9) return { s: 0.6, c: 0.8 };
+    if (approx && Math.abs(thetaDeg - 53) < 1e-9) return { s: 0.8, c: 0.6 };
+    if (thetaDeg === 0) return { s: 0, c: 1 };
+    const r = thetaDeg * Math.PI / 180;
+    return { s: Math.sin(r), c: Math.cos(r) };
+  }
+
+  function beltProfile(cfg) {
+    if (cfg.beltMode === 'ramp' && cfg.beltAcc > 0 && cfg.V1 !== cfg.V0) {
+      const A = Math.sign(cfg.V1 - cfg.V0) * cfg.beltAcc;
+      return { V0: cfg.V0, V1: cfg.V1, A, tA: (cfg.V1 - cfg.V0) / A };
+    }
+    const V = cfg.beltMode === 'ramp' ? cfg.V0 : cfg.V;
+    return { V0: V, V1: V, A: 0, tA: 0 };
+  }
+
+  // a2·τ² + b1·τ + c0 = 0 的最小正根，且在根处导数符号与 dir 相同（真正“穿越”）
+  function rootCross(a2, b1, c0, dir) {
+    const roots = [];
+    if (Math.abs(a2) < 1e-14) {
+      if (Math.abs(b1) > 1e-14) roots.push(-c0 / b1);
+    } else {
+      const D = b1 * b1 - 4 * a2 * c0;
+      if (D >= 0) {
+        const q = -0.5 * (b1 + (b1 >= 0 ? 1 : -1) * Math.sqrt(D));
+        roots.push(q / a2);
+        if (q !== 0) roots.push(c0 / q);
+      }
+    }
+    let best = null;
+    for (const r of roots) {
+      if (!(r > T_EPS)) continue;
+      if ((2 * a2 * r + b1) * dir <= 1e-12) continue;
+      if (best === null || r < best) best = r;
+    }
+    return best;
+  }
+
+  function simulate(cfg) {
+    const g = cfg.g, mu = cfg.mu, L = cfg.L, T = cfg.T;
+    const { s: sn, c: cs } = trig(cfg.theta, cfg.approxTrig);
+    const belt = beltProfile(cfg);
+    const Lp = 2 * L;
+    const tolX = 1e-9 * Math.max(1, L), tolV = 1e-9;
+    const fmaxPM = mu * g * cs;                // 单位质量最大（滑动）摩擦力
+
+    const beltV = t => (belt.A !== 0 && t < belt.tA) ? belt.V0 + belt.A * t : belt.V1;
+    const beltAcc = t => (belt.A !== 0 && t < belt.tA - T_EPS) ? belt.A : 0;
+    const beltS = t => {
+      if (belt.A === 0) return belt.V0 * t;
+      if (t < belt.tA) return belt.V0 * t + belt.A * t * t / 2;
+      return belt.V0 * belt.tA + belt.A * belt.tA * belt.tA / 2 + belt.V1 * (t - belt.tA);
+    };
+
+    const blocks = cfg.blocks.map((b, i) => ({
+      i, name: b.name, color: b.color, m: b.m, x0: Math.min(L, Math.max(0, b.x0)), u0: b.u0, size: b.size, h: b.size / 2,
+    }));
+    const n = blocks.length;
+    const acc = blocks.map(b => ({ Wf: 0, Wm: 0, Wg: 0, Q: 0, rel: 0, Wc: 0, pmin: b.x0, pmax: b.x0 }));
+    const exits = new Array(n).fill(null);
+    let bodies = blocks.map((b, i) => ({ mem: [{ i, off: 0 }], M: b.m, s: b.x0, u: b.u0, on: true, lo: -b.h, hi: b.h }));
+    const epochs = [], events = [];
+    let Eloss = 0, t = 0;
+    const prevCls = new Array(n).fill(null);
+    const names = b => b.mem.map(x => blocks[x.i].name).join('+');
+
+    function classify(b, V, A) {
+      const d = b.u - V;
+      if (Math.abs(d) <= tolV * (1 + Math.abs(V))) {
+        const need = A + g * sn;           // 随带一起运动所需的单位质量静摩擦力（沿正方向）
+        if (Math.abs(need) <= fmaxPM + 1e-12) return { mode: 'stick', sigma: 0, fpm: need, a: A, u: V, eq: true, need };
+        const sigma = need > 0 ? -1 : 1;   // 带的加速“拖不动”物块 → 物块落后（u<V）
+        const fpm = -fmaxPM * sigma;
+        return { mode: 'slip', sigma, fpm, a: -g * sn + fpm, u: V, eq: true, need };
+      }
+      const sigma = Math.sign(d), fpm = -fmaxPM * sigma;
+      return { mode: 'slip', sigma, fpm, a: -g * sn + fpm, u: b.u, eq: false };
+    }
+
+    function leave(b, end, tt) {
+      b.on = false;
+      b.s = end === 'top' ? L : 0;
+      for (const x of b.mem) exits[x.i] = { t: tt, end, u: b.u, s: b.s + x.off };
+      events.push({ t: tt, type: 'leave', ids: b.mem.map(x => x.i), who: names(b), end, u: b.u });
+    }
+
+    function collide(tt) {
+      const on = bodies.filter(b => b.on).sort((p, q) => p.s - q.s);
+      for (let k = 0; k + 1 < on.length; k++) {
+        const i = on[k], j = on[k + 1];
+        const gap = (j.s + j.lo) - (i.s + i.hi);
+        if (gap > tolX * 10 || !(i.u > j.u + tolV)) continue;
+        const M1 = i.M, M2 = j.M, u1 = i.u, u2 = j.u;
+        if (cfg.collision === 'elastic') {
+          const v1 = ((M1 - M2) * u1 + 2 * M2 * u2) / (M1 + M2);
+          const v2 = ((M2 - M1) * u2 + 2 * M1 * u1) / (M1 + M2);
+          for (const x of i.mem) acc[x.i].Wc += 0.5 * blocks[x.i].m * (v1 * v1 - u1 * u1);
+          for (const x of j.mem) acc[x.i].Wc += 0.5 * blocks[x.i].m * (v2 * v2 - u2 * u2);
+          i.u = v1; j.u = v2;
+          events.push({ t: tt, type: 'collide', ids: [...i.mem, ...j.mem].map(x => x.i), a: names(i), b: names(j), before: [u1, u2], after: [v1, v2], M: [M1, M2] });
+        } else {
+          const M = M1 + M2, v = (M1 * u1 + M2 * u2) / M, s = (M1 * i.s + M2 * j.s) / M;
+          const mem = [...i.mem.map(x => ({ i: x.i, off: i.s + x.off - s })), ...j.mem.map(x => ({ i: x.i, off: j.s + x.off - s }))];
+          for (const x of i.mem) acc[x.i].Wc += 0.5 * blocks[x.i].m * (v * v - u1 * u1);
+          for (const x of j.mem) acc[x.i].Wc += 0.5 * blocks[x.i].m * (v * v - u2 * u2);
+          const loss = 0.5 * M1 * u1 * u1 + 0.5 * M2 * u2 * u2 - 0.5 * M * v * v;
+          Eloss += loss;
+          const nb = { mem, M, s, u: v, on: true,
+            lo: Math.min(...mem.map(x => x.off - blocks[x.i].h)), hi: Math.max(...mem.map(x => x.off + blocks[x.i].h)) };
+          events.push({ t: tt, type: 'merge', ids: mem.map(x => x.i), a: names(i), b: names(j), before: [u1, u2], after: [v, v], M: [M1, M2], loss });
+          bodies = bodies.filter(b => b !== i && b !== j).concat(nb);
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function settle(tt, V, A) {
+      for (let iter = 0; iter < 60; iter++) {
+        for (const b of bodies) if (b.on) Object.assign(b, classify(b, V, A));
+        let changed = false;
+        for (const b of bodies) {
+          if (!b.on) continue;
+          const top = b.s >= L - tolX && (b.u > tolV || (Math.abs(b.u) <= tolV && b.a > 1e-12));
+          const bot = b.s <= tolX && (b.u < -tolV || (Math.abs(b.u) <= tolV && b.a < -1e-12));
+          if (top || bot) { leave(b, top ? 'top' : 'bottom', tt); changed = true; }
+        }
+        if (cfg.collision !== 'none' && collide(tt)) changed = true;
+        if (!changed) return;
+      }
+    }
+
+    function transitions(tt, V, A) {
+      const seen = new Set();
+      for (const b of bodies) {
+        if (!b.on) continue;
+        for (const x of b.mem) {
+          const p = prevCls[x.i];
+          const cur = { mode: b.mode, sigma: b.sigma, fpm: b.fpm, a: b.a };
+          if (p && !seen.has(b)) {
+            if (p.mode === 'slip' && b.eq && p.sigma !== 0) {
+              seen.add(b);
+              events.push({ t: tt, type: 'cospeed', ids: b.mem.map(y => y.i), who: names(b), V, stick: b.mode === 'stick',
+                fpmBefore: p.fpm, fpmAfter: b.fpm, aBefore: p.a, aAfter: b.a, need: b.need, M: b.M, sigmaAfter: b.sigma, A });
+            } else if (p.mode === 'stick' && b.mode === 'slip') {
+              seen.add(b);
+              events.push({ t: tt, type: 'unstick', ids: b.mem.map(y => y.i), who: names(b), V, need: b.need, M: b.M, sigmaAfter: b.sigma, aAfter: b.a, A });
+            }
+          }
+          prevCls[x.i] = cur;
+        }
+      }
+    }
+
+    function snapshot(tt, V, A, sb) {
+      const map = new Array(n);
+      for (const b of bodies) for (const x of b.mem) map[x.i] = { b, off: x.off };
+      return blocks.map((bk, i) => {
+        const { b, off } = map[i];
+        const a0 = acc[i];
+        if (b.on) return { on: true, s: b.s + off, u: b.u, a: b.a, fpm: b.fpm, f: bk.m * b.fpm, mode: b.mode, sigma: b.sigma, ...a0 };
+        const ex = exits[i];
+        return { on: false, s: ex.s, u: ex.u, a: 0, fpm: 0, f: 0, mode: 'off', sigma: 0, ...a0 };
+      });
+    }
+
+    function advance(dt, V, A, sb) {
+      const bdisp = V * dt + A * dt * dt / 2;
+      for (const b of bodies) {
+        if (!b.on) continue;
+        const disp = b.u * dt + b.a * dt * dt / 2;
+        const dr0 = b.u - V, da = b.a - A;
+        for (const x of b.mem) {
+          const m = blocks[x.i].m, f = m * b.fpm, a0 = acc[x.i];
+          a0.Wf += f * disp;
+          a0.Wm += f * bdisp;
+          a0.Wg += -m * g * sn * disp;
+          if (b.mode === 'slip') {
+            const dr = Math.abs(disp - bdisp);
+            a0.rel += dr; a0.Q += mu * m * g * cs * dr;
+          }
+          const p0 = b.s + x.off - sb;
+          const pAt = tau => p0 + dr0 * tau + da * tau * tau / 2;
+          const cand = [pAt(dt)];
+          if (Math.abs(da) > 1e-14) { const tv = -dr0 / da; if (tv > 0 && tv < dt) cand.push(pAt(tv)); }
+          for (const p of cand) { if (p < a0.pmin) a0.pmin = p; if (p > a0.pmax) a0.pmax = p; }
+        }
+        b.s += disp; b.u += b.a * dt;
+      }
+    }
+
+    let guard = 0;
+    while (guard++ < 20000) {
+      const V = beltV(t), A = beltAcc(t), sb = beltS(t);
+      settle(t, V, A);
+      transitions(t, V, A);
+      if (t >= T - T_EPS || !bodies.some(b => b.on)) break;
+      let dt = T - t;
+      if (belt.A !== 0 && t < belt.tA - T_EPS) dt = Math.min(dt, belt.tA - t);
+      const on = bodies.filter(b => b.on);
+      for (const b of on) {
+        if (b.mode === 'slip') {
+          const d0 = b.u - V, da = b.a - A;
+          if (d0 * da < 0) { const tau = -d0 / da; if (tau > T_EPS) dt = Math.min(dt, tau); }
+        }
+        const r1 = rootCross(b.a / 2, b.u, b.s - L, +1); if (r1 !== null) dt = Math.min(dt, r1);
+        const r2 = rootCross(b.a / 2, b.u, b.s, -1); if (r2 !== null) dt = Math.min(dt, r2);
+      }
+      if (cfg.collision !== 'none') {
+        const srt = on.slice().sort((p, q) => p.s - q.s);
+        for (let k = 0; k + 1 < srt.length; k++) {
+          const i = srt[k], j = srt[k + 1];
+          const gap0 = (j.s + j.lo) - (i.s + i.hi);
+          const r = rootCross((j.a - i.a) / 2, j.u - i.u, gap0, -1);
+          if (r !== null) dt = Math.min(dt, r);
+        }
+      }
+      epochs.push({ t0: t, t1: t + dt, V0: V, A, sb0: sb, rec: snapshot(t, V, A, sb) });
+      advance(dt, V, A, sb);
+      let tn = t + dt;
+      if (Math.abs(tn - T) < 1e-9) tn = T;
+      if (belt.A !== 0 && t < belt.tA - T_EPS && Math.abs(tn - belt.tA) < 1e-9) {
+        tn = belt.tA;
+        events.push({ t: tn, type: 'beltEnd', ids: [], V: belt.V1 });
+      }
+      epochs[epochs.length - 1].t1 = tn;
+      t = tn;
+    }
+
+    // 所有物块离开后，再留一小段时间展示抛出轨迹
+    const allOff = !bodies.some(b => b.on);
+    const tEnd = allOff ? Math.min(T, Math.max(t + 0.8, 0.5)) : T;
+    if (tEnd > t + 1e-9 || epochs.length === 0) {
+      epochs.push({ t0: t, t1: Math.max(tEnd, t + 1e-9), V0: beltV(t), A: beltAcc(t), sb0: beltS(t), rec: snapshot(t, beltV(t), beltAcc(t), beltS(t)) });
+    } else {
+      epochs[epochs.length - 1].t1 = tEnd;
+    }
+
+    // “速度为零但未共速”的时刻（经典易错点）：只作标注，不改变运动分段
+    for (const e of epochs) {
+      e.rec.forEach((r, i) => {
+        if (!r.on || r.mode !== 'slip' || Math.abs(r.a) < 1e-14) return;
+        const tau = -r.u / r.a;
+        if (tau > 1e-9 && tau < e.t1 - e.t0 - 1e-9) {
+          const tt = e.t0 + tau, V = beltV(tt);
+          if (Math.abs(V) > 1e-9) events.push({ t: tt, type: 'stop', ids: [i], who: blocks[i].name, V, a: r.a, sigma: r.sigma, fpm: r.fpm });
+        }
+      });
+    }
+    events.sort((p, q) => p.t - q.t);
+
+    const sim = { cfg, blocks, epochs, events, belt, sn, cs, g, mu, L, Lp, T, tEnd, Eloss, fmaxPM, exits, beltV, beltS, beltAcc };
+
+    function epochIndex(tt) {
+      let lo = 0, hi = epochs.length - 1;
+      while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (epochs[mid].t0 <= tt) lo = mid; else hi = mid - 1; }
+      return lo;
+    }
+    function evalRec(e, r, bk, tau) {
+      if (!r.on) return { ...r, rel: r.rel, Q: r.Q, Wm: r.Wm, Wc: r.Wc };
+      const disp = r.u * tau + r.a * tau * tau / 2, bdisp = e.V0 * tau + e.A * tau * tau / 2;
+      const o = { on: true, s: r.s + disp, u: r.u + r.a * tau, a: r.a, fpm: r.fpm, f: r.f, mode: r.mode, sigma: r.sigma,
+        Wf: r.Wf + r.f * disp, Wm: r.Wm + r.f * bdisp, Wg: r.Wg - bk.m * g * sn * disp, Q: r.Q, rel: r.rel, Wc: r.Wc, pmin: r.pmin, pmax: r.pmax };
+      if (r.mode === 'slip') { const dr = Math.abs(disp - bdisp); o.rel += dr; o.Q += mu * bk.m * g * cs * dr; }
+      const p0 = r.s - e.sb0, dr0 = r.u - e.V0, da = r.a - e.A;
+      const pAt = x => p0 + dr0 * x + da * x * x / 2;
+      const cand = [pAt(tau)];
+      if (Math.abs(da) > 1e-14) { const tv = -dr0 / da; if (tv > 0 && tv < tau) cand.push(pAt(tv)); }
+      for (const p of cand) { o.pmin = Math.min(o.pmin, p); o.pmax = Math.max(o.pmax, p); }
+      return o;
+    }
+    sim.evalRec = evalRec;
+    sim.stateAt = function (tt) {
+      tt = Math.min(Math.max(tt, 0), tEnd);
+      const k = epochIndex(tt), e = epochs[k], tau = tt - e.t0;
+      const V = beltV(tt), sb = beltS(tt);
+      const bl = e.rec.map((r, i) => {
+        const bk = blocks[i], o = evalRec(e, r, bk, tau);
+        o.p = o.s - sb;
+        o.trace = Math.min(o.pmax - o.pmin, Lp);
+        o.dEk = 0.5 * bk.m * (o.u * o.u - bk.u0 * bk.u0);
+        o.dEp = bk.m * g * sn * (o.s - bk.x0);
+        o.resid = o.Wm - (o.dEk + o.dEp + o.Q - o.Wc);
+        if (!o.on) o.exit = exits[i];
+        return o;
+      });
+      let loss = 0;
+      for (const ev of events) if (ev.type === 'merge' && ev.t <= tt + 1e-12) loss += ev.loss;
+      const sys = { Wm: 0, dEk: 0, dEp: 0, Q: 0, loss };
+      for (const o of bl) { sys.Wm += o.Wm; sys.dEk += o.dEk; sys.dEp += o.dEp; sys.Q += o.Q; }
+      sys.resid = sys.Wm - (sys.dEk + sys.dEp + sys.Q + loss);
+      return { t: tt, V, A: beltAcc(tt), sb, k, blocks: bl, sys };
+    };
+
+    // 每个物块的分段（相邻 epoch 若受力状态相同则合并）
+    sim.segments = blocks.map((bk, i) => {
+      const segs = [];
+      for (const e of epochs) {
+        const r = e.rec[i];
+        if (!r.on) continue;
+        const key = r.mode + '|' + r.sigma + '|' + r.a.toFixed(9) + '|' + e.A.toFixed(9);
+        const last = segs[segs.length - 1];
+        const end = evalRec(e, r, bk, e.t1 - e.t0);
+        if (last && last.key === key && Math.abs(last.t1 - e.t0) < 1e-9) {
+          last.t1 = e.t1; last.u1 = end.u; last.s1 = end.s;
+        } else {
+          segs.push({ key, t0: e.t0, t1: e.t1, mode: r.mode, sigma: r.sigma, a: r.a, f: r.f, fpm: r.fpm, u0: r.u, u1: end.u, s0: r.s, s1: end.s, A: e.A });
+        }
+      }
+      return segs;
+    });
+    return sim;
+  }
+
+  return { simulate, trig, beltProfile };
+})();
+
+/* =====================================================================
+ * 2. 经典预设场景（g 取 10 m/s²；37° 默认取 sin=0.6、cos=0.8）
+ * ===================================================================== */
+const COLORS = ['#2f7fd0', '#df684c', '#4d8d54', '#d59b24', '#7463b6', '#15847d'];
+const NAMES = 'ABCDEF';
+const B = (i, m, x0, u0, size = 0.4) => ({ name: NAMES[i], color: COLORS[i], m, x0, u0, size });
+const base = { L: 8, theta: 0, V: 4, beltMode: 'const', V0: 0, V1: 4, beltAcc: 2, mu: 0.2, g: 10, T: 6, approxTrig: true, collision: 'none' };
+
+const f2 = x => fmt(x, 2);
+const firstEv = (sim, type, i = 0) => sim.events.find(e => e.type === type && e.ids.includes(i));
+const endState = (sim, i = 0) => sim.stateAt(sim.tEnd).blocks[i];
+const maxS = (sim, i = 0) => { let m = -Infinity; for (let k = 0; k <= 800; k++) { const o = sim.stateAt(sim.tEnd * k / 800).blocks[i]; if (o.on) m = Math.max(m, o.s); } return m; };
+const exitTxt = (sim, i = 0) => { const x = sim.exits[i]; return x ? `t = ${f2(x.t)} s 从${endName(sim, x.end)}离开，速度 ${f2(x.u)} m/s` : '模拟时长内未离开传送带'; };
+const endName = (sim, end) => sim.cfg.theta > 0 ? (end === 'top' ? '顶端' : '底端') : (end === 'top' ? '右端' : '左端');
+const coTxt = (sim, i = 0) => {
+  const e = firstEv(sim, 'cospeed', i);
+  if (!e) return '离开前未与带共速';
+  const s = sim.stateAt(e.t).blocks[i];
+  return `t₁ = ${f2(e.t)} s 共速（V = ${f2(e.V)} m/s），此时物块位于 x = ${f2(s.s)} m 处，对地位移 ${f2(s.s - sim.blocks[i].x0)} m`;
+};
+
+const PRESETS = [
+  { id: 'h1', group: '水平传送带', name: '轻放物块', point: ['先加速后匀速', '共速后 f = 0', '痕迹与生热'],
+    stem: '水平传送带长 L = 8 m，以 V = 4 m/s 向右匀速运行。把 m = 1 kg 的物块轻放在左端，μ = 0.2，g 取 10 m/s²。',
+    q: [['物块何时与带共速？', s => coTxt(s)],
+        ['共速后物块受摩擦力吗？', s => `不受。共速后二者相对静止且带匀速，物块匀速运动所需合力为 0，所以 f = 0。${exitTxt(s)}。`],
+        ['痕迹多长？生热多少？电动机多做多少功？', s => { const o = endState(s); return `痕迹 ${f2(o.trace)} m，Q = μmg·Δs = ${f2(o.Q)} J，W电 = ΔEk + Q = ${f2(o.dEk)} + ${f2(o.Q)} = ${f2(o.Wm)} J（W电 = 2Q = mV²：水平带轻放的特有结论）`; }]],
+    cfg: { ...base, L: 8, V: 4, T: 5, blocks: [B(0, 1, 0, 0)] } },
+  { id: 'h2', group: '水平传送带', name: '初速 v₀ > V', point: ['先减速后匀速', '电动机做负功'],
+    stem: '水平传送带长 L = 10 m，V = 2 m/s 向右。物块以 v₀ = 6 m/s 从左端向右滑上，μ = 0.2。',
+    q: [['物块做什么运动？', s => `u > V，物块相对带向右滑，摩擦力向左，a = −μg = −2 m/s²，先减速；${coTxt(s)}；之后匀速。`],
+        ['电动机做功为何为负？', s => { const o = endState(s); return `物块对带的摩擦力与带运动方向相同，“帮”带运动，W电 = ${f2(o.Wm)} J < 0。能量关系：W电 = ΔEk + Q = ${f2(o.dEk)} + ${f2(o.Q)}。`; }]],
+    cfg: { ...base, L: 10, V: 2, T: 5, blocks: [B(0, 1, 0, 6)] } },
+  { id: 'h3', group: '水平传送带', name: '反向滑上（v₀ > V）', point: ['共速点 ≠ 速度零点', '返回速度等于带速'],
+    stem: '水平传送带长 L = 8 m，V = 2 m/s 向右。物块以 4 m/s 从右端向左滑上，μ = 0.2。',
+    q: [['速度减为零时摩擦力方向变不变？', s => { const e = firstEv(s, 'stop'); return e ? `不变。t = ${f2(e.t)} s 时 u = 0，但带仍以 ${f2(e.V)} m/s 向右运动，物块仍相对带向左滑，摩擦力仍向右，a 仍为 +2 m/s²——物块接着被“拖回来”。` : '—'; }],
+        ['物块从哪端离开？速度多大？', s => `${exitTxt(s)}。因 v₀ > V，返回时先加速到与带共速再匀速，离开速度等于带速。`],
+        ['痕迹长度与相对路程一样吗？', s => { const o = endState(s); return `相对路程 ${f2(o.rel)} m，痕迹 ${f2(o.trace)} m。全程物块相对带一直向左滑（方向不变），所以二者相等；Q = μmg·Δs相对 = ${f2(o.Q)} J。`; }]],
+    cfg: { ...base, L: 8, V: 2, T: 6, blocks: [B(0, 1, 8, -4)] } },
+  { id: 'h4', group: '水平传送带', name: '反向滑上（v₀ < V）', point: ['原速率返回', '未共速即离开'],
+    stem: '水平传送带长 L = 8 m，V = 2 m/s 向右。物块以 1.5 m/s 从右端向左滑上，μ = 0.2。',
+    q: [['物块离开时速度多大？', s => `${exitTxt(s)}。向左减速与向右加速的加速度相同、位移相同，所以以原速率返回（还没来得及与带共速）。`]],
+    cfg: { ...base, L: 8, V: 2, T: 4, blocks: [B(0, 1, 8, -1.5)] } },
+  { id: 'h5', group: '水平传送带', name: '带长不足', point: ['临界带长 L₀ = V²/(2μg)'],
+    stem: '水平传送带长 L = 3 m，V = 4 m/s 向右，物块轻放在左端，μ = 0.2。',
+    q: [['物块能否与带共速？', s => `加速到带速需位移 V²/(2μg) = 4 m > L = 3 m，不能共速。${exitTxt(s)}。可把 L 拖到 4 m 以上对比。`]],
+    cfg: { ...base, L: 3, V: 4, T: 3, blocks: [B(0, 1, 0, 0)] } },
+  { id: 'i1', group: '倾斜传送带', name: '上行带 · μ ≥ tanθ', point: ['底端轻放', '共速后静摩擦 mg sinθ'],
+    stem: '倾角 37° 的传送带长 L = 6 m，以 V = 2 m/s 沿带向上运行。物块轻放在底端，μ = 0.875（> tan37° = 0.75）。',
+    q: [['物块加速度多大？', s => `u < V，物块相对带向下滑，摩擦力沿带向上：a = μg cosθ − g sinθ = 7 − 6 = 1 m/s²。${coTxt(s)}。`],
+        ['共速后摩擦力是什么力？多大？', s => `μ ≥ tanθ，最大静摩擦 μmg cosθ = 7 N ≥ mg sinθ = 6 N，物块随带匀速上行，受沿带向上的静摩擦力 f = mg sinθ = 6 N。${exitTxt(s)}。`],
+        ['电动机多做的功去哪了？', s => { const o = endState(s); return `W电 = ${f2(o.Wm)} J = ΔEk ${f2(o.dEk)} + ΔEp ${f2(o.dEp)} + Q ${f2(o.Q)} J。`; }]],
+    cfg: { ...base, L: 6, theta: 37, V: 2, mu: 0.875, T: 6, blocks: [B(0, 1, 0, 0)] } },
+  { id: 'i2', group: '倾斜传送带', name: '上行带 · μ < tanθ', point: ['送不上去', '一路加速下滑'],
+    stem: '倾角 37° 的传送带长 L = 4 m，V = 2 m/s 沿带向上。物块从顶端由静止释放，μ = 0.5（< tan37°）。',
+    q: [['物块能被带“送上去”吗？', s => `不能。u = 0 < V，物块相对带向下滑，摩擦力沿带向上，a = μg cosθ − g sinθ = 4 − 6 = −2 m/s²（沿带向下），一路加速下滑。${exitTxt(s)}。`]],
+    cfg: { ...base, L: 4, theta: 37, V: 2, mu: 0.5, T: 4, blocks: [B(0, 1, 4, 0)] } },
+  { id: 'i3', group: '倾斜传送带', name: '上行带 · 底端上冲', point: ['摩擦力在共速时翻转', '冲顶、折返'],
+    stem: '倾角 37° 的传送带长 L = 4 m，V = 2 m/s 沿带向上。物块以 6 m/s 从底端冲上，μ = 0.5。',
+    q: [['共速前后加速度各多大？', s => { const e = firstEv(s, 'cospeed'); return e ? `共速前 u > V，摩擦力沿带向下：a₁ = −(g sinθ + μg cosθ) = ${f2(e.aBefore)} m/s²；t = ${f2(e.t)} s 共速，因 μ < tanθ 不能相对静止，摩擦力翻转为沿带向上：a₂ = ${f2(e.aAfter)} m/s²。` : '—'; }],
+        ['物块最高到哪里？最终如何？', s => `最高到达 x = ${f2(maxS(s))} m（< L，冲不到顶）。${exitTxt(s)}。把 L 调到 2.6 m 以下可以看到冲顶。`]],
+    cfg: { ...base, L: 4, theta: 37, V: 2, mu: 0.5, T: 5, blocks: [B(0, 1, 0, 6)] } },
+  { id: 'i4', group: '倾斜传送带', name: '带静止 · 冲上斜面', point: ['相当于粗糙斜面', '上滑 → 停 → 下滑'],
+    stem: '倾角 37° 的传送带静止（V = 0），长 5 m。物块以 5 m/s 从底端冲上，μ = 0.5。',
+    q: [['上滑与下滑的加速度一样吗？', s => { const e = firstEv(s, 'cospeed'); return e ? `不一样。上滑 a₁ = −(g sinθ + μg cosθ) = ${f2(e.aBefore)} m/s²；t = ${f2(e.t)} s 速度为零（也与静止的带“共速”），因 μ < tanθ 下滑，a₂ = ${f2(e.aAfter)} m/s²。${exitTxt(s)}。` : '—'; }]],
+    cfg: { ...base, L: 5, theta: 37, V: 0, mu: 0.5, T: 4, blocks: [B(0, 1, 0, 5)] } },
+  { id: 'i5', group: '倾斜传送带', name: '下行带 · μ < tanθ', point: ['两段加速', '经典 16 m 题'],
+    stem: '倾角 37° 的传送带长 16 m，以 10 m/s 沿带向下运行（V = −10 m/s）。物块从顶端轻放，μ = 0.5。',
+    q: [['共速前后摩擦力方向？', s => { const e = firstEv(s, 'cospeed'); return e ? `共速前物块比带慢，相对带向上滑，摩擦力沿带向下：a₁ = −(g sinθ + μg cosθ) = ${f2(e.aBefore)} m/s²；t = ${f2(e.t)} s 共速后 μ < tanθ，物块比带快，相对带向下滑，摩擦力翻转为沿带向上：a₂ = ${f2(e.aAfter)} m/s²。` : '—'; }],
+        ['到达底端用时与速度？', s => `${exitTxt(s)}。`]],
+    cfg: { ...base, L: 16, theta: 37, V: -10, mu: 0.5, T: 4, blocks: [B(0, 1, 16, 0)] } },
+  { id: 'i6', group: '倾斜传送带', name: '下行带 · μ ≥ tanθ', point: ['先加速后随带匀速', '静摩擦沿带向上'],
+    stem: '倾角 37° 的传送带长 8 m，以 5.2 m/s 沿带向下运行。物块从顶端轻放，μ = 0.875。',
+    q: [['共速后物块怎样运动？', s => { const e = firstEv(s, 'cospeed'); return e ? `t = ${f2(e.t)} s 共速，因 μ ≥ tanθ，物块随带匀速下行，静摩擦力沿带向上，大小 mg sinθ = 6 N。${exitTxt(s)}。` : '—'; }]],
+    cfg: { ...base, L: 8, theta: 37, V: -5.2, mu: 0.875, T: 4, blocks: [B(0, 1, 8, 0)] } },
+  { id: 'b1', group: '变速传送带', name: '带由静止加速（黑色痕迹）', point: ['a带 > μg 时打滑', '痕迹长度'],
+    stem: '水平传送带上放一煤块，μ = 0.2。传送带从静止开始以 a带 = 4 m/s² 加速到 4 m/s 后匀速。求煤块在带上留下的黑色痕迹长度。（2006 全国卷改编）',
+    q: [['煤块为什么一开始就相对带滑动？', s => `带要以 4 m/s² 加速，而摩擦力最多只能给煤块 μg = 2 m/s² 的加速度，煤块跟不上，相对带向后滑。`],
+        ['痕迹多长？', s => { const o = endState(s); return `${coTxt(s)}。痕迹 = 带的位移 − 煤块的位移 = ${f2(o.trace)} m。`; }]],
+    cfg: { ...base, L: 20, beltMode: 'ramp', V0: 0, V1: 4, beltAcc: 4, mu: 0.2, T: 7, blocks: [B(0, 1, 0, 0)] } },
+  { id: 'b2', group: '变速传送带', name: '带制动（物块前冲）', point: ['a带 大于 μg', '物块相对带向前滑'],
+    stem: '水平传送带与物块一起以 4 m/s 向右运动，某时刻带以 4 m/s² 的加速度制动直到停止，μ = 0.1。',
+    q: [['制动后物块怎样运动？', s => `带减速需要物块获得 4 m/s² 的减速度，但最大静摩擦只能提供 μg = 1 m/s²，物块相对带向前滑，以 1 m/s² 减速。${coTxt(s)}。`],
+        ['痕迹多长？', s => `痕迹 ${f2(endState(s).trace)} m（物块比带多走的距离）。`]],
+    cfg: { ...base, L: 12, beltMode: 'ramp', V0: 4, V1: 0, beltAcc: 4, mu: 0.1, T: 5, blocks: [B(0, 1, 1, 4)] } },
+  { id: 'c1', group: '多物块', name: '追及 · 弹性碰撞', point: ['等质量交换速度', '碰后各自趋向带速'],
+    stem: '水平带 V = 2 m/s，μ = 0.2。A 以 6 m/s 从左端附近滑上，前方 B 轻放，质量均为 1 kg，发生弹性碰撞。',
+    q: [['碰撞前后速度？', s => { const e = s.events.find(x => x.type === 'collide'); return e ? `t = ${f2(e.t)} s 碰撞：碰前 uA = ${f2(e.before[0])}、uB = ${f2(e.before[1])} m/s；碰后 uA = ${f2(e.after[0])}、uB = ${f2(e.after[1])} m/s——等质量弹性碰撞交换速度。` : '未发生碰撞'; }]],
+    cfg: { ...base, L: 14, V: 2, T: 6, collision: 'elastic', blocks: [B(0, 1, 0.5, 6), B(1, 1, 3, 0)] } },
+  { id: 'c2', group: '多物块', name: '追及 · 完全非弹性', point: ['动量守恒', '碰撞损耗'],
+    stem: '水平带 V = 2 m/s，μ = 0.2。A（1 kg）以 6 m/s 滑上，前方 B（2 kg）轻放，碰后粘在一起。',
+    q: [['碰后共同速度与机械能损失？', s => { const e = s.events.find(x => x.type === 'merge'); return e ? `t = ${f2(e.t)} s 碰撞，动量守恒：v = (mA·uA + mB·uB)/(mA + mB) = ${f2(e.after[0])} m/s，损失机械能 ${f2(e.loss)} J。能量账本中电动机做功也要计入这部分损耗。` : '未发生碰撞'; }]],
+    cfg: { ...base, L: 14, V: 2, T: 6, collision: 'inelastic', blocks: [B(0, 1, 0.5, 6), B(1, 2, 3, 0)] } },
+];
+
+/* =====================================================================
+ * 3. 工具函数
+ * ===================================================================== */
+const $ = s => document.querySelector(s);
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return '—';
+  const v = Math.abs(x) < 0.5 * Math.pow(10, -d) ? 0 : x;
+  return v.toFixed(d);
+}
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+const clone = o => JSON.parse(JSON.stringify(o));
+const isFlat = () => S.cfg.theta === 0;
+const dirWord = sgn => isFlat() ? (sgn > 0 ? '向右' : '向左') : (sgn > 0 ? '沿带向上' : '沿带向下');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* =====================================================================
+ * 4. 应用状态
+ * ===================================================================== */
+const S = {
+  presetId: 'h1', cfg: null, sim: null, t: 0, playing: false, speed: 1, sel: 0,
+  opt: { zoom: 2, dim: true, force: true, vel: true, rel: true, trace: true, autopause: true, progressive: true },
+  charts: ['vt', 'ft', 'en'], hidden: {}, drag: null, lastEvent: null,
+};
+
+function rebuild(keepTime = true) {
+  S.sim = Engine.simulate(S.cfg);
+  if (S.sel >= S.cfg.blocks.length) S.sel = Math.max(0, S.cfg.blocks.length - 1);
+  S.t = keepTime ? clamp(S.t, 0, S.sim.tEnd) : 0;
+  buildSeries();
+  renderMarks();
+  renderEvents();
+  renderSegments();
+  renderSelChips();
+  dirty();
+}
+
+function loadPreset(id) {
+  const p = PRESETS.find(x => x.id === id) || PRESETS[0];
+  S.presetId = p.id;
+  S.cfg = clone(p.cfg);
+  S.sel = 0; S.t = 0; S.playing = false; S.hidden = {};
+  hideCallout();
+  renderPresets(); renderParams(); renderBlocks();
+  rebuild(false);
+  renderStem();
+  updatePlayBtn();
+}
+
+/* =====================================================================
+ * 5. 左侧：预设、参数、物块
+ * ===================================================================== */
+function renderPresets() {
+  const box = $('#presetBox');
+  const groups = [...new Set(PRESETS.map(p => p.group))];
+  box.innerHTML = groups.map(g => `<div class="preset-group">${g}</div><div class="presets">${
+    PRESETS.filter(p => p.group === g).map(p => `<button type="button" data-id="${p.id}" class="${p.id === S.presetId ? 'on' : ''}">${p.name}</button>`).join('')}</div>`).join('');
+}
+$('#presetBox').addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if (b) loadPreset(b.dataset.id); });
+
+function renderStem() {
+  const p = PRESETS.find(x => x.id === S.presetId);
+  if (!p) { $('#stem').innerHTML = ''; return; }
+  $('#stem').innerHTML = `<b>${p.group} · ${p.name}</b><div>${p.stem}</div>
+    <div class="pt">${p.point.map(x => `<span class="chip">${x}</span>`).join('')}</div>
+    <div class="qa">${p.q.map((q, k) => `<details data-k="${k}"><summary>${q[0]}</summary><div class="ans"></div></details>`).join('')}</div>
+    <div class="hint" style="margin-top:4px">答案由当前参数实时计算；改参数后答案随之变化。</div>`;
+  updateAnswers();
+}
+function updateAnswers() {
+  const p = PRESETS.find(x => x.id === S.presetId);
+  if (!p) return;
+  document.querySelectorAll('#stem details').forEach(d => {
+    let txt;
+    try { txt = p.q[+d.dataset.k][1](S.sim); } catch (err) { txt = '（当前参数下不适用）'; }
+    d.querySelector('.ans').textContent = txt;
+  });
+}
+
+const PARAMS = [
+  { k: 'L', label: '带长 L', unit: 'm', min: 1, max: 30, step: 0.1 },
+  { k: 'theta', label: '倾角 θ', unit: '°', min: 0, max: 60, step: 1 },
+  { k: 'V', label: '带速 V', unit: 'm/s', min: -12, max: 12, step: 0.1, mode: 'const' },
+  { k: 'V0', label: '初带速 V₀', unit: 'm/s', min: -12, max: 12, step: 0.1, mode: 'ramp' },
+  { k: 'V1', label: '末带速 V₁', unit: 'm/s', min: -12, max: 12, step: 0.1, mode: 'ramp' },
+  { k: 'beltAcc', label: '带加速度', unit: 'm/s²', min: 0.1, max: 20, step: 0.1, mode: 'ramp' },
+  { k: 'mu', label: '动摩擦 μ', unit: '', min: 0, max: 1.5, step: 0.005 },
+  { k: 'g', label: '重力 g', unit: 'm/s²', min: 1, max: 20, step: 0.1 },
+  { k: 'T', label: '模拟时长', unit: 's', min: 1, max: 60, step: 0.5 },
+];
+function renderParams() {
+  const c = S.cfg;
+  $('#paramBox').innerHTML = PARAMS.filter(p => !p.mode || p.mode === c.beltMode).map(p => `
+    <div class="prow"><label for="r_${p.k}">${p.label}</label>
+      <input type="range" id="r_${p.k}" data-k="${p.k}" min="${p.min}" max="${p.max}" step="${p.step}" value="${c[p.k]}">
+      <input type="number" data-k="${p.k}" step="${p.step}" value="${c[p.k]}" inputmode="decimal">
+      <span class="u">${p.unit}</span></div>`).join('');
+  document.querySelectorAll('#beltMode button').forEach(b => b.classList.toggle('on', b.dataset.v === c.beltMode));
+  $('#approxTrig').checked = !!c.approxTrig;
+  $('#collision').value = c.collision;
+}
+$('#paramBox').addEventListener('input', e => {
+  const k = e.target.dataset.k; if (!k) return;
+  const v = parseFloat(e.target.value); if (!isFinite(v)) return;
+  S.cfg[k] = v;
+  document.querySelectorAll(`#paramBox [data-k="${k}"]`).forEach(el => { if (el !== e.target) el.value = v; });
+  if (k === 'L') S.cfg.blocks.forEach(b => { b.x0 = Math.min(b.x0, v); });
+  if (k === 'L') renderBlocks();
+  rebuild(true); updateAnswers();
+});
+$('#beltMode').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  S.cfg.beltMode = b.dataset.v;
+  if (b.dataset.v === 'ramp' && S.cfg.V0 === S.cfg.V1) { S.cfg.V0 = 0; S.cfg.V1 = S.cfg.V || 4; }
+  renderParams(); rebuild(true); updateAnswers();
+});
+$('#approxTrig').addEventListener('change', e => { S.cfg.approxTrig = e.target.checked; rebuild(true); updateAnswers(); });
+$('#collision').addEventListener('change', e => { S.cfg.collision = e.target.value; rebuild(true); updateAnswers(); });
+
+function renderBlocks() {
+  $('#blockBox').innerHTML = S.cfg.blocks.map((b, i) => `
+    <div class="blk ${i === S.sel ? 'sel' : ''}" data-i="${i}">
+      <div class="blk-h" data-sel="${i}"><span class="dot" style="background:${b.color}"></span>物块 ${b.name}
+        <button type="button" class="x" data-del="${i}" title="删除" aria-label="删除物块 ${b.name}">×</button></div>
+      <div class="blk-g">
+        <label>m/kg<input type="number" data-i="${i}" data-f="m" value="${b.m}" step="0.5" min="0.1" inputmode="decimal"></label>
+        <label>x₀/m<input type="number" data-i="${i}" data-f="x0" value="${+b.x0.toFixed(3)}" step="0.1" inputmode="decimal"></label>
+        <label>u₀/(m/s)<input type="number" data-i="${i}" data-f="u0" value="${b.u0}" step="0.5" inputmode="decimal"></label>
+        <label>边长/m<input type="number" data-i="${i}" data-f="size" value="${b.size}" step="0.1" min="0.05" inputmode="decimal"></label>
+      </div></div>`).join('') || '<p class="hint">点击带面或“添加物块”。</p>';
+}
+$('#blockBox').addEventListener('input', e => {
+  const el = e.target; if (!el.dataset.f) return;
+  let v = parseFloat(el.value); if (!isFinite(v)) return;
+  const b = S.cfg.blocks[+el.dataset.i];
+  if (el.dataset.f === 'm') v = Math.max(0.01, v);
+  if (el.dataset.f === 'size') v = Math.max(0.02, v);
+  if (el.dataset.f === 'x0') v = clamp(v, 0, S.cfg.L);
+  b[el.dataset.f] = v;
+  rebuild(true); updateAnswers();
+});
+$('#blockBox').addEventListener('click', e => {
+  const d = e.target.closest('[data-del]');
+  if (d) { removeBlock(+d.dataset.del); return; }
+  const s = e.target.closest('[data-sel]');
+  if (s) selectBlock(+s.dataset.sel);
+});
+function addBlock(x0, u0) {
+  if (S.cfg.blocks.length >= 6) return false;
+  const used = new Set(S.cfg.blocks.map(b => b.name));
+  const k = [...NAMES].findIndex(ch => !used.has(ch));
+  S.cfg.blocks.push({ name: NAMES[k], color: COLORS[k], m: 1, x0: clamp(x0, 0, S.cfg.L), u0, size: 0.4 });
+  S.cfg.blocks.sort((p, q) => p.name.localeCompare(q.name));
+  S.sel = S.cfg.blocks.findIndex(b => b.name === NAMES[k]);
+  renderBlocks(); rebuild(true); updateAnswers();
+  return true;
+}
+function removeBlock(i) {
+  S.cfg.blocks.splice(i, 1);
+  if (S.sel >= S.cfg.blocks.length) S.sel = Math.max(0, S.cfg.blocks.length - 1);
+  renderBlocks(); rebuild(true); updateAnswers();
+}
+function selectBlock(i) {
+  S.sel = i;
+  document.querySelectorAll('#blockBox .blk').forEach(el => el.classList.toggle('sel', +el.dataset.i === i));
+  renderSegments(); renderSelChips(); dirty();
+}
+$('#btnAdd').addEventListener('click', () => addBlock(S.cfg.L * 0.1, parseFloat($('#newU').value) || 0));
+$('#zoomSeg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  S.opt.zoom = +b.dataset.z;
+  document.querySelectorAll('#zoomSeg button').forEach(x => x.classList.toggle('on', x === b));
+  $('#stage').classList.toggle('big', S.opt.zoom > 1);
+  dirty();
+});
+document.querySelectorAll('[data-opt]').forEach(el => el.addEventListener('change', () => { S.opt[el.dataset.opt] = el.checked; dirty(); }));
+
+/* =====================================================================
+ * 6. 动画场景（Canvas）
+ * ===================================================================== */
+const scene = $('#scene');
+function fitCanvas(cv) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, W, H };
+}
+// 场景标注缩放：用户档位 × 画布大小自适应（教室大屏默认“大”）
+let ZK = 1;
+function sceneK(W, H) { return S.opt.zoom * clamp(Math.min(W / 760, H / 440), 0.5, 1.25); }
+const TRACE = ['#ff2020', '#ffd000', '#2ee86a', '#ff6fd0', '#3fdcff', '#ffffff'];
+const TRACE_TXT = ['#d0021b', '#a87800', '#15803d', '#c2185b', '#0a7ea4', '#333333'];
+const blkSide = (i, scale) => Math.max(14 * ZK, S.sim.blocks[i].size * scale);
+function geom(W, H) {
+  const { sn, cs, L } = S.sim;
+  const K = ZK = sceneK(W, H);
+  const bt = Math.round(6 + 5 * K);
+  const R = Math.max(clamp(Math.min(W, H) * 0.035, 11, 22), bt * 1.3);
+  const padX = 24 + 24 * K, padTop = sn > 0.05 ? 44 + 14 * K : 44 + 50 * K, padBot = 30 + 30 * K + 2 * R + bt;
+  const sx = (W - 2 * padX) / (L * cs), sy = sn > 1e-6 ? (H - padTop - padBot) / (L * sn) : Infinity;
+  const scale = Math.max(4, Math.min(sx, sy, 170));
+  const ox = (W - L * cs * scale) / 2;
+  const oy = (padTop + H - padBot) / 2 + L * sn * scale / 2;
+  const P = (s, h = 0) => [ox + s * scale * cs - h * sn, oy - s * scale * sn - h * cs];
+  return { K, R, bt, scale, ox, oy, P, sn, cs, L };
+}
+function arrow(ctx, x1, y1, x2, y2, color, width = 2.5, dash = null) {
+  const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
+  if (len < 1) return;
+  const ux = dx / len, uy = dy / len, hl = Math.min(10 * ZK, len * 0.45);
+  ctx.save(); ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = width * ZK;
+  if (dash) ctx.setLineDash(dash.map(x => x * ZK));
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - ux * hl * 0.8, y2 - uy * hl * 0.8); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - ux * hl - uy * hl * 0.45, y2 - uy * hl + ux * hl * 0.45);
+  ctx.lineTo(x2 - ux * hl + uy * hl * 0.45, y2 - uy * hl - ux * hl * 0.45); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+function label(ctx, txt, x, y, color, align = 'left', size = 12.5) {
+  ctx.save(); ctx.font = `700 ${size * ZK}px ${getComputedStyle(document.body).fontFamily}`;
+  const w = ctx.measureText(txt).width, CW = ctx.canvas.clientWidth, m = 4;
+  const lx = align === 'left' ? x : align === 'right' ? x - w : x - w / 2;
+  x += clamp(lx, m, Math.max(m, CW - m - w)) - lx;
+  ctx.textAlign = align; ctx.textBaseline = 'middle';
+  ctx.lineJoin = 'round'; ctx.lineWidth = 3.5 * ZK; ctx.strokeStyle = 'rgba(255,255,255,.92)'; ctx.strokeText(txt, x, y);
+  ctx.fillStyle = color; ctx.fillText(txt, x, y); ctx.restore();
+}
+function niceStep(raw) {
+  const mag = Math.pow(10, Math.floor(Math.log10(raw))), r = raw / mag;
+  return (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * mag;
+}
+const mod = (a, n) => ((a % n) + n) % n;
+
+// 痕迹按上表面/回程带拆段（地面系 s 区间）；trueA/trueB 表示该端是痕迹真实端点而非绕过滚筒处
+function tracePieces(o, sb, L, Lp) {
+  const len = o.pmax - o.pmin, out = [];
+  if (len < 1e-6) return out;
+  if (len >= Lp) return [{ top: true, s1: 0, s2: L, trueA: false, trueB: false }, { top: false, s1: 0, s2: L, trueA: false, trueB: false }];
+  const a = o.pmin + sb, b = o.pmax + sb;
+  for (let k = Math.floor(a / Lp); k <= Math.floor(b / Lp); k++) {
+    let lo = Math.max(a, k * Lp), hi = Math.min(b, k * Lp + L);
+    if (hi > lo + 1e-9) out.push({ top: true, s1: lo - k * Lp, s2: hi - k * Lp, trueA: lo === a, trueB: hi === b });
+    lo = Math.max(a, k * Lp + L); hi = Math.min(b, (k + 1) * Lp);
+    // 回程带：带坐标 l∈[L,2L] 对应 s = 2L − l（方向相反）
+    if (hi > lo + 1e-9) out.push({ top: false, s1: 2 * L - (hi - k * Lp), s2: 2 * L - (lo - k * Lp), trueA: hi === b, trueB: lo === a });
+  }
+  return out;
+}
+
+let lastGeom = null, lastState = null;
+function drawScene() {
+  const { ctx, W, H } = fitCanvas(scene);
+  const sim = S.sim, st = sim.stateAt(S.t);
+  lastState = st;
+  const G = geom(W, H); lastGeom = G;
+  const { P, R, bt, scale, sn, cs, L, K } = G;
+  ctx.clearRect(0, 0, W, H);
+
+  // 背景网格
+  ctx.strokeStyle = '#e4eaee'; ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+  const up = Math.atan2(-cs, -sn);
+  const Rb = R + bt / 2;
+  const C0 = P(0, -(bt + R)), CL = P(L, -(bt + R));
+  const yBottomBelt = -(1.5 * bt + 2 * R);
+
+  // 支架与地面
+  const ground = Math.max(C0[1], CL[1]) + R + 22 * K;
+  ctx.strokeStyle = '#9aa7ae'; ctx.lineWidth = 4;
+  for (const c of [C0, CL]) { ctx.beginPath(); ctx.moveTo(c[0], c[1]); ctx.lineTo(c[0], ground); ctx.stroke(); }
+  ctx.strokeStyle = '#8795a0'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(Math.min(C0[0], CL[0]) - 50, ground); ctx.lineTo(Math.max(C0[0], CL[0]) + 50, ground); ctx.stroke();
+  ctx.lineWidth = 1;
+  for (let x = Math.min(C0[0], CL[0]) - 46; x < Math.max(C0[0], CL[0]) + 50; x += 12) { ctx.beginPath(); ctx.moveTo(x, ground); ctx.lineTo(x - 8, ground + 8); ctx.stroke(); }
+
+  // 桁架
+  ctx.strokeStyle = '#a8b4bb'; ctx.lineWidth = 1.5;
+  const trTop = -bt - 2, trBot = yBottomBelt + bt / 2 + 3;
+  const nTr = Math.max(2, Math.round(L * scale * cs / 60) + (sn > 0 ? Math.round(L * scale * sn / 60) : 0));
+  const s0 = (R + 6) / scale, s1 = L - (R + 6) / scale;
+  if (s1 > s0 && trTop - trBot > 6) {
+    ctx.beginPath();
+    for (let k = 0; k <= nTr; k++) {
+      const s = s0 + (s1 - s0) * k / nTr;
+      const [x, y] = P(s, k % 2 ? trTop : trBot);
+      k ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  // 传送带（闭合环）
+  ctx.strokeStyle = '#2b363e'; ctx.lineWidth = bt;
+  ctx.beginPath();
+  ctx.moveTo(...P(0, -bt / 2)); ctx.lineTo(...P(L, -bt / 2));
+  ctx.arc(CL[0], CL[1], Rb, up, up + Math.PI, false);
+  ctx.lineTo(...P(0, yBottomBelt));
+  ctx.arc(C0[0], C0[1], Rb, up + Math.PI, up + 2 * Math.PI, false);
+  ctx.stroke();
+
+  // 带面花纹（随带移动；较淡，避免与痕迹混淆）
+  const Lp = sim.Lp, sb = st.sb;
+  const sp = niceStep(28 * K / scale);
+  ctx.strokeStyle = 'rgba(255,255,255,.28)'; ctx.lineWidth = 1.5;
+  for (let q = 0; q < Lp - 1e-9; q += sp) {
+    const l = mod(q + sb, Lp);
+    const onTop = l <= L, s = onTop ? l : 2 * L - l, h = onTop ? -bt / 2 : yBottomBelt;
+    const [x1, y1] = P(s, h + bt / 2 - 2), [x2, y2] = P(s, h - bt / 2 + 2);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  }
+
+  // 痕迹（附着在带上，随带移动）：亮色 + 白边，保证在黑色带面上远处可见
+  if (S.opt.trace) {
+    st.blocks.forEach((o, i) => {
+      const len = o.pmax - o.pmin; if (len < 1e-6) return;
+      const full = len >= Lp;
+      const qa = full ? 0 : o.pmin, qb = full ? Lp : o.pmax;
+      const N = Math.max(8, Math.ceil((qb - qa) / (L / 160)));
+      const path = [];
+      let prev = null, cur = null;
+      for (let k = 0; k <= N; k++) {
+        const q = qa + (qb - qa) * k / N, l = mod(q + sb, Lp);
+        const onTop = l <= L, s = onTop ? l : 2 * L - l, h = onTop ? -bt / 2 : yBottomBelt;
+        if (!(prev && prev.onTop === onTop && Math.abs(prev.s - s) < L / 20)) { cur = []; path.push(cur); }
+        cur.push(P(s, h)); prev = { onTop, s };
+      }
+      ctx.lineCap = 'round';
+      for (const [w, col] of [[bt * 0.7 + 3, 'rgba(255,255,255,.95)'], [bt * 0.7, TRACE[i % TRACE.length]]]) {
+        ctx.strokeStyle = col; ctx.lineWidth = w;
+        for (const seg of path) {
+          ctx.beginPath(); ctx.moveTo(...seg[0]);
+          if (seg.length === 1) ctx.lineTo(seg[0][0] + 0.1, seg[0][1]); else seg.slice(1).forEach(p => ctx.lineTo(...p));
+          ctx.stroke();
+        }
+      }
+      ctx.lineCap = 'butt';
+    });
+  }
+
+  // 滚筒（辐条随带转动）
+  const phi = sb * scale / R;
+  for (const c of [C0, CL]) {
+    ctx.fillStyle = '#d5dde2'; ctx.strokeStyle = '#51606a'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(c[0], c[1], R, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+    ctx.lineWidth = 1.6 + 0.6 * K;
+    for (let k = 0; k < 3; k++) {
+      const a = phi + k * 2 * Math.PI / 3;
+      ctx.beginPath(); ctx.moveTo(c[0], c[1]); ctx.lineTo(c[0] + Math.cos(a) * (R - 2), c[1] + Math.sin(a) * (R - 2)); ctx.stroke();
+    }
+    ctx.fillStyle = '#51606a'; ctx.beginPath(); ctx.arc(c[0], c[1], 3 + K, 0, 2 * Math.PI); ctx.fill();
+  }
+
+  // 端点名称与带速箭头
+  const flat = isFlat();
+  label(ctx, flat ? '左端' : '底端', C0[0], ground + 13 * K, '#52616b', 'center', 12);
+  label(ctx, flat ? `右端 L=${fmt(L, 1)} m` : `顶端 L=${fmt(L, 1)} m`, CL[0], ground + 13 * K, '#52616b', 'center', 12);
+  const V = st.V;
+  {
+    const mid = P(L / 2, yBottomBelt - bt / 2 - 12 * K);
+    const dirx = cs * Math.sign(V || 1), diry = -sn * Math.sign(V || 1);
+    if (Math.abs(V) > 1e-9) arrow(ctx, mid[0] - dirx * 26 * K, mid[1] - diry * 26 * K, mid[0] + dirx * 26 * K, mid[1] + diry * 26 * K, '#b07f14', 2.5);
+    const aTxt = Math.abs(st.A) > 1e-9 ? `，a带=${fmt(st.A)} m/s²` : '';
+    label(ctx, `带速 V=${fmt(V)} m/s${aTxt}`, mid[0], mid[1] + 16 * K, '#8a6410', 'center', 12.5);
+  }
+
+  // 比例尺
+  {
+    const m1 = niceStep(80 / scale), px = m1 * scale;
+    ctx.strokeStyle = '#66737a'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(14, H - 16); ctx.lineTo(14 + px, H - 16); ctx.moveTo(14, H - 20); ctx.lineTo(14, H - 12); ctx.moveTo(14 + px, H - 20); ctx.lineTo(14 + px, H - 12); ctx.stroke();
+    label(ctx, `${m1} m`, 14 + px / 2, H - 20 - 8 * K, '#66737a', 'center', 10);
+  }
+
+  // 标注高度（物块上方的 v、相对滑动箭头之上放尺寸线）
+  let annTop = 0;
+  st.blocks.forEach((o, i) => { if (o.on) annTop = Math.max(annTop, blkSide(i, scale) + (S.opt.rel ? (S.opt.vel ? 36 : 14) : S.opt.vel ? 12 : 0) * K); });
+  // 痕迹范围尺寸线：带上方的双向箭头，随痕迹增长而伸长、随带移动
+  if (S.opt.trace && S.opt.dim) {
+    let lane = 0;
+    st.blocks.forEach((o, i) => {
+      const pieces = tracePieces(o, sb, L, Lp);
+      if (!pieces.length) return;
+      const hTop = Math.max(annTop + 20 * K, 30 * K) + lane * 30 * K, hBot = yBottomBelt + bt / 2 + (7 + lane * 12) * K;  // 回程带的尺寸线画在环内侧，避开带速箭头 lane++;
+      const col = TRACE_TXT[i % TRACE_TXT.length], head = 9 * K;
+      const tops = pieces.filter(pc => pc.top);
+      let best = tops[0] || pieces[0];
+      for (const pc of pieces) {
+        if (pc.top && pc.s2 - pc.s1 > best.s2 - best.s1) best = pc;
+        const hD = pc.top ? hTop : hBot, h0 = pc.top ? 0 : yBottomBelt + bt / 2;
+        const A = P(pc.s1, hD), B = P(pc.s2, hD);
+        // 引出线：从带面到尺寸线
+        ctx.save(); ctx.strokeStyle = col; ctx.globalAlpha = 0.55; ctx.lineWidth = 1.2 * K; ctx.setLineDash([4 * K, 3 * K]);
+        for (const [s, t] of [[pc.s1, pc.trueA], [pc.s2, pc.trueB]]) {
+          if (!t) continue;
+          ctx.beginPath(); ctx.moveTo(...P(s, h0)); ctx.lineTo(...P(s, hD + 5 * K)); ctx.stroke();
+        }
+        ctx.restore();
+        const px = Math.hypot(B[0] - A[0], B[1] - A[1]);
+        ctx.save(); ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = (pc.top ? 2.5 : 2) * K;
+        ctx.beginPath(); ctx.moveTo(...A); ctx.lineTo(...B); ctx.stroke();
+        const ux = (B[0] - A[0]) / (px || 1), uy = (B[1] - A[1]) / (px || 1);
+        const tip = (p, d) => { ctx.beginPath(); ctx.moveTo(p[0], p[1]);
+          ctx.lineTo(p[0] - d * ux * head - uy * head * 0.5, p[1] - d * uy * head + ux * head * 0.5);
+          ctx.lineTo(p[0] - d * ux * head + uy * head * 0.5, p[1] - d * uy * head - ux * head * 0.5); ctx.closePath(); ctx.fill(); };
+        if (px > 1) { if (pc.trueA) tip(A, -1); if (pc.trueB) tip(B, 1); }
+        ctx.restore();
+      }
+      const len = Math.min(o.pmax - o.pmin, Lp);
+      const M = best.top ? P((best.s1 + best.s2) / 2, hTop + 12 * K) : P((best.s1 + best.s2) / 2, yBottomBelt - bt / 2 - 40 * K);
+      const wrap = pieces.some(pc => !pc.top) ? (len >= Lp ? '（绕满一周）' : '（一部分已转到下方回程带）') : '';
+      label(ctx, `${sim.blocks.length > 1 ? sim.blocks[i].name + ' ' : ''}痕迹 Δx = ${fmt(len)} m`, M[0], M[1], col, 'center', 13);
+      if (wrap) label(ctx, wrap, M[0], M[1] + (best.top ? -1 : 1) * 16 * K * (Math.abs(o.rel - len) > 1e-3 ? 2 : 1), col, 'center', 10);
+      if (Math.abs(o.rel - len) > 1e-3) label(ctx, `相对路程 ${fmt(o.rel)} m（有来回重叠）`, M[0], M[1] - 16 * K, col, 'center', 10);
+    });
+  }
+  // 物块
+  const ang = Math.atan2(sn, cs);
+  const maxU = Math.max(1, ...sim.blocks.map(b => Math.abs(b.u0)), Math.abs(sim.belt.V0), Math.abs(sim.belt.V1));
+  const vScale = Math.min(20, 90 / maxU) * K, Fs = 40 * K;
+  const font = getComputedStyle(document.body).fontFamily;
+  const dir = [cs, -sn], nrm = [-sn, -cs];
+  st.blocks.forEach((o, i) => {
+    const bk = sim.blocks[i], side = blkSide(i, scale);
+    let cx, cy, alpha = 1;
+    if (o.on) { [cx, cy] = P(o.s, side / 2); }
+    else {
+      const ex = o.exit, tau = st.t - ex.t;
+      if (tau > 1.2) return;
+      const X = ex.s * cs + ex.u * cs * tau, Y = ex.s * sn + ex.u * sn * tau - sim.g * tau * tau / 2;
+      cx = G.ox + X * scale - side / 2 * sn; cy = G.oy - Y * scale - side / 2 * cs;
+      alpha = clamp(1 - tau / 1.2, 0, 1);
+    }
+    ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx, cy); ctx.rotate(-ang);
+    ctx.fillStyle = bk.color; ctx.strokeStyle = i === S.sel ? '#172126' : 'rgba(0,0,0,.35)'; ctx.lineWidth = i === S.sel ? 2.5 : 1.2;
+    ctx.beginPath(); ctx.roundRect ? ctx.roundRect(-side / 2, -side / 2, side, side, 4) : ctx.rect(-side / 2, -side / 2, side, side); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.font = `700 ${clamp(side * 0.55, 11, 34)}px ${font}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(bk.name, 0, 1);
+    ctx.restore();
+    if (!o.on) return;
+
+    const hVel = side + 12 * K, hRel = side + (S.opt.vel ? 36 : 14) * K;
+    // 相对滑动方向（紫色虚线）
+    const rel = o.u - st.V;
+    if (S.opt.rel) {
+      const [rx, ry] = P(o.s, hRel);
+      if (o.mode === 'slip' && Math.abs(rel) > 1e-6) {
+        const sg = Math.sign(rel);
+        arrow(ctx, rx + dir[0] * 6 * K * sg, ry + dir[1] * 6 * K * sg, rx + dir[0] * 38 * K * sg, ry + dir[1] * 38 * K * sg, '#7463b6', 2, [4, 3]);
+        label(ctx, '相对带', rx + dir[0] * 41 * K * sg + (sg > 0 ? 3 : -3) * K, ry + dir[1] * 41 * K * sg, '#7463b6', sg > 0 ? 'left' : 'right', 11.5);
+      } else {
+        label(ctx, '相对静止', rx - 8 * K, ry, '#7463b6', 'right', 11.5);
+      }
+    }
+    // 速度
+    if (S.opt.vel && Math.abs(o.u) > 1e-6) {
+      const [vx, vy] = P(o.s, hVel);
+      const l = o.u * vScale;
+      arrow(ctx, vx, vy, vx + dir[0] * l, vy + dir[1] * l, '#2d9a4a', 2.5);
+      label(ctx, `v=${fmt(o.u)}`, vx + dir[0] * l + (o.u > 0 ? 5 : -5) * K, vy + dir[1] * l - 7 * K, '#2d9a4a', o.u > 0 ? 'left' : 'right', 11.5);
+    }
+    // 受力
+    if (S.opt.force) {
+      const [gx, gy] = P(o.s, side / 2);
+      arrow(ctx, gx, gy, gx, gy + Fs, '#52616b', 2.5);
+      label(ctx, 'G', gx + 6 * K, gy + Fs - 4 * K, '#52616b', 'left', 12.5);
+      const nl = Fs * cs;
+      arrow(ctx, gx, gy, gx + nrm[0] * nl, gy + nrm[1] * nl, '#2f6fb8', 2.5);
+      label(ctx, 'N', gx + nrm[0] * nl + 7 * K, gy + nrm[1] * nl + 6 * K, '#2f6fb8', 'left', 12.5);
+      const [fx, fy] = P(o.s, 2);
+      const fl = Fs * o.fpm / sim.g;
+      const fname = o.mode === 'stick' ? 'f静' : 'f滑';
+      if (Math.abs(fl) > 0.5) {
+        arrow(ctx, fx, fy, fx + dir[0] * fl, fy + dir[1] * fl, '#e0622f', 3);
+        label(ctx, `${fname}=${fmt(Math.abs(o.f))}N`, fx + dir[0] * fl + (fl > 0 ? 4 : -4) * K, fy + dir[1] * fl + 11 * K, '#c4501f', fl > 0 ? 'left' : 'right', 12);
+      } else {
+        label(ctx, 'f = 0', fx - 7 * K, fy + 10 * K, '#c4501f', 'right', 11.5);
+      }
+    }
+  });
+
+  $('#tbig').innerHTML = `t = ${fmt(st.t)} s<small>μ = ${fmt(sim.mu, 3)} · θ = ${fmt(S.cfg.theta, 0)}° · V = ${fmt(st.V)} m/s</small>`;
+}
+
+/* 场景交互：点击带面放物块、选择/拖动物块 */
+function blockAt(x, y) {
+  if (!lastState || !lastGeom) return -1;
+  let best = -1, bd = Infinity;
+  lastState.blocks.forEach((o, i) => {
+    if (!o.on) return;
+    const side = blkSide(i, lastGeom.scale);
+    const [cx, cy] = lastGeom.P(o.s, side / 2);
+    const d = Math.hypot(cx - x, cy - y);
+    if (d < side * 0.75 + 6 && d < bd) { bd = d; best = i; }
+  });
+  return best;
+}
+function beltCoord(x, y) {
+  const { ox, oy, scale, sn, cs, L } = lastGeom;
+  const dx = x - ox, dy = oy - y;
+  const s = (dx * cs + dy * sn) / scale, h = -dx * sn + dy * cs;
+  return { s, h, ok: s >= -0.02 * L && s <= 1.02 * L && h > -30 * lastGeom.K && h < 70 * lastGeom.K };
+}
+scene.addEventListener('pointerdown', e => {
+  const r = scene.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  const hit = blockAt(x, y);
+  if (hit >= 0) {
+    selectBlock(hit);
+    if (S.t === 0 && !S.playing) { S.drag = { i: hit }; scene.setPointerCapture(e.pointerId); }
+    return;
+  }
+  const bc = beltCoord(x, y);
+  if (bc.ok) addBlock(clamp(bc.s, 0, S.cfg.L), parseFloat($('#newU').value) || 0);
+});
+scene.addEventListener('pointermove', e => {
+  if (!S.drag) return;
+  const r = scene.getBoundingClientRect();
+  const bc = beltCoord(e.clientX - r.left, e.clientY - r.top);
+  S.cfg.blocks[S.drag.i].x0 = +clamp(bc.s, 0, S.cfg.L).toFixed(2);
+  rebuild(true);
+});
+scene.addEventListener('pointerup', () => { if (S.drag) { S.drag = null; renderBlocks(); updateAnswers(); } });
+
+/* =====================================================================
+ * 7. 图像
+ * ===================================================================== */
+const CHART_TYPES = {
+  vt: '速度–时间 v–t', xt: '位置–时间 x–t', at: '加速度–时间 a–t', ft: '摩擦力–时间 f–t',
+  rt: '相对速度 (u−V)–t', pt: '带系位置 (x−x带)–t · 痕迹', en: '能量与做功（系统）',
+};
+let SERIES = {};
+function sampleTimes(e, tEnd) {
+  const d = e.t1 - e.t0, n = Math.max(2, Math.ceil(d / tEnd * 360));
+  const out = []; for (let k = 0; k <= n; k++) out.push(d * k / n);
+  return out;
+}
+function buildSeries() {
+  const sim = S.sim, out = {};
+  for (const k of Object.keys(CHART_TYPES)) out[k] = { series: [], guides: [] };
+  const beltPts = [], blkPts = sim.blocks.map(() => ({ u: [], s: [], a: [], f: [], r: [], p: [] }));
+  const en = { Wm: [], Q: [], dEk: [], dEp: [], loss: [] };
+  const lossAt = t => sim.events.filter(ev => ev.type === 'merge' && ev.t <= t + 1e-12).reduce((a, ev) => a + ev.loss, 0);
+  for (const e of sim.epochs) {
+    for (const tau of sampleTimes(e, sim.tEnd)) {
+      const t = e.t0 + tau, V = sim.beltV(t), sb = sim.beltS(t);
+      beltPts.push([t, V]);
+      const sys = { Wm: 0, Q: 0, dEk: 0, dEp: 0 };
+      e.rec.forEach((r, i) => {
+        const bk = sim.blocks[i], o = sim.evalRec(e, r, bk, tau), P = blkPts[i];
+        const dash = o.mode === 'stick' ? 1 : 0;
+        if (o.on) {
+          P.u.push([t, o.u]); P.s.push([t, o.s]); P.a.push([t, o.a, dash]); P.f.push([t, o.f, dash]);
+          P.r.push([t, o.u - V]); P.p.push([t, o.s - sb]);
+        } else {
+          for (const key of ['u', 's', 'a', 'f', 'r', 'p']) P[key].push([t, NaN]);
+        }
+        sys.Wm += o.Wm; sys.Q += o.Q; sys.dEk += 0.5 * bk.m * (o.u * o.u - bk.u0 * bk.u0); sys.dEp += bk.m * sim.g * sim.sn * (o.s - bk.x0);
+      });
+      en.Wm.push([t, sys.Wm]); en.Q.push([t, sys.Q]); en.dEk.push([t, sys.dEk]); en.dEp.push([t, sys.dEp]); en.loss.push([t, lossAt(t)]);
+    }
+  }
+  const nm = i => `物块 ${sim.blocks[i].name}`;
+  const col = i => sim.blocks[i].color;
+  sim.blocks.forEach((b, i) => {
+    out.vt.series.push({ key: 'u' + i, name: `${nm(i)} u`, color: col(i), pts: blkPts[i].u });
+    out.xt.series.push({ key: 's' + i, name: `${nm(i)} x`, color: col(i), pts: blkPts[i].s });
+    out.at.series.push({ key: 'a' + i, name: `${nm(i)} a`, color: col(i), pts: blkPts[i].a });
+    out.ft.series.push({ key: 'f' + i, name: `${nm(i)} f`, color: col(i), pts: blkPts[i].f });
+    out.rt.series.push({ key: 'r' + i, name: `${nm(i)} u−V`, color: col(i), pts: blkPts[i].r });
+    out.pt.series.push({ key: 'p' + i, name: `${nm(i)} x−x带`, color: col(i), pts: blkPts[i].p });
+  });
+  out.vt.series.push({ key: 'V', name: '带速 V', color: '#c99212', dash: [6, 4], pts: beltPts });
+  out.xt.guides.push({ y: 0, label: 'x=0' }, { y: sim.L, label: `x=L` });
+  out.rt.guides.push({ y: 0, label: '共速 u=V' });
+  const fin = sim.stateAt(sim.tEnd);
+  if (sim.blocks.length === 1) {
+    const o = fin.blocks[0];
+    if (o.pmax - o.pmin > 1e-6) out.pt.guides.push({ y: o.pmax, label: '' }, { y: o.pmin, label: `痕迹 ${fmt(o.trace)} m` });
+  }
+  out.en.series.push(
+    { key: 'Wm', name: 'W电（电动机多做的功）', color: '#c2185b', pts: en.Wm },
+    { key: 'Q', name: 'Q 摩擦生热', color: '#e07b00', pts: en.Q },
+    { key: 'dEk', name: 'ΔEk', color: '#2f7fd0', pts: en.dEk },
+    { key: 'dEp', name: 'ΔEp', color: '#2e8b57', pts: en.dEp });
+  if (sim.Eloss > 1e-9) out.en.series.push({ key: 'loss', name: '碰撞损耗', color: '#7463b6', pts: en.loss });
+  const units = { vt: 'm/s', xt: 'm', at: 'm/s²', ft: 'N', rt: 'm/s', pt: 'm', en: 'J' };
+  for (const k in out) out[k].unit = units[k];
+  out.ft.note = '虚线段为静摩擦力';
+  out.at.note = '虚线段为相对静止';
+  SERIES = out;
+}
+
+function niceTicks(min, max, n = 5) {
+  const step = niceStep((max - min) / n || 1), ticks = [];
+  for (let v = Math.ceil(min / step) * step; v <= max + step * 1e-6; v += step) ticks.push(Math.abs(v) < step * 1e-9 ? 0 : v);
+  return { ticks, step };
+}
+function interp(pts, t) {
+  let lo = 0, hi = pts.length - 1;
+  if (!pts.length || t < pts[0][0] || t > pts[hi][0]) return NaN;
+  while (hi - lo > 1) { const m = (lo + hi) >> 1; if (pts[m][0] <= t) lo = m; else hi = m; }
+  const a = pts[lo], b = pts[hi];
+  if (b[0] === a[0]) return b[1];
+  return a[1] + (b[1] - a[1]) * (t - a[0]) / (b[0] - a[0]);
+}
+
+class Chart {
+  constructor(idx) {
+    this.idx = idx;
+    const el = document.createElement('div');
+    el.className = 'chart';
+    el.innerHTML = `<div class="chart-h"><select aria-label="选择图像">${Object.entries(CHART_TYPES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select><button type="button" title="保存为图片">PNG</button></div>
+      <div class="cwrap"><canvas></canvas></div><div class="legend"></div>`;
+    $('#charts').appendChild(el);
+    this.el = el; this.cv = el.querySelector('canvas'); this.sel = el.querySelector('select'); this.leg = el.querySelector('.legend');
+    this.sel.value = S.charts[idx];
+    this.hover = null;
+    this.sel.addEventListener('change', () => { S.charts[idx] = this.sel.value; this.legend(); dirty(); });
+    el.querySelector('button').addEventListener('click', () => this.png());
+    this.cv.addEventListener('pointermove', e => { this.hover = this.tAt(e); dirty(); });
+    this.cv.addEventListener('pointerleave', () => { this.hover = null; dirty(); });
+    this.cv.addEventListener('click', e => {
+      let t = this.tAt(e); if (t === null) return;
+      const px = (this.cv.clientWidth - 58) / S.sim.tEnd;
+      const near = S.sim.events.filter(ev => Math.abs(ev.t - t) * px < 7).sort((a, b) => Math.abs(a.t - t) - Math.abs(b.t - t))[0];
+      if (near) { seek(near.t); showCallout(near); } else { seek(t); hideCallout(); }
+    });
+    this.leg.addEventListener('click', e => {
+      const sp = e.target.closest('span[data-k]'); if (!sp) return;
+      const key = `${this.sel.value}:${sp.dataset.k}`;
+      S.hidden[key] = !S.hidden[key]; this.legend(); dirty();
+    });
+  }
+  get type() { return this.sel.value; }
+  tAt(e) {
+    const r = this.cv.getBoundingClientRect(), x = e.clientX - r.left;
+    const l = 48, w = r.width - l - 10;
+    if (x < l - 4 || x > l + w + 4) return null;
+    return clamp((x - l) / w * S.sim.tEnd, 0, S.sim.tEnd);
+  }
+  legend() {
+    const d = SERIES[this.type]; if (!d) return;
+    this.leg.innerHTML = d.series.map(s => `<span data-k="${s.key}" class="${S.hidden[this.type + ':' + s.key] ? 'off' : ''}"><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join('') +
+      (d.note ? `<span style="cursor:default;color:var(--muted)">${d.note}</span>` : '');
+  }
+  png() {
+    const a = document.createElement('a');
+    a.download = `传送带_${CHART_TYPES[this.type].split(' ')[0]}.png`;
+    a.href = this.cv.toDataURL('image/png'); a.click();
+  }
+  draw() {
+    const { ctx, W, H } = fitCanvas(this.cv);
+    const d = SERIES[this.type], sim = S.sim;
+    const pad = { l: 48, r: 10, t: 10, b: 24 };
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+    if (!d) return;
+    const vis = d.series.filter(s => !S.hidden[this.type + ':' + s.key]);
+    let lo = Infinity, hi = -Infinity;
+    for (const s of vis) for (const p of s.pts) if (isFinite(p[1])) { lo = Math.min(lo, p[1]); hi = Math.max(hi, p[1]); }
+    for (const gd of d.guides) { lo = Math.min(lo, gd.y); hi = Math.max(hi, gd.y); }
+    if (!isFinite(lo)) { lo = -1; hi = 1; }
+    lo = Math.min(lo, 0); hi = Math.max(hi, 0);
+    if (hi - lo < 1e-6) { hi += 1; lo -= 1; }
+    const padY = (hi - lo) * 0.08; lo -= padY; hi += padY;
+    const tEnd = sim.tEnd, pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+    const X = t => pad.l + t / tEnd * pw, Y = v => pad.t + (hi - v) / (hi - lo) * ph;
+    const font = getComputedStyle(document.body).fontFamily;
+    ctx.font = `11px ${font}`; ctx.textBaseline = 'middle';
+    // 网格
+    const yt = niceTicks(lo, hi, Math.max(3, Math.floor(ph / 32))), xt = niceTicks(0, tEnd, Math.max(3, Math.floor(pw / 60)));
+    ctx.strokeStyle = '#edf1ef'; ctx.lineWidth = 1; ctx.fillStyle = '#66737a';
+    ctx.textAlign = 'right';
+    for (const v of yt.ticks) { ctx.beginPath(); ctx.moveTo(pad.l, Y(v)); ctx.lineTo(W - pad.r, Y(v)); ctx.stroke(); ctx.fillText(+v.toFixed(6), pad.l - 4, Y(v)); }
+    ctx.textAlign = 'center';
+    for (const v of xt.ticks) { ctx.beginPath(); ctx.moveTo(X(v), pad.t); ctx.lineTo(X(v), pad.t + ph); ctx.stroke(); ctx.fillText(+v.toFixed(6), X(v), H - pad.b + 12); }
+    ctx.textAlign = 'right'; ctx.fillText('t/s', W - pad.r, H - pad.b + 12 + 0);
+    ctx.textAlign = 'left'; ctx.fillText(d.unit, pad.l + 4, pad.t + 6);
+    ctx.strokeStyle = '#8c989f'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(pad.l, Y(0)); ctx.lineTo(W - pad.r, Y(0)); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t + ph); ctx.stroke();
+    // 参考线
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#98a4ab';
+    for (const gd of d.guides) {
+      ctx.beginPath(); ctx.moveTo(pad.l, Y(gd.y)); ctx.lineTo(W - pad.r, Y(gd.y)); ctx.stroke();
+      if (gd.label) { ctx.fillStyle = '#66737a'; ctx.textAlign = 'right'; ctx.fillText(gd.label, W - pad.r - 2, Y(gd.y) - 8); }
+    }
+    // 关键时刻竖线
+    ctx.setLineDash([2, 3]);
+    for (const ev of sim.events) {
+      if (!EVSTYLE[ev.type]) continue;
+      ctx.strokeStyle = EVSTYLE[ev.type].c + '88';
+      ctx.beginPath(); ctx.moveTo(X(ev.t), pad.t); ctx.lineTo(X(ev.t), pad.t + ph); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    // 曲线
+    const tMax = S.opt.progressive ? S.t : Infinity;
+    ctx.save(); ctx.beginPath(); ctx.rect(pad.l, pad.t - 2, pw, ph + 4); ctx.clip();
+    for (const s of vis) {
+      ctx.strokeStyle = s.color; ctx.lineWidth = 2.2; ctx.lineJoin = 'round';
+      let pen = false, curDash = null;
+      const setDash = dsh => { const want = dsh ? [5, 4] : (s.dash || []); if (JSON.stringify(want) !== JSON.stringify(curDash)) { if (pen) ctx.stroke(); ctx.setLineDash(want); curDash = want; ctx.beginPath(); pen = false; return true; } return false; };
+      setDash(0); ctx.beginPath();
+      let last = null;
+      for (let k = 0; k < s.pts.length; k++) {
+        let [t, v, dsh] = s.pts[k];
+        if (t > tMax) {
+          if (last && isFinite(last[1]) && isFinite(v) && t > last[0]) { const vv = last[1] + (v - last[1]) * (tMax - last[0]) / (t - last[0]); ctx.lineTo(X(tMax), Y(vv)); }
+          break;
+        }
+        if (!isFinite(v)) { if (pen) ctx.stroke(); ctx.beginPath(); pen = false; last = null; continue; }
+        if (setDash(dsh) && last) { ctx.moveTo(X(last[0]), Y(last[1])); pen = true; }
+        if (!pen) { ctx.moveTo(X(t), Y(v)); pen = true; } else ctx.lineTo(X(t), Y(v));
+        last = [t, v];
+      }
+      if (pen) ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    ctx.restore();
+    // 当前时刻光标
+    ctx.strokeStyle = '#e0364c'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(X(S.t), pad.t); ctx.lineTo(X(S.t), pad.t + ph); ctx.stroke();
+    // 悬停读数
+    const ht = this.hover;
+    if (ht !== null && ht !== undefined) {
+      ctx.strokeStyle = 'rgba(23,33,38,.35)'; ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(X(ht), pad.t); ctx.lineTo(X(ht), pad.t + ph); ctx.stroke(); ctx.setLineDash([]);
+      const rows = [`t = ${fmt(ht)} s`];
+      for (const s of vis) { const v = interp(s.pts, ht); if (isFinite(v)) { rows.push([s, `${s.name} = ${fmt(v)}`]); ctx.fillStyle = s.color; ctx.beginPath(); ctx.arc(X(ht), Y(v), 3.2, 0, 7); ctx.fill(); } }
+      ctx.font = `12px ${font}`;
+      const bw = Math.max(...rows.map(r => ctx.measureText(typeof r === 'string' ? r : r[1]).width)) + 26, bh = rows.length * 16 + 8;
+      let bx = X(ht) + 10; if (bx + bw > W - 4) bx = X(ht) - bw - 10;
+      const by = pad.t + 4;
+      ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.strokeStyle = '#cfd8d4'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.rect(bx, by, bw, bh); ctx.fill(); ctx.stroke();
+      rows.forEach((r, k) => {
+        const y = by + 12 + k * 16;
+        if (typeof r === 'string') { ctx.fillStyle = '#e0364c'; ctx.textAlign = 'left'; ctx.fillText(r, bx + 8, y); return; }
+        ctx.fillStyle = r[0].color; ctx.fillRect(bx + 8, y - 2, 10, 3);
+        ctx.fillStyle = '#172126'; ctx.textAlign = 'left'; ctx.fillText(r[1], bx + 22, y);
+      });
+    }
+  }
+}
+const charts = [0, 1, 2].map(i => new Chart(i));
+
+/* =====================================================================
+ * 8. 关键时刻：标记、讲解卡、列表
+ * ===================================================================== */
+const EVSTYLE = {
+  cospeed: { c: '#15847d', n: '共速' }, stop: { c: '#c98a0b', n: '速度为零' }, leave: { c: '#52616b', n: '离开' },
+  collide: { c: '#7463b6', n: '碰撞' }, merge: { c: '#7463b6', n: '粘合' }, beltEnd: { c: '#3769aa', n: '带变速结束' }, unstick: { c: '#df684c', n: '开始打滑' },
+};
+function evTitle(ev) {
+  const who = ev.who || (ev.a ? `${ev.a}、${ev.b}` : '');
+  const n = EVSTYLE[ev.type].n;
+  if (ev.type === 'cospeed') return `${who} 与带共速`;
+  if (ev.type === 'stop') return `${who} 速度为零（未共速）`;
+  if (ev.type === 'leave') return `${who} 从${endName(S.sim, ev.end)}离开`;
+  if (ev.type === 'collide') return `${ev.a} 与 ${ev.b} 弹性碰撞`;
+  if (ev.type === 'merge') return `${ev.a} 与 ${ev.b} 碰撞粘合`;
+  if (ev.type === 'unstick') return `${who} 与带开始相对滑动`;
+  return n;
+}
+function evExplain(ev) {
+  const sim = S.sim, fmax = sim.fmaxPM;
+  const mass = ev.M || 1;
+  const fN = x => fmt(x * mass);
+  switch (ev.type) {
+    case 'cospeed': {
+      const needTxt = `维持相对静止需要的静摩擦力 f = m(g sinθ + a带) = ${fN(Math.abs(ev.need))} N，最大静摩擦力 μmg cosθ = ${fN(fmax)} N`;
+      if (ev.stick) {
+        const fa = ev.fpmAfter * mass;
+        return `u = V = ${fmt(ev.V)} m/s，分段点！<br>${needTxt}，够用 → <b>此后与带相对静止</b>。<br>` +
+          (Math.abs(fa) < 1e-9 ? '摩擦力突变为 <b>0</b>，物块随带匀速。' : `摩擦力突变为静摩擦力 ${fmt(Math.abs(fa))} N，${dirWord(fa)}，a = ${fmt(ev.aAfter)} m/s²。`);
+      }
+      return `u = V = ${fmt(ev.V)} m/s，分段点！<br>${needTxt}，<b>不够</b> → 不能相对静止，物块改为相对带${dirWord(ev.sigmaAfter)}滑。<br>` +
+        `摩擦力方向由${dirWord(ev.fpmBefore)}变为<b>${dirWord(ev.fpmAfter)}</b>，a 由 ${fmt(ev.aBefore)} 变为 <b>${fmt(ev.aAfter)}</b> m/s²。`;
+    }
+    case 'stop':
+      return `此刻带速 V = ${fmt(ev.V)} m/s ≠ 0，u − V = ${fmt(-ev.V)} m/s，物块仍相对带${dirWord(ev.sigma)}滑动。<br>` +
+        `→ 摩擦力方向<b>不变</b>（仍${dirWord(ev.fpm)}），a 仍为 ${fmt(ev.a)} m/s²，物块将反向运动。<br><b>分段点是“共速 u = V”，不是“速度为零”。</b>`;
+    case 'leave':
+      return `离开速度 u = ${fmt(ev.u)} m/s，在带上运动了 ${fmt(ev.t)} s。` + (sim.exits && ev.ids.length ? '' : '');
+    case 'collide':
+      return `碰前：${ev.a} ${fmt(ev.before[0])} m/s，${ev.b} ${fmt(ev.before[1])} m/s<br>碰后：${ev.a} ${fmt(ev.after[0])} m/s，${ev.b} ${fmt(ev.after[1])} m/s` +
+        (Math.abs(ev.M[0] - ev.M[1]) < 1e-9 ? '<br>等质量弹性碰撞 → <b>交换速度</b>。' : '<br>动量守恒、动能守恒。');
+    case 'merge':
+      return `碰前：${ev.a} ${fmt(ev.before[0])} m/s，${ev.b} ${fmt(ev.before[1])} m/s<br>动量守恒：共同速度 v = ${fmt(ev.after[0])} m/s<br>损失机械能 ΔE = ${fmt(ev.loss)} J（计入能量账本）。`;
+    case 'beltEnd':
+      return `传送带停止变速，此后以 V = ${fmt(ev.V)} m/s 匀速运动。相对静止的物块需要的静摩擦力随之改变。`;
+    case 'unstick':
+      return `需要的静摩擦力 ${fN(Math.abs(ev.need))} N 超过最大静摩擦力 ${fN(fmax)} N → 物块相对带${dirWord(ev.sigmaAfter)}滑，a = ${fmt(ev.aAfter)} m/s²。`;
+  }
+  return '';
+}
+function showCallout(ev) {
+  const el = $('#callout');
+  el.style.borderLeftColor = EVSTYLE[ev.type].c;
+  el.querySelector('h3').innerHTML = `<span style="color:${EVSTYLE[ev.type].c}">t = ${fmt(ev.t)} s</span>　${esc(evTitle(ev))}`;
+  el.querySelector('.cb').innerHTML = evExplain(ev);
+  el.classList.add('show');
+  S.lastEvent = ev;
+  highlightLists();
+}
+function hideCallout() { $('#callout').classList.remove('show'); S.lastEvent = null; }
+$('#callout .cx').addEventListener('click', hideCallout);
+
+const KEY_EVENTS = ['cospeed', 'stop', 'leave', 'collide', 'merge', 'beltEnd', 'unstick'];
+function renderMarks() {
+  const sim = S.sim, box = $('#marks');
+  $('#scrub').max = sim.tEnd;
+  box.innerHTML = sim.events.filter(e => EVSTYLE[e.type]).map((e, k) =>
+    `<button type="button" class="mk" data-k="${sim.events.indexOf(e)}" style="left:${e.t / sim.tEnd * 100}%;background:${EVSTYLE[e.type].c}" title="t=${fmt(e.t)} s ${esc(evTitle(e))}">${EVSTYLE[e.type].n}</button>`).join('');
+}
+$('#marks').addEventListener('click', e => { const b = e.target.closest('.mk'); if (!b) return; const ev = S.sim.events[+b.dataset.k]; S.playing = false; updatePlayBtn(); seek(ev.t); showCallout(ev); });
+function renderEvents() {
+  const sim = S.sim;
+  const evs = sim.events.filter(e => EVSTYLE[e.type]);
+  $('#evlist').innerHTML = evs.length ? evs.map(e => `<li data-k="${sim.events.indexOf(e)}"><span class="et" style="color:${EVSTYLE[e.type].c}">${fmt(e.t)} s</span>${esc(evTitle(e))}</li>`).join('')
+    : '<li class="hint" style="cursor:default">模拟时长内没有分段事件。</li>';
+}
+$('#evlist').addEventListener('click', e => { const li = e.target.closest('li[data-k]'); if (!li) return; const ev = S.sim.events[+li.dataset.k]; S.playing = false; updatePlayBtn(); seek(ev.t); showCallout(ev); });
+
+function segDesc(sg, bk) {
+  const sim = S.sim, flat = isFlat();
+  const F = Math.abs(sg.f), aTxt = `a = ${fmt(sg.a)} m/s²`;
+  const motion = `u：${fmt(sg.u0)} → ${fmt(sg.u1)} m/s，x：${fmt(sg.s0)} → ${fmt(sg.s1)} m`;
+  if (sg.mode === 'stick') {
+    const fTxt = F < 1e-9 ? '不受摩擦力' : `静摩擦力 ${fmt(F)} N ${dirWord(sg.f)}`;
+    return `<b>相对静止</b>（u = V），${fTxt}，${aTxt}${Math.abs(sg.a) < 1e-12 ? '（匀速）' : '（随带变速）'}<br><span class="hint">${motion}</span>`;
+  }
+  const cmp = sg.sigma < 0 ? 'u &lt; V' : 'u &gt; V';
+  const formula = flat ? (sg.sigma < 0 ? 'μg' : '−μg') : (sg.sigma < 0 ? 'μg cosθ − g sinθ' : '−(g sinθ + μg cosθ)');
+  return `<b>${cmp}</b>：相对带${dirWord(sg.sigma)}滑 → 滑动摩擦力 ${fmt(F)} N ${dirWord(-sg.sigma)}，a = ${formula} = ${fmt(sg.a)} m/s²<br><span class="hint">${motion}</span>`;
+}
+function renderSegments() {
+  const sim = S.sim, i = S.sel;
+  if (!sim.blocks.length) { $('#seglist').innerHTML = ''; return; }
+  const segs = sim.segments[i] || [];
+  $('#seglist').innerHTML = segs.map((sg, k) => `<li data-t="${sg.t0}" data-t1="${sg.t1}"><span class="et">${'①②③④⑤⑥⑦⑧⑨⑩'[k] || k + 1} ${fmt(sg.t0)}–${fmt(sg.t1)} s</span><div class="desc">${segDesc(sg, sim.blocks[i])}</div></li>`).join('') +
+    `<li style="cursor:default">${exitTxt(sim, i)}</li>`;
+}
+$('#seglist').addEventListener('click', e => { const li = e.target.closest('li[data-t]'); if (!li) return; S.playing = false; updatePlayBtn(); hideCallout(); seek(+li.dataset.t + 1e-9); });
+function highlightLists() {
+  document.querySelectorAll('#seglist li[data-t]').forEach(li => li.classList.toggle('cur', S.t >= +li.dataset.t - 1e-9 && S.t < +li.dataset.t1 - 1e-9));
+  document.querySelectorAll('#evlist li[data-k]').forEach(li => li.classList.toggle('cur', S.lastEvent === S.sim.events[+li.dataset.k]));
+}
+
+/* =====================================================================
+ * 9. 右侧：判据、此刻分析、数据表、能量账本
+ * ===================================================================== */
+function renderSelChips() {
+  $('#selChips').innerHTML = S.sim.blocks.map((b, i) => `<button type="button" data-i="${i}" class="${i === S.sel ? 'on' : ''}"><span class="dot" style="background:${b.color}"></span>${b.name}</button>`).join('');
+}
+$('#selChips').addEventListener('click', e => { const b = e.target.closest('button'); if (b) selectBlock(+b.dataset.i); });
+
+function renderJudge(st) {
+  const sim = S.sim, th = S.cfg.theta, tan = sim.sn / sim.cs;
+  let h = '';
+  if (th === 0) {
+    h += `<div class="big">水平传送带</div><div>带匀速时：一旦共速，物块随带匀速，<b>f = 0</b>。</div>`;
+  } else {
+    const ok = sim.mu >= tan - 1e-12;
+    h += `<div class="big ${ok ? 'good' : 'bad'}">μ = ${fmt(sim.mu, 3)} ${ok ? '≥' : '&lt;'} tanθ = ${fmt(tan, 3)}</div>`;
+    h += ok ? `<div>带匀速时，共速后物块<b>随带一起匀速</b>，受静摩擦力 mg sinθ，沿带向上。</div>`
+      : `<div>共速后<b>不能相对静止</b>：物块相对带向下滑，摩擦力翻转为沿带向上，a = μg cosθ − g sinθ = ${fmt(sim.mu * sim.g * sim.cs - sim.g * sim.sn)} m/s²。</div>`;
+  }
+  if (sim.belt.A !== 0) {
+    const need = Math.abs(sim.belt.A + sim.g * sim.sn), fmax = sim.fmaxPM, ok = need <= fmax + 1e-12;
+    h += `<div style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--line)">带变速阶段（a带 = ${fmt(sim.belt.A)} m/s²，0–${fmt(sim.belt.tA)} s）：随带变速需 |a带 + g sinθ| = ${fmt(need)}，` +
+      `最大可提供 μg cosθ = ${fmt(fmax)} m/s² → <b class="${ok ? 'good' : 'bad'}">${ok ? '能随带一起变速' : '跟不上，必相对滑动'}</b></div>`;
+  }
+  $('#judge').innerHTML = h;
+}
+
+function renderNow(st) {
+  const sim = S.sim, i = S.sel, box = $('#now');
+  if (!sim.blocks.length) { box.innerHTML = '<span class="hint">没有物块。点击带面放一个。</span>'; return; }
+  const o = st.blocks[i], bk = sim.blocks[i];
+  const V = st.V, rel = o.u - V;
+  let badge, chain = [];
+  if (!o.on) {
+    badge = `<span class="state-badge" style="background:#52616b">已离开</span>`;
+    chain = [`t = ${fmt(o.exit.t)} s 从${endName(sim, o.exit.end)}离开，速度 ${fmt(o.exit.u)} m/s`];
+  } else if (o.mode === 'stick') {
+    badge = `<span class="state-badge" style="background:var(--teal)">相对静止</span>`;
+    const need = (st.A + sim.g * sim.sn) * bk.m, fmax = sim.fmaxPM * bk.m;
+    chain = [`u = V = ${fmt(V)} m/s`,
+      `假设相对静止，需要静摩擦力 f = m(g sinθ + a带) = ${fmt(Math.abs(need))} N`,
+      `最大静摩擦力 μmg cosθ = ${fmt(fmax)} N ≥ ${fmt(Math.abs(need))} N，假设成立`,
+      Math.abs(need) < 1e-9 ? '不受摩擦力，a = a带 = ' + fmt(st.A) + ' m/s²' : `f静 = ${fmt(Math.abs(need))} N，${dirWord(need)}，a = ${fmt(o.a)} m/s²`];
+  } else {
+    const sg = o.sigma;
+    badge = `<span class="state-badge" style="background:var(--violet)">相对滑动</span>`;
+    const fmax = sim.fmaxPM * bk.m;
+    const eqNow = Math.abs(rel) < 1e-6;
+    chain = [eqNow ? `u = V = ${fmt(V)} m/s（刚共速），但静摩擦力不足以维持相对静止`
+        : `u − V = ${fmt(rel)} m/s ${sg < 0 ? '&lt;' : '&gt;'} 0（u ${sg < 0 ? '&lt;' : '&gt;'} V）`,
+      `物块相对带${dirWord(sg)}滑`,
+      `滑动摩擦力${dirWord(-sg)}，f = μmg${isFlat() ? '' : ' cosθ'} = ${fmt(fmax)} N`,
+      `a = ${isFlat() ? (sg < 0 ? 'μg' : '−μg') : (sg < 0 ? 'μg cosθ − g sinθ' : '−(g sinθ + μg cosθ)')} = ${fmt(o.a)} m/s²`];
+  }
+  box.innerHTML = `<div style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:${bk.color}"></span><b>物块 ${bk.name}</b>${badge}</div>
+    <div class="kv">
+      <div><span>u</span><b>${fmt(o.u)} m/s</b></div><div><span>V</span><b>${fmt(V)} m/s</b></div>
+      <div><span>u − V</span><b>${fmt(rel)} m/s</b></div><div><span>a</span><b>${fmt(o.a)} m/s²</b></div>
+      <div><span>x</span><b>${fmt(o.s)} m</b></div><div><span>f</span><b>${fmt(o.f)} N</b></div>
+      <div><span>相对路程</span><b>${fmt(o.rel)} m</b></div><div><span>痕迹</span><b>${fmt(o.trace)} m</b></div>
+    </div>
+    <ul class="chain">${chain.map(c => `<li>${c}</li>`).join('')}</ul>`;
+}
+
+function renderTable(st) {
+  const sim = S.sim;
+  if (sim.blocks.length < 2) { $('#tableWrap').innerHTML = ''; return; }
+  $('#tableWrap').innerHTML = `<div class="card" style="padding:6px 8px"><table class="dt"><thead><tr><th>物块</th><th>x/m</th><th>u/(m/s)</th><th>a/(m/s²)</th><th>f/N</th><th>状态</th></tr></thead><tbody>${
+    st.blocks.map((o, i) => `<tr><td><span class="dot" style="background:${sim.blocks[i].color}"></span> ${sim.blocks[i].name}</td><td>${fmt(o.s)}</td><td>${fmt(o.u)}</td><td>${o.on ? fmt(o.a) : '—'}</td><td>${o.on ? fmt(o.f) : '—'}</td><td>${!o.on ? '离开' : o.mode === 'stick' ? '静止' : '滑动'}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function renderLedger(st) {
+  const s = st.sys, hasLoss = S.sim.Eloss > 1e-9;
+  const r = Math.abs(s.resid);
+  const residTxt = r < 5e-3 ? `0.00 J（浮点误差 ${r.toExponential(1)} J）` : `${fmt(s.resid, 4)} J`;
+  $('#ledger').innerHTML = `<div class="hint" style="margin-bottom:4px">截至 t = ${fmt(st.t)} s（全部物块）</div>
+    <div><span>电动机多做的功 W电</span><b>${fmt(s.Wm)} J</b></div>
+    <div><span>动能增量 ΔEk</span><b>${fmt(s.dEk)} J</b></div>
+    <div><span>重力势能增量 ΔEp</span><b>${fmt(s.dEp)} J</b></div>
+    <div><span>摩擦生热 Q = μmg cosθ·Δs相对</span><b>${fmt(s.Q)} J</b></div>
+    ${hasLoss ? `<div><span>碰撞损耗</span><b>${fmt(s.loss)} J</b></div>` : ''}
+    <div class="eq"><span>W电 − (ΔEk + ΔEp + Q${hasLoss ? ' + 损耗' : ''})</span><b class="good">${residTxt}</b></div>
+    <div class="hint" style="margin-top:4px">各项分别由解析积分独立算出：W电 = ∫f·V dt，Q = ∫μmg cosθ·|u−V| dt。</div>`;
+}
+
+/* =====================================================================
+ * 10. 播放控制与主循环
+ * ===================================================================== */
+let needDraw = true;
+function dirty() { needDraw = true; }
+function seek(t) { S.t = clamp(t, 0, S.sim.tEnd); dirty(); }
+function updatePlayBtn() { $('#btnPlay').textContent = S.playing ? '⏸ 暂停' : (S.t >= S.sim.tEnd - 1e-9 ? '↻ 重播' : '▶ 播放'); }
+function togglePlay() {
+  if (!S.playing && S.t >= S.sim.tEnd - 1e-9) S.t = 0;
+  S.playing = !S.playing;
+  if (S.playing) hideCallout();
+  updatePlayBtn(); dirty();
+}
+$('#btnPlay').addEventListener('click', togglePlay);
+$('#btnReset').addEventListener('click', () => { S.playing = false; hideCallout(); seek(0); updatePlayBtn(); });
+$('#speed').addEventListener('change', e => { S.speed = +e.target.value; });
+$('#scrub').addEventListener('input', e => { S.playing = false; hideCallout(); seek(+e.target.value); updatePlayBtn(); });
+function jumpEvent(dir) {
+  const evs = S.sim.events.filter(e => EVSTYLE[e.type]);
+  const ev = dir > 0 ? evs.find(e => e.t > S.t + 1e-6) : [...evs].reverse().find(e => e.t < S.t - 1e-6);
+  S.playing = false; updatePlayBtn();
+  if (ev) { seek(ev.t); showCallout(ev); } else seek(dir > 0 ? S.sim.tEnd : 0);
+}
+$('#btnPrevEv').addEventListener('click', () => jumpEvent(-1));
+$('#btnNextEv').addEventListener('click', () => jumpEvent(1));
+$('#btnFull').addEventListener('click', () => { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); });
+$('#btnHelp').addEventListener('click', () => $('#help').classList.add('show'));
+$('#helpClose').addEventListener('click', () => $('#help').classList.remove('show'));
+$('#help').addEventListener('click', e => { if (e.target.id === 'help') $('#help').classList.remove('show'); });
+$('#btnCsv').addEventListener('click', exportCsv);
+
+document.addEventListener('keydown', e => {
+  if (e.target.closest('input, select, textarea')) return;
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); e.shiftKey ? jumpEvent(1) : (S.playing = false, seek(S.t + 0.02), updatePlayBtn()); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); e.shiftKey ? jumpEvent(-1) : (S.playing = false, seek(S.t - 0.02), updatePlayBtn()); }
+  else if (e.key === 'Home') { S.playing = false; hideCallout(); seek(0); updatePlayBtn(); }
+  else if (e.key === 'Escape') { hideCallout(); $('#help').classList.remove('show'); }
+});
+
+function exportCsv() {
+  const sim = S.sim, rows = [];
+  const head = ['t/s', 'V/(m/s)'];
+  sim.blocks.forEach(b => head.push(`${b.name}_x/m`, `${b.name}_u/(m/s)`, `${b.name}_a/(m/s2)`, `${b.name}_f/N`, `${b.name}_u-V/(m/s)`, `${b.name}_痕迹/m`, `${b.name}_Q/J`, `${b.name}_W电/J`, `${b.name}_状态`));
+  rows.push(head.join(','));
+  const N = Math.ceil(sim.tEnd / 0.02);
+  for (let k = 0; k <= N; k++) {
+    const st = sim.stateAt(Math.min(sim.tEnd, k * 0.02));
+    const r = [st.t.toFixed(3), st.V.toFixed(4)];
+    st.blocks.forEach(o => r.push(o.s.toFixed(4), o.u.toFixed(4), o.on ? o.a.toFixed(4) : '', o.on ? o.f.toFixed(4) : '', o.on ? (o.u - st.V).toFixed(4) : '', o.trace.toFixed(4), o.Q.toFixed(4), o.Wm.toFixed(4), !o.on ? '离开' : o.mode === 'stick' ? '相对静止' : '相对滑动'));
+    rows.push(r.join(','));
+  }
+  const blob = new Blob(['﻿' + rows.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = '传送带模拟数据.csv'; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+let lastFrame = performance.now(), lastPanelT = -1;
+function frame(now) {
+  const dtReal = Math.min(0.1, (now - lastFrame) / 1000); lastFrame = now;
+  if (S.playing) {
+    const t0 = S.t;
+    let t1 = Math.min(S.sim.tEnd, t0 + dtReal * S.speed);
+    if (S.opt.autopause) {
+      const ev = S.sim.events.find(e => KEY_EVENTS.includes(e.type) && e.t > t0 + 1e-9 && e.t <= t1 + 1e-12 && e.t > 1e-9);
+      if (ev) { t1 = ev.t; S.playing = false; showCallout(ev); }
+    }
+    S.t = t1;
+    if (S.t >= S.sim.tEnd - 1e-12) S.playing = false;
+    if (!S.playing) updatePlayBtn();
+    needDraw = true;
+  }
+  if (needDraw) {
+    needDraw = false;
+    drawScene();
+    for (const c of charts) c.draw();
+    const st = lastState;
+    $('#scrub').value = S.t;
+    $('#tval').textContent = `${fmt(S.t)} / ${fmt(S.sim.tEnd)} s`;
+    renderJudge(st); renderNow(st); renderTable(st); renderLedger(st); highlightLists();
+    updatePlayBtn();
+  }
+  requestAnimationFrame(frame);
+}
+new ResizeObserver(dirty).observe(document.body);
+
+renderPresets();
+loadPreset('h1');
+charts.forEach(c => c.legend());
+requestAnimationFrame(frame);
+
+// 供自动化验收脚本读取
+window.ConveyorSim = { Engine, PRESETS, S, loadPreset, rebuild, seek, get charts() { return charts; } };
+</script>
+</body>
+</html>
