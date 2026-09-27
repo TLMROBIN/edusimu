@@ -140,3 +140,79 @@ class AnimationInteraction(Base):
     timestamp = Column(DateTime(timezone=True), server_default=func.now())
     
     view_history = relationship("ViewHistory", back_populates="interactions")
+
+
+# ---- 课件游戏数据层（物理闯关等游戏类课件；按 game_key 区分不同游戏） ----
+
+class GameProgress(Base):
+    """每个用户每个游戏一份 JSON 存档；version 用于乐观锁。"""
+    __tablename__ = "game_progress"
+    __table_args__ = (UniqueConstraint("user_id", "game_key", name="uq_game_progress_user_game"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    game_key = Column(String(40), nullable=False, index=True)
+    data = Column(Text, nullable=False, default="{}")
+    version = Column(Integer, nullable=False, default=0)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class GameAttempt(Base):
+    """每一次作答（关卡/每日挑战/训练场/段位赛），用于统计、榜单与错因分析。"""
+    __tablename__ = "game_attempts"
+    __table_args__ = (UniqueConstraint("user_id", "client_id", name="uq_game_attempt_client"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    game_key = Column(String(40), nullable=False, index=True)
+    client_id = Column(String(64), nullable=False)  # 客户端生成，离线补传时去重
+    mode = Column(String(20), nullable=False, default="main")  # main / daily / arena / ranked
+    level_id = Column(String(80), nullable=False, index=True)
+    seed = Column(String(64))
+    passed = Column(Boolean, nullable=False, default=False)
+    stars = Column(Integer, nullable=False, default=0)
+    score = Column(Integer, nullable=False, default=0)
+    difficulty = Column(Integer, nullable=False, default=1)
+    mistake_tags = Column(Text, default="[]")
+    duration_ms = Column(Integer, default=0)
+    day = Column(String(10), nullable=False, index=True)  # 北京时间 YYYY-MM-DD
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+
+class GameRating(Base):
+    """段位赛积分，按周赛季。"""
+    __tablename__ = "game_ratings"
+    __table_args__ = (UniqueConstraint("user_id", "game_key", "season", name="uq_game_rating_user_season"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    game_key = Column(String(40), nullable=False, index=True)
+    season = Column(String(10), nullable=False, index=True)  # ISO 周，如 2026-W39
+    rating = Column(Integer, nullable=False, default=1000)
+    games = Column(Integer, nullable=False, default=0)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class GameCheckin(Base):
+    """每日挑战打卡（完成当日全部题目才记一次）。"""
+    __tablename__ = "game_checkins"
+    __table_args__ = (UniqueConstraint("user_id", "game_key", "day", name="uq_game_checkin_day"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    game_key = Column(String(40), nullable=False, index=True)
+    day = Column(String(10), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class GameClassSetting(Base):
+    """教师对班级的游戏设置：解锁到第几个世界、是否显示榜单。"""
+    __tablename__ = "game_class_settings"
+    __table_args__ = (UniqueConstraint("game_key", "class_name", name="uq_game_class_setting"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    game_key = Column(String(40), nullable=False, index=True)
+    class_name = Column(String(50), nullable=False, index=True)
+    data = Column(Text, nullable=False, default="{}")
+    updated_by = Column(Integer, ForeignKey("users.id"))
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .database import SessionLocal, settings
 from .init_db import init_database
-from .routers import admin, animations, auth, favorites_ratings, stats, users
+from .routers import admin, animations, auth, favorites_ratings, game, stats, users
 
 app = FastAPI(
     title="教育动画展示系统",
@@ -31,6 +31,7 @@ app.include_router(animations.router)
 app.include_router(favorites_ratings.router)
 app.include_router(stats.router)
 app.include_router(admin.router)
+app.include_router(game.router)
 
 @app.on_event("startup")
 def startup():

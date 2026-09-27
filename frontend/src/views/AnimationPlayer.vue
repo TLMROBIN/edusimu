@@ -85,6 +85,7 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { resolveApiBase, resolveAssetUrl } from '../utils/apiBase'
+import { useUserStore } from '../stores/user'
 
 const route = useRoute()
 const animation = ref(null)
@@ -167,9 +168,49 @@ const onFrameLoad = () => {
   }, 3000)
 
   window.addEventListener('message', handleInteraction)
+  // 课件可能在 load 之前就发出了 HELLO，这里主动再推送一次身份上下文。
+  sendCoursewareContext()
+}
+
+const userStore = useUserStore()
+
+// 身份桥：同源课件发 EDUSIMU_HELLO，播放器回 EDUSIMU_CONTEXT（含 token，仅回给本页 iframe）。
+const sendCoursewareContext = () => {
+  const frameWindow = animationFrame.value?.contentWindow
+  const token = localStorage.getItem('token')
+  const user = userStore.user
+  if (!frameWindow || !token || !user) return
+  let frameOrigin = ''
+  try {
+    frameOrigin = new URL(animationUrl.value, window.location.href).origin
+  } catch (error) {
+    return
+  }
+  if (frameOrigin !== window.location.origin) return
+  frameWindow.postMessage({
+    type: 'EDUSIMU_CONTEXT',
+    version: 1,
+    animationId: parseInt(route.params.id),
+    user: {
+      id: user.id,
+      name: user.real_name || user.username,
+      role: user.role,
+      class_name: user.class_name || null,
+      grade_level: user.grade_level || null
+    },
+    token,
+    apiBase: resolveApiBase()
+  }, window.location.origin)
 }
 
 const handleInteraction = (event) => {
+  if (!event.data || typeof event.data !== 'object') return
+  if (event.data.type === 'EDUSIMU_HELLO') {
+    if (event.origin !== window.location.origin) return
+    if (event.source !== animationFrame.value?.contentWindow) return
+    sendCoursewareContext()
+    return
+  }
   if (event.data.type === 'ANIMATION_INTERACTION') {
     interactionCount.value++
     
@@ -306,6 +347,7 @@ watch(isPresentationMode, (active) => {
 
 onMounted(() => {
   loadAnimation()
+  window.addEventListener('message', handleInteraction)
   window.addEventListener('pagehide', handlePageHide)
   window.addEventListener('beforeunload', handlePageHide)
   document.addEventListener('fullscreenchange', handleFullscreenChange)
