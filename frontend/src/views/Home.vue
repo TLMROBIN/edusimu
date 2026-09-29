@@ -703,7 +703,9 @@ const focusLearningSelection = async () => {
 }
 
 const handleLogout = async () => {
-  await userStore.logout()
+  if (!window.confirm('确定退出登录吗？')) return
+  const redirectedToSso = await userStore.logout()
+  if (redirectedToSso) return
   ElMessage.success('已安全退出登录')
   router.push('/login')
 }

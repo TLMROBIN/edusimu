@@ -69,6 +69,7 @@ export const useUserStore = defineStore('user', () => {
         window.location.href = logoutUrl.toString()
       }
     }
+    return Boolean(ssoSession)
   }
   
   const initAuth = () => {

@@ -391,7 +391,9 @@ const submitImport = async () => {
 }
 
 const handleLogout = async () => {
-  await userStore.logout()
+  if (!window.confirm('确定退出登录吗？')) return
+  const redirectedToSso = await userStore.logout()
+  if (redirectedToSso) return
   ElMessage.success('已退出登录')
   router.push('/login')
 }
