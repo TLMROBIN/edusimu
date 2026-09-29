@@ -80,7 +80,7 @@ async def oidc_callback(code: str, state: str, request: Request, db: Session = D
     if not expected_state or not code_verifier or not secrets.compare_digest(expected_state, state):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid OIDC state")
     try:
-        claims = exchange_code_for_claims(code, code_verifier)
+        claims, id_token_hint = exchange_code_for_claims(code, code_verifier, include_id_token_hint=True)
         access_token = issue_local_token_for_claims(db, claims)
     except OidcAuthError as exc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)) from exc
@@ -92,6 +92,7 @@ async def oidc_callback(code: str, state: str, request: Request, db: Session = D
 <p>统一认证成功，正在进入 edusimu...</p>
 <script>
 localStorage.setItem("token", {json.dumps(access_token)});
+localStorage.setItem("edusimu_id_token_hint", {json.dumps(id_token_hint)});
 localStorage.setItem("edusimu_sso", "1");
 location.replace({json.dumps(home_path)});
 </script>

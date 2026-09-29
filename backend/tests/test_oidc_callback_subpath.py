@@ -21,13 +21,17 @@ class OidcCallbackSubpathTests(unittest.TestCase):
     def test_oidc_callback_redirects_to_edusimu_home_under_forwarded_prefix(self):
         request = FakeRequest(headers={"x-forwarded-prefix": "/edusimu"})
 
-        with patch("backend.app.routers.auth.exchange_code_for_claims", return_value={"preferred_username": "student"}), patch(
+        with patch(
+            "backend.app.routers.auth.exchange_code_for_claims",
+            return_value=({"preferred_username": "student"}, "header.payload.signature"),
+        ), patch(
             "backend.app.routers.auth.issue_local_token_for_claims", return_value="local-token"
         ):
             response = asyncio.run(auth.oidc_callback(code="code-123", state="state-123", request=request, db=object()))
 
         html = response.body.decode("utf-8")
         self.assertIn('localStorage.setItem("token", "local-token");', html)
+        self.assertIn('localStorage.setItem("edusimu_id_token_hint", "header.payload.signature");', html)
         self.assertIn('location.replace("/edusimu/home");', html)
         self.assertNotIn('location.replace("/home");', html)
 

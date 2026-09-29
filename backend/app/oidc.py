@@ -64,7 +64,7 @@ def _get_json(url: str) -> dict:
         return json.loads(response.read().decode("utf-8"))
 
 
-def exchange_code_for_claims(code: str, code_verifier: str) -> dict:
+def exchange_code_for_claims(code: str, code_verifier: str, include_id_token_hint: bool = False) -> dict | tuple[dict, str]:
     token_data = {
         "grant_type": "authorization_code",
         "client_id": settings.oidc_client_id,
@@ -83,7 +83,7 @@ def exchange_code_for_claims(code: str, code_verifier: str) -> dict:
         raise OidcAuthError("OIDC token response did not include id_token")
     jwks = _get_json(f"{settings.oidc_issuer.rstrip('/')}/protocol/openid-connect/certs")
     try:
-        return jwt.decode(
+        claims = jwt.decode(
             id_token,
             jwks,
             algorithms=["RS256"],
@@ -91,6 +91,9 @@ def exchange_code_for_claims(code: str, code_verifier: str) -> dict:
             issuer=settings.oidc_issuer.rstrip("/"),
             access_token=token_payload.get("access_token"),
         )
+        if include_id_token_hint:
+            return claims, id_token
+        return claims
     except Exception as exc:
         raise OidcAuthError("OIDC id_token validation failed") from exc
 
