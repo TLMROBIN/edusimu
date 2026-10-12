@@ -2,10 +2,13 @@
   <el-container class="admin-shell">
     <el-header>
       <div class="page-header-bar">
-        <div class="page-header-copy">
-          <h2 style="margin: 0">教材目录管理</h2>
-          <div style="margin-top: 6px; color: #666; font-size: 13px">
-            管理各学科的册次、章节和小节。课件上传时只能绑定末级小节。
+        <div class="toolbox-heading">
+          <ToolboxLink />
+          <div class="page-header-copy">
+            <h2 style="margin: 0">教材目录管理</h2>
+            <div style="margin-top: 6px; color: #666; font-size: 13px">
+              管理各学科的册次、章节和小节。课件上传时只能绑定末级小节。
+            </div>
           </div>
         </div>
         <div class="page-header-actions">

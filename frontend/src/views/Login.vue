@@ -3,7 +3,7 @@
     <div class="login-layout">
       <section class="login-brand glass-panel">
         <div class="brand-chip">EDUSIMU PLATFORM</div>
-        <h1>教育动画展示系统</h1>
+        <div class="toolbox-heading"><ToolboxLink /><h1>教育动画展示系统</h1></div>
         <p>
           面向校内平板教学的互动课件平台，支持教材目录绑定、教师上传、平板触控校验与学习数据分析。
         </p>

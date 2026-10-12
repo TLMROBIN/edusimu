@@ -2,9 +2,12 @@
   <el-container class="home-shell">
     <el-header class="home-header">
       <div class="page-header-bar">
-        <div class="page-header-copy">
-          <h1>教育动画展示系统</h1>
-          <p>按教材章节找到课件，打开即可开始互动学习。</p>
+        <div class="toolbox-heading">
+          <ToolboxLink />
+          <div class="page-header-copy">
+            <h1>教育动画展示系统</h1>
+            <p>按教材章节找到课件，打开即可开始互动学习。</p>
+          </div>
         </div>
         <nav class="page-header-actions" aria-label="账户与管理">
           <span v-if="userStore.user" class="user-summary">

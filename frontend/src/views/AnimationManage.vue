@@ -2,10 +2,13 @@
   <el-container class="admin-shell">
     <el-header>
       <div class="page-header-bar">
-        <div class="page-header-copy">
-          <h2 style="margin: 0">{{ pageTitle }}</h2>
-          <div style="font-size: 13px; color: #666; margin-top: 6px">
-            教师使用自己的账号上传课件，作者自动署名，未通过平板触控校验的课件不能发布。
+        <div class="toolbox-heading">
+          <ToolboxLink />
+          <div class="page-header-copy">
+            <h2 style="margin: 0">{{ pageTitle }}</h2>
+            <div style="font-size: 13px; color: #666; margin-top: 6px">
+              教师使用自己的账号上传课件，作者自动署名，未通过平板触控校验的课件不能发布。
+            </div>
           </div>
         </div>
         <div class="page-header-actions">

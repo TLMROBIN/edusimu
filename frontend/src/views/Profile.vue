@@ -2,9 +2,12 @@
   <el-container class="profile-shell">
     <el-header>
       <div class="page-header-bar">
-        <div class="page-header-copy">
-          <h2 style="margin: 0">个人中心</h2>
-          <div class="profile-subtitle">管理密码、收藏和观看历史。</div>
+        <div class="toolbox-heading">
+          <ToolboxLink />
+          <div class="page-header-copy">
+            <h2 style="margin: 0">个人中心</h2>
+            <div class="profile-subtitle">管理密码、收藏和观看历史。</div>
+          </div>
         </div>
         <div class="page-header-actions">
           <el-button @click="$router.push('/home')">返回首页</el-button>

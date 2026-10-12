@@ -2,10 +2,13 @@
   <el-container class="admin-shell">
     <el-header>
       <div class="page-header-bar">
-        <div class="page-header-copy">
-          <h2 style="margin: 0">GeoGebra 课件制作</h2>
-          <div style="margin-top: 6px; color: #dce9ff; font-size: 13px">
-            左侧编写 GeoGebra 脚本与课件信息，右侧本地预览，通过后直接走现有课件上传流程。
+        <div class="toolbox-heading">
+          <ToolboxLink />
+          <div class="page-header-copy">
+            <h2 style="margin: 0">GeoGebra 课件制作</h2>
+            <div style="margin-top: 6px; color: #dce9ff; font-size: 13px">
+              左侧编写 GeoGebra 脚本与课件信息，右侧本地预览，通过后直接走现有课件上传流程。
+            </div>
           </div>
         </div>
         <div class="page-header-actions">

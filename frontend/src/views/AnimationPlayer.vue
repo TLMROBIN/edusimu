@@ -2,9 +2,12 @@
   <el-container :class="{ 'presentation-page': isPresentationMode }">
     <el-header v-if="!isPresentationMode">
       <div class="page-header-bar">
-        <div class="page-header-copy" style="display: flex; align-items: center">
-          <el-button @click="$router.back()" icon="ArrowLeft" circle />
-          <h2 style="margin-left: 20px">{{ animation?.title }}</h2>
+        <div class="toolbox-heading">
+          <ToolboxLink />
+          <div class="page-header-copy" style="display: flex; align-items: center">
+            <el-button @click="$router.back()" icon="ArrowLeft" circle />
+            <h2 style="margin-left: 20px">{{ animation?.title }}</h2>
+          </div>
         </div>
         <div class="page-header-actions">
           <el-button @click="togglePresentationMode">

@@ -2,10 +2,13 @@
   <el-container class="admin-shell">
     <el-header>
       <div class="page-header-bar">
-        <div class="page-header-copy">
-          <h2 style="margin: 0">用户管理</h2>
-          <div class="page-subtitle">
-            支持按年级、班级筛选，支持模板下载、Excel 导入与用户名修正。
+        <div class="toolbox-heading">
+          <ToolboxLink />
+          <div class="page-header-copy">
+            <h2 style="margin: 0">用户管理</h2>
+            <div class="page-subtitle">
+              支持按年级、班级筛选，支持模板下载、Excel 导入与用户名修正。
+            </div>
           </div>
         </div>
         <div class="page-header-actions">

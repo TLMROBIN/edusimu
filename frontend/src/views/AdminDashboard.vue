@@ -2,10 +2,13 @@
   <el-container class="admin-shell">
     <el-header>
       <div class="page-header-bar">
-        <div class="page-header-copy">
-          <h2 style="margin: 0">{{ dashboardTitle }}</h2>
-          <div style="margin-top: 6px; color: #666; font-size: 13px">
-            {{ dashboardSubtitle }}
+        <div class="toolbox-heading">
+          <ToolboxLink />
+          <div class="page-header-copy">
+            <h2 style="margin: 0">{{ dashboardTitle }}</h2>
+            <div style="margin-top: 6px; color: #666; font-size: 13px">
+              {{ dashboardSubtitle }}
+            </div>
           </div>
         </div>
         <div class="page-header-actions">
