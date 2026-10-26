@@ -56,7 +56,7 @@ async def login(
 
 @router.get("/oidc/change-password")
 async def oidc_change_password():
-    return _oidc_redirect(change_password=True)
+    raise HTTPException(status_code=410, detail="子系统改密已停用，请返回统一目录页修改统一密码")
 
 
 @router.get("/oidc/login")

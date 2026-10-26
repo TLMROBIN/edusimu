@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
-from ..auth import get_password_hash, require_role
+from ..auth import require_role
 from ..database import get_db
 from ..models import User
 from ..schemas import UserBatchCreate, UserCreate, UserResponse, UserUpdate
@@ -42,7 +42,7 @@ async def create_user(
     
     user = User(
         username=user_data.username,
-        password_hash=get_password_hash(user_data.password),
+        password_hash="oidc-only",
         role=user_data.role,
         real_name=user_data.real_name,
         grade_level=user_data.grade_level,
@@ -99,7 +99,7 @@ async def batch_create_users(
         try:
             user = User(
                 username=username,
-                password_hash=get_password_hash(user_data.password),
+                password_hash="oidc-only",
                 role=user_data.role,
                 real_name=user_data.real_name,
                 grade_level=user_data.grade_level,

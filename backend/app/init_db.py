@@ -1,7 +1,6 @@
 from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
 
-from .auth import get_password_hash
 from .database import Base, SessionLocal, engine, settings
 from .models import Subject, TextbookNode, User
 from .physics_catalog import PHYSICS_CATALOG
@@ -140,7 +139,7 @@ def init_database(db: Session):
     if not admin:
         admin = User(
             username=settings.admin_username,
-            password_hash=get_password_hash(settings.admin_password),
+            password_hash="oidc-only",
             role="admin",
             real_name="系统管理员",
             is_active=True

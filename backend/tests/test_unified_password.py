@@ -17,9 +17,9 @@ class UnifiedPasswordTests(unittest.TestCase):
         self.assertEqual(query['code_challenge_method'], ['S256'])
         self.assertTrue(query['state'][0])
         self.assertNotIn('kc_action', parse_qs(urlparse(create_login_state()['authorization_url']).query))
-        response = asyncio.run(auth.oidc_change_password())
-        self.assertEqual(response.status_code, 303)
-        self.assertIn('edusimu_oidc_verifier=', str(response.raw_headers))
+        with self.assertRaises(HTTPException) as removed:
+            asyncio.run(auth.oidc_change_password())
+        self.assertEqual(removed.exception.status_code, 410)
 
     def test_old_local_form_cannot_modify_shadow_password(self):
         user = SimpleNamespace(password_hash='oidc-only')
@@ -29,3 +29,18 @@ class UnifiedPasswordTests(unittest.TestCase):
         self.assertEqual(raised.exception.status_code, 409)
         self.assertEqual(user.password_hash, 'oidc-only')
         db.commit.assert_not_called()
+
+    def test_new_shadow_accounts_have_no_usable_local_password(self):
+        from sqlalchemy import create_engine
+        from sqlalchemy.orm import Session
+        from backend.app.database import Base
+        from backend.app.schemas import UserCreate, UserBatchCreate
+        from backend.app.routers.users import create_user, batch_create_users
+        from backend.app.models import User
+        engine = create_engine('sqlite:///:memory:')
+        Base.metadata.create_all(engine)
+        with Session(engine) as db:
+            created = asyncio.run(create_user(UserCreate(username='shadow-one', role='student'), None, db))
+            self.assertEqual(created.password_hash, 'oidc-only')
+            asyncio.run(batch_create_users(UserBatchCreate(users=[UserCreate(username='shadow-two', role='teacher', password='ignored-legacy-password')]), None, db))
+            self.assertEqual(db.query(User).filter(User.username=='shadow-two').one().password_hash,'oidc-only')

@@ -135,9 +135,6 @@
             <el-form-item label="用户名">
               <el-input v-model="createForm.username" />
             </el-form-item>
-            <el-form-item label="密码">
-              <el-input v-model="createForm.password" type="password" />
-            </el-form-item>
             <el-form-item label="姓名">
               <el-input v-model="createForm.real_name" />
             </el-form-item>
@@ -190,7 +187,7 @@
         
         <el-dialog v-model="showBatchDialog" title="批量创建用户" width="600px">
           <el-alert
-            title="CSV格式：每行一个用户，格式为：用户名,密码,姓名,班级,角色(student/teacher)"
+            title="CSV格式：用户名,姓名,班级,角色(student/teacher)。这里只创建本地档案，登录账号在统一目录管理。"
             type="info"
             style="margin-bottom: 20px"
           />
@@ -198,7 +195,7 @@
             v-model="batchText"
             type="textarea"
             :rows="10"
-            placeholder="user1,pass1,张三,高一1班,student&#10;user2,pass2,李四,高一1班,student"
+            placeholder="user1,张三,高一1班,student&#10;user2,李四,高一1班,student"
           />
           <template #footer>
             <el-button @click="showBatchDialog = false">取消</el-button>
@@ -208,7 +205,7 @@
         
         <el-dialog v-model="showExcelDialog" title="Excel导入学生" width="600px">
           <el-alert
-            title="Excel模板只需要三列：姓名、年级、班级。用户名按姓名拼音+班级数字生成，密码默认123456。"
+            title="Excel模板只需要三列：姓名、年级、班级。用户名按姓名拼音+班级数字生成；不设置本地密码，登录账号在统一目录管理。"
             type="info"
             style="margin-bottom: 20px"
             :closable="false"
@@ -225,9 +222,6 @@
                 <el-option label="学生" value="student" />
                 <el-option label="教师" value="teacher" />
               </el-select>
-            </el-form-item>
-            <el-form-item label="默认密码">
-              <el-input v-model="defaultPassword" disabled />
             </el-form-item>
             <el-form-item label="预览数据" v-if="excelPreview.length > 0">
               <el-table :data="excelPreview" max-height="300" style="width: 100%">
@@ -279,11 +273,9 @@ const excelInput = ref(null)
 const excelPreview = ref([])
 const excelImportRole = ref('student')
 const hasExcelFile = ref(false)
-const defaultPassword = ref('123456')
 const editingUserId = ref(null)
 const createForm = ref({
   username: '',
-  password: '',
   real_name: '',
   grade_level: '',
   class_name: '',
@@ -475,7 +467,6 @@ const parseExcel = () => {
           grade_level: gradeLevel,
           class_name: className,
           username: username,
-          password: defaultPassword.value,
           role: excelImportRole.value
         }
       }).filter(Boolean)
@@ -587,8 +578,7 @@ const createUser = async () => {
     showCreateDialog.value = false
     createForm.value = {
       username: '',
-      password: '',
-      real_name: '',
+          real_name: '',
       grade_level: '',
       class_name: '',
       role: 'student'
@@ -634,11 +624,14 @@ const batchCreateUsers = async () => {
   const users_data = []
   
   for (const line of lines) {
-    const [username, password, real_name, class_name, role] = line.split(',')
-    if (username && password) {
+    const cells = line.split(',')
+    // Accept older five-column files while discarding their obsolete password column.
+    const [username, real_name, class_name, role] = cells.length >= 5
+      ? [cells[0], cells[2], cells[3], cells[4]]
+      : cells
+    if (username) {
       users_data.push({
         username: username.trim(),
-        password: password.trim(),
         real_name: real_name?.trim() || '',
         class_name: class_name?.trim() || '',
         role: role?.trim() || 'student'

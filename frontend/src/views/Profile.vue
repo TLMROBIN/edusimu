@@ -6,7 +6,7 @@
           <ToolboxLink />
           <div class="page-header-copy">
             <h2 style="margin: 0">个人中心</h2>
-            <div class="profile-subtitle">管理密码、收藏和观看历史。</div>
+            <div class="profile-subtitle">查看收藏和观看历史。</div>
           </div>
         </div>
         <div class="page-header-actions">
@@ -25,14 +25,6 @@
       </section>
 
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="修改密码" name="password">
-          <el-card style="max-width: 520px">
-            <p>登录密码由统一身份平台管理，修改后用于各学习系统的统一登录。</p>
-            <p>如需验证身份，请使用当前统一登录密码。忘记密码时请联系老师重置。</p>
-            <el-button type="primary" @click="goToUnifiedPassword">前往统一平台修改密码</el-button>
-          </el-card>
-        </el-tab-pane>
-
         <el-tab-pane label="我的收藏" name="favorites">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="favorite in favorites" :key="favorite.id">
@@ -77,7 +69,6 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import { resolveApiBase } from '../utils/apiBase'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -106,10 +97,6 @@ const loadViewHistory = async () => {
 
 const playAnimation = (id) => {
   router.push(`/animations/${id}`)
-}
-
-const goToUnifiedPassword = () => {
-  window.location.assign(`${resolveApiBase()}/api/auth/oidc/change-password`)
 }
 
 const handleLogout = async () => {

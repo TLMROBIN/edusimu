@@ -11,7 +11,7 @@ class UserBase(BaseModel):
     class_name: Optional[str] = Field(None, max_length=50)
 
 class UserCreate(UserBase):
-    password: str = Field(..., min_length=6, max_length=100)
+    password: Optional[str] = Field(None, max_length=100)
 
 class UserBatchCreate(BaseModel):
     users: List[UserCreate]
