@@ -27,20 +27,9 @@
       <el-tabs v-model="activeTab">
         <el-tab-pane label="修改密码" name="password">
           <el-card style="max-width: 520px">
-            <el-form :model="passwordForm" label-width="100px">
-              <el-form-item label="当前密码">
-                <el-input v-model="passwordForm.current_password" type="password" show-password />
-              </el-form-item>
-              <el-form-item label="新密码">
-                <el-input v-model="passwordForm.new_password" type="password" show-password />
-              </el-form-item>
-              <el-form-item label="确认新密码">
-                <el-input v-model="passwordForm.confirm_password" type="password" show-password />
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="changePassword">修改密码</el-button>
-              </el-form-item>
-            </el-form>
+            <p>登录密码由统一身份平台管理，修改后用于各学习系统的统一登录。</p>
+            <p>如需验证身份，请使用当前统一登录密码。忘记密码时请联系老师重置。</p>
+            <el-button type="primary" @click="goToUnifiedPassword">前往统一平台修改密码</el-button>
           </el-card>
         </el-tab-pane>
 
@@ -88,17 +77,14 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { resolveApiBase } from '../utils/apiBase'
 
 const router = useRouter()
 const userStore = useUserStore()
 const activeTab = ref('favorites')
 const favorites = ref([])
 const viewHistory = ref([])
-const passwordForm = ref({
-  current_password: '',
-  new_password: '',
-  confirm_password: ''
-})
+
 
 const loadFavorites = async () => {
   try {
@@ -122,31 +108,8 @@ const playAnimation = (id) => {
   router.push(`/animations/${id}`)
 }
 
-const changePassword = async () => {
-  if (!passwordForm.value.current_password || !passwordForm.value.new_password) {
-    ElMessage.error('请填写完整密码信息')
-    return
-  }
-  if (passwordForm.value.new_password !== passwordForm.value.confirm_password) {
-    ElMessage.error('两次输入的新密码不一致')
-    return
-  }
-
-  try {
-    await axios.post('/api/auth/change-password', {
-      current_password: passwordForm.value.current_password,
-      new_password: passwordForm.value.new_password
-    })
-    passwordForm.value = {
-      current_password: '',
-      new_password: '',
-      confirm_password: ''
-    }
-    ElMessage.success('密码修改成功')
-  } catch (error) {
-    console.error('修改密码失败:', error)
-    ElMessage.error(error.response?.data?.detail || '修改密码失败')
-  }
+const goToUnifiedPassword = () => {
+  window.location.assign(`${resolveApiBase()}/api/auth/oidc/change-password`)
 }
 
 const handleLogout = async () => {

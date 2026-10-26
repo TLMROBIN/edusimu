@@ -32,7 +32,7 @@ def _base64url(value: bytes) -> str:
     return base64.urlsafe_b64encode(value).rstrip(b"=").decode("ascii")
 
 
-def create_login_state() -> dict[str, str]:
+def create_login_state(*, change_password: bool = False) -> dict[str, str]:
     verifier = secrets.token_urlsafe(48)
     challenge = _base64url(hashlib.sha256(verifier.encode("ascii")).digest())
     state = secrets.token_urlsafe(24)
@@ -45,6 +45,8 @@ def create_login_state() -> dict[str, str]:
         "code_challenge": challenge,
         "code_challenge_method": "S256",
     }
+    if change_password:
+        params["kc_action"] = "UPDATE_PASSWORD"
     return {
         "state": state,
         "code_verifier": verifier,

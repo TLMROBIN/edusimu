@@ -8,9 +8,6 @@ import secrets
 from urllib.parse import urlparse
 from sqlalchemy.orm import Session
 from ..auth import (
-    verify_password,
-    get_password_hash,
-    create_access_token,
     get_current_active_user
 )
 from ..database import get_db, settings
@@ -57,9 +54,18 @@ async def login(
     )
 
 
+@router.get("/oidc/change-password")
+async def oidc_change_password():
+    return _oidc_redirect(change_password=True)
+
+
 @router.get("/oidc/login")
 async def oidc_login():
-    login_state = create_login_state()
+    return _oidc_redirect()
+
+
+def _oidc_redirect(*, change_password: bool = False):
+    login_state = create_login_state(change_password=change_password)
     response = RedirectResponse(login_state["authorization_url"], status_code=status.HTTP_303_SEE_OTHER)
     response.set_cookie("edusimu_oidc_state", login_state["state"], httponly=True, samesite="lax", max_age=600, path="/")
     response.set_cookie(
@@ -118,11 +124,4 @@ async def change_password(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    if not verify_password(payload.current_password, current_user.password_hash):
-        raise HTTPException(status_code=400, detail="当前密码错误")
-    if payload.current_password == payload.new_password:
-        raise HTTPException(status_code=400, detail="新密码不能与当前密码相同")
-
-    current_user.password_hash = get_password_hash(payload.new_password)
-    db.commit()
-    return {"message": "密码修改成功"}
+    raise HTTPException(status_code=409, detail="请通过统一身份平台修改密码")
