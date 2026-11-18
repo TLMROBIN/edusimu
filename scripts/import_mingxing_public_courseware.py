@@ -24,6 +24,7 @@ sys.path.insert(0, str(BACKEND_DIR))
 from app.database import SessionLocal, settings
 from app.models import Animation, Subject, User
 from app.routers.animations import process_courseware_upload
+from mingxing_descriptions import description_for
 
 
 DEFAULT_STATE_URL = "https://zlmmxwl.com/api/public/site-state"
@@ -57,11 +58,15 @@ def load_state(args: argparse.Namespace) -> dict:
 
 
 def existing_source_urls(db) -> set[str]:
-    return {
-        row.description.split("Source: ", 1)[1].split("\n", 1)[0]
-        for row in db.query(Animation.description).filter(Animation.description.contains(MARKER)).all()
-        if row.description and "Source: " in row.description
-    }
+    rows = db.query(Animation.description, Animation.review_notes).filter(
+        Animation.description.contains(MARKER) | Animation.review_notes.contains(MARKER)
+    ).all()
+    urls = set()
+    for description, review_notes in rows:
+        for text in (description, review_notes):
+            if text and MARKER in text and "Source: " in text:
+                urls.add(text.split("Source: ", 1)[1].split("\n", 1)[0])
+    return urls
 
 
 def main() -> int:
@@ -102,15 +107,16 @@ def main() -> int:
                 file_path, file_size, validation_status, summary, _, warnings = process_courseware_upload(
                     content, f"{resource['id']}.html", args.subject_id
                 )
-                description = (
+                description = description_for(title)
+                metadata = (
                     f"{MARKER}\nSource: {source_url}\n"
-                    f"Source resource ID: {resource['id']}\n"
-                    "Imported from the publicly accessible Mingxing Physics course-resource catalogue."
+                    f"Source resource ID: {resource['id']}"
                 )
                 animation = Animation(
                     title=title,
                     subject_id=args.subject_id,
                     description=description,
+                    review_notes=metadata,
                     author="敏行物理（公开资源导入）",
                     file_path=file_path,
                     grade_level="高中",

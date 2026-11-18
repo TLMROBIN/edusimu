@@ -14,6 +14,7 @@ os.chdir(BACKEND_DIR)
 from app.database import SessionLocal
 from app.models import Animation, Subject, TextbookNode, User
 from app.routers.animations import process_courseware_upload
+from mingxing_descriptions import description_for
 
 LOCALIZED_DIR = ROOT_DIR / "tmp/zlmmxwl-localized"
 MARKER = "[Mingxing Physics public import]"
@@ -153,6 +154,8 @@ def main():
                 existing.validation_summary = summary
                 existing.is_published = True
                 existing.review_status = "approved"
+                if not (existing.description or "").strip():
+                    existing.description = description_for(item["title"])
                 db.commit()
                 print(f"    Updated animation {existing.id}: {item['title']}")
                 continue
@@ -160,16 +163,16 @@ def main():
             saved_path, file_size, validation_status, summary, _, warnings = process_courseware_upload(
                 content, item["filename"], 4
             )
-            desc = (
+            metadata = (
                 f"{MARKER}\nSource: {item['source_url']}\n"
-                f"Source resource ID: {item['id']}\n"
-                "Imported from the publicly accessible Mingxing Physics course-resource catalogue and localized for offline intranet use."
+                f"Source resource ID: {item['id']}"
             )
             anim = Animation(
                 title=item["title"],
                 subject_id=4,
                 textbook_node_id=node_id,
-                description=desc,
+                description=description_for(item["title"]),
+                review_notes=metadata,
                 author=item["author"],
                 file_path=saved_path,
                 grade_level="高中",

@@ -67,6 +67,8 @@ class AnimationUpdate(BaseModel):
     is_published: Optional[bool] = None
     review_notes: Optional[str] = None
     force_publish: Optional[bool] = None
+    may_lag: Optional[bool] = None
+    lag_reason: Optional[str] = None
 
 class AiPromptSuggestion(BaseModel):
     title: str
@@ -81,6 +83,8 @@ class AnimationResponse(AnimationBase):
     thumbnail: Optional[str]
     view_count: int
     file_size: Optional[int]
+    may_lag: bool = False
+    lag_reason: Optional[str] = None
     created_by: Optional[int]
     creator_name: Optional[str] = None
     subject_name: Optional[str] = None

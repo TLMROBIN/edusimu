@@ -319,6 +319,13 @@
                   <span class="resource-path">{{ animation.textbook_path || '未标注教材章节' }}</span>
                   <span class="resource-meta">
                     <span v-if="canUseSourceFilter">{{ formatSourceType(animation.source_type) }}</span>
+                    <span
+                      v-if="animation.may_lag"
+                      class="lag-badge"
+                      :title="animation.lag_reason || '体积较大或交互复杂，低配平板可能卡顿'"
+                    >
+                      可能卡顿
+                    </span>
                     <span>{{ animation.view_count }} 次观看</span>
                     <span v-if="animation.avg_rating">评分 {{ animation.avg_rating }}</span>
                   </span>
@@ -343,6 +350,13 @@
                 <span class="resource-row-meta">
                   <span>{{ animation.subject_name || '未分类' }}</span>
                   <span v-if="canUseSourceFilter">{{ formatSourceType(animation.source_type) }}</span>
+                  <span
+                    v-if="animation.may_lag"
+                    class="lag-badge"
+                    :title="animation.lag_reason || '体积较大或交互复杂，低配平板可能卡顿'"
+                  >
+                    可能卡顿
+                  </span>
                   <span>{{ animation.view_count }} 次观看</span>
                   <span aria-hidden="true">打开课件</span>
                 </span>
@@ -1278,9 +1292,23 @@ watch(
 .resource-row-meta {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 6px 12px;
   color: var(--home-muted);
   font-size: 12px;
+  line-height: 1.5;
+}
+
+.lag-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #c2410c;
+  font-size: 11px;
+  font-weight: 700;
   line-height: 1.5;
 }
 

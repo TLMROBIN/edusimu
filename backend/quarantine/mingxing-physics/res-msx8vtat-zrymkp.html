@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="zh-CN">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D 回旋加速器 · 飞出效果 · 长时速度图</title>
+  <style>
+        body { margin: 0; overflow: hidden; font-family: 'Inter', 'Segoe UI', sans-serif; background-color: #0a0f1f; color: #eef; }
+        #info {
+            position: absolute; top: 20px; left: 20px; color: white;
+            background: rgba(20, 30, 50, 0.85); padding: 16px 28px; border-radius: 40px;
+            backdrop-filter: blur(12px); border: 1px solid #4a9eff; z-index: 10;
+            box-shadow: 0 8px 30px rgba(0, 30, 60, 0.8); pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+        #stats {
+            position: absolute; bottom: 30px; left: 20px; color: #f0f4ff;
+            background: rgba(10, 20, 35, 0.8); padding: 12px 25px; border-radius: 60px;
+            font-size: 16px; border-left: 5px solid #ffaa33; z-index: 10;
+            backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            border: 1px solid #335588;
+        }
+        #fieldIndicator {
+            position: absolute; top: 20px; right: 20px; 
+            background: rgba(0, 20, 40, 0.9); color: #88ddff; padding: 14px 30px;
+            border-radius: 60px; font-size: 20px; font-weight: 600;
+            border: 2px solid #3ab0ff; box-shadow: 0 0 25px #2a90dd;
+            z-index: 10; backdrop-filter: blur(8px);
+            letter-spacing: 1px;
+        }
+        .control-panel {
+            position: absolute; bottom: 30px; right: 20px;
+            background: rgba(20, 30, 45, 0.85); backdrop-filter: blur(16px);
+            border: 1px solid #4f7eb0; border-radius: 36px;
+            padding: 22px 28px; color: #d0e4ff; width: 280px;
+            box-shadow: 0 20px 40px rgba(0, 10, 30, 0.7); z-index: 20;
+            transition: 0.2s;
+        }
+        .control-panel h3 { margin: 0 0 18px 0; font-weight: 400; text-align: center; color: #b0d5ff; border-bottom: 1px dashed #3f6a9e; padding-bottom: 10px; }
+        .slider-container { margin-bottom: 22px; }
+        .slider-container label { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 6px; opacity: 0.9; }
+        input[type=range] { width: 100%; margin: 5px 0; background: transparent; accent-color: #3a9eff; }
+        .value-badge { background: #1e3349; padding: 4px 12px; border-radius: 40px; font-size: 14px; border: 1px solid #3d6c9c; }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 60px;
+            border: none;
+            background: linear-gradient(145deg, #2a5f9e, #1a3f6a);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #0e1e30, 0 6px 16px #00000060;
+            transition: 0.1s ease;
+            border: 1px solid #5f92cf;
+        }
+        button:hover { background: #336db0; transform: translateY(-2px); box-shadow: 0 6px 0 #0e1e30, 0 10px 22px black; }
+        button:active { transform: translateY(2px); box-shadow: 0 2px 0 #0e1e30; }
+        .pause-btn {
+            background: linear-gradient(145deg, #6d3f8c, #4a2a63);
+            border-color: #a07fc9;
+        }
+        .pause-btn:hover { background: #7e4ca3; }
+
+        /* 放大速度图 */
+        .chart-container {
+            position: absolute; top: 120px; left: 20px; z-index: 15;
+            background: rgba(8, 16, 28, 0.8); backdrop-filter: blur(8px);
+            border: 1px solid #2e5f8e; border-radius: 28px; padding: 15px 20px 20px 20px;
+            box-shadow: 0 10px 30px #00000070; width: 520px; /* 更宽 */
+        }
+        .chart-container h4 { margin: 0 0 12px 0; font-weight: 400; color: #bbd5ff; display: flex; align-items: center; gap: 8px; }
+        canvas#speedChart { width: 100%; height: 200px; display: block; background: #0b1422; border-radius: 20px; border: 1px solid #2e4a70; } /* 更高 */
+        .note-small { font-size: 12px; text-align: right; opacity: 0.6; margin-top: 5px; }
+
+        .legend {
+            position: absolute; top: 340px; left: 20px; background: rgba(0,0,0,0.5); padding: 8px 15px;
+            border-radius: 40px; color: #ccc; font-size: 13px; z-index: 15; border: 1px solid #335588;
+            backdrop-filter: blur(4px);
+        }
+        .legend span { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 4px; }
+    </style>
+  <link href="https://static.zxxk.com/h5/static/f01cc343be22205ea3937c1dda7d4d36.css?family=Inter:opsz@14..32&amp;display=swap" rel="stylesheet">
+  <meta name="copyright" content="学科网（zxxk.com）版权所有">
+  <meta name="signature" content="QQABSYYEggggAoBAAAhCQwHYCkKYkAECCCgGwAAQsAAByQNABAA=">
+ </head>
+ <body>
+  <div id="info">
+   <h2 style="margin:0; color:#ffcc66;">⚡ 回旋加速器 · 飞出效果 · 2000帧速度图</h2>
+   <p style="margin:6px 0 0; opacity:0.8;">半径超限即飞出 | 自动纵轴 | 暂停可观察<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAXCAIAAAAHu8HPAAAAqUlEQVR4nO2T0Q6AIAhFueV/559TW+qiCy5feoK5hgw4SABVFbkO+le8q1h9CGRNWvhe6+ElQge7AFhllMU1vSwyp34XeCW6biEVtp8cBlKichHYG7WSd9Qr90FLvcGgHkEwPDti+0IpZXE4lZTXNWqsGcxCg8p5J4XzUmng/5wYRd/XOcCdz+g3T4a55S8E+w4wicjiLnHrxP3Wv2X7H5nUpCY1qUl9yAlY0zbEH5DkWgAAAABJRU5ErkJggg==" style="position: absolute; left: -99999px; top: -99999px; opacity: 0; pointer-events: none; width: 1px; height: 1px;"></p>
+  </div>
+  <div id="stats">
+   <span>📐 半径: <span id="radiusVal">0.60</span> → ⚡ 速度: <span id="speedVal">0.60</span> (a.u.)</span> | <span>🔄 加速次数: <span id="turnsVal">0</span></span>
+  </div>
+  <div id="fieldIndicator">
+   ⚡ 电场: <span id="fieldDir">➡️ 右向</span>
+  </div>
+  <div class="control-panel">
+   <h3>⚙️ 参数调节</h3>
+   <div class="slider-container">
+    <label>🚀 初速度 <span class="value-badge" id="initSpeedVal">0.6</span></label> <input type="range" id="initSpeed" min="0.3" max="1.8" step="0.05" value="0.6">
+   </div>
+   <div class="slider-container">
+    <label>⚡ 电场强度 <span class="value-badge" id="eFieldVal">1.0</span></label> <input type="range" id="eField" min="0.3" max="2.5" step="0.1" value="1.0">
+   </div>
+   <div class="slider-container">
+    <label>🧲 磁场强度 <span class="value-badge" id="bFieldVal">1.0</span></label> <input type="range" id="bField" min="0.4" max="2.0" step="0.1" value="1.0">
+   </div>
+   <div class="button-group">
+    <button id="fireBtn">▶ 发射</button> <button id="pauseBtn" class="pause-btn">⏸️ 暂停</button>
+   </div>
+  </div>
+  <div class="chart-container">
+   <h4>📈 速度 - 时间 (最近2000帧)</h4>
+   <canvas id="speedChart" width="700" height="200"></canvas>
+   <div class="note-small">
+    速度 ∝ 半径 | 纵轴自动缩放 | 飞出后停止记录
+   </div>
+  </div>
+  <div class="legend">
+   <span style="background:#ffaa33;"></span> 轨迹 (8000点) <span style="background:#88ff88; margin-left:15px;"></span> 速度矢量 <span style="background:#ff6666;"></span> 受力矢量
+  </div><!-- 引入 Three.js -->
+  <script type="importmap">
+        {
+            "imports": {
+                "three": "https://static.zxxk.com/h5/static/e02cd65bd14433a9a0c52042bb0b6856.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+  <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // --- 初始化场景 ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0c1020);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(12, 6, 18);
+        camera.lookAt(0, 2, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = false;
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0px';
+        labelRenderer.domElement.style.left = '0px';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.body.appendChild(labelRenderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = false;
+        controls.enableZoom = true;
+        controls.maxPolarAngle = Math.PI / 2;
+        controls.target.set(0, 2, 0);
+
+        // 灯光
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(5, 10, 7);
+        scene.add(dirLight);
+        const backLight = new THREE.PointLight(0x3366ff, 0.5);
+        backLight.position.set(-5, 0, -5);
+        scene.add(backLight);
+
+        // 星光背景
+        const starsGeo = new THREE.BufferGeometry();
+        const starsCount = 1200;
+        const starPos = new Float32Array(starsCount * 3);
+        for (let i = 0; i < starsCount; i++) {
+            starPos[i*3] = (Math.random() - 0.5) * 200;
+            starPos[i*3+1] = (Math.random() - 0.5) * 200;
+            starPos[i*3+2] = (Math.random() - 0.5) * 200;
+        }
+        starsGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        const starsMat = new THREE.PointsMaterial({color: 0xaaccff, size: 0.15});
+        const stars = new THREE.Points(starsGeo, starsMat);
+        scene.add(stars);
+
+        // ========== 磁场符号：行列均匀，仅限D形盒内部 ==========
+        function createCross(position, color = 0x88aaff, size = 0.45) {
+            const group = new THREE.Group();
+            const geo = new THREE.BoxGeometry(size * 0.15, size, size * 0.15);
+            const mat = new THREE.MeshStandardMaterial({ color: color, emissive: 0x112233 });
+            const bar1 = new THREE.Mesh(geo, mat);
+            bar1.rotation.z = Math.PI / 4;
+            group.add(bar1);
+            const bar2 = new THREE.Mesh(geo, mat);
+            bar2.rotation.z = -Math.PI / 4;
+            group.add(bar2);
+            group.position.copy(position);
+            return group;
+        }
+
+        const R_D = 5.5;
+        const gapWidth = 1.5;
+        const gapHalf = gapWidth / 2;
+        const dHeight = 0.6;
+
+        // 行列均匀排布
+        const step = 0.9;
+        const colorRight = 0x88aaff;
+        const colorLeft = 0x77aadd;
+        
+        // 右盒
+        for (let x = -R_D+0.5; x <= R_D; x += step) {
+            for (let y = -R_D+0.5; y <= R_D; y += step) {
+                const dx = x;
+                const dy = y;
+                if (dx*dx + dy*dy <= R_D*R_D && dx >= 0) {
+                    scene.add(createCross(new THREE.Vector3(gapHalf + dx, dy, 0.3), colorRight, 0.45));
+                }
+            }
+        }
+        // 左盒
+        for (let x = -R_D+0.5; x <= R_D; x += step) {
+            for (let y = -R_D+0.5; y <= R_D; y += step) {
+                const dx = x;
+                const dy = y;
+                if (dx*dx + dy*dy <= R_D*R_D && dx <= 0) {
+                    scene.add(createCross(new THREE.Vector3(-gapHalf + dx, dy, -0.3), colorLeft, 0.43));
+                }
+            }
+        }
+
+        // --- D形盒 (半透明) ---
+        function createDee(color, angleStart, angleLength, offsetX) {
+            const geom = new THREE.CylinderGeometry(R_D, R_D, dHeight, 72, 1, angleStart, angleLength);
+            const mat = new THREE.MeshPhongMaterial({ color, emissive: 0x112233, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.rotation.x = -Math.PI / 2;
+            mesh.position.x = offsetX;
+            return mesh;
+        }
+        const deeRight = createDee(0x3377cc, -Math.PI/2, Math.PI, gapHalf);
+        const deeLeft  = createDee(0xcc5533,  Math.PI/2, Math.PI, -gapHalf);
+        scene.add(deeRight);
+        scene.add(deeLeft);
+
+        // 边框
+        function addHalfCircleBorder(radius, angleStart, angleLength, color, zOffset, offsetX) {
+            const points = [];
+            for (let i = 0; i <= 60; i++) {
+                let t = i/60;
+                let angle = angleStart + t * angleLength;
+                points.push(new THREE.Vector3(radius*Math.cos(angle)+offsetX, radius*Math.sin(angle), zOffset));
+            }
+            const geo = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color }));
+            scene.add(line);
+        }
+        addHalfCircleBorder(R_D, -Math.PI/2, Math.PI, 0x66aaff,  dHeight/2, gapHalf);
+        addHalfCircleBorder(R_D, -Math.PI/2, Math.PI, 0x66aaff, -dHeight/2, gapHalf);
+        addHalfCircleBorder(R_D,  Math.PI/2, Math.PI, 0xff8866,  dHeight/2, -gapHalf);
+        addHalfCircleBorder(R_D,  Math.PI/2, Math.PI, 0xff8866, -dHeight/2, -gapHalf);
+
+        // D形盒标签
+        const labelD1 = new CSS2DObject(document.createElement('div'));
+        labelD1.element.textContent = 'D₁';
+        labelD1.element.style.color = '#88aaff';
+        labelD1.element.style.fontSize = '28px';
+        labelD1.element.style.fontWeight = 'bold';
+        labelD1.element.style.textShadow = '0 0 10px #2266cc';
+        labelD1.position.set(gapHalf + 2, 2, 1);
+        scene.add(labelD1);
+        
+        const labelD2 = new CSS2DObject(document.createElement('div'));
+        labelD2.element.textContent = 'D₂';
+        labelD2.element.style.color = '#ff8866';
+        labelD2.element.style.fontSize = '28px';
+        labelD2.element.style.fontWeight = 'bold';
+        labelD2.element.style.textShadow = '0 0 10px #cc4422';
+        labelD2.position.set(-gapHalf - 2, -2, 1);
+        scene.add(labelD2);
+
+        // --- 缝隙 ---
+        const gapMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0x224466, transparent: true, opacity: 0.08 });
+        const gapBox = new THREE.Mesh(new THREE.BoxGeometry(gapWidth, R_D*1.8, 0.5), gapMaterial);
+        gapBox.position.set(0,0,0);
+        scene.add(gapBox);
+
+        // 电场箭头
+        const arrowGroup = new THREE.Group();
+        const arrows = [];
+        for (let i = 0; i < 14; i++) {
+            const y = (i/13 - 0.5) * (R_D * 1.5);
+            const pos = new THREE.Vector3(0, y, 0.3);
+            const arrow = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), pos, 1.0, 0xffaa66, 0.5, 0.4);
+            arrowGroup.add(arrow);
+            arrows.push({ arrow, basePos: pos.clone() });
+        }
+        scene.add(arrowGroup);
+
+        // 粒子小球
+        const particleGeo = new THREE.SphereGeometry(0.22, 24, 24);
+        const particleMat = new THREE.MeshStandardMaterial({ color: 0xffdd44, emissive: 0x442200 });
+        const particle = new THREE.Mesh(particleGeo, particleMat);
+        scene.add(particle);
+
+        // 粒子源 (位置固定)
+        const sourceMarkerPos = new THREE.Vector3(gapHalf - 0.4, -0.6, 0);
+        const sourceGeo = new THREE.SphereGeometry(0.18, 16, 16);
+        const sourceMat = new THREE.MeshStandardMaterial({ color: 0x66ff66, emissive: 0x224422 });
+        const sourceMarker = new THREE.Mesh(sourceGeo, sourceMat);
+        sourceMarker.position.copy(sourceMarkerPos);
+        scene.add(sourceMarker);
+        const sourceLabelDiv = document.createElement('div');
+        sourceLabelDiv.textContent = '⦿ 粒子源';
+        sourceLabelDiv.style.color = '#aaffaa';
+        sourceLabelDiv.style.fontSize = '14px';
+        sourceLabelDiv.style.backgroundColor = 'rgba(0,0,0,0.6)';
+        sourceLabelDiv.style.padding = '2px 8px';
+        sourceLabelDiv.style.borderRadius = '12px';
+        const sourceLabel = new CSS2DObject(sourceLabelDiv);
+        sourceLabel.position.copy(sourceMarkerPos.clone().add(new THREE.Vector3(0, 0.5, 0)));
+        scene.add(sourceLabel);
+
+        // 轨迹点云 (8000点)
+        const trailMaxPoints = 8000;
+        const trailPositions = [];
+        const trailGeometry = new THREE.BufferGeometry();
+        const trailMaterial = new THREE.PointsMaterial({ color: 0xffaa33, size: 0.15 });
+        const trailPoints = new THREE.Points(trailGeometry, trailMaterial);
+        scene.add(trailPoints);
+        for (let i = 0; i < trailMaxPoints; i++) {
+            trailPositions.push(new THREE.Vector3(0, 0, 0));
+        }
+
+        // 速度矢量和受力矢量
+        const velArrow = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(0,0,0), 1.2, 0x88ff88, 0.5, 0.3);
+        scene.add(velArrow);
+        const forceArrow = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 1.2, 0xff6666, 0.5, 0.3);
+        scene.add(forceArrow);
+
+        // ========== 运动模型 ==========
+        let initSpeed = 0.6;
+        let eField = 1.0;
+        let bField = 1.0;
+        const baseDeltaR = 0.2;          // 基础增量系数
+        const baseAngularSpeed = 0.018;
+
+        // 固定粒子出射点位置 (右盒底部)
+        const fixedStartY = -0.6;
+
+        let deltaR = baseDeltaR * eField;
+        let angularSpeed = baseAngularSpeed * bField;
+
+        const STATE_CIRCULAR = 0;
+        const STATE_LINEAR = 1;
+        const STATE_ESCAPE = 2;           // 飞出状态
+        
+        let state = STATE_CIRCULAR;
+        let currentSide = 'right';
+        let currentR = initSpeed;
+        // 圆心位置：保证粒子从固定点 (gapHalf, fixedStartY) 出发
+        let currentCenter = new THREE.Vector3(gapHalf, fixedStartY + currentR, 0);
+        let angle = -Math.PI / 2; // 底部
+        
+        let linearStart = new THREE.Vector3();
+        let linearEnd = new THREE.Vector3();
+        let linearProgress = 0;
+        let targetSide = 'right';
+        
+        let particlePos = new THREE.Vector3(gapHalf, fixedStartY, 0); // 固定起点
+        particle.position.copy(particlePos);
+        
+        // 飞出方向
+        let escapeVelocity = new THREE.Vector3(0, 0, 0);
+        
+        let accelerateCount = 0;
+        const radiusSpan = document.getElementById('radiusVal');
+        const speedSpan = document.getElementById('speedVal');
+        const turnsSpan = document.getElementById('turnsVal');
+        const fieldDirSpan = document.getElementById('fieldDir');
+
+        // 速度历史 2000帧
+        const maxHistory = 2000;
+        const speedHistory = [];
+        const chartCanvas = document.getElementById('speedChart');
+        const ctx = chartCanvas.getContext('2d');
+
+        // 初始化轨迹
+        for (let i = 0; i < trailMaxPoints; i++) {
+            trailPositions[i].copy(particlePos);
+        }
+
+        // --- 滑块与按钮 ---
+        const initSpeedSlider = document.getElementById('initSpeed');
+        const eFieldSlider = document.getElementById('eField');
+        const bFieldSlider = document.getElementById('bField');
+        const initSpeedVal = document.getElementById('initSpeedVal');
+        const eFieldVal = document.getElementById('eFieldVal');
+        const bFieldVal = document.getElementById('bFieldVal');
+        const fireBtn = document.getElementById('fireBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+
+        initSpeedSlider.addEventListener('input', (e) => {
+            initSpeed = parseFloat(e.target.value);
+            initSpeedVal.textContent = initSpeed.toFixed(2);
+        });
+        eFieldSlider.addEventListener('input', (e) => {
+            eField = parseFloat(e.target.value);
+            eFieldVal.textContent = eField.toFixed(1);
+        });
+        bFieldSlider.addEventListener('input', (e) => {
+            bField = parseFloat(e.target.value);
+            bFieldVal.textContent = bField.toFixed(1);
+            angularSpeed = baseAngularSpeed * bField;
+        });
+
+        fireBtn.addEventListener('click', () => {
+            currentR = initSpeed;
+            // 重置圆心，使粒子从固定点出发
+            currentCenter.set(gapHalf, fixedStartY + currentR, 0);
+            state = STATE_CIRCULAR;
+            currentSide = 'right';
+            angle = -Math.PI / 2;
+            particlePos.set(gapHalf, fixedStartY, 0);
+            particle.position.copy(particlePos);
+            accelerateCount = 0;
+            turnsSpan.textContent = '0';
+            // 清空轨迹
+            for (let i = 0; i < trailMaxPoints; i++) {
+                trailPositions[i].copy(particlePos);
+            }
+            speedHistory.length = 0;
+            fieldDirSpan.innerHTML = '➡️ 右向';
+            arrows.forEach(item => {
+                item.arrow.setDirection(new THREE.Vector3(1, 0, 0));
+                item.arrow.setColor(0xffaa66);
+            });
+            // 恢复粒子颜色
+            particle.material.color.setHex(0xffdd44);
+            particle.material.emissive.setHex(0x442200);
+        });
+
+        // 暂停功能
+        let paused = false;
+        pauseBtn.addEventListener('click', () => {
+            paused = !paused;
+            pauseBtn.textContent = paused ? '▶️ 继续' : '⏸️ 暂停';
+        });
+
+        // 绘制速度图（美化版：纵轴自动缩放）
+        function drawSpeedChart() {
+            ctx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+            if (speedHistory.length < 2) return;
+            
+            const w = chartCanvas.width, h = chartCanvas.height;
+            const padding = 40;
+            const graphW = w - 2*padding;
+            const graphH = h - 2*padding;
+            
+            // 网格线 (浅色)
+            ctx.strokeStyle = '#2a4a70';
+            ctx.lineWidth = 0.6;
+            for (let i = 0; i <= 5; i++) {
+                let x = padding + (i/5)*graphW;
+                ctx.beginPath(); ctx.moveTo(x, padding); ctx.lineTo(x, h-padding); ctx.stroke();
+            }
+            for (let i = 0; i <= 4; i++) {
+                let y = padding + (i/4)*graphH;
+                ctx.beginPath(); ctx.moveTo(padding, y); ctx.lineTo(w-padding, y); ctx.stroke();
+            }
+            
+            // 纵轴最大值 (动态取历史最大值的1.1倍，至少2.0)
+            const maxSpeed = Math.max(2.0, Math.max(...speedHistory) * 1.1);
+            const minSpeed = 0;
+            
+            ctx.beginPath();
+            ctx.strokeStyle = '#ffbb55';
+            ctx.lineWidth = 3.0;
+            for (let i = 0; i < speedHistory.length; i++) {
+                const x = padding + (i / (maxHistory-1)) * graphW;
+                const y = h - padding - ( (speedHistory[i] - minSpeed) / (maxSpeed - minSpeed) ) * graphH;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // 标注纵轴刻度
+            ctx.fillStyle = '#aab9d4';
+            ctx.font = '11px Inter';
+            ctx.fillText('0', padding-18, h-padding+5);
+            ctx.fillText(maxSpeed.toFixed(1), padding-30, padding-5);
+            ctx.fillText('帧', w-35, h-padding+5);
+        }
+
+        // --- 动画更新 ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (!paused) {
+                if (state === STATE_CIRCULAR || state === STATE_LINEAR) {
+                    // 先检查是否飞出（半径超过D形盒）
+                    if (currentR >= R_D - 0.1) { // 留一点余量
+                        // 进入飞出状态
+                        state = STATE_ESCAPE;
+                        // 记录飞出方向（当前速度方向）
+                        if (currentSide === 'right') {
+                            // 在右盒，角度可能接近90°或-90°，取切向
+                            escapeVelocity.set(-Math.sin(angle), Math.cos(angle), 0).normalize();
+                        } else {
+                            escapeVelocity.set(-Math.sin(angle), Math.cos(angle), 0).normalize();
+                        }
+                        // 粒子颜色变灰
+                        particle.material.color.setHex(0xaaaaaa);
+                        particle.material.emissive.setHex(0x222222);
+                        // 电场箭头变暗
+                        arrows.forEach(item => {
+                            item.arrow.setColor(0x666666);
+                        });
+                        fieldDirSpan.innerHTML = '🚀 飞出';
+                        return; // 跳过本次更新，下次循环开始直线飞出
+                    }
+                }
+
+                if (state === STATE_CIRCULAR) {
+                    angle += angularSpeed;
+                    if (currentSide === 'right') {
+                        particlePos.x = currentCenter.x + currentR * Math.cos(angle);
+                        particlePos.y = currentCenter.y + currentR * Math.sin(angle);
+                        if (angle >= Math.PI/2 - 0.02) {
+                            state = STATE_LINEAR;
+                            linearProgress = 0;
+                            linearStart.copy(particlePos);
+                            targetSide = 'left';
+                            // 新半径增量与当前半径成反比
+                            let delta = (baseDeltaR * eField) / Math.max(0.5, currentR);
+                            let newR = currentR + delta;
+                            linearEnd.set(-gapHalf, particlePos.y, 0);
+                            currentR = newR;
+                            fieldDirSpan.innerHTML = '⬅️ 左向';
+                            arrows.forEach(item => {
+                                item.arrow.setDirection(new THREE.Vector3(-1, 0, 0));
+                                item.arrow.setColor(0x77aaff);
+                            });
+                            accelerateCount++;
+                            turnsSpan.textContent = accelerateCount;
+                        }
+                    } else {
+                        particlePos.x = currentCenter.x + currentR * Math.cos(angle);
+                        particlePos.y = currentCenter.y + currentR * Math.sin(angle);
+                        if (angle >= 3*Math.PI/2 - 0.02) {
+                            state = STATE_LINEAR;
+                            linearProgress = 0;
+                            linearStart.copy(particlePos);
+                            targetSide = 'right';
+                            let delta = (baseDeltaR * eField) / Math.max(0.5, currentR);
+                            let newR = currentR + delta;
+                            linearEnd.set(gapHalf, particlePos.y, 0);
+                            currentR = newR;
+                            fieldDirSpan.innerHTML = '➡️ 右向';
+                            arrows.forEach(item => {
+                                item.arrow.setDirection(new THREE.Vector3(1, 0, 0));
+                                item.arrow.setColor(0xffaa66);
+                            });
+                            accelerateCount++;
+                            turnsSpan.textContent = accelerateCount;
+                        }
+                    }
+                } else if (state === STATE_LINEAR) {
+                    linearProgress += 0.025;
+                    if (linearProgress >= 1.0) {
+                        linearProgress = 1.0;
+                        state = STATE_CIRCULAR;
+                        currentSide = targetSide;
+                        if (currentSide === 'left') {
+                            currentCenter.set(-gapHalf, linearEnd.y - currentR, 0);
+                            angle = Math.PI/2;
+                        } else {
+                            currentCenter.set(gapHalf, linearEnd.y + currentR, 0);
+                            angle = -Math.PI/2;
+                        }
+                        particlePos.copy(linearEnd);
+                    } else {
+                        particlePos.x = linearStart.x + (linearEnd.x - linearStart.x) * linearProgress;
+                        particlePos.y = linearStart.y;
+                    }
+                } else if (state === STATE_ESCAPE) {
+                    // 沿切线方向直线飞出
+                    particlePos.x += escapeVelocity.x * 0.15;
+                    particlePos.y += escapeVelocity.y * 0.15;
+                    // 如果飞出太远，可以停止更新或者重置，但为了演示，继续移动
+                }
+
+                particle.position.copy(particlePos);
+
+                // 更新轨迹点云（飞出时也记录）
+                trailPositions.shift();
+                trailPositions.push(particlePos.clone());
+                const pointArray = trailPositions.flatMap(v => [v.x, v.y, v.z]);
+                trailGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointArray, 3));
+                trailGeometry.setDrawRange(0, trailPositions.length);
+
+                // 更新速度历史（仅在未飞出时记录，飞出后不再增加新点，但保留已有曲线）
+                if (state !== STATE_ESCAPE) {
+                    speedHistory.push(currentR);
+                    if (speedHistory.length > maxHistory) speedHistory.shift();
+                }
+
+                // 更新UI中的半径和速度显示
+                radiusSpan.textContent = currentR.toFixed(2);
+                speedSpan.textContent = currentR.toFixed(2);
+            }
+
+            // 绘制速度图
+            drawSpeedChart();
+
+            // 更新矢量方向（飞出时矢量可能不需要更新，但可以保持）
+            if (state !== STATE_ESCAPE) {
+                let velDir = new THREE.Vector3(1,0,0);
+                if (state === STATE_CIRCULAR) {
+                    velDir.set( -Math.sin(angle), Math.cos(angle), 0 ).normalize();
+                } else if (state === STATE_LINEAR) {
+                    velDir.set( Math.sign(linearEnd.x - linearStart.x), 0, 0 ).normalize();
+                }
+                velArrow.position.copy(particlePos);
+                velArrow.setDirection(velDir);
+                
+                let forceDir = new THREE.Vector3(0,0,0);
+                if (state === STATE_CIRCULAR) {
+                    forceDir.copy(currentCenter).sub(particlePos).normalize();
+                } else if (state === STATE_LINEAR) {
+                    forceDir.set( (fieldDirSpan.innerHTML.includes('左') ? -1 : 1), 0, 0 );
+                }
+                forceArrow.position.copy(particlePos);
+                forceArrow.setDirection(forceDir);
+            } else {
+                // 飞出时，速度方向不变，受力为零，隐藏受力箭头或置零
+                velArrow.position.copy(particlePos);
+                // 速度方向保持之前记录的escapeVelocity
+                velArrow.setDirection(escapeVelocity);
+                forceArrow.setLength(0); // 受力消失
+            }
+
+            stars.rotation.y += 0.0002;
+            controls.update();
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+ </body>
+</html>

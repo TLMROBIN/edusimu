@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="zh-CN">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>光的干涉实验平台 · 专业版</title><!-- 字体与图标 -->
+  <link href="https://static.zxxk.com/h5/static/a2a736faed492a6ca95c2dcfb0dba264.css?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;500&amp;family=Material+Icons" rel="stylesheet"><!-- Chart.js 3.7 -->
+  <script src="https://static.zxxk.com/h5/static/4328ece7a486aa04b358fd751d187a7d.js"></script><!-- MathJax 3 -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://static.zxxk.com/h5/static/9472d769fd5984881a2562461b75c140.js" async></script><!-- Three.js -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://static.zxxk.com/h5/static/e02cd65bd14433a9a0c52042bb0b6856.js",
+        "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .app-container { display: flex; gap: 24px; flex: 1; min-height: 0; }
+    .card {
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 15px 30px -8px rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.02);
+      padding: 22px 20px;
+      transition: all 0.25s ease;
+      border-top: 4px solid;
+      border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-image-slice: 1;
+    }
+    .card:hover { box-shadow: 0 25px 35px -12px rgba(0,0,0,0.12); transform: translateY(-3px); }
+    .control-panel { width: 320px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto; max-height: calc(100vh - 90px); }
+    .visualization-panel { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+    .top-row { display: flex; gap: 20px; flex: 2; min-height: 520px; }
+    .three-canvas-card { flex: 1; display: flex; flex-direction: column; padding: 14px 14px 10px; min-width: 0; }
+    .pattern-chart-card { flex: 1; display: flex; flex-direction: column; padding: 16px 16px 12px; gap: 14px; }
+    .data-card { flex: 1; padding: 20px 22px; }
+    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    h1 {
+      font-weight: 500; font-size: 1.9rem;
+      background: linear-gradient(135deg, #5f6fd6, #7b4fa2);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent; letter-spacing: -0.5px;
+    }
+    .slider-group { margin-bottom: 18px; }
+    .slider-label { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 500; margin-bottom: 6px; }
+    .slider-label span:last-child { font-family: 'Roboto Mono', monospace; background: #f1f5f9; padding: 3px 12px; border-radius: 40px; }
+    input[type=range] { width: 100%; margin: 8px 0; }
+    .color-indicator { display: inline-block; width: 22px; height: 22px; border-radius: 22px; margin-left: 8px; vertical-align: middle; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .tab-bar { display: flex; gap: 8px; margin: 16px 0 8px; }
+    .tab {
+      flex: 1; text-align: center; padding: 12px 0; background: #f1f5f9;
+      border-radius: 60px; font-weight: 500; font-size: 0.9rem; cursor: pointer; transition: all 0.15s;
+    }
+    .tab.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; box-shadow: 0 8px 16px rgba(102,126,234,0.3); }
+    .formula-box {
+      background: #f8fafc; border-radius: 18px; padding: 16px; font-size: 1.05rem;
+      border: 1px solid #e2e8f0; margin: 16px 0 10px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .status-indicator { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #2e7d32; margin-top: 10px; }
+    .green-dot { width: 10px; height: 10px; background: #10b981; border-radius: 10px; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+    button {
+      background: white; border: 1px solid #e2e8f0; border-radius: 40px; padding: 10px 18px;
+      font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03); transition: all 0.15s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    button.primary { background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: white; box-shadow: 0 8px 16px rgba(102,126,234,0.25); }
+    button:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(0,0,0,0.06); }
+    #three-canvas { width: 100%; border-radius: 20px; background: #111216; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
+    #pattern-canvas { width: 100%; border-radius: 18px; background: #0b0d12; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: block; }
+    .chart-container { position: relative; height: 280px; margin-top: 6px; background: #ffffff; border-radius: 20px; padding: 8px 6px 4px; box-shadow: 0 6px 14px rgba(0,0,0,0.03); }
+    canvas#intensityChart { width: 100% !important; height: 100% !important; border-radius: 16px; }
+    .view-controls { display: flex; gap: 8px; margin-top: 6px; justify-content: flex-end; }
+    .data-value { font-family: 'Roboto Mono', monospace; font-weight: 600; color: #1e293b; background: #f1f5f9; padding: 4px 12px; border-radius: 40px; margin-left: 6px; }
+    @media (max-width: 1000px) { .app-container { flex-direction: column; } .control-panel { width: 100%; } .top-row { min-height: auto; flex-direction: column; } }
+  </style>
+  <meta name="copyright" content="学科网（zxxk.com）版权所有">
+  <meta name="signature" content="QQABYYQAogAgApAAAAhCUwV6CkGYkACCCAgGABAcoAABSRNABAA=">
+ </head>
+ <body>
+  <div class="header">
+   <div class="title-section">
+    <h1>✨ 光的干涉实验平台 · 专业版</h1>
+   </div>
+  </div>
+  <div class="app-container">
+   <!-- 左侧控制区 -->
+   <div class="control-panel card">
+    <div style="padding: 4px 0;">
+     <div class="tab-bar">
+      <div class="tab active" data-type="single">
+       单缝衍射
+      </div>
+      <div class="tab" data-type="double">
+       双缝干涉
+      </div>
+      <div class="tab" data-type="multi">
+       多缝衍射
+      </div>
+     </div>
+     <div class="formula-box" id="formulaDisplay">
+      \( I = I_0 \left( \frac{\sin\beta}{\beta} \right)^2 \) 
+      <br>
+       \( \beta = \frac{\pi a}{\lambda} \sin\theta \)
+     </div>
+    </div>
+    <div class="slider-group">
+     <div class="slider-label">
+      光波长 λ <span id="lambdaVal">550 nm</span>
+     </div><input type="range" id="lambdaSlider" min="380" max="780" value="550" step="1">
+     <div style="display: flex; align-items: center; margin-top: 5px;">
+      颜色: <span id="colorSwatch" class="color-indicator" style="background: #6aff00;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAXCAIAAABxgXNEAAAAuElEQVR4nO1TSxJDIQgjrfeuJy/9PX0CQe2uizKOgwIJMABVFXketFvYU6zeBePjWmttX7Aexo/9YGA9sG7W5hQJ1gzaYDmnGDwXUCzit4/laulKPxq6SWgmNc6TIn3oWDtVjEBqnz4vhFtajZTMdQaf+cpos/mMfC8fqN5n1aS1k3EpNoZ0YYPpiMJ7H5fMY7PTTDdndQLRrSjMKcuUruQ5xiUEuPVeZnf+RKxsV9Zy+Tbgj/WTWA/7EzVXUl16ogAAAABJRU5ErkJggg==" style="position: absolute; left: -99999px; top: -99999px; opacity: 0; pointer-events: none; width: 1px; height: 1px;"></span>
+     </div>
+    </div>
+    <div class="slider-group">
+     <div class="slider-label">
+      缝宽 a <span id="aVal">100 μm</span>
+     </div><input type="range" id="aSlider" min="10" max="1000" value="100" step="1">
+    </div>
+    <div class="slider-group">
+     <div class="slider-label">
+      缝数 N <span id="nVal">1</span>
+     </div><input type="range" id="nSlider" min="1" max="5" value="1" step="1">
+    </div>
+    <div class="slider-group" id="dGroup" style="display: none;">
+     <div class="slider-label">
+      缝间距 d <span id="dVal">200 μm</span>
+     </div><input type="range" id="dSlider" min="50" max="1000" value="200" step="1">
+    </div>
+    <div class="slider-group">
+     <div class="slider-label">
+      屏幕距离 L <span id="lVal">50 cm</span>
+     </div><input type="range" id="lSlider" min="10" max="200" value="50" step="1">
+    </div>
+    <div style="display: flex; gap: 10px;">
+     <button id="resetBtn" class="primary"><span class="material-icons">restart_alt</span>重置参数</button> <button id="startAnimBtn"><span class="material-icons">play_arrow</span>开始</button> <button id="stopAnimBtn"><span class="material-icons">pause</span>停止</button>
+    </div>
+    <div class="status-indicator">
+     <span class="green-dot"></span> 模拟就绪 · 实时更新
+    </div>
+    <div style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">
+     <span class="material-icons" style="font-size: 16px;">settings</span> 拖拽3D视图 / 滚轮缩放
+    </div>
+   </div><!-- 右侧可视化区域 -->
+   <div class="visualization-panel">
+    <div class="top-row">
+     <div class="three-canvas-card card">
+      <div style="font-weight: 500; margin-bottom: 8px; display: flex; justify-content: space-between;">
+       <span>🧪 实验装置 3D</span>
+       <div class="view-controls">
+        <button id="zoomIn3D" title="放大"><span class="material-icons">zoom_in</span></button> <button id="zoomOut3D" title="缩小"><span class="material-icons">zoom_out</span></button> <button id="resetView3D" title="重置视图"><span class="material-icons">crop_free</span></button>
+       </div>
+      </div>
+      <div id="three-canvas" style="flex:1; min-height:280px;"></div>
+     </div>
+     <div class="pattern-chart-card card">
+      <div style="font-weight: 500; font-size: 1.05rem; display: flex; align-items: center; gap: 6px;">
+       <span class="material-icons" style="color: #667eea;">bar_chart</span> 衍射图样 &amp; 光强分布
+      </div>
+      <canvas id="pattern-canvas" width="500" height="180"></canvas>
+      <div class="chart-container">
+       <canvas id="intensityChart"></canvas>
+      </div>
+      <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px;">
+       <button id="saveChartBtn" style="background: #f8fafc;"><span class="material-icons">image</span>保存光强图为 JPG</button>
+      </div>
+     </div>
+    </div>
+    <div class="data-card card">
+     <div style="display: flex; align-items: center; justify-content: space-between;">
+      <h3 style="font-weight: 500; font-size: 1.3rem;">📋 实时数据</h3><button id="exportCsvBtn"><span class="material-icons">download</span>导出 CSV</button>
+     </div>
+     <div style="display: flex; gap: 36px; margin-top: 18px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center;">
+       <span style="color:#475569;">中央明纹宽度:</span> <strong class="data-value" id="centralWidth">-- mm</strong>
+      </div>
+      <div style="display: flex; align-items: center;">
+       <span style="color:#475569;">第一极小位置:</span> <strong class="data-value" id="firstMinPos">-- mm</strong>
+      </div>
+      <div style="display: flex; align-items: center;">
+       <span style="color:#475569;">d / λ :</span> <strong class="data-value" id="dLambdaRatio">--</strong>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  // --- 状态 ---
+  const state = {
+    lambda: 550, a: 100, N: 1, d: 200, L: 50,
+    type: 'single', animActive: false, wavelengthColor: '#6aff00',
+    rgb: { r: 106, g: 255, b: 0 }  // 对应550nm
+  };
+
+  // DOM 元素
+  const lambdaSlider = document.getElementById('lambdaSlider');
+  const lambdaVal = document.getElementById('lambdaVal');
+  const colorSwatch = document.getElementById('colorSwatch');
+  const aSlider = document.getElementById('aSlider');
+  const aVal = document.getElementById('aVal');
+  const nSlider = document.getElementById('nSlider');
+  const nVal = document.getElementById('nVal');
+  const dSlider = document.getElementById('dSlider');
+  const dVal = document.getElementById('dVal');
+  const dGroup = document.getElementById('dGroup');
+  const lSlider = document.getElementById('lSlider');
+  const lVal = document.getElementById('lVal');
+  const formulaDisplay = document.getElementById('formulaDisplay');
+  const centralWidthSpan = document.getElementById('centralWidth');
+  const firstMinPosSpan = document.getElementById('firstMinPos');
+  const dLambdaRatioSpan = document.getElementById('dLambdaRatio');
+  
+  const patternCanvas = document.getElementById('pattern-canvas');
+  const ctx = patternCanvas.getContext('2d');
+  
+  let chart;
+  const chartCtx = document.getElementById('intensityChart').getContext('2d');
+  
+  // Three.js 变量
+  let scene, camera, renderer, controls;
+  let laserBeam, slitBoardGroup, screenMesh, screenTextureCanvas, screenCtx;
+  let laserCylinder;
+  const threeContainer = document.getElementById('three-canvas');
+  
+  const SAMPLE_POINTS = 280;
+  let intensityData = [];
+  let positionMM = [];
+
+  // 波长转RGB对象
+  function wavelengthToRGB(wavelength) {
+    let r, g, b;
+    if (wavelength >= 380 && wavelength < 440) {
+      r = -(wavelength - 440) / (440 - 380); g = 0.0; b = 1.0;
+    } else if (wavelength >= 440 && wavelength < 490) {
+      r = 0.0; g = (wavelength - 440) / (490 - 440); b = 1.0;
+    } else if (wavelength >= 490 && wavelength < 510) {
+      r = 0.0; g = 1.0; b = -(wavelength - 510) / (510 - 490);
+    } else if (wavelength >= 510 && wavelength < 580) {
+      r = (wavelength - 510) / (580 - 510); g = 1.0; b = 0.0;
+    } else if (wavelength >= 580 && wavelength < 645) {
+      r = 1.0; g = -(wavelength - 645) / (645 - 580); b = 0.0;
+    } else if (wavelength >= 645 && wavelength <= 780) {
+      r = 1.0; g = 0.0; b = 0.0;
+    } else { r = g = b = 0.5; }
+    return { r: Math.round(r*255), g: Math.round(g*255), b: Math.round(b*255) };
+  }
+
+  function updateColorFromLambda() {
+    const rgb = wavelengthToRGB(state.lambda);
+    state.rgb = rgb;
+    const col = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    colorSwatch.style.backgroundColor = col;
+    state.wavelengthColor = col;
+  }
+
+  // 光强计算
+  function computeIntensity(x_mm) {
+    const lambda_m = state.lambda * 1e-9;
+    const a_m = state.a * 1e-6;
+    const L_m = state.L * 0.01;
+    const theta = Math.atan(x_mm * 1e-3 / L_m);
+    const beta = (Math.PI * a_m / lambda_m) * Math.sin(theta);
+    
+    let I = 1.0;
+    if (Math.abs(beta) > 1e-12) I = Math.pow(Math.sin(beta)/beta, 2);
+    
+    if (state.N > 1) {
+      const d_m = state.d * 1e-6;
+      const delta = (Math.PI * d_m / lambda_m) * Math.sin(theta);
+      let interf = 1.0;
+      if (Math.abs(Math.sin(delta)) > 1e-12) {
+        interf = Math.pow(Math.sin(state.N * delta) / Math.sin(delta), 2) / (state.N*state.N);
+      }
+      I *= interf;
+    }
+    return Math.max(0, I);
+  }
+
+  function recomputeAll() {
+    const xMin = -20, xMax = 20;
+    positionMM = []; intensityData = [];
+    for (let i = 0; i < SAMPLE_POINTS; i++) {
+      const x = xMin + (i/(SAMPLE_POINTS-1))*(xMax - xMin);
+      positionMM.push(x);
+      intensityData.push(computeIntensity(x));
+    }
+    
+    let firstMin = null;
+    for (let i=1; i<intensityData.length; i++) {
+      if (intensityData[i] < 0.01 && intensityData[i-1] > 0.01) { firstMin = positionMM[i]; break; }
+    }
+    centralWidthSpan.innerText = firstMin ? (2 * firstMin).toFixed(3) + ' mm' : '--';
+    firstMinPosSpan.innerText = firstMin ? firstMin.toFixed(3) + ' mm' : '--';
+    dLambdaRatioSpan.innerText = (state.d / state.lambda).toFixed(2);
+    
+    drawPattern();
+    updateChart();
+    update3DScene();
+  }
+
+  // 绘制2D条纹（纯色，亮度随光强变化）
+  function drawPattern() {
+    const w = patternCanvas.width, h = patternCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+    const { r, g, b } = state.rgb;
+    
+    for (let i = 0; i < w; i++) {
+      const x_mm = -20 + (i/w)*40;
+      const I = computeIntensity(x_mm);
+      // 纯色，亮度缩放
+      const rr = Math.floor(r * I);
+      const gg = Math.floor(g * I);
+      const bb = Math.floor(b * I);
+      ctx.fillStyle = `rgb(${rr}, ${gg}, ${bb})`;
+      ctx.fillRect(i, 0, 1, h);
+    }
+  }
+
+  function initChart() {
+    chart = new Chart(chartCtx, {
+      type: 'line',
+      data: {
+        labels: positionMM,
+        datasets: [{
+          label: '相对光强',
+          data: intensityData,
+          borderColor: state.wavelengthColor,
+          backgroundColor: 'rgba(102, 126, 234, 0.12)',
+          borderWidth: 2.5,
+          fill: true,
+          tension: 0.35,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { font: { family: 'Roboto' } } },
+          tooltip: { mode: 'index' }
+        },
+        scales: {
+          x: { 
+            title: { display: true, text: '位置 (mm)', font: { weight: '500' } },
+            ticks: { callback: (val) => Number(val).toFixed(2), maxTicksLimit: 10 },
+            grid: { color: '#e0e7ef' }
+          },
+          y: { 
+            beginAtZero: true, max: 1.05,
+            title: { display: true, text: '相对光强' },
+            grid: { color: '#e0e7ef' }
+          }
+        }
+      }
+    });
+  }
+
+  function updateChart() {
+    chart.data.labels = positionMM;
+    chart.data.datasets[0].data = intensityData;
+    chart.data.datasets[0].borderColor = state.wavelengthColor;
+    chart.update();
+  }
+
+  // 3D 初始化
+  function initThree() {
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color('#111216');
+    camera = new THREE.PerspectiveCamera(45, threeContainer.clientWidth / threeContainer.clientHeight, 0.1, 1000);
+    camera.position.set(2, 4, 18);
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(threeContainer.clientWidth, threeContainer.clientHeight);
+    renderer.shadowMap.enabled = true;
+    threeContainer.appendChild(renderer.domElement);
+    
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0.5, 0);
+    
+    const amb = new THREE.AmbientLight(0x404060);
+    scene.add(amb);
+    const dir = new THREE.DirectionalLight(0xffffff, 1);
+    dir.position.set(2,5,5);
+    scene.add(dir);
+    
+    const geo = new THREE.CylinderGeometry(0.6,0.6,1.2,16);
+    const mat = new THREE.MeshStandardMaterial({ color: state.wavelengthColor, emissive: state.wavelengthColor, emissiveIntensity: 0.6 });
+    laserCylinder = new THREE.Mesh(geo, mat);
+    laserCylinder.position.set(-5, 0.5, 0);
+    laserCylinder.rotation.z = Math.PI/2;
+    scene.add(laserCylinder);
+    
+    slitBoardGroup = new THREE.Group();
+    scene.add(slitBoardGroup);
+    
+    screenTextureCanvas = document.createElement('canvas');
+    screenTextureCanvas.width = 512; screenTextureCanvas.height = 512;
+    screenCtx = screenTextureCanvas.getContext('2d');
+    
+    const screenMat = new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(screenTextureCanvas), side: THREE.DoubleSide });
+    screenMesh = new THREE.Mesh(new THREE.BoxGeometry(0.2, 5, 8), screenMat);
+    screenMesh.position.set(5, 0.5, 0);
+    scene.add(screenMesh);
+    
+    update3DScene();
+    animateThree();
+  }
+
+  function update3DScene() {
+    laserCylinder.material.color.set(state.wavelengthColor);
+    laserCylinder.material.emissive.set(state.wavelengthColor);
+    
+    if (laserBeam) scene.remove(laserBeam);
+    const beamLen = 10 + state.L * 0.05;
+    const beamGeo = new THREE.CylinderGeometry(0.08, 0.08, beamLen, 8);
+    const beamMat = new THREE.MeshPhongMaterial({ color: state.wavelengthColor, transparent: true, opacity: 0.3 });
+    laserBeam = new THREE.Mesh(beamGeo, beamMat);
+    laserBeam.position.set(-5 + beamLen/2, 0.5, 0);
+    laserBeam.rotation.z = Math.PI/2;
+    scene.add(laserBeam);
+    
+    while(slitBoardGroup.children.length) slitBoardGroup.remove(slitBoardGroup.children[0]);
+    const boardMat = new THREE.MeshStandardMaterial({ color: 0x2a2a3c });
+    const board = new THREE.Mesh(new THREE.BoxGeometry(0.4, 3, 4.5), boardMat);
+    board.position.set(0, 0.5, 0);
+    slitBoardGroup.add(board);
+    
+    const slitWidthVis = Math.min(0.5, state.a * 1e-6 * 300);
+    const spacingVis = state.d * 1e-6 * 300;
+    for (let i=0; i<state.N; i++) {
+      const zPos = (i - (state.N-1)/2) * spacingVis;
+      const slitLight = new THREE.Mesh(
+        new THREE.BoxGeometry(0.45, 0.9, slitWidthVis),
+        new THREE.MeshPhongMaterial({ color: state.wavelengthColor, transparent: true, opacity: 0.5, emissive: state.wavelengthColor })
+      );
+      slitLight.position.set(0, 0.5, zPos);
+      slitBoardGroup.add(slitLight);
+    }
+    
+    // 绘制屏幕纹理：纯色条纹，亮度随光强变化
+    screenCtx.fillStyle = '#000000';
+    screenCtx.fillRect(0, 0, 512, 512);
+    const { r, g, b } = state.rgb;
+    
+    for (let px = 0; px < 512; px++) {
+      const x_mm = -20 + (px/512)*40;
+      const I = computeIntensity(x_mm);
+      const rr = Math.floor(r * I);
+      const gg = Math.floor(g * I);
+      const bb = Math.floor(b * I);
+      screenCtx.fillStyle = `rgb(${rr}, ${gg}, ${bb})`;
+      screenCtx.fillRect(px, 0, 1, 512);
+    }
+    screenMesh.material.map.needsUpdate = true;
+  }
+
+  function animateThree() {
+    requestAnimationFrame(animateThree);
+    if (state.animActive) laserCylinder.rotation.y += 0.005;
+    controls.update();
+    renderer.render(scene, camera);
+  }
+
+  function updateFormula() {
+    let tex = '';
+    if (state.type === 'single') tex = `\\( I = I_0 \\left( \\frac{\\sin\\beta}{\\beta} \\right)^2 ,\\; \\beta = \\frac{\\pi a}{\\lambda} \\sin\\theta \\)`;
+    else if (state.type === 'double') tex = `\\( I = 4 I_0 \\cos^2\\left(\\frac{\\delta}{2}\\right) \\left(\\frac{\\sin\\beta}{\\beta}\\right)^2 ,\\; \\delta = \\frac{2\\pi d}{\\lambda}\\sin\\theta \\)`;
+    else tex = `\\( I = I_0 \\left(\\frac{\\sin\\beta}{\\beta}\\right)^2 \\left(\\frac{\\sin(N\\delta/2)}{\\sin(\\delta/2)}\\right)^2 \\)`;
+    formulaDisplay.innerHTML = tex;
+    if (window.MathJax) MathJax.typesetPromise([formulaDisplay]);
+  }
+
+  function syncUI() {
+    lambdaVal.innerText = state.lambda + ' nm';
+    aVal.innerText = state.a + ' μm';
+    nVal.innerText = state.N;
+    dVal.innerText = state.d + ' μm';
+    lVal.innerText = state.L + ' cm';
+    dGroup.style.display = state.N > 1 ? 'block' : 'none';
+    updateColorFromLambda();
+    updateFormula();
+    recomputeAll();
+  }
+
+  // 事件绑定
+  lambdaSlider.addEventListener('input', e => { state.lambda = +e.target.value; syncUI(); });
+  aSlider.addEventListener('input', e => { state.a = +e.target.value; syncUI(); });
+  nSlider.addEventListener('input', e => { state.N = +e.target.value; syncUI(); });
+  dSlider.addEventListener('input', e => { state.d = +e.target.value; syncUI(); });
+  lSlider.addEventListener('input', e => { state.L = +e.target.value; syncUI(); });
+  
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const type = tab.dataset.type;
+      state.type = type;
+      if (type === 'single') { state.N = 1; nSlider.value = 1; }
+      else if (type === 'double') { state.N = 2; nSlider.value = 2; }
+      else { if(state.N<2) { state.N=3; nSlider.value=3; } }
+      syncUI();
+    });
+  });
+  
+  document.getElementById('resetBtn').onclick = ()=>{
+    state.lambda=550; state.a=100; state.N=1; state.d=200; state.L=50;
+    lambdaSlider.value=550; aSlider.value=100; nSlider.value=1; dSlider.value=200; lSlider.value=50;
+    document.querySelector('[data-type="single"]').click();
+    syncUI();
+  };
+  
+  document.getElementById('startAnimBtn').onclick = ()=> state.animActive = true;
+  document.getElementById('stopAnimBtn').onclick = ()=> state.animActive = false;
+  document.getElementById('zoomIn3D').onclick = ()=> { camera.fov *= 0.9; camera.updateProjectionMatrix(); };
+  document.getElementById('zoomOut3D').onclick = ()=> { camera.fov *= 1.1; camera.updateProjectionMatrix(); };
+  document.getElementById('resetView3D').onclick = ()=> { camera.position.set(2,4,18); controls.target.set(0,0.5,0); };
+  
+  document.getElementById('saveChartBtn').addEventListener('click', ()=>{
+    const link = document.createElement('a');
+    link.download = '光强分布图.jpg';
+    link.href = chartCtx.canvas.toDataURL('image/jpeg', 0.95);
+    link.click();
+  });
+  
+  document.getElementById('exportCsvBtn').addEventListener('click', ()=>{
+    let csv = "位置 (mm),光强\n";
+    positionMM.forEach((p,i)=> csv += `${p.toFixed(4)},${intensityData[i].toFixed(6)}\n`);
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+    const a = document.createElement('a'); 
+    a.href = URL.createObjectURL(blob); 
+    a.download = '衍射数据.csv'; 
+    a.click();
+  });
+  
+  window.onload = ()=>{
+    initThree();
+    initChart();
+    syncUI();
+    window.addEventListener('resize', ()=>{
+      const w = threeContainer.clientWidth, h = threeContainer.clientHeight;
+      renderer.setSize(w,h); camera.aspect = w/h; camera.updateProjectionMatrix();
+    });
+  };
+</script>
+ </body>
+</html>

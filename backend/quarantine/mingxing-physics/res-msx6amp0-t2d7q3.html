@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>牛顿大炮思想实验</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c1e2b, #152e42, #1e3c5a);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin: 30px 0 40px;
+            max-width: 1000px;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            letter-spacing: 1.5px;
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.7;
+            color: #b0e0e6;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .simulation-container {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            flex: 1;
+            min-width: 700px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            animation: slideInLeft 1s ease-out;
+        }
+        
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            background: rgba(0, 20, 40, 0.85);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
+        }
+        
+        canvas {
+            display: block;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            align-items: center;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 12px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #f1c40f, #e74c3c);
+            outline: none;
+            opacity: 0.9;
+            transition: opacity .2s;
+        }
+        
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+            border: 3px solid #FFD700;
+        }
+        
+        .speed-value {
+            background: rgba(255, 215, 0, 0.3);
+            padding: 8px 20px;
+            border-radius: 18px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            min-width: 110px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+        
+        .trajectory-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+        
+        .indicator-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .indicator-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        
+        .dot-blue { background: #3498db; }
+        .dot-green { background: #2ecc71; }
+        .dot-yellow { background: #f1c40f; }
+        .dot-red { background: #e74c3c; }
+        
+        .indicator-label {
+            font-size: 1.05rem;
+            text-align: center;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        }
+        
+        button:active {
+            transform: translateY(2px);
+        }
+        
+        #resetBtn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        #perfectBtn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .trajectory-status {
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        
+        .status-earth { background: rgba(52, 152, 219, 0.3); }
+        .status-circular { background: rgba(46, 204, 113, 0.3); }
+        .status-elliptical { background: rgba(241, 196, 15, 0.3); }
+        .status-escape { background: rgba(231, 76, 60, 0.3); }
+        
+        .info-panel {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            flex: 1;
+            min-width: 550px;
+            max-width: 700px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            animation: slideInRight 1s ease-out;
+        }
+        
+        .info-panel h2 {
+            color: #FFD700;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.3rem;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 1.15rem;
+        }
+        
+        .tab.active {
+            background: rgba(255, 215, 0, 0.35);
+            font-weight: bold;
+        }
+        
+        .tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .concept {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .concept h3 {
+            color: #3498db;
+            margin-bottom: 18px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .concept h3 i {
+            font-size: 1.8rem;
+            color: #FFD700;
+        }
+        
+        .concept p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.15rem;
+        }
+        
+        .concept .formula {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 18px;
+            border-radius: 12px;
+            margin: 18px 0;
+            text-align: center;
+            font-size: 1.3rem;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .orbit-types {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            margin-top: 30px;
+        }
+        
+        .orbit-type {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            border-top: 5px solid;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .orbit-type:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+        
+        .orbit-type h4 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .orbit-type p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .orbit-type.earth {
+            border-top-color: #3498db;
+        }
+        
+        .orbit-type.circular {
+            border-top-color: #2ecc71;
+        }
+        
+        .orbit-type.elliptical {
+            border-top-color: #f1c40f;
+        }
+        
+        .orbit-type.escape {
+            border-top-color: #e74c3c;
+        }
+        
+        .perfect-orbit {
+            margin: 30px 0 20px;
+            padding: 22px;
+            background: rgba(46, 204, 113, 0.2);
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(46, 204, 113, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        .perfect-orbit p {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .speed-explanation {
+            margin-top: 20px;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .speed-explanation p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            opacity: 0.8;
+            font-size: 1.05rem;
+            max-width: 900px;
+            padding: 25px;
+            border-top: 2px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        @media (max-width: 1300px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .simulation-container, .info-panel {
+                min-width: 95%;
+                max-width: 900px;
+            }
+            
+            .orbit-types {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-60px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(60px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+        
+        .math-container {
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            margin: 18px 0;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .earth-glow {
+            position: absolute;
+            top: 25%; /* 调整地球位置到偏上 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 157, 143, 0.6) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .earth-label {
+            position: absolute;
+            top: 25%; /* 与地球位置一致 */
+            left: 50%;
+            transform: translate(-50%, calc(170px + 20px));
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>牛顿大炮思想实验</h1>
+        <p class="subtitle">探索引力与轨道运动的奥秘 - 牛顿在《自然哲学的数学原理》中的经典思想实验</p>
+    </header>
+    
+    <div class="container">
+        <div class="simulation-container">
+            <div class="canvas-wrapper">
+                <div class="earth-glow"></div>
+                <div class="earth-label">地球</div>
+                <canvas id="simulationCanvas" width="800" height="700"></canvas>
+            </div>
+            
+            <div class="controls">
+                <div class="slider-container">
+                    <label>
+                        <span>发射速度：</span>
+                        <span class="speed-value" id="speedValue">3.0 km/s</span>
+                    </label>
+                    <input type="range" id="speedSlider" min="1" max="15" step="0.1" value="3.0">
+                </div>
+                
+                <div class="trajectory-indicator">
+                    <div class="indicator-item">
+                        <div class="indicator-dot dot-blue"></div>
+                        <div class="indicator-label">&lt;7.9 km/s</div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-dot dot-green"></div>
+                        <div class="indicator-label">7.9 km/s</div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-dot dot-yellow"></div>
+                        <div class="indicator-label">7.9-11.2 km/s</div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-dot dot-red"></div>
+                        <div class="indicator-label">≥11.2 km/s</div>
+                    </div>
+                </div>
+                
+                <div id="trajectoryStatus" class="trajectory-status status-earth">
+                    当前轨迹：落回地球
+                </div>
+                
+                <div class="buttons">
+                    <button id="launchBtn">🚀 发射炮弹</button>
+                    <button id="perfectBtn">🎯 完美轨道</button>
+                    <button id="resetBtn">🔄 重置模拟</button>
+                </div>
+                
+                <div class="perfect-orbit">
+                    <p>当速度精确为 <strong>7.9 km/s</strong> 时，炮弹将进入完美的圆形轨道</p>
+                </div>
+                
+                <div class="speed-explanation">
+                    <p><strong>速度区间说明：</strong></p>
+                    <p>• <strong>7.0-7.8 km/s</strong>：落回地球</p>
+                    <p>• <strong>7.9 km/s</strong>：完美圆形轨道</p>
+                    <p>• <strong>8.0-11.1 km/s</strong>：椭圆轨道</p>
+                    <p>• <strong>≥11.2 km/s</strong>：脱离地球引力</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h2>牛顿大炮原理</h2>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="concept">概念</div>
+                <div class="tab" data-tab="significance">意义</div>
+                <div class="tab" data-tab="physics">物理原理</div>
+            </div>
+            
+            <div class="tab-content active" id="concept-tab">
+                <div class="concept">
+                    <h3><i>➡️</i> 思想实验场景</h3>
+                    <p>想象一座极高的山（高到大气层之上，忽略空气阻力），山顶架设一门水平发射的大炮。</p>
+                </div>
+                
+                <div class="concept">
+                    <h3><i>📊</i> 不同速度的轨迹</h3>
+                    <p>• <strong>低速发射 (&lt;7.9 km/s)</strong>：炮弹沿抛物线落回地球表面</p>
+                    <p>• <strong>第一宇宙速度 (7.9 km/s)</strong>：炮弹环绕地球飞行，成为地球卫星（完美圆形轨道）</p>
+                    <p>• <strong>中等速度 (7.9-11.2 km/s)</strong>：炮弹进入椭圆轨道运动</p>
+                    <p>• <strong>第二宇宙速度 (≥11.2 km/s)</strong>：炮弹脱离地球引力，飞向太空</p>
+                </div>
+                
+                <div class="orbit-types">
+                    <div class="orbit-type earth">
+                        <h4><i>🌍</i> 落回地球</h4>
+                        <p>速度 &lt;7.9 km/s</p>
+                        <p>炮弹落回地球表面</p>
+                    </div>
+                    <div class="orbit-type circular">
+                        <h4><i>⭕</i> 圆周轨道</h4>
+                        <p>速度 = 7.9 km/s</p>
+                        <p>第一宇宙速度</p>
+                    </div>
+                    <div class="orbit-type elliptical">
+                        <h4><i>🔶</i> 椭圆轨道</h4>
+                        <p>速度 &gt;7.9 km/s</p>
+                        <p>但 &lt;11.2 km/s</p>
+                    </div>
+                    <div class="orbit-type escape">
+                        <h4><i>🚀</i> 脱离轨道</h4>
+                        <p>速度 ≥11.2 km/s</p>
+                        <p>第二宇宙速度</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="significance-tab">
+                <div class="concept">
+                    <h3><i>🌌</i> 统一天地运动</h3>
+                    <p>牛顿通过这个实验揭示了让苹果落地的力（引力）和让月球绕地球运行的力是同一种力。</p>
+                </div>
+                
+                <div class="concept">
+                    <h3><i>🔄</i> 轨道运动本质</h3>
+                    <p>轨道运动不是物体摆脱了引力，而是在引力的作用下，物体具有合适的切向速度，使得它持续自由落体但无法撞击天体表面。</p>
+                </div>
+                
+                <div class="concept">
+                    <h3><i>🛰️</i> 现代航天基础</h3>
+                    <p>这个思想实验是现代所有人造卫星、空间站运行原理的最基本描述，解释了第一宇宙速度（环绕速度）和第二宇宙速度（脱离速度）的概念。</p>
+                </div>
+                
+                <div class="concept">
+                    <h3><i>🔭</i> 科学影响</h3>
+                    <p>牛顿大炮思想实验不仅解释了天体运动，还为后来的航天科学奠定了基础，帮助科学家计算卫星轨道和行星探测器轨迹。</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="physics-tab">
+                <div class="concept">
+                    <h3><i>⚖️</i> 万有引力定律</h3>
+                    <p>任何两个质点都存在通过其连心线方向上的相互吸引的力：</p>
+                    <div class="math-container">
+                        \[ F = G \frac{m_1 m_2}{r^2} \]
+                    </div>
+                    <p>其中 \( G \) 是万有引力常数，\( m_1 \) 和 \( m_2 \) 分别是两个质点的质量，\( r \) 是它们之间的距离。</p>
+                </div>
+                
+                <div class="concept">
+                    <h3><i>⭕</i> 圆周运动的条件</h3>
+                    <p>当引力恰好提供圆周运动所需的向心力时：</p>
+                    <div class="math-container">
+                        \[ \frac{GMm}{r^2} = \frac{mv^2}{r} \]
+                    </div>
+                    <p>解得第一宇宙速度：</p>
+                    <div class="math-container">
+                        \[ v = \sqrt{\frac{GM}{r}} \]
+                    </div>
+                    <p>对于地球表面附近：\( v \approx 7.9 \, \text{km/s} \)</p>
+                </div>
+                
+                <div class="concept">
+                    <h3><i>🔶</i> 椭圆轨道</h3>
+                    <p>当速度大于第一宇宙速度但小于第二宇宙速度时，物体进入椭圆轨道：</p>
+                    <div class="math-container">
+                        \[ v_{\text{轨道}} = \sqrt{GM \left( \frac{2}{r} - \frac{1}{a} \right)} \]
+                    </div>
+                    <p>其中 \( a \) 是椭圆轨道的半长轴</p>
+                </div>
+                
+                <div class="concept">
+                    <h3><i>🚀</i> 脱离速度</h3>
+                    <p>当物体动能等于引力势能时，物体可以摆脱引力束缚：</p>
+                    <div class="math-container">
+                        \[ \frac{1}{2}mv^2 = \frac{GMm}{r} \]
+                    </div>
+                    <p>解得第二宇宙速度：</p>
+                    <div class="math-container">
+                        \[ v = \sqrt{\frac{2GM}{r}} \]
+                    </div>
+                    <p>对于地球表面附近：\( v \approx 11.2 \, \text{km/s} \)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>牛顿大炮思想实验演示 | 基于牛顿在《自然哲学的数学原理》(1687) 中提出的思想实验</p>
+        <p>第一宇宙速度: 7.9 km/s (环绕速度) | 第二宇宙速度: 11.2 km/s (脱离速度)</p>
+    </footer>
+
+    <script>
+        // 获取DOM元素
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValue = document.getElementById('speedValue');
+        const launchBtn = document.getElementById('launchBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const perfectBtn = document.getElementById('perfectBtn');
+        const trajectoryStatus = document.getElementById('trajectoryStatus');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // 模拟参数 - 地球位置调整到偏上
+        const earthRadius = 170;
+        const mountainHeight = 8;
+        const earthX = canvas.width / 2;
+        const earthY = canvas.height * 0.3; // 地球在画布30%高度位置
+        const cannonX = earthX;
+        const cannonY = earthY - earthRadius - mountainHeight;
+        
+        // 轨道半径（从地球中心到山顶）
+        const orbitRadius = earthRadius + mountainHeight;
+        
+        // 计算精确的第一宇宙速度（像素单位）
+        const gravitationalParameter = 200000; // 适当增加引力参数以匹配更大的尺寸
+        const firstCosmicVelocity = Math.sqrt(gravitationalParameter / orbitRadius);
+        const secondCosmicVelocity = firstCosmicVelocity * Math.sqrt(2);
+        
+        let launchVelocity = 3.0; // km/s
+        let projectiles = [];
+        let animationId = null;
+        let isSimulating = false;
+        let currentTrajectoryType = "earth";
+        
+        // 初始化
+        function init() {
+            drawStaticElements();
+            updateSpeedDisplay();
+            updateTrajectoryStatus();
+        }
+        
+        // 更新轨迹状态显示
+        function updateTrajectoryStatus() {
+            if (launchVelocity < 7.9) {
+                trajectoryStatus.textContent = "当前轨迹：落回地球";
+                trajectoryStatus.className = "trajectory-status status-earth";
+                currentTrajectoryType = "earth";
+            } else if (Math.abs(launchVelocity - 7.9) < 0.1) {
+                trajectoryStatus.textContent = "当前轨迹：圆周轨道";
+                trajectoryStatus.className = "trajectory-status status-circular";
+                currentTrajectoryType = "circular";
+            } else if (launchVelocity < 11.2) {
+                trajectoryStatus.textContent = "当前轨迹：椭圆轨道";
+                trajectoryStatus.className = "trajectory-status status-elliptical";
+                currentTrajectoryType = "elliptical";
+            } else {
+                trajectoryStatus.textContent = "当前轨迹：脱离轨道";
+                trajectoryStatus.className = "trajectory-status status-escape";
+                currentTrajectoryType = "escape";
+            }
+        }
+        
+        // 绘制静态元素（地球、山、大炮）
+        function drawStaticElements() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制星空背景
+            drawStars();
+            
+            // 绘制地球
+            ctx.beginPath();
+            const gradient = ctx.createRadialGradient(
+                earthX, earthY, 0,
+                earthX, earthY, earthRadius
+            );
+            gradient.addColorStop(0, '#2a9d8f');
+            gradient.addColorStop(0.5, '#1d6a5f');
+            gradient.addColorStop(1, '#0c4a3e');
+            ctx.fillStyle = gradient;
+            ctx.arc(earthX, earthY, earthRadius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 绘制地球轮廓
+            ctx.beginPath();
+            ctx.arc(earthX, earthY, earthRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // 绘制理想轨道（当速度为7.9 km/s时）
+            ctx.beginPath();
+            ctx.arc(earthX, earthY, orbitRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(46, 204, 113, 0.5)';
+            ctx.setLineDash([5, 3]);
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // 绘制山脉
+            ctx.beginPath();
+            ctx.moveTo(earthX - 70, earthY - earthRadius);
+            ctx.lineTo(earthX, cannonY);
+            ctx.lineTo(earthX + 70, earthY - earthRadius);
+            ctx.fillStyle = '#6d4c41';
+            ctx.fill();
+            
+            // 绘制大炮
+            ctx.beginPath();
+            ctx.moveTo(cannonX, cannonY);
+            ctx.lineTo(cannonX + 40, cannonY);
+            ctx.lineWidth = 12;
+            ctx.strokeStyle = '#8d6e63';
+            ctx.stroke();
+            
+            // 绘制炮台
+            ctx.beginPath();
+            ctx.arc(cannonX, cannonY, 16, 0, Math.PI * 2);
+            ctx.fillStyle = '#5d4037';
+            ctx.fill();
+            
+            // 绘制炮口
+            ctx.beginPath();
+            ctx.arc(cannonX + 40, cannonY, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fill();
+        }
+        
+        // 绘制星空背景
+        function drawStars() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            for (let i = 0; i < 250; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height * 0.8;
+                const radius = Math.random() * 1.5;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // 绘制一些明亮的星星
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+            for (let i = 0; i < 20; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height * 0.7;
+                const radius = Math.random() * 2 + 1;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 添加星芒效果
+                ctx.beginPath();
+                for (let j = 0; j < 8; j++) {
+                    const angle = (j * Math.PI / 4);
+                    const length = radius * 3;
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(
+                        x + Math.cos(angle) * length,
+                        y + Math.sin(angle) * length
+                    );
+                }
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+        
+        // 更新速度显示
+        function updateSpeedDisplay() {
+            speedValue.textContent = `${launchVelocity.toFixed(1)} km/s`;
+            
+            // 根据速度更新文本颜色
+            if (launchVelocity < 7.9) {
+                speedValue.style.background = 'rgba(52, 152, 219, 0.35)';
+            } else if (Math.abs(launchVelocity - 7.9) < 0.1) {
+                speedValue.style.background = 'rgba(46, 204, 113, 0.35)';
+            } else if (launchVelocity < 11.2) {
+                speedValue.style.background = 'rgba(241, 196, 15, 0.35)';
+            } else {
+                speedValue.style.background = 'rgba(231, 76, 60, 0.35)';
+            }
+            
+            updateTrajectoryStatus();
+        }
+        
+        // 创建新炮弹
+        function createProjectile() {
+            // 将km/s转换为像素速度
+            const pixelVelocity = launchVelocity * (firstCosmicVelocity / 7.9);
+            
+            // 根据速度确定轨迹颜色
+            let trailColor;
+            if (pixelVelocity < firstCosmicVelocity * 0.95) {
+                trailColor = '#3498db'; // 蓝色 - 落回地球
+            } else if (Math.abs(pixelVelocity - firstCosmicVelocity) < firstCosmicVelocity * 0.05) {
+                trailColor = '#2ecc71'; // 绿色 - 圆周轨道
+            } else if (pixelVelocity < secondCosmicVelocity) {
+                trailColor = '#f1c40f'; // 黄色 - 椭圆轨道
+            } else {
+                trailColor = '#e74c3c'; // 红色 - 脱离轨道
+            }
+            
+            return {
+                x: cannonX,
+                y: cannonY,
+                vx: pixelVelocity,
+                vy: 0,
+                trail: [],
+                active: true,
+                trailColor: trailColor,
+                startTime: Date.now()
+            };
+        }
+        
+        // 更新炮弹位置（精确物理模型）
+        function updateProjectile(p) {
+            if (!p.active) return;
+            
+            // 计算到地球中心的距离
+            const dx = p.x - earthX;
+            const dy = p.y - earthY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // 如果炮弹进入地球内部，停止模拟
+            if (distance < earthRadius) {
+                p.active = false;
+                return;
+            }
+            
+            // 引力加速度（与距离平方成反比）
+            const gravityMagnitude = gravitationalParameter / (distance * distance);
+            
+            // 引力方向（指向地球中心）
+            const gravityX = -gravityMagnitude * dx / distance;
+            const gravityY = -gravityMagnitude * dy / distance;
+            
+            // 应用引力加速度
+            p.vx += gravityX * 0.05;
+            p.vy += gravityY * 0.05;
+            
+            // 更新位置
+            p.x += p.vx * 0.05;
+            p.y += p.vy * 0.05;
+            
+            // 记录轨迹（每5帧记录一次）
+            if (p.trail.length === 0 || Date.now() - p.trail[p.trail.length - 1].time > 50) {
+                p.trail.push({x: p.x, y: p.y, time: Date.now()});
+            }
+            
+            // 限制轨迹长度
+            if (p.trail.length > 400) {
+                p.trail.shift();
+            }
+            
+            // 如果炮弹飞出画布太远，停止模拟
+            if (p.x < -1500 || p.x > canvas.width + 1500 || p.y < -1500 || p.y > canvas.height + 1500) {
+                p.active = false;
+            }
+            
+            // 如果模拟时间超过60秒，停止模拟
+            if (Date.now() - p.startTime > 60000) {
+                p.active = false;
+            }
+        }
+        
+        // 绘制炮弹和轨迹
+        function drawProjectile(p) {
+            if (!p.active) return;
+            
+            // 绘制轨迹
+            if (p.trail.length > 1) {
+                ctx.beginPath();
+                ctx.moveTo(p.trail[0].x, p.trail[0].y);
+                
+                for (let i = 1; i < p.trail.length; i++) {
+                    ctx.lineTo(p.trail[i].x, p.trail[i].y);
+                }
+                
+                ctx.strokeStyle = p.trailColor + 'CC';
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
+            }
+            
+            // 绘制炮弹
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFD700';
+            ctx.fill();
+            
+            // 绘制炮弹光晕
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 12, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255, 215, 0, 0.7)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 添加尾焰效果
+            if (p.trail.length > 2) {
+                const tailLength = 10;
+                const tailX = p.trail[Math.max(p.trail.length - tailLength, 0)].x;
+                const tailY = p.trail[Math.max(p.trail.length - tailLength, 0)].y;
+                
+                const gradient = ctx.createLinearGradient(p.x, p.y, tailX, tailY);
+                gradient.addColorStop(0, 'rgba(255, 200, 0, 0.8)');
+                gradient.addColorStop(1, 'rgba(255, 100, 0, 0)');
+                
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+        }
+        
+        // 动画循环
+        function animate() {
+            drawStaticElements();
+            
+            // 更新和绘制所有炮弹
+            for (let i = 0; i < projectiles.length; i++) {
+                const p = projectiles[i];
+                updateProjectile(p);
+                drawProjectile(p);
+            }
+            
+            // 移除不活动的炮弹
+            projectiles = projectiles.filter(p => p.active);
+            
+            // 如果还有活动的炮弹，继续动画
+            if (projectiles.length > 0) {
+                animationId = requestAnimationFrame(animate);
+            } else {
+                isSimulating = false;
+            }
+        }
+        
+        // 发射炮弹
+        function launchProjectile() {
+            if (isSimulating) return;
+            
+            projectiles = [];
+            const p = createProjectile();
+            projectiles.push(p);
+            
+            isSimulating = true;
+            
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            animate();
+        }
+        
+        // 设置完美轨道速度
+        function setPerfectOrbit() {
+            speedSlider.value = 7.9;
+            launchVelocity = 7.9;
+            updateSpeedDisplay();
+            launchProjectile();
+        }
+        
+        // 重置模拟
+        function resetSimulation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            projectiles = [];
+            isSimulating = false;
+            drawStaticElements();
+        }
+        
+        // 标签切换
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动标签
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // 激活当前标签
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+            });
+        });
+        
+        // 事件监听
+        speedSlider.addEventListener('input', () => {
+            launchVelocity = parseFloat(speedSlider.value);
+            updateSpeedDisplay();
+        });
+        
+        launchBtn.addEventListener('click', launchProjectile);
+        resetBtn.addEventListener('click', resetSimulation);
+        perfectBtn.addEventListener('click', setPerfectOrbit);
+        
+        // 初始化
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

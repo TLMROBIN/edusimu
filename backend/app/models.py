@@ -73,6 +73,8 @@ class Animation(Base):
     validation_errors = Column(Text)
     validation_warnings = Column(Text)
     file_size = Column(Integer)
+    may_lag = Column(Boolean, default=False, nullable=False, index=True)
+    lag_reason = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     

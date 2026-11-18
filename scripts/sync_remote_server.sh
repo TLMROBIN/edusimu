@@ -45,6 +45,11 @@ rsync -az --delete \
   --exclude '__pycache__/' \
   "${PROJECT_ROOT}/" "${REMOTE_TARGET}:${REMOTE_SOURCE_DIR}/"
 
+if [[ "${IMPORT_MINGXING:-0}" == "1" ]]; then
+  echo "[2.5/5] 标记远端执行一次敏行物理公开课件导入"
+  ssh "${SSH_OPTS[@]}" "${REMOTE_TARGET}" "touch '${REMOTE_SOURCE_DIR}/.import-mingxing-public-courseware'"
+fi
+
 echo "[3/5] 远端发布并验收"
 ssh -tt "${SSH_OPTS[@]}" "${REMOTE_TARGET}" \
   "sudo bash '${REMOTE_SOURCE_DIR}/scripts/remote_deploy_bundle.sh'"

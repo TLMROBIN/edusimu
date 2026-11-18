@@ -55,7 +55,7 @@
 
         <section class="glass-panel filter-panel">
         <el-row :gutter="16">
-          <el-col :xs="24" :sm="12" :md="5">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-select v-model="filterSubject" placeholder="筛选学科" clearable @change="applyFilters">
               <el-option
                 v-for="subject in subjects"
@@ -65,7 +65,7 @@
               />
             </el-select>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="5">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-select v-model="filterSourceType" placeholder="筛选来源" clearable @change="applyFilters">
               <el-option
                 v-for="option in sourceOptions"
@@ -75,18 +75,24 @@
               />
             </el-select>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="5">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-select v-model="filterReviewStatus" placeholder="筛选审核状态" clearable @change="applyFilters">
               <el-option label="待审核" value="pending_review" />
               <el-option label="需修改" value="needs_fix" />
               <el-option label="已通过" value="approved" />
             </el-select>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="5">
+          <el-col :xs="24" :sm="12" :md="4">
             <el-select v-model="filterValidationStatus" placeholder="筛选校验结果" clearable @change="applyFilters">
               <el-option label="通过" value="passed" />
               <el-option label="未通过" value="failed" />
               <el-option label="待校验" value="pending" />
+            </el-select>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="4">
+            <el-select v-model="filterMayLag" placeholder="筛选平板性能" clearable @change="applyFilters">
+              <el-option label="可能卡顿" value="true" />
+              <el-option label="常规流畅" value="false" />
             </el-select>
           </el-col>
           <el-col :xs="24" :sm="24" :md="4" class="manage-actions-col">
@@ -166,6 +172,18 @@
             <template #default="scope">
               <el-tag v-if="scope.row.is_published" type="success">已发布</el-tag>
               <el-tag v-else type="info">未发布</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="平板性能" width="115">
+            <template #default="scope">
+              <el-tooltip
+                v-if="scope.row.may_lag"
+                :content="scope.row.lag_reason || '体积较大或交互复杂，低配平板可能卡顿'"
+                placement="top"
+              >
+                <el-tag type="warning" effect="light">可能卡顿</el-tag>
+              </el-tooltip>
+              <el-tag v-else type="info" effect="plain">常规</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="view_count" label="观看次数" width="100" />
@@ -461,6 +479,12 @@
             <el-form-item label="关键词">
               <el-input v-model="editForm.keywords" />
             </el-form-item>
+            <el-form-item label="可能卡顿">
+              <el-switch v-model="editForm.may_lag" />
+            </el-form-item>
+            <el-form-item v-if="editForm.may_lag" label="卡顿原因">
+              <el-input v-model="editForm.lag_reason" placeholder="例如：体积较大(5.2MB)、3D/WebGL渲染" />
+            </el-form-item>
           </el-form>
           <template #footer>
             <el-button @click="resetEditDialog">取消</el-button>
@@ -528,6 +552,7 @@ const filterSubject = ref('')
 const filterSourceType = ref('')
 const filterReviewStatus = ref('')
 const filterValidationStatus = ref('')
+const filterMayLag = ref('')
 const showUploadDialog = ref(false)
 const showGuideDialog = ref(false)
 const showReviewDialog = ref(false)
@@ -559,7 +584,9 @@ const editForm = ref({
   textbook_path_ids: [],
   description: '',
   grade_level: '',
-  keywords: ''
+  keywords: '',
+  may_lag: false,
+  lag_reason: ''
 })
 const textbookProps = {
   value: 'id',
@@ -745,6 +772,11 @@ const applyFilters = () => {
   if (filterValidationStatus.value) {
     result = result.filter(item => item.validation_status === filterValidationStatus.value)
   }
+  if (filterMayLag.value === 'true') {
+    result = result.filter(item => Boolean(item.may_lag))
+  } else if (filterMayLag.value === 'false') {
+    result = result.filter(item => !item.may_lag)
+  }
 
   filteredAnimations.value = result
 }
@@ -782,7 +814,7 @@ const loadAnimations = async () => {
   try {
     const response = await axios.get('/api/animations/', {
       params: {
-        limit: 200,
+        limit: 500,
         ...(isAdmin.value ? {} : { mine_only: true })
       }
     })
@@ -837,7 +869,9 @@ const resetEditDialog = () => {
     textbook_path_ids: [],
     description: '',
     grade_level: '',
-    keywords: ''
+    keywords: '',
+    may_lag: false,
+    lag_reason: ''
   }
 }
 
@@ -1016,7 +1050,9 @@ const openEditDialog = async (animation) => {
     textbook_path_ids: [],
     description: animation.description || '',
     grade_level: animation.grade_level || '',
-    keywords: animation.keywords || ''
+    keywords: animation.keywords || '',
+    may_lag: Boolean(animation.may_lag),
+    lag_reason: animation.lag_reason || ''
   }
   await loadEditTextbookTree(animation.subject_id, animation.textbook_node_id)
   showEditDialog.value = true
@@ -1041,7 +1077,9 @@ const submitEditDialog = async () => {
       textbook_node_id: editForm.value.textbook_path_ids[editForm.value.textbook_path_ids.length - 1],
       description: editForm.value.description,
       grade_level: editForm.value.grade_level,
-      keywords: editForm.value.keywords
+      keywords: editForm.value.keywords,
+      may_lag: editForm.value.may_lag,
+      lag_reason: editForm.value.may_lag ? (editForm.value.lag_reason || null) : null
     })
     ElMessage.success('课件信息已更新')
     resetEditDialog()

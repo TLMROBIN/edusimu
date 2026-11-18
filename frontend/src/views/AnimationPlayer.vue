@@ -4,9 +4,10 @@
       <div class="page-header-bar">
         <div class="toolbox-heading">
           <ToolboxLink />
-          <div class="page-header-copy" style="display: flex; align-items: center">
+          <div class="page-header-copy" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
             <el-button @click="$router.back()" icon="ArrowLeft" circle />
-            <h2 style="margin-left: 20px">{{ animation?.title }}</h2>
+            <h2 style="margin: 0">{{ animation?.title }}</h2>
+            <el-tag v-if="animation?.may_lag" type="warning" effect="light">可能卡顿</el-tag>
           </div>
         </div>
         <div class="page-header-actions">
@@ -20,7 +21,7 @@
     </el-header>
     
     <el-main :class="{ 'presentation-main': isPresentationMode }">
-      <div ref="playerContainer" class="player-shell" :class="{ presentation: isPresentationMode }">
+      <div ref="playerContainer" class="player-shell" :class="{ presentation: isPresentationMode }" :style="presentationStyle">
       <div
         v-if="isPresentationMode"
         class="fullscreen-hotzone"
@@ -36,12 +37,14 @@
         退出沉浸模式
       </el-button>
       <el-row :gutter="20">
-        <el-col :xs="24" :sm="24" :lg="18">
+        <el-col :xs="24" :sm="24" :lg="isPresentationMode ? 24 : 18">
           <el-card class="player-card" :body-style="{ padding: isPresentationMode ? '0' : '20px' }">
             <iframe
               ref="animationFrame"
               :src="animationUrl"
               class="player-frame"
+              allow="fullscreen"
+              allowfullscreen
               @load="onFrameLoad"
             ></iframe>
           </el-card>
@@ -52,6 +55,15 @@
             <template #header>
               <span>动画信息</span>
             </template>
+            <el-alert
+              v-if="animation?.may_lag"
+              type="warning"
+              :closable="false"
+              show-icon
+              style="margin-bottom: 14px"
+              title="平板可能卡顿"
+              :description="animation.lag_reason || '该课件体积较大或交互复杂，在低配平板上可能出现卡顿。'"
+            />
             <p><strong>描述：</strong>{{ animation?.description || '暂无描述' }}</p>
             <p v-if="animation?.author"><strong>作者：</strong>{{ animation.author }}</p>
             <p v-if="animation?.textbook_path"><strong>所属章节：</strong>{{ animation.textbook_path }}</p>
@@ -89,6 +101,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { resolveApiBase, resolveAssetUrl } from '../utils/apiBase'
 import { useUserStore } from '../stores/user'
+import { hasIsolatedCoursewareMarker, readCoursewareMessage } from '../utils/coursewareBridge'
 
 const route = useRoute()
 const animation = ref(null)
@@ -109,6 +122,30 @@ let recordViewTimer = null
 let fullscreenControlsTimer = null
 
 const isPresentationMode = computed(() => isFullscreen.value || immersiveMode.value)
+const presentationHeight = ref(0)
+const presentationStyle = computed(() => isPresentationMode.value && presentationHeight.value > 0
+  ? { '--player-viewport-height': `${presentationHeight.value}px` }
+  : undefined)
+let viewportFrame = null
+
+const updatePresentationHeight = () => {
+  if (!isPresentationMode.value) return
+  // WebView 83 does not support dvh. Measure the visible viewport on every resize.
+  presentationHeight.value = Math.round(
+    window.visualViewport?.height || window.innerHeight || document.documentElement.clientHeight
+  )
+}
+
+const schedulePresentationResize = () => {
+  if (viewportFrame !== null) cancelAnimationFrame(viewportFrame)
+  viewportFrame = requestAnimationFrame(() => {
+    viewportFrame = null
+    updatePresentationHeight()
+  })
+}
+const isIsolatedCourseware = computed(() =>
+  hasIsolatedCoursewareMarker(animation.value?.keywords)
+)
 
 const loadAnimation = async () => {
   try {
@@ -179,6 +216,8 @@ const userStore = useUserStore()
 
 // 身份桥：同源课件发 EDUSIMU_HELLO，播放器回 EDUSIMU_CONTEXT（含 token，仅回给本页 iframe）。
 const sendCoursewareContext = () => {
+  // Isolated third-party lessons have a progress-only bridge in their own package.
+  if (isIsolatedCourseware.value) return
   const frameWindow = animationFrame.value?.contentWindow
   const token = localStorage.getItem('token')
   const user = userStore.user
@@ -207,19 +246,18 @@ const sendCoursewareContext = () => {
 }
 
 const handleInteraction = (event) => {
-  if (!event.data || typeof event.data !== 'object') return
-  if (event.data.type === 'EDUSIMU_HELLO') {
-    if (event.origin !== window.location.origin) return
-    if (event.source !== animationFrame.value?.contentWindow) return
+  const message = readCoursewareMessage(event, animationFrame.value?.contentWindow, window.location.origin, isIsolatedCourseware.value)
+  if (!message) return
+  if (message.type === 'hello') {
     sendCoursewareContext()
     return
   }
-  if (event.data.type === 'ANIMATION_INTERACTION') {
+  if (message.type === 'interaction') {
     interactionCount.value++
     
     axios.post(`/api/animations/${route.params.id}/interactions`, {
-      interaction_type: event.data.interactionType,
-      interaction_data: JSON.stringify(event.data.data)
+      interaction_type: message.interactionType,
+      interaction_data: message.serialized
     }).catch(error => {
       console.error('记录交互失败:', error)
     })
@@ -344,6 +382,7 @@ watch(isPresentationMode, (active) => {
   document.body.style.overflow = active ? 'hidden' : ''
   document.documentElement.style.overflow = active ? 'hidden' : ''
   if (active) {
+    updatePresentationHeight()
     window.scrollTo({ top: 0, behavior: 'auto' })
   }
 })
@@ -354,6 +393,9 @@ onMounted(() => {
   window.addEventListener('pagehide', handlePageHide)
   window.addEventListener('beforeunload', handlePageHide)
   document.addEventListener('fullscreenchange', handleFullscreenChange)
+  window.addEventListener('resize', schedulePresentationResize)
+  window.addEventListener('orientationchange', schedulePresentationResize)
+  window.visualViewport?.addEventListener('resize', schedulePresentationResize)
   window.addEventListener('touchstart', showFullscreenControls, { passive: true })
   window.addEventListener('mousemove', showFullscreenControls)
 })
@@ -367,6 +409,10 @@ onBeforeUnmount(() => {
   window.removeEventListener('pagehide', handlePageHide)
   window.removeEventListener('beforeunload', handlePageHide)
   document.removeEventListener('fullscreenchange', handleFullscreenChange)
+  window.removeEventListener('resize', schedulePresentationResize)
+  window.removeEventListener('orientationchange', schedulePresentationResize)
+  window.visualViewport?.removeEventListener('resize', schedulePresentationResize)
+  if (viewportFrame !== null) cancelAnimationFrame(viewportFrame)
   window.removeEventListener('touchstart', showFullscreenControls)
   window.removeEventListener('mousemove', showFullscreenControls)
   if (fullscreenControlsTimer) {
@@ -388,9 +434,14 @@ onBeforeUnmount(() => {
 }
 
 .player-shell.presentation {
-  position: relative;
-  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2001;
+  width: 100%;
+  height: 100vh;
   height: 100dvh;
+  height: var(--player-viewport-height, 100vh);
   background: #000;
   padding: 0;
 }
@@ -411,6 +462,18 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 
+.player-shell.presentation .player-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.player-shell.presentation :deep(.el-card__body) {
+  height: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .player-frame {
   width: 100%;
   height: 76vh;
@@ -420,8 +483,9 @@ onBeforeUnmount(() => {
 }
 
 .player-shell.presentation .player-frame {
-  height: 100dvh;
-  min-height: 100dvh;
+  display: block;
+  height: 100%;
+  min-height: 0;
 }
 
 .fullscreen-hotzone {

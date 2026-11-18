@@ -1,3 +1,4 @@
+import base64
 import io
 import json
 import mimetypes
@@ -732,6 +733,99 @@ def scan_workspace_for_validation_issues(workspace: CoursewareWorkspace) -> tupl
     return unique_messages(errors), unique_messages(warnings)
 
 
+def _unpack_isolated_html(html_text: str) -> str:
+    if "edusimu-isolated-tongjiang-v1" not in html_text:
+        return html_text
+    match = re.search(
+        r'<script[^>]*id=["\']edusimu-isolation["\'][^>]*>(.*?)</script>',
+        html_text,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if not match:
+        return html_text
+    try:
+        payload = json.loads(match.group(1))
+        encoded = payload.get("sourceBase64")
+        if encoded:
+            return base64.b64decode(encoded).decode("utf-8", errors="ignore")
+    except Exception:
+        pass
+    return html_text
+
+
+def evaluate_tablet_performance(
+    total_size_bytes: int,
+    html_texts: List[str],
+    source_type: str = "original",
+) -> tuple[bool, Optional[str]]:
+    """Heuristic check for courseware that is large or rendering-heavy on school tablets."""
+    size_bytes = max(0, int(total_size_bytes or 0))
+    size_mb = size_bytes / (1024 * 1024)
+    unpacked_texts = [_unpack_isolated_html(text or "") for text in html_texts]
+    combined = "\n".join(unpacked_texts)
+    lower = combined.lower()
+
+    is_tongjiang = any("edusimu-isolated-tongjiang-v1" in (text or "") for text in html_texts)
+    uses_3d_webgl = (
+        "three.min.js" in lower
+        or "three.module.js" in lower
+        or "three.webglrenderer" in lower
+        or "new three." in lower
+        or "phet.mobius" in lower
+        or "babylon" in lower
+        or ("webglrenderer" in lower and source_type != "phet")
+    )
+    uses_shadow = ("shadowmap" in lower or "castshadow" in lower) and (source_type != "phet" or uses_3d_webgl)
+    uses_blur_3d = "backdrop-filter" in lower and (uses_3d_webgl or is_tongjiang)
+    heavy_canvas_libs = any(token in lower for token in ("p5.", "mathjax", "chart.js", "chart.min.js"))
+
+    reasons: List[str] = []
+    if size_bytes >= 4 * 1024 * 1024:
+        reasons.append(f"体积较大({size_mb:.1f}MB)")
+    elif size_bytes >= 2.5 * 1024 * 1024:
+        reasons.append(f"体积偏大({size_mb:.1f}MB)")
+
+    if uses_3d_webgl:
+        reasons.append("3D/WebGL渲染")
+    if uses_shadow:
+        reasons.append("实时阴影计算")
+    if uses_blur_3d:
+        reasons.append("毛玻璃与3D复合渲染")
+    if source_type != "phet" and heavy_canvas_libs and size_bytes >= 2 * 1024 * 1024:
+        reasons.append("重型脚本与复杂交互")
+
+    may_lag = bool(
+        size_bytes >= 4 * 1024 * 1024
+        or (uses_3d_webgl and (size_bytes >= int(1.2 * 1024 * 1024) or uses_shadow or uses_blur_3d))
+        or (size_bytes >= int(2.5 * 1024 * 1024) and (uses_3d_webgl or heavy_canvas_libs or uses_shadow))
+    )
+    if not may_lag:
+        return False, None
+    return True, "、".join(unique_messages(reasons)) or "交互复杂，低配平板可能卡顿"
+
+
+def evaluate_animation_file_performance(
+    entry_path: str,
+    total_size_bytes: Optional[int] = None,
+    source_type: str = "original",
+) -> tuple[bool, Optional[str]]:
+    path = Path(entry_path)
+    package_dir = path.parent if path.parent.name.startswith("pkg_") else None
+    size_bytes = total_size_bytes
+    if size_bytes is None:
+        if package_dir and package_dir.exists():
+            size_bytes = calculate_directory_size(str(package_dir))
+        elif path.is_file():
+            size_bytes = path.stat().st_size
+        else:
+            size_bytes = 0
+
+    html_texts: List[str] = []
+    if path.is_file():
+        html_texts.append(path.read_text(encoding="utf-8", errors="ignore"))
+    return evaluate_tablet_performance(size_bytes, html_texts, source_type=source_type)
+
+
 def build_upload_failure_detail(summary: str, errors: List[str], warnings: List[str]) -> dict:
     prompts = build_issue_prompts(errors, warnings)
     return {
@@ -1010,6 +1104,16 @@ def build_geogebra_import_html(title: str, description: str, original_link: str,
       font-weight: 700;
       color: var(--accent);
     }}
+    @media (max-width: 1180px) {{
+      .page {{ padding: 8px; gap: 8px; }}
+      .header {{ padding: 10px 14px; gap: 10px; border-radius: 16px; }}
+      .eyebrow {{ display: none; }}
+      h1 {{ font-size: clamp(18px, 2.4vw, 24px); }}
+      .status-wrap {{ padding: 6px 10px; font-size: 12px; }}
+      button {{ padding: 8px 12px; font-size: 13px; border-radius: 10px; }}
+      .stage {{ padding: 8px; border-radius: 16px; }}
+      .canvas {{ min-height: calc(100vh - 110px); }}
+    }}
     @media (max-width: 980px) {{
       .header {{
         align-items: stretch;
@@ -1023,6 +1127,10 @@ def build_geogebra_import_html(title: str, description: str, original_link: str,
       .canvas {{
         min-height: 420px;
       }}
+    }}
+    @media (max-width: 780px) {{
+      .status-wrap {{ display: none; }}
+      .actions {{ width: auto; }}
     }}
   </style>
 </head>
@@ -1351,6 +1459,8 @@ def serialize_animation(animation: Animation, db: Session) -> AnimationResponse:
     anim_dict = {
         **animation.__dict__,
         "source_type": animation.source_type or "original",
+        "may_lag": bool(getattr(animation, "may_lag", False)),
+        "lag_reason": getattr(animation, "lag_reason", None),
         "file_url": build_file_url(animation.file_path),
         "creator_name": creator_name,
         "subject_name": subject_name,
@@ -1400,6 +1510,7 @@ def build_animation_query(
     is_published: Optional[bool] = None,
     review_status: Optional[str] = None,
     validation_status: Optional[str] = None,
+    may_lag: Optional[bool] = None,
 ):
     query = db.query(Animation).outerjoin(TextbookNode, Animation.textbook_node_id == TextbookNode.id)
 
@@ -1423,6 +1534,8 @@ def build_animation_query(
         query = query.filter(Animation.review_status == review_status)
     if validation_status:
         query = query.filter(Animation.validation_status == validation_status)
+    if may_lag is not None:
+        query = query.filter(Animation.may_lag.is_(may_lag))
 
     if current_user.role == "student":
         query = query.filter(Animation.is_published.is_(True))
@@ -1600,6 +1713,7 @@ async def get_animations(
     is_published: Optional[bool] = None,
     review_status: Optional[str] = None,
     validation_status: Optional[str] = None,
+    may_lag: Optional[bool] = None,
     skip: int = 0,
     limit: int = 20,
     current_user: User = Depends(get_current_active_user),
@@ -1617,6 +1731,7 @@ async def get_animations(
         is_published=is_published,
         review_status=review_status,
         validation_status=validation_status,
+        may_lag=may_lag,
     )
 
     animations = query.order_by(Animation.created_at.desc()).offset(skip).limit(limit).all()
@@ -1634,6 +1749,7 @@ async def get_animation_count(
     is_published: Optional[bool] = None,
     review_status: Optional[str] = None,
     validation_status: Optional[str] = None,
+    may_lag: Optional[bool] = None,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -1649,6 +1765,7 @@ async def get_animation_count(
         is_published=is_published,
         review_status=review_status,
         validation_status=validation_status,
+        may_lag=may_lag,
 )
     return {"total": query.count()}
 
@@ -1832,6 +1949,11 @@ async def create_animation(
     should_publish, review_status_value = compute_review_state(
         current_user, is_published, validation_status, force_publish=force_publish
     )
+    may_lag_flag, lag_reason_text = evaluate_animation_file_performance(
+        file_path,
+        saved_size,
+        source_type=normalized_source_type,
+    )
 
     animation = Animation(
         title=title,
@@ -1851,6 +1973,8 @@ async def create_animation(
         validation_errors=json.dumps(validation_errors, ensure_ascii=False),
         validation_warnings=json.dumps(validation_warnings, ensure_ascii=False),
         file_size=saved_size,
+        may_lag=may_lag_flag,
+        lag_reason=lag_reason_text,
         created_by=current_user.id,
     )
 
@@ -1935,6 +2059,13 @@ async def replace_animation_file(
     animation.subject_id = target_subject_id
     animation.textbook_node_id = target_textbook_node_id
     animation.source_type = normalized_source_type
+    may_lag_flag, lag_reason_text = evaluate_animation_file_performance(
+        new_file_path,
+        saved_size,
+        source_type=normalized_source_type,
+    )
+    animation.may_lag = may_lag_flag
+    animation.lag_reason = lag_reason_text
 
     if title is not None:
         animation.title = title
@@ -1991,6 +2122,8 @@ async def update_animation(
 
     for field, value in update_data.items():
         setattr(animation, field, value)
+    if update_data.get("may_lag") is False and "lag_reason" not in update_data:
+        animation.lag_reason = None
 
     if current_user.role == "admin":
         force_publish = bool(getattr(animation_data, "force_publish", False))

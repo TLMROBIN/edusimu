@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="zh-CN">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>地球磁场3D可视化 - 完整磁场线</title>
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0c2461, #1e3799);
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+        }
+        #container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 380px;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            color: #4bcffa;
+            margin-bottom: 15px;
+            font-size: 24px;
+            border-bottom: 2px solid #4bcffa;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #7efff5;
+            margin: 15px 0 10px 0;
+            font-size: 18px;
+        }
+        p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .legend {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .legend-color {
+            width: 25px;
+            height: 3px;
+            margin-right: 10px;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .control-group {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .control-group h3 {
+            margin-bottom: 10px;
+            color: #7efff5;
+        }
+        button {
+            background: rgba(75, 207, 250, 0.2);
+            border: 1px solid rgba(75, 207, 250, 0.4);
+            color: white;
+            padding: 8px 12px;
+            margin: 3px;
+            border-radius: 5px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+        button:hover {
+            background: rgba(75, 207, 250, 0.4);
+            transform: translateY(-2px);
+        }
+        button.active {
+            background: rgba(75, 207, 250, 0.6);
+            border-color: #4bcffa;
+        }
+        .slider-container {
+            margin: 10px 0;
+        }
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        input[type="range"] {
+            width: 150px;
+            margin: 5px 0;
+        }
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: #4bcffa;
+        }
+        .status {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+    </style>
+  <meta name="signature" content="QQABIYQ05gAQkpTACa5rAUEsCQmYkICgLEoMxUCUKAwiAJNAFAA=">
+ </head>
+ <body>
+  <div id="container">
+   <div id="info">
+    <h1>🌍 地球磁场3D可视化</h1>
+    <p><strong>完整磁场线</strong>：磁感线从条形磁铁N极出发到S极为止，延伸到无穷远的磁感线仅显示三分之一长度。</p>
+    <h2>修改说明</h2>
+    <p><strong>条形磁铁</strong>：条形磁铁分为两半，红色为N极（上底），蓝色为S极（下底），不使用渐变。</p>
+    <p><strong>磁极标记</strong>：在磁铁红色部分添加字母N，蓝色部分添加字母S。</p>
+    <p><strong>磁感线</strong>：每条磁感线用线条表示，包含3个箭头作为方向指示。</p>
+    <p><strong>无限磁感线</strong>：添加延伸到无穷远的磁感线（仅显示三分之一长度，直线部分），每条线包含2个箭头。</p>
+    <p><strong>物理对应</strong>：红色N极位于地理南极附近，蓝色S极位于地理北极附近。</p>
+    <p><strong>磁场方向</strong>：磁感线箭头从N极指向S极（地球北极附近箭头指向下）。</p>
+    <div class="legend">
+     <div class="legend-item">
+      <div class="legend-dot" style="background: #ffffff;"></div><span>地理北极</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-dot" style="background: #ffffff;"></div><span>地理南极</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-color" style="background: #ffffff; border: 1px dashed #fff;"></div><span>地轴（白色虚线）</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-color" style="background: #ffd700; border: 1px dashed #ffd700;"></div><span>磁轴（黄色虚线）</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-color" style="background: #4bcffa;"></div><span>磁感线（蓝色）</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-color" style="background: #ff3838;"></div><span>箭头（红色，从N极指向S极）</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-color" style="background: #7efff5; border: 1px dashed #7efff5;"></div><span>磁偏角（绿色虚线）</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-dot" style="background: #ff3838;">
+       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAIAAADYhlU4AAAAkUlEQVR42u2UUQrAMAhDc/9Dx7Gvdc6kMtjHQBnFjuqLSos4jctabpO//tkbFj/Fs8Ikh3dNrA4QNtETrzI6HdCRvhupnyrDxSgHYLSHnWIOgZZvAGx/sdZB3dNQwU0kGpHR1Cu2gd6Qqfvu75Crw+jdZFSM2FXgL2b4TqABUO/Km7fkKxvGMIYxjGEMYxj/ZxzfZ7YL649xjAAAAABJRU5ErkJggg==" style="position: absolute; left: -99999px; top: -99999px; opacity: 0; pointer-events: none; width: 1px; height: 1px;">
+      </div><span>磁铁N极（红色，下底）</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-dot" style="background: #00008B;"></div><span>磁铁S极（蓝色，上底）</span>
+     </div>
+     <div class="legend-item">
+      <div class="legend-color" style="background: #ff00ff;"></div><span>无限远磁感线</span>
+     </div>
+    </div>
+    <p><strong>交互控制</strong>：鼠标拖拽旋转，滚轮缩放，按钮控制参数</p>
+   </div>
+   <div class="controls">
+    <div class="control-group">
+     <h3>视图控制</h3><button onclick="toggleRotation()" id="rotationBtn">暂停自转</button> <button onclick="toggleFieldLines()" id="fieldBtn">隐藏磁感线</button> <button onclick="toggleAxes()" id="axesBtn">隐藏轴线</button> <button onclick="toggleMagnet()" id="magnetBtn">隐藏磁铁</button> <button onclick="toggleDeclination()" id="declBtn">隐藏磁偏角</button> <button onclick="toggleMagneticAxis()" id="magneticAxisBtn">隐藏磁轴</button> <button onclick="toggleInfiniteLines()" id="infiniteBtn">隐藏无限线</button> <button onclick="togglePlaneView()" id="planeBtn">平面视角</button> <button onclick="resetView()">重置视图</button>
+    </div>
+    <div class="control-group">
+     <h3>视角</h3><button onclick="changeView('north')">北极视角</button> <button onclick="changeView('south')">南极视角</button> <button onclick="changeView('equator')">赤道视角</button> <button onclick="changeView('side')">侧面视角</button>
+    </div>
+    <div class="control-group">
+     <h3>磁场参数</h3>
+     <div class="slider-container"><label>磁感线数量: <span id="lineCountValue">12</span></label> <input type="range" id="lineCount" min="8" max="20" value="12" step="2" oninput="updateLineCount()">
+     </div>
+     <div class="slider-container"><label>磁场强度: <span id="strengthValue">1.0</span></label> <input type="range" id="fieldStrength" min="0.5" max="2.0" value="1.0" step="0.1" oninput="updateFieldStrength()">
+     </div>
+    </div>
+   </div>
+   <div id="loading">
+    加载3D场景...
+   </div>
+   <div class="status" id="status">
+    准备就绪
+   </div>
+  </div><!-- 引入Three.js库 -->
+  <script src="https://static.zxxk.com/h5/static/eb8549863a97355411c3259a3f93b8e1.js"></script><!-- 引入轨道控制器 -->
+  <script src="https://static.zxxk.com/h5/static/48f274cfd49a802a7e05038955700e42.js"></script><!-- 引入字体加载器 -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FontLoader.js"></script>
+  <script>
+        // 全局变量
+        let scene, camera, renderer, controls;
+        let earth, fieldLines = [], magneticArrows = [];
+        let infiniteFieldLines = [], infiniteArrows = []; // 无限延伸的磁感线和箭头
+        let animationId = null;
+        let earthRotationSpeed = 0.001;
+        let isRotating = true;
+        let fieldLinesVisible = true;
+        let axesVisible = true;
+        let magnetVisible = true;
+        let declinationVisible = true;
+        let magneticAxisVisible = true;
+        let infiniteLinesVisible = true;
+        
+        // 轴线对象
+        let geographicAxis, declinationArc, magneticAxis;
+        // 磁铁对象（两个半圆柱体组成）
+        let rectangularMagnetGroup, magnetHalfN, magnetHalfS;
+        // 文字对象
+        let magnetLabelN, magnetLabelS;
+        
+        // 磁场参数
+        let magneticFieldStrength = 1.0;
+        let fieldLineCount = 12;
+        let smoothnessFactor = 0.5; // 流畅度因子，固定值
+        let declinationAngle = 11.5 * Math.PI / 180; // 磁偏角，固定值11.5度
+        
+        // 地球半径（缩小）
+        const EARTH_RADIUS = 1.5;
+        const MAGNET_LENGTH = EARTH_RADIUS * 1.2;
+        const MAGNET_RADIUS = EARTH_RADIUS * 0.3;
+        const MAGNET_HALF_LENGTH = MAGNET_LENGTH / 2;
+        
+        // 纹理加载器
+        let textureLoader = new THREE.TextureLoader();
+        let earthTextureLoaded = false;
+        
+        // 字体加载器
+        let fontLoader = new THREE.FontLoader();
+        let font = null;
+        
+        // 初始化Three.js场景
+        function init() {
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0c2461);
+            
+            // 添加星星背景
+            addStars();
+            
+            // 创建相机
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 3, 8);
+            
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            // 添加到DOM
+            document.getElementById('container').appendChild(renderer.domElement);
+            
+            // 添加轨道控制器
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 3;
+            controls.maxDistance = 20;
+            
+            // 添加光源
+            addLights();
+            
+            // 加载字体
+            loadFont();
+        }
+        
+        // 加载字体
+        function loadFont() {
+            updateStatus("正在加载字体...");
+            
+            // 使用一个简单的在线字体
+            fontLoader.load(
+                'https://static.zxxk.com/h5/static/73827a618c7eb2d2792b1d08b3329e97.json',
+                function(loadedFont) {
+                    font = loadedFont;
+                    updateStatus("字体加载完成");
+                    
+                    // 创建地球（使用贴图）
+                    createEarthWithTexture();
+                    
+                    // 创建地轴、磁偏角和磁轴
+                    createAxes();
+                    
+                    // 创建双色条形磁铁（红色N极在上底，蓝色S极在下底，不用渐变）
+                    createDualColorMagnet();
+                    
+                    // 在磁铁上添加字母N和S
+                    addMagnetLabels();
+                    
+                    // 创建从磁铁出发的磁感线
+                    createMagnetFieldLines();
+                    
+                    // 创建延伸到无穷远的磁感线
+                    createInfiniteFieldLines();
+                    
+                    document.getElementById('loading').style.display = 'none';
+                    updateStatus("场景已加载");
+                    
+                    // 开始动画循环
+                    animate();
+                },
+                function(xhr) {
+                    updateStatus("正在加载字体: " + Math.round(xhr.loaded / xhr.total * 100) + "%");
+                },
+                function(error) {
+                    updateStatus("字体加载失败，使用备用方案");
+                    font = null;
+                    
+                    // 即使字体加载失败，也继续创建场景
+                    createEarthWithTexture();
+                    createAxes();
+                    createDualColorMagnet();
+                    createMagnetFieldLines();
+                    createInfiniteFieldLines();
+                    
+                    document.getElementById('loading').style.display = 'none';
+                    updateStatus("场景已加载（无字体）");
+                    
+                    // 开始动画循环
+                    animate();
+                }
+            );
+        }
+        
+        // 添加星星背景
+        function addStars() {
+            const starGeometry = new THREE.BufferGeometry();
+            const starCount = 3000;
+            const positions = new Float32Array(starCount * 3);
+            
+            for (let i = 0; i < starCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 2000;
+                positions[i + 1] = (Math.random() - 0.5) * 2000;
+                positions[i + 2] = (Math.random() - 0.5) * 2000;
+            }
+            
+            starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const starMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.8,
+                sizeAttenuation: true
+            });
+            
+            const stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+        }
+        
+        // 添加光源
+        function addLights() {
+            // 环境光
+            const ambientLight = new THREE.AmbientLight(0x444444);
+            scene.add(ambientLight);
+            
+            // 平行光（模拟太阳光）
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            directionalLight.position.set(5, 3, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+            
+            // 点光源
+            const pointLight = new THREE.PointLight(0x4bcffa, 0.8, 100);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+        }
+        
+        // 创建带贴图的地球
+        function createEarthWithTexture() {
+            // 地球几何体（缩小）
+            const earthGeometry = new THREE.SphereGeometry(EARTH_RADIUS, 64, 64);
+            
+            // 加载地球贴图
+            const earthTexture = textureLoader.load(
+                'https://static.zxxk.com/h5/static/e15eb8d2a32d001aa4e06884f6a566cd.jpg',
+                function() {
+                    earthTextureLoaded = true;
+                },
+                undefined,
+                function() {
+                    // 如果贴图加载失败，使用默认材质
+                    const earthMaterial = new THREE.MeshPhongMaterial({
+                        color: 0x1e90ff,
+                        shininess: 30,
+                        specular: 0x222222,
+                        transparent: true,
+                        opacity: 0.9
+                    });
+                    
+                    if (earth) {
+                        earth.material = earthMaterial;
+                    }
+                }
+            );
+            
+            // 地球材质（使用贴图）
+            const earthMaterial = new THREE.MeshPhongMaterial({
+                map: earthTexture,
+                shininess: 10,
+                specular: 0x333333,
+                transparent: true,
+                opacity: 0.7
+            });
+            
+            earth = new THREE.Mesh(earthGeometry, earthMaterial);
+            earth.castShadow = true;
+            earth.receiveShadow = true;
+            scene.add(earth);
+            
+            // 创建地球的经纬线网格
+            createEarthGrid();
+        }
+        
+        // 创建地球的经纬线网格
+        function createEarthGrid() {
+            const gridMaterial = new THREE.LineBasicMaterial({
+                color: 0x3498db,
+                transparent: true,
+                opacity: 0.15
+            });
+            
+            // 经线
+            for (let i = 0; i < 12; i++) {
+                const meridianGeometry = new THREE.BufferGeometry();
+                const points = [];
+                const segments = 36;
+                
+                for (let j = 0; j <= segments; j++) {
+                    const phi = (j / segments) * Math.PI; // 从0到π
+                    const theta = (i / 12) * 2 * Math.PI; // 经度
+                    const x = (EARTH_RADIUS + 0.01) * Math.sin(phi) * Math.cos(theta);
+                    const y = (EARTH_RADIUS + 0.01) * Math.cos(phi);
+                    const z = (EARTH_RADIUS + 0.01) * Math.sin(phi) * Math.sin(theta);
+                    
+                    points.push(new THREE.Vector3(x, y, z));
+                }
+                
+                meridianGeometry.setFromPoints(points);
+                const meridian = new THREE.Line(meridianGeometry, gridMaterial);
+                scene.add(meridian);
+            }
+            
+            // 纬线
+            for (let i = 1; i < 6; i++) {
+                const latitudeGeometry = new THREE.BufferGeometry();
+                const points = [];
+                const segments = 36;
+                const phi = (i / 6) * Math.PI; // 纬度
+                
+                for (let j = 0; j <= segments; j++) {
+                    const theta = (j / segments) * 2 * Math.PI; // 经度
+                    
+                    const x = (EARTH_RADIUS + 0.01) * Math.sin(phi) * Math.cos(theta);
+                    const y = (EARTH_RADIUS + 0.01) * Math.cos(phi);
+                    const z = (EARTH_RADIUS + 0.01) * Math.sin(phi) * Math.sin(theta);
+                    
+                    points.push(new THREE.Vector3(x, y, z));
+                }
+                
+                latitudeGeometry.setFromPoints(points);
+                const latitude = new THREE.Line(latitudeGeometry, gridMaterial);
+                scene.add(latitude);
+            }
+        }
+        
+        // 创建地轴、磁偏角和磁轴
+        function createAxes() {
+            // 地轴（白色虚线） - 连接地理北极和地理南极
+            const geographicAxisGeometry = new THREE.BufferGeometry();
+            const geographicAxisPoints = [
+                new THREE.Vector3(0, EARTH_RADIUS * 1.5, 0),  // 地轴上方延伸
+                new THREE.Vector3(0, -EARTH_RADIUS * 1.5, 0)  // 地轴下方延伸
+            ];
+            geographicAxisGeometry.setFromPoints(geographicAxisPoints);
+            
+            const geographicAxisMaterial = new THREE.LineDashedMaterial({
+                color: 0xffffff,
+                linewidth: 1,
+                dashSize: 0.2,
+                gapSize: 0.1,
+                transparent: true,
+                opacity: 0.7
+            });
+            
+            geographicAxis = new THREE.Line(geographicAxisGeometry, geographicAxisMaterial);
+            geographicAxis.computeLineDistances();
+            scene.add(geographicAxis);
+            
+            // 创建磁轴（黄色虚线） - 连接磁北极和磁南极
+            const magneticAxisGeometry = new THREE.BufferGeometry();
+            const magneticAxisPoints = [
+                new THREE.Vector3(0, EARTH_RADIUS * 1.5, 0),  // 磁轴上方延伸
+                new THREE.Vector3(0, -EARTH_RADIUS * 1.5, 0)  // 磁轴下方延伸
+            ];
+            magneticAxisGeometry.setFromPoints(magneticAxisPoints);
+            
+            const magneticAxisMaterial = new THREE.LineDashedMaterial({
+                color: 0xffd700, // 黄色
+                linewidth: 1,
+                dashSize: 0.2,
+                gapSize: 0.1,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            magneticAxis = new THREE.Line(magneticAxisGeometry, magneticAxisMaterial);
+            magneticAxis.computeLineDistances();
+            scene.add(magneticAxis);
+            
+            // 应用磁偏角旋转到磁轴
+            magneticAxis.rotation.z = declinationAngle;
+            
+            // 创建磁偏角表示（绿色弧线）
+            createDeclinationArc();
+        }
+        
+        // 创建磁偏角弧线
+        function createDeclinationArc() {
+            // 创建表示磁偏角的弧线
+            const arcPoints = [];
+            const radius = EARTH_RADIUS * 1.3;
+            const segments = 32;
+            
+            // 从地轴向磁轴画一个弧线，表示磁偏角
+            for (let i = 0; i <= segments; i++) {
+                const angle = (i / segments) * declinationAngle;
+                const x = radius * Math.sin(angle);
+                const y = radius * (1 - Math.cos(angle));
+                const z = 0;
+                
+                arcPoints.push(new THREE.Vector3(x, y, z));
+            }
+            
+            const arcGeometry = new THREE.BufferGeometry().setFromPoints(arcPoints);
+            const arcMaterial = new THREE.LineDashedMaterial({
+                color: 0x7efff5, // 绿色
+                linewidth: 1,
+                dashSize: 0.1,
+                gapSize: 0.05,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            declinationArc = new THREE.Line(arcGeometry, arcMaterial);
+            declinationArc.computeLineDistances();
+            scene.add(declinationArc);
+            
+            // 添加磁偏角标签
+            const labelPosition = new THREE.Vector3(
+                radius * Math.sin(declinationAngle/2),
+                radius * (1 - Math.cos(declinationAngle/2)),
+                0
+            );
+            
+            // 由于Three.js的文本渲染较复杂，我们暂时用一个小球代替标签
+            const labelGeometry = new THREE.SphereGeometry(0.05, 8, 8);
+            const labelMaterial = new THREE.MeshBasicMaterial({ color: 0x7efff5 });
+            const label = new THREE.Mesh(labelGeometry, labelMaterial);
+            label.position.copy(labelPosition);
+            label.name = "declinationLabel";
+            scene.add(label);
+        }
+        
+        // 创建双色条形磁铁（红色N极在上底，蓝色S极在下底，不用渐变）
+        function createDualColorMagnet() {
+            // 磁铁尺寸
+            const magnetWidth = MAGNET_RADIUS;
+            const magnetHeight = MAGNET_RADIUS;
+            
+            // 计算磁轴方向（考虑磁偏角）
+            const magnetStart = new THREE.Vector3(0, EARTH_RADIUS * 0.9, 0);
+            const magnetEnd = new THREE.Vector3(0, -EARTH_RADIUS * 0.9, 0);
+            
+            // 应用磁偏角旋转
+            magnetStart.applyAxisAngle(new THREE.Vector3(0, 0, 1), declinationAngle);
+            magnetEnd.applyAxisAngle(new THREE.Vector3(0, 0, 1), declinationAngle);
+            
+            // 计算磁铁方向
+            const magnetDirection = new THREE.Vector3().subVectors(magnetEnd, magnetStart).normalize();
+            const magnetCenter = new THREE.Vector3().addVectors(magnetStart, magnetEnd).multiplyScalar(0.5);
+            
+            // 创建组来包含两个半长方体
+            rectangularMagnetGroup = new THREE.Group();
+            
+            // 创建N极（红色）半长方体（上底）- 修改：红色N极现在在上底
+            const nGeometry = new THREE.BoxGeometry(magnetWidth, MAGNET_HALF_LENGTH, magnetHeight, 8, 8, 8);
+            const nMaterial = new THREE.MeshPhongMaterial({
+                color: 0xff3838, // 红色 - N极（现在在上底）
+                shininess: 30,
+                specular: 0x333333
+            });
+            magnetHalfN = new THREE.Mesh(nGeometry, nMaterial);
+            
+            // 创建S极（蓝色）半长方体（下底）- 修改：蓝色S极现在在下底
+            const sGeometry = new THREE.BoxGeometry(magnetWidth, MAGNET_HALF_LENGTH, magnetHeight, 8, 8, 8);
+            const sMaterial = new THREE.MeshPhongMaterial({
+                color: 0x00008B, // 深蓝色 - S极（现在在下底）
+                shininess: 30,
+                specular: 0x333333
+            });
+            magnetHalfS = new THREE.Mesh(sGeometry, sMaterial);
+            
+            // 设置两个半长方体的位置
+            // N极半长方体在磁轴正方向（上底）- 修改：红色N极在上底
+            magnetHalfN.position.y = MAGNET_HALF_LENGTH / 2;
+            // S极半长方体在磁轴负方向（下底）- 修改：蓝色S极在下底
+            magnetHalfS.position.y = -MAGNET_HALF_LENGTH / 2;
+            
+            // 将两个半长方体添加到组
+            rectangularMagnetGroup.add(magnetHalfN);
+            rectangularMagnetGroup.add(magnetHalfS);
+            
+            // 设置组的位置和方向
+            rectangularMagnetGroup.position.copy(magnetCenter);
+            
+            // 将磁铁旋转到磁轴方向
+            const up = new THREE.Vector3(0, 1, 0);
+            const quaternion = new THREE.Quaternion().setFromUnitVectors(up, magnetDirection);
+            rectangularMagnetGroup.setRotationFromQuaternion(quaternion);
+            
+            scene.add(rectangularMagnetGroup);
+        }
+        
+        // 在磁铁上添加字母N和S
+        function addMagnetLabels() {
+            if (!font) return; // 如果没有加载字体，不添加文字
+            
+            // 计算磁轴方向（考虑磁偏角）
+            const magnetStart = new THREE.Vector3(0, EARTH_RADIUS * 0.9, 0);
+            const magnetEnd = new THREE.Vector3(0, -EARTH_RADIUS * 0.9, 0);
+            
+            // 应用磁偏角旋转
+            magnetStart.applyAxisAngle(new THREE.Vector3(0, 0, 1), declinationAngle);
+            magnetEnd.applyAxisAngle(new THREE.Vector3(0, 0, 1), declinationAngle);
+            
+            // 计算磁铁方向
+            const magnetDirection = new THREE.Vector3().subVectors(magnetEnd, magnetStart).normalize();
+            const magnetCenter = new THREE.Vector3().addVectors(magnetStart, magnetEnd).multiplyScalar(0.5);
+            
+            // 计算N极（上底）和S极（下底）的位置 - 修改：N极在上底，S极在下底
+            const nPolePos = new THREE.Vector3().addVectors(
+                magnetCenter,
+                magnetDirection.clone().multiplyScalar(MAGNET_HALF_LENGTH * 0.8) // N极在上底
+            );
+            
+            const sPolePos = new THREE.Vector3().addVectors(
+                magnetCenter,
+                magnetDirection.clone().multiplyScalar(-MAGNET_HALF_LENGTH * 0.8) // S极在下底
+            );
+            
+            // 创建N字母（在红色部分，上底）- 修改：N字母在红色N极（上底）
+            const nTextGeometry = new THREE.TextGeometry('N', {
+                font: font,
+                size: 0.15,
+                height: 0.02,
+                curveSegments: 12
+            });
+            const nMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            magnetLabelN = new THREE.Mesh(nTextGeometry, nMaterial);
+            magnetLabelN.position.copy(nPolePos);
+            
+            // 创建S字母（在蓝色部分，下底）- 修改：S字母在蓝色S极（下底）
+            const sTextGeometry = new THREE.TextGeometry('S', {
+                font: font,
+                size: 0.15,
+                height: 0.02,
+                curveSegments: 12
+            });
+            const sMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            magnetLabelS = new THREE.Mesh(sTextGeometry, sMaterial);
+            magnetLabelS.position.copy(sPolePos);
+            
+            // 调整文字方向，使其面向相机
+            const up = new THREE.Vector3(0, 1, 0);
+            const quaternion = new THREE.Quaternion().setFromUnitVectors(up, magnetDirection);
+            
+            // 文字需要旋转90度使其直立
+            const textRotation = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI/2);
+            quaternion.multiply(textRotation);
+            
+            magnetLabelN.setRotationFromQuaternion(quaternion);
+            magnetLabelS.setRotationFromQuaternion(quaternion);
+            
+            // 稍微向外偏移，使文字在磁铁表面上方
+            const offset = magnetDirection.clone().multiplyScalar(0.05);
+            magnetLabelN.position.add(offset);
+            magnetLabelS.position.add(offset);
+            
+            scene.add(magnetLabelN);
+            scene.add(magnetLabelS);
+        }
+        
+        // 计算从磁铁出发的磁感线
+        function calculateMagnetFieldLine(L, phi, magnetBottom, magnetTop, numPoints = 300) {
+            const points = [];
+            
+            // 磁感线从N极（磁铁上底）出发，到S极（磁铁下底）结束 - 修改：N极在上底，S极在下底
+            const startAngle = Math.PI; // 从N极开始（上底）
+            const endAngle = 0; // 到S极结束（下底）
+            
+            for (let i = 0; i <= numPoints; i++) {
+                const t = i / numPoints;
+                // 使用流畅度因子，使曲线更平滑
+                const adjustedT = Math.pow(t, smoothnessFactor);
+                const theta = startAngle - (startAngle - endAngle) * adjustedT; // 从π到0递减
+                
+                // 使用偶极子磁场公式计算磁感线
+                // r = L * sin^2(theta) 是偶极子磁场的标准公式
+                const r = L * Math.sin(theta) * Math.sin(theta);
+                
+                // 计算球坐标
+                const x = r * Math.sin(theta) * Math.cos(phi);
+                const y = r * Math.cos(theta);
+                const z = r * Math.sin(theta) * Math.sin(phi);
+                
+                // 应用磁偏角旋转
+                const rotatedX = x * Math.cos(declinationAngle) - y * Math.sin(declinationAngle);
+                const rotatedY = x * Math.sin(declinationAngle) + y * Math.cos(declinationAngle);
+                
+                // 将磁感线起点和终点分别连接到磁铁的两极
+                if (i === 0) {
+                    // 起点：磁铁N极（红色上底）
+                    points.push(magnetTop.clone());
+                } else if (i === numPoints) {
+                    // 终点：磁铁S极（蓝色下底）
+                    points.push(magnetBottom.clone());
+                } else {
+                    // 中间点：根据磁场公式计算
+                    points.push(new THREE.Vector3(rotatedX, rotatedY, z));
+                }
+            }
+            
+            return points;
+        }
+        
+        // 创建从磁铁出发的磁感线
+        function createMagnetFieldLines() {
+            // 清除现有的磁场线和箭头
+            fieldLines.forEach(line => scene.remove(line));
+            magneticArrows.forEach(arrow => scene.remove(arrow));
+            fieldLines = [];
+            magneticArrows = [];
+            
+            updateStatus(`生成 ${fieldLineCount} 条从磁铁出发的磁感线...`);
+            
+            // 计算磁铁两极的位置
+            // 注意：磁铁N极（红色）在上底，S极（蓝色）在下底
+            const magnetStart = new THREE.Vector3(0, EARTH_RADIUS * 0.9, 0);
+            const magnetEnd = new THREE.Vector3(0, -EARTH_RADIUS * 0.9, 0);
+            
+            // 应用磁偏角旋转
+            magnetStart.applyAxisAngle(new THREE.Vector3(0, 0, 1), declinationAngle);
+            magnetEnd.applyAxisAngle(new THREE.Vector3(0, 0, 1), declinationAngle);
+            
+            // 磁铁方向
+            const magnetDirection = new THREE.Vector3().subVectors(magnetEnd, magnetStart).normalize();
+            
+            // N极位置（上底）：从磁铁中心向磁轴正方向移动一半长度
+            const nPolePos = new THREE.Vector3().addVectors(
+                new THREE.Vector3().addVectors(magnetStart, magnetEnd).multiplyScalar(0.5),
+                magnetDirection.clone().multiplyScalar(MAGNET_HALF_LENGTH) // N极在上底
+            );
+            
+            // S极位置（下底）：从磁铁中心向磁轴负方向移动一半长度
+            const sPolePos = new THREE.Vector3().addVectors(
+                new THREE.Vector3().addVectors(magnetStart, magnetEnd).multiplyScalar(0.5),
+                magnetDirection.clone().multiplyScalar(-MAGNET_HALF_LENGTH) // S极在下底
+            );
+            
+            // 不同的L值对应不同尺度的磁感线
+            const L_values = [EARTH_RADIUS * 1.2, EARTH_RADIUS * 1.5, EARTH_RADIUS * 1.8, EARTH_RADIUS * 2.1, EARTH_RADIUS * 2.4];
+            
+            for (let i = 0; i < fieldLineCount; i++) {
+                const phi = (i / fieldLineCount) * 2 * Math.PI;
+                
+                L_values.forEach(L => {
+                    // 注意：传递参数时，nPolePos作为起点（上底），sPolePos作为终点（下底）
+                    const points = calculateMagnetFieldLine(L, phi, sPolePos, nPolePos, 300);
+                    
+                    // 确保有足够的点
+                    if (points.length < 2) return;
+                    
+                    const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+                    
+                    // 使用蓝色线条
+                    const lineMaterial = new THREE.LineBasicMaterial({
+                        color: 0x4bcffa,
+                        linewidth: 2.0 * magneticFieldStrength,
+                        transparent: true,
+                        opacity: 0.8
+                    });
+                    
+                    const fieldLine = new THREE.Line(lineGeometry, lineMaterial);
+                    scene.add(fieldLine);
+                    fieldLines.push(fieldLine);
+                    
+                    // 每条磁感线添加3个箭头
+                    addThreeArrowsToFieldLine(points);
+                });
+            }
+            
+            updateStatus(`${fieldLineCount} 条从磁铁出发的磁感线已生成`);
+        }
+        
+        // 在每条磁场线上添加3个箭头
+        function addThreeArrowsToFieldLine(points) {
+            const arrowLength = 0.35 * magneticFieldStrength;
+            const arrowHeadLength = 0.18 * magneticFieldStrength;
+            const arrowHeadWidth = 0.12 * magneticFieldStrength;
+            
+            const totalPoints = points.length;
+            
+            // 计算3个箭头的位置：25%, 50%, 75%的位置
+            const arrowPositions = [
+                Math.floor(totalPoints * 0.25),
+                Math.floor(totalPoints * 0.5),
+                Math.floor(totalPoints * 0.75)
+            ];
+            
+            arrowPositions.forEach(index => {
+                if (index >= totalPoints - 1) return;
+                
+                const startPoint = points[index];
+                const endPoint = points[index + 1];
+                
+                // 计算磁场方向（从N极指向S极）- 磁感线从上底指向下底
+                const direction = new THREE.Vector3().subVectors(endPoint, startPoint).normalize();
+                
+                // 使用红色箭头（ff3838）
+                const arrowColor = 0xff3838;
+                
+                // 创建箭头
+                const arrowHelper = new THREE.ArrowHelper(
+                    direction,
+                    startPoint,
+                    arrowLength,
+                    arrowColor,
+                    arrowHeadLength,
+                    arrowHeadWidth
+                );
+                
+                scene.add(arrowHelper);
+                magneticArrows.push(arrowHelper);
+            });
+        }
+        
+        // 创建延伸到无穷远的磁感线（仅保留三分之一长度，直线部分）
+        function createInfiniteFieldLines() {
+            // 清除现有的无限磁感线和箭头
+            infiniteFieldLines.forEach(line => scene.remove(line));
+            infiniteArrows.forEach(arrow => scene.remove(arrow));
+            infiniteFieldLines = [];
+            infiniteArrows = [];
+            
+            updateStatus("生成延伸到无穷远的磁感线...");
+            
+            // 计算磁铁两极的位置
+            const magnetStart = new THREE.Vector3(0, EARTH_RADIUS * 0.9, 0);
+            const magnetEnd = new THREE.Vector3(0, -EARTH_RADIUS * 0.9, 0);
+            
+            // 应用磁偏角旋转
+            magnetStart.applyAxisAngle(new THREE.Vector3(0, 0, 1), declinationAngle);
+            magnetEnd.applyAxisAngle(new THREE.Vector3(0, 0, 1), declinationAngle);
+            
+            // 磁铁方向
+            const magnetDirection = new THREE.Vector3().subVectors(magnetEnd, magnetStart).normalize();
+            
+            // N极位置（上底）
+            const nPolePos = new THREE.Vector3().addVectors(
+                new THREE.Vector3().addVectors(magnetStart, magnetEnd).multiplyScalar(0.5),
+                magnetDirection.clone().multiplyScalar(MAGNET_HALF_LENGTH) // N极在上底
+            );
+            
+            // S极位置（下底）
+            const sPolePos = new THREE.Vector3().addVectors(
+                new THREE.Vector3().addVectors(magnetStart, magnetEnd).multiplyScalar(0.5),
+                magnetDirection.clone().multiplyScalar(-MAGNET_HALF_LENGTH) // S极在下底
+            );
+            
+            // 创建8条延伸到无穷远的磁感线
+            const infiniteLineCount = 8;
+            
+            for (let i = 0; i < infiniteLineCount; i++) {
+                const phi = (i / infiniteLineCount) * 2 * Math.PI;
+                
+                // 从N极向外延伸的线（仅保留三分之一长度，直线）
+                const nPoints = calculateStraightInfiniteFieldLine(nPolePos, phi, false, 15); // 减少点数，直线
+                if (nPoints.length >= 2) {
+                    const nLineGeometry = new THREE.BufferGeometry().setFromPoints(nPoints);
+                    const nLineMaterial = new THREE.LineBasicMaterial({
+                        color: 0xff00ff, // 洋红色
+                        linewidth: 1.5 * magneticFieldStrength,
+                        transparent: true,
+                        opacity: 0.6
+                    });
+                    const nLine = new THREE.Line(nLineGeometry, nLineMaterial);
+                    scene.add(nLine);
+                    infiniteFieldLines.push(nLine);
+                    
+                    // 添加2个箭头 - 从N极出发的线箭头方向正常
+                    addTwoArrowsToInfiniteLine(nPoints, false);
+                }
+                
+                // 从S极向外延伸的线（仅保留三分之一长度，直线）
+                const sPoints = calculateStraightInfiniteFieldLine(sPolePos, phi, true, 15); // 减少点数，直线
+                if (sPoints.length >= 2) {
+                    const sLineGeometry = new THREE.BufferGeometry().setFromPoints(sPoints);
+                    const sLineMaterial = new THREE.LineBasicMaterial({
+                        color: 0xff00ff, // 洋红色
+                        linewidth: 1.5 * magneticFieldStrength,
+                        transparent: true,
+                        opacity: 0.6
+                    });
+                    const sLine = new THREE.Line(sLineGeometry, sLineMaterial);
+                    scene.add(sLine);
+                    infiniteFieldLines.push(sLine);
+                    
+                    // 添加2个箭头 - 从S极出发的线箭头方向旋转180度
+                    addTwoArrowsToInfiniteLine(sPoints, true);
+                }
+            }
+            
+            updateStatus("延伸到无穷远的磁感线已生成");
+        }
+        
+        // 计算直线无限延伸磁感线（仅保留三分之一长度，直线）
+        function calculateStraightInfiniteFieldLine(startPoint, phi, fromSPole = false, numPoints = 15) {
+            const points = [];
+            
+            // 确定起始角度
+            const startAngle = fromSPole ? 0.1 : Math.PI - 0.1;
+            
+            // 仅保留三分之一长度
+            const maxT = 0.33; // 只延伸到原来的三分之一
+            
+            for (let i = 0; i <= numPoints; i++) {
+                const t = (i / numPoints) * maxT; // 限制t的最大值
+                
+                // 线性增长，模拟直线延伸
+                const adjustedT = t;
+                
+                // 固定角度，不弯曲，形成直线
+                const theta = startAngle;
+                
+                // 半径线性增长
+                const r = EARTH_RADIUS * 1.3 + adjustedT * EARTH_RADIUS * 3.0; // 缩短延伸距离
+                
+                // 固定方位角，不弯曲
+                const currentPhi = phi;
+                
+                // 计算球坐标
+                const x = r * Math.sin(theta) * Math.cos(currentPhi);
+                const y = r * Math.cos(theta);
+                const z = r * Math.sin(theta) * Math.sin(currentPhi);
+                
+                // 应用磁偏角旋转
+                const rotatedX = x * Math.cos(declinationAngle) - y * Math.sin(declinationAngle);
+                const rotatedY = x * Math.sin(declinationAngle) + y * Math.cos(declinationAngle);
+                
+                if (i === 0) {
+                    // 起点：从磁极开始
+                    points.push(startPoint.clone());
+                } else {
+                    // 其他点：向外延伸
+                    points.push(new THREE.Vector3(rotatedX, rotatedY, z));
+                }
+            }
+            
+            return points;
+        }
+        
+        // 在无限磁感线上添加2个箭头（由于线条变短，减少箭头数量）
+        function addTwoArrowsToInfiniteLine(points, reverseArrow = false) {
+            const arrowLength = 0.35 * magneticFieldStrength;
+            const arrowHeadLength = 0.18 * magneticFieldStrength;
+            const arrowHeadWidth = 0.12 * magneticFieldStrength;
+            
+            const totalPoints = points.length;
+            
+            // 计算2个箭头的位置：33%, 66%的位置
+            const arrowPositions = [
+                Math.floor(totalPoints * 0.33),
+                Math.floor(totalPoints * 0.66)
+            ];
+            
+            arrowPositions.forEach(index => {
+                if (index >= totalPoints - 1) return;
+                
+                const startPoint = points[index];
+                const endPoint = points[index + 1];
+                
+                // 计算磁场方向
+                let direction = new THREE.Vector3().subVectors(endPoint, startPoint).normalize();
+                
+                // 如果reverseArrow为true（从S极出发的线），箭头方向旋转180度
+                if (reverseArrow) {
+                    direction.negate(); // 方向取反，旋转180度
+                }
+                
+                // 使用红色箭头（ff3838）
+                const arrowColor = 0xff3838;
+                
+                // 创建箭头
+                const arrowHelper = new THREE.ArrowHelper(
+                    direction,
+                    startPoint,
+                    arrowLength,
+                    arrowColor,
+                    arrowHeadLength,
+                    arrowHeadWidth
+                );
+                
+                scene.add(arrowHelper);
+                infiniteArrows.push(arrowHelper);
+            });
+        }
+        
+        // 更新磁感线数量
+        function updateLineCount() {
+            fieldLineCount = parseInt(document.getElementById('lineCount').value);
+            document.getElementById('lineCountValue').textContent = fieldLineCount;
+            createMagnetFieldLines();
+        }
+        
+        // 更新磁场强度
+        function updateFieldStrength() {
+            magneticFieldStrength = parseFloat(document.getElementById('fieldStrength').value);
+            document.getElementById('strengthValue').textContent = magneticFieldStrength.toFixed(1);
+            createMagnetFieldLines();
+            createInfiniteFieldLines();
+        }
+        
+        // 更新磁偏角（已移除滑动条，此函数保留但不再使用）
+        function updateDeclination() {
+            // 函数保留但不再使用，磁偏角固定为11.5度
+        }
+        
+        // 更新流畅度（已移除滑动条，此函数保留但不再使用）
+        function updateSmoothness() {
+            // 函数保留但不再使用，流畅度固定为0.5
+        }
+        
+        // 切换地球自转
+        function toggleRotation() {
+            isRotating = !isRotating;
+            const btn = document.getElementById('rotationBtn');
+            btn.textContent = isRotating ? '暂停自转' : '开始自转';
+            btn.classList.toggle('active', !isRotating);
+        }
+        
+        // 切换磁感线显示
+        function toggleFieldLines() {
+            fieldLinesVisible = !fieldLinesVisible;
+            fieldLines.forEach(line => line.visible = fieldLinesVisible);
+            magneticArrows.forEach(arrow => arrow.visible = fieldLinesVisible);
+            const btn = document.getElementById('fieldBtn');
+            btn.textContent = fieldLinesVisible ? '隐藏磁感线' : '显示磁感线';
+            btn.classList.toggle('active', !fieldLinesVisible);
+        }
+        
+        // 切换轴线显示
+        function toggleAxes() {
+            axesVisible = !axesVisible;
+            if (geographicAxis) geographicAxis.visible = axesVisible;
+            if (magneticAxis) magneticAxis.visible = axesVisible;
+            const btn = document.getElementById('axesBtn');
+            btn.textContent = axesVisible ? '隐藏轴线' : '显示轴线';
+            btn.classList.toggle('active', !axesVisible);
+        }
+        
+        // 切换磁铁显示
+        function toggleMagnet() {
+            magnetVisible = !magnetVisible;
+            if (rectangularMagnetGroup) rectangularMagnetGroup.visible = magnetVisible;
+            if (magnetLabelN) magnetLabelN.visible = magnetVisible;
+            if (magnetLabelS) magnetLabelS.visible = magnetVisible;
+            const btn = document.getElementById('magnetBtn');
+            btn.textContent = magnetVisible ? '隐藏磁铁' : '显示磁铁';
+            btn.classList.toggle('active', !magnetVisible);
+        }
+        
+        // 切换磁偏角显示
+        function toggleDeclination() {
+            declinationVisible = !declinationVisible;
+            if (declinationArc) declinationArc.visible = declinationVisible;
+            const declinationLabel = scene.getObjectByName("declinationLabel");
+            if (declinationLabel) declinationLabel.visible = declinationVisible;
+            const btn = document.getElementById('declBtn');
+            btn.textContent = declinationVisible ? '隐藏磁偏角' : '显示磁偏角';
+            btn.classList.toggle('active', !declinationVisible);
+        }
+        
+        // 切换磁轴显示
+        function toggleMagneticAxis() {
+            magneticAxisVisible = !magneticAxisVisible;
+            if (magneticAxis) magneticAxis.visible = magneticAxisVisible;
+            const btn = document.getElementById('magneticAxisBtn');
+            btn.textContent = magneticAxisVisible ? '隐藏磁轴' : '显示磁轴';
+            btn.classList.toggle('active', !magneticAxisVisible);
+        }
+        
+        // 切换无限磁感线显示
+        function toggleInfiniteLines() {
+            infiniteLinesVisible = !infiniteLinesVisible;
+            infiniteFieldLines.forEach(line => line.visible = infiniteLinesVisible);
+            infiniteArrows.forEach(arrow => arrow.visible = infiniteLinesVisible);
+            const btn = document.getElementById('infiniteBtn');
+            btn.textContent = infiniteLinesVisible ? '隐藏无限线' : '显示无限线';
+            btn.classList.toggle('active', !infiniteLinesVisible);
+        }
+        
+        // 切换到平面视角
+        function togglePlaneView() {
+            camera.position.set(0, 0, 8);
+            camera.lookAt(0, 0, 0);
+            controls.target.set(0, 0, 0);
+            updateStatus("切换到平面视角，磁感线与磁轴在同一平面");
+        }
+        
+        // 改变视角
+        function changeView(viewType) {
+            if (viewType === 'north') {
+                camera.position.set(0, 8, 0);
+                controls.target.set(0, 0, 0);
+                updateStatus("切换到北极视角");
+            } else if (viewType === 'south') {
+                camera.position.set(0, -8, 0);
+                controls.target.set(0, 0, 0);
+                updateStatus("切换到南极视角");
+            } else if (viewType === 'equator') {
+                camera.position.set(8, 0, 0);
+                controls.target.set(0, 0, 0);
+                updateStatus("切换到赤道视角");
+            } else if (viewType === 'side') {
+                camera.position.set(0, 3, 8);
+                controls.target.set(0, 0, 0);
+                updateStatus("切换到侧面视角");
+            }
+        }
+        
+        // 重置视图
+        function resetView() {
+            camera.position.set(0, 3, 8);
+            controls.reset();
+            updateStatus("视图已重置");
+        }
+        
+        // 更新状态信息
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        // 动画循环
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+            
+            if (isRotating && earth) {
+                earth.rotation.y += earthRotationSpeed;
+            }
+            
+            const time = Date.now() * 0.001;
+            
+            if (rectangularMagnetGroup && magnetVisible) {
+                const pulse = 0.05 * Math.sin(time * 1.5);
+                rectangularMagnetGroup.scale.setScalar(1 + pulse);
+            }
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        // 窗口大小调整处理
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', init);
+        
+        // 清理
+        window.addEventListener('beforeunload', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        });
+    </script>
+ </body>
+</html>

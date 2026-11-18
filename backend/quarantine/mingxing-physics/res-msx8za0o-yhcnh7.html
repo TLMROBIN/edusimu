@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+ <head>
+  <meta charset="UTF-8">
+  <title>双星系统模拟</title>
+  <style>
+    body {
+      background: radial-gradient(circle at center, #000 0%, #111 100%);
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    canvas {
+      background: #000;
+      margin-top: 20px;
+      border: 2px solid #555;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    .controls {
+      margin-top: 10px;
+      background: #222;
+      padding: 12px 24px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    }
+    .controls label {
+      margin-right: 15px;
+    }
+    .controls input[type=range] {
+      width: 120px;
+    }
+  </style>
+  <meta name="signature" content="QQABKYQ05gCYkJSACK4rAUFMCwqYkJEgLEoMxUCcOAwiwYNAFAA=">
+ </head>
+ <body>
+  <h2>双星系统模拟<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAgCAIAAAAXL1agAAAAk0lEQVR42u2UwQ6AMAhD+f+PpsaTk7WIHjyVGDOd5NGCC5yRy50+lvX6ZhrB8vd1+aaQVPqtxNBllmQqaFhQFlITxU9owL7FSSncoF3MFklI0O2ZXKpPRRZCJ0OMXFNK42fGoF6IKcCgx9duUKX6H8qxPj7lbxvTK0g6q/HGikeLqMO3M+KPMMkkk0wyySSTTPoaB3kKEsLoGwnVAAAAAElFTkSuQmCC" style="position: absolute; left: -99999px; top: -99999px; opacity: 0; pointer-events: none; width: 1px; height: 1px;"></h2>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <div class="controls"><label>质量比（M1/M2）： <input type="range" id="massRatio" min="0.2" max="8" step="0.1" value="2"> <span id="ratioVal">2</span> </label>
+  </div>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const ratioSlider = document.getElementById('massRatio');
+    const ratioVal = document.getElementById('ratioVal');
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const orbitRadius = 200;
+    let angle = 0;
+
+    function draw(massRatio) {
+      ctx.clearRect(0, 0, W, H);
+      const M1 = massRatio;
+      const M2 = 1;
+      const totalMass = M1 + M2;
+
+      const r1 = orbitRadius * M2 / totalMass;
+      const r2 = orbitRadius * M1 / totalMass;
+
+      const cx = W / 2;
+      const cy = H / 2;
+      const x1 = cx + r1 * Math.cos(angle);
+      const y1 = cy + r1 * Math.sin(angle);
+      const x2 = cx - r2 * Math.cos(angle);
+      const y2 = cy - r2 * Math.sin(angle);
+
+      // 绘制轨道
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r1, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, r2, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 绘制连线
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      // 绘制星体
+      ctx.beginPath();
+      ctx.fillStyle = 'orange';
+      ctx.shadowColor = 'orange';
+      ctx.shadowBlur = 15;
+      ctx.arc(x1, y1, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.fillStyle = 'deepskyblue';
+      ctx.shadowColor = 'deepskyblue';
+      ctx.shadowBlur = 15;
+      ctx.arc(x2, y2, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 清除阴影用于质心
+      ctx.shadowBlur = 0;
+
+      // 绘制质心
+      ctx.beginPath();
+      ctx.fillStyle = '#fff';
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function animate() {
+      const massRatio = parseFloat(ratioSlider.value);
+      ratioVal.textContent = massRatio.toFixed(1);
+      draw(massRatio);
+      angle += 0.01;
+      requestAnimationFrame(animate);
+    }
+
+    ratioSlider.oninput = () => {
+      ratioVal.textContent = ratioSlider.value;
+    };
+
+    animate();
+  </script>
+ </body>
+</html>

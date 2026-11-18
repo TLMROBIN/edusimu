@@ -143,7 +143,11 @@ def main() -> int:
         mingxing_rows = (
             db.query(Animation)
             .filter(Animation.subject_id == subject.id)
-            .filter((Animation.author == MINGXING_AUTHOR) | Animation.description.contains(MINGXING_MARKER))
+            .filter(
+                (Animation.author == MINGXING_AUTHOR)
+                | Animation.description.contains(MINGXING_MARKER)
+                | Animation.review_notes.contains(MINGXING_MARKER)
+            )
             .order_by(Animation.id)
             .all()
         )
