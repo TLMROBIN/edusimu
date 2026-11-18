@@ -28,352 +28,328 @@
 
     <el-main>
       <div class="home-content">
-        <section class="start-section" aria-labelledby="start-title">
-          <div class="section-heading">
-            <div>
-              <h2 id="start-title">从这里开始</h2>
-              <p>继续最近使用的课件，或先定位今天要学习的教材章节。</p>
-            </div>
-          </div>
-
-          <div class="start-layout">
-            <article
-              class="continue-panel"
-              :class="{ 'is-empty': recentStatus === 'success' && !recentAnimations.length }"
-              aria-labelledby="continue-title"
-            >
-              <div class="panel-heading">
-                <div>
-                  <span class="status-label">继续学习</span>
-                  <h3 id="continue-title">{{ recentAnimations[0]?.title || '还没有最近使用的课件' }}</h3>
+        <section id="resource-directory" class="directory-section" aria-labelledby="directory-title">
+          <div class="directory-layout">
+            <aside class="directory-sidebar" aria-label="继续学习与课件筛选">
+              <section class="continue-panel" aria-labelledby="continue-title">
+                <div class="panel-heading">
+                  <h2 id="continue-title">继续学习</h2>
+                  <span v-if="recentAnimations.length" class="status-note">最近打开</span>
                 </div>
-                <span v-if="recentAnimations.length" class="status-note">最近打开</span>
+
+                <template v-if="recentStatus === 'loading'">
+                  <div class="inline-status" role="status" aria-live="polite">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    正在读取最近学习记录…
+                  </div>
+                </template>
+                <template v-else-if="recentStatus === 'error'">
+                  <div class="inline-message error-message" role="alert">
+                    <strong>最近记录暂时无法读取</strong>
+                    <span>{{ recentError }}</span>
+                    <el-button @click="loadRecentAnimations">重新加载</el-button>
+                  </div>
+                </template>
+                <template v-else-if="recentAnimations.length">
+                  <h3 class="recent-title">{{ recentAnimations[0].title }}</h3>
+                  <p class="continue-path">
+                    {{ recentAnimations[0].textbook_path || '该课件尚未标注教材章节' }}
+                  </p>
+                  <el-button type="primary" class="continue-action" @click="openAnimation(recentAnimations[0])">
+                    继续打开课件
+                  </el-button>
+
+                  <div v-if="recentAnimations.length > 1" class="recent-list" aria-label="其他最近课件">
+                    <span class="recent-list-title">其他最近课件</span>
+                    <button
+                      v-for="animation in recentAnimations.slice(1)"
+                      :key="animation.id"
+                      type="button"
+                      class="recent-link"
+                      @click="openAnimation(animation)"
+                    >
+                      <span>{{ animation.title }}</span>
+                      <span aria-hidden="true">打开</span>
+                    </button>
+                  </div>
+                </template>
+                <template v-else>
+                  <h3 class="recent-title">还没有最近使用的课件</h3>
+                  <p class="empty-copy">打开一个课件后，这里会保留你的最近学习入口。</p>
+                  <el-button type="primary" class="continue-action" @click="scrollToDirectory">
+                    浏览课件资源
+                  </el-button>
+                </template>
+              </section>
+
+              <form class="filter-panel" aria-label="筛选课件" @submit.prevent="searchAnimations">
+                <h2>筛选课件</h2>
+
+                <label class="filter-field filter-search">
+                  <span>搜索课件</span>
+                  <el-input
+                    v-model="searchText"
+                    aria-label="搜索课件标题、关键词或章节"
+                    placeholder="输入标题、关键词或章节"
+                    clearable
+                    @clear="searchAnimations"
+                  >
+                    <template #append>
+                      <el-button native-type="submit">搜索</el-button>
+                    </template>
+                  </el-input>
+                </label>
+
+                <section class="subject-nav" aria-labelledby="subject-title">
+                  <div class="subsection-heading">
+                    <h3 id="subject-title" tabindex="-1">选择学科</h3>
+                    <button
+                      v-if="selectedSubjectId"
+                      type="button"
+                      class="text-action"
+                      @click="filterBySubject(selectedSubjectId)"
+                    >
+                      全部学科
+                    </button>
+                  </div>
+
+                  <div v-if="subjectStatus === 'loading'" class="subject-skeletons" role="status" aria-live="polite">
+                    <span class="sr-only">正在加载学科…</span>
+                    <span v-for="index in 6" :key="index" class="subject-skeleton" aria-hidden="true"></span>
+                  </div>
+                  <div v-else-if="subjectStatus === 'error'" class="state-panel error-state" role="alert">
+                    <strong>学科列表没有加载成功</strong>
+                    <p>{{ subjectError }}</p>
+                    <el-button @click="loadSubjects">重新加载学科</el-button>
+                  </div>
+                  <div v-else-if="subjects.length" class="subject-list" role="group" aria-label="学科列表">
+                    <button
+                      v-for="subject in subjects"
+                      :key="subject.id"
+                      type="button"
+                      class="subject-button"
+                      :class="{ active: selectedSubjectId === subject.id }"
+                      :aria-pressed="selectedSubjectId === subject.id"
+                      @click="filterBySubject(subject.id)"
+                    >
+                      <span>{{ subject.display_name }}</span>
+                      <span v-if="selectedSubjectId === subject.id" class="selected-mark">已选</span>
+                    </button>
+                  </div>
+                  <div v-else class="state-panel">
+                    <strong>暂时没有可选学科</strong>
+                    <p>请联系教师或管理员先配置学科与教材目录。</p>
+                  </div>
+                </section>
+
+                <label class="filter-field">
+                  <span>教材章节</span>
+                  <el-cascader
+                    v-model="selectedTextbookPath"
+                    aria-label="按教材章节筛选"
+                    :options="textbookOptions"
+                    :props="textbookProps"
+                    :loading="textbookStatus === 'loading'"
+                    :disabled="!selectedSubjectId || textbookStatus === 'error'"
+                    clearable
+                    filterable
+                    :placeholder="textbookPlaceholder"
+                    @change="filterByTextbook"
+                  />
+                </label>
+
+                <label v-if="canUseSourceFilter" class="filter-field">
+                  <span>课件来源</span>
+                  <el-select
+                    v-model="selectedSourceType"
+                    aria-label="按课件来源筛选"
+                    placeholder="全部来源"
+                    clearable
+                    @change="filterBySource"
+                  >
+                    <el-option
+                      v-for="option in sourceOptions"
+                      :key="option.value"
+                      :label="option.label"
+                      :value="option.value"
+                    />
+                  </el-select>
+                </label>
+
+                <div v-if="textbookStatus === 'error'" class="filter-error" role="alert">
+                  <span>{{ textbookError }}</span>
+                  <button type="button" class="text-action" @click="loadTextbookTree">重新加载章节</button>
+                </div>
+
+                <div class="filter-actions">
+                  <el-button native-type="button" :disabled="!hasActiveFilters" @click="resetFilters">
+                    清除全部筛选
+                  </el-button>
+                </div>
+              </form>
+            </aside>
+
+            <div class="directory-main">
+              <div class="section-heading directory-heading">
+                <div>
+                  <h2 id="directory-title" tabindex="-1">课件资源目录</h2>
+                  <p>按学科、教材章节或关键词缩小范围。</p>
+                </div>
+                <span v-if="resourceStatus === 'success'" class="result-count" aria-live="polite">
+                  找到 {{ totalAnimations }} 个课件
+                </span>
               </div>
 
-              <template v-if="recentStatus === 'loading'">
-                <div class="inline-status" role="status" aria-live="polite">
-                  <span class="status-dot" aria-hidden="true"></span>
-                  正在读取最近学习记录…
-                </div>
-              </template>
-              <template v-else-if="recentStatus === 'error'">
-                <div class="inline-message error-message" role="alert">
-                  <strong>最近记录暂时无法读取</strong>
-                  <span>{{ recentError }}</span>
-                  <el-button @click="loadRecentAnimations">重新加载</el-button>
-                </div>
-              </template>
-              <template v-else-if="recentAnimations.length">
-                <p class="continue-path">
-                  {{ recentAnimations[0].textbook_path || '该课件尚未标注教材章节' }}
-                </p>
-                <el-button type="primary" class="continue-action" @click="openAnimation(recentAnimations[0])">
-                  继续打开课件
-                </el-button>
+              <div v-if="hasActiveFilters" class="active-filters" aria-label="当前筛选条件">
+                <span class="active-filter-title">当前筛选</span>
+                <button
+                  v-if="selectedSubjectName"
+                  type="button"
+                  class="filter-chip"
+                  :aria-label="`移除学科筛选：${selectedSubjectName}`"
+                  @click="clearFilter('subject')"
+                >
+                  学科：{{ selectedSubjectName }} <span aria-hidden="true">×</span>
+                </button>
+                <button
+                  v-if="canUseSourceFilter && selectedSourceLabel"
+                  type="button"
+                  class="filter-chip"
+                  :aria-label="`移除来源筛选：${selectedSourceLabel}`"
+                  @click="clearFilter('source')"
+                >
+                  来源：{{ selectedSourceLabel }} <span aria-hidden="true">×</span>
+                </button>
+                <button
+                  v-if="selectedTextbookLabel"
+                  type="button"
+                  class="filter-chip"
+                  :aria-label="`移除章节筛选：${selectedTextbookLabel}`"
+                  @click="clearFilter('textbook')"
+                >
+                  章节：{{ selectedTextbookLabel }} <span aria-hidden="true">×</span>
+                </button>
+                <button
+                  v-if="searchText"
+                  type="button"
+                  class="filter-chip"
+                  :aria-label="`移除关键词筛选：${searchText}`"
+                  @click="clearFilter('search')"
+                >
+                  关键词：{{ searchText }} <span aria-hidden="true">×</span>
+                </button>
+              </div>
 
-                <div v-if="recentAnimations.length > 1" class="recent-list" aria-label="其他最近课件">
-                  <span class="recent-list-title">其他最近课件</span>
-                  <button
-                    v-for="animation in recentAnimations.slice(1)"
-                    :key="animation.id"
-                    type="button"
-                    class="recent-link"
-                    @click="openAnimation(animation)"
+              <div class="resource-toolbar">
+                <h3>课件列表</h3>
+                <el-radio-group v-model="viewMode" size="large" class="view-mode-toggle" aria-label="课件显示方式">
+                  <el-radio-button value="grid">卡片视图</el-radio-button>
+                  <el-radio-button value="list">列表视图</el-radio-button>
+                </el-radio-group>
+              </div>
+
+              <div v-if="resourceStatus === 'loading'" class="resource-loading" role="status" aria-live="polite">
+                <span class="sr-only">正在加载课件资源…</span>
+                <div v-for="index in 8" :key="index" class="resource-skeleton" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+
+              <div v-else-if="resourceStatus === 'error'" class="state-panel resource-state error-state" role="alert">
+                <strong>课件资源没有加载成功</strong>
+                <p>{{ resourceError }}</p>
+                <el-button type="primary" @click="loadAnimations">重新加载课件</el-button>
+              </div>
+
+              <div v-else-if="!animations.length" class="state-panel resource-state">
+                <strong>{{ hasActiveFilters ? '没有找到符合条件的课件' : '暂时没有已发布课件' }}</strong>
+                <p>{{ hasActiveFilters ? '可以清除筛选，或换一个学科、章节和关键词。' : '课件发布后会显示在这里。' }}</p>
+                <el-button v-if="hasActiveFilters" type="primary" @click="resetFilters">清除筛选并查看全部</el-button>
+              </div>
+
+              <div v-else-if="viewMode === 'grid'" class="resource-grid">
+                <article v-for="animation in animations" :key="animation.id" class="resource-card">
+                  <RouterLink
+                    class="resource-card-button"
+                    :to="`/animations/${animation.id}`"
+                    :aria-label="`打开课件：${animation.title}`"
                   >
-                    <span>{{ animation.title }}</span>
-                    <span aria-hidden="true">打开</span>
-                  </button>
-                </div>
-              </template>
-              <template v-else>
-                <p class="empty-copy">从资源目录打开一个课件后，这里会保留你的最近学习入口。</p>
-                <el-button type="primary" class="continue-action" @click="scrollToDirectory">
-                  浏览课件资源
-                </el-button>
-              </template>
-            </article>
+                    <span class="thumbnail">
+                      <img
+                        v-if="animation.thumbnail"
+                        :src="resolveAssetUrl(animation.thumbnail)"
+                        :alt="`${animation.title}课件缩略图`"
+                        loading="lazy"
+                      />
+                      <span v-else class="thumbnail-fallback" aria-hidden="true">
+                        <span v-if="canUseSourceFilter" class="thumbnail-format">
+                          {{ formatSourceType(animation.source_type) }}
+                        </span>
+                        <span>{{ animation.subject_name || '互动课件' }}</span>
+                      </span>
+                    </span>
+                    <span class="resource-body">
+                      <strong>{{ animation.title }}</strong>
+                      <span class="resource-path">{{ animation.textbook_path || '未标注教材章节' }}</span>
+                      <span class="resource-meta">
+                        <span v-if="canUseSourceFilter">{{ formatSourceType(animation.source_type) }}</span>
+                        <span
+                          v-if="animation.may_lag"
+                          class="lag-badge"
+                          :title="animation.lag_reason || '体积较大或交互复杂，低配平板可能卡顿'"
+                        >
+                          可能卡顿
+                        </span>
+                        <span>{{ animation.view_count }} 次观看</span>
+                        <span v-if="animation.avg_rating">评分 {{ animation.avg_rating }}</span>
+                      </span>
+                      <span class="resource-open" aria-hidden="true">打开课件</span>
+                    </span>
+                  </RouterLink>
+                </article>
+              </div>
 
-            <aside class="chapter-panel" aria-labelledby="chapter-title">
-              <span class="status-label">
-                {{ selectedTextbookLabel ? '已选章节' : '按章节找课件' }}
-              </span>
-              <h3 id="chapter-title">{{ selectedTextbookLabel || '尚未选择教材章节' }}</h3>
-              <p v-if="selectedSubjectName">学科：{{ selectedSubjectName }}</p>
-              <p v-else>先选择学科，再从教材目录定位本节课。</p>
-              <el-button class="chapter-action" @click="focusLearningSelection">
-                {{ selectedTextbookLabel ? '更换章节' : selectedSubjectId ? '选择章节' : '选择学科' }}
-              </el-button>
-            </aside>
-          </div>
-        </section>
+              <div v-else class="resource-list">
+                <article v-for="animation in animations" :key="animation.id" class="resource-row">
+                  <RouterLink
+                    class="resource-row-button"
+                    :to="`/animations/${animation.id}`"
+                    :aria-label="`打开课件：${animation.title}`"
+                  >
+                    <span class="resource-row-main">
+                      <strong>{{ animation.title }}</strong>
+                      <span>{{ animation.textbook_path || '未标注教材章节' }}</span>
+                      <span class="resource-description">{{ animation.description || '该课件暂无补充说明' }}</span>
+                    </span>
+                    <span class="resource-row-meta">
+                      <span>{{ animation.subject_name || '未分类' }}</span>
+                      <span v-if="canUseSourceFilter">{{ formatSourceType(animation.source_type) }}</span>
+                      <span
+                        v-if="animation.may_lag"
+                        class="lag-badge"
+                        :title="animation.lag_reason || '体积较大或交互复杂，低配平板可能卡顿'"
+                      >
+                        可能卡顿
+                      </span>
+                      <span>{{ animation.view_count }} 次观看</span>
+                      <span aria-hidden="true">打开课件</span>
+                    </span>
+                  </RouterLink>
+                </article>
+              </div>
 
-        <section id="resource-directory" class="directory-section" aria-labelledby="directory-title">
-          <div class="section-heading directory-heading">
-            <div>
-              <h2 id="directory-title" tabindex="-1">课件资源目录</h2>
-              <p>按学科、教材章节或关键词缩小范围。</p>
-            </div>
-            <span v-if="resourceStatus === 'success'" class="result-count" aria-live="polite">
-              找到 {{ totalAnimations }} 个课件
-            </span>
-          </div>
-
-          <section class="subject-nav" aria-labelledby="subject-title">
-            <div class="subsection-heading">
-              <h3 id="subject-title" tabindex="-1">选择学科</h3>
-              <button
-                v-if="selectedSubjectId"
-                type="button"
-                class="text-action"
-                @click="filterBySubject(selectedSubjectId)"
-              >
-                查看全部学科
-              </button>
-            </div>
-
-            <div v-if="subjectStatus === 'loading'" class="subject-skeletons" role="status" aria-live="polite">
-              <span class="sr-only">正在加载学科…</span>
-              <span v-for="index in 6" :key="index" class="subject-skeleton" aria-hidden="true"></span>
-            </div>
-            <div v-else-if="subjectStatus === 'error'" class="state-panel error-state" role="alert">
-              <strong>学科列表没有加载成功</strong>
-              <p>{{ subjectError }}</p>
-              <el-button @click="loadSubjects">重新加载学科</el-button>
-            </div>
-            <div v-else-if="subjects.length" class="subject-list" role="group" aria-label="学科列表">
-              <button
-                v-for="subject in subjects"
-                :key="subject.id"
-                type="button"
-                class="subject-button"
-                :class="{ active: selectedSubjectId === subject.id }"
-                :aria-pressed="selectedSubjectId === subject.id"
-                @click="filterBySubject(subject.id)"
-              >
-                <span>{{ subject.display_name }}</span>
-                <span v-if="selectedSubjectId === subject.id" class="selected-mark">已选择</span>
-              </button>
-            </div>
-            <div v-else class="state-panel">
-              <strong>暂时没有可选学科</strong>
-              <p>请联系教师或管理员先配置学科与教材目录。</p>
-            </div>
-          </section>
-
-          <form
-            class="filter-panel"
-            :class="{ 'is-student': !canUseSourceFilter }"
-            aria-label="筛选课件"
-            @submit.prevent="searchAnimations"
-          >
-            <label class="filter-field filter-search">
-              <span>搜索课件</span>
-              <el-input
-                v-model="searchText"
-                aria-label="搜索课件标题、关键词或章节"
-                placeholder="输入标题、关键词或章节"
-                clearable
-                @clear="searchAnimations"
-              >
-                <template #append>
-                  <el-button native-type="submit">搜索</el-button>
-                </template>
-              </el-input>
-            </label>
-
-            <label v-if="canUseSourceFilter" class="filter-field">
-              <span>课件来源</span>
-              <el-select
-                v-model="selectedSourceType"
-                aria-label="按课件来源筛选"
-                placeholder="全部来源"
-                clearable
-                @change="filterBySource"
-              >
-                <el-option
-                  v-for="option in sourceOptions"
-                  :key="option.value"
-                  :label="option.label"
-                  :value="option.value"
+              <nav v-if="resourceStatus === 'success' && totalAnimations > pageSize" class="pagination-shell" aria-label="课件分页">
+                <el-pagination
+                  v-model:current-page="currentPage"
+                  :page-size="pageSize"
+                  :total="totalAnimations"
+                  layout="prev, pager, next"
+                  background
+                  @current-change="handlePageChange"
                 />
-              </el-select>
-            </label>
-
-            <label ref="textbookField" class="filter-field">
-              <span>教材章节</span>
-              <el-cascader
-                ref="textbookCascader"
-                v-model="selectedTextbookPath"
-                aria-label="按教材章节筛选"
-                :options="textbookOptions"
-                :props="textbookProps"
-                :loading="textbookStatus === 'loading'"
-                :disabled="!selectedSubjectId || textbookStatus === 'error'"
-                clearable
-                filterable
-                :placeholder="textbookPlaceholder"
-                @change="filterByTextbook"
-              />
-            </label>
-
-            <div class="filter-actions">
-              <el-button native-type="button" @click="resetFilters">清除全部筛选</el-button>
-            </div>
-
-            <div v-if="textbookStatus === 'error'" class="filter-error" role="alert">
-              <span>{{ textbookError }}</span>
-              <button type="button" class="text-action" @click="loadTextbookTree">重新加载章节</button>
-            </div>
-          </form>
-
-          <div v-if="hasActiveFilters" class="active-filters" aria-label="当前筛选条件">
-            <span class="active-filter-title">当前筛选</span>
-            <button
-              v-if="selectedSubjectName"
-              type="button"
-              class="filter-chip"
-              :aria-label="`移除学科筛选：${selectedSubjectName}`"
-              @click="clearFilter('subject')"
-            >
-              学科：{{ selectedSubjectName }} <span aria-hidden="true">×</span>
-            </button>
-            <button
-              v-if="canUseSourceFilter && selectedSourceLabel"
-              type="button"
-              class="filter-chip"
-              :aria-label="`移除来源筛选：${selectedSourceLabel}`"
-              @click="clearFilter('source')"
-            >
-              来源：{{ selectedSourceLabel }} <span aria-hidden="true">×</span>
-            </button>
-            <button
-              v-if="selectedTextbookLabel"
-              type="button"
-              class="filter-chip"
-              :aria-label="`移除章节筛选：${selectedTextbookLabel}`"
-              @click="clearFilter('textbook')"
-            >
-              章节：{{ selectedTextbookLabel }} <span aria-hidden="true">×</span>
-            </button>
-            <button
-              v-if="searchText"
-              type="button"
-              class="filter-chip"
-              :aria-label="`移除关键词筛选：${searchText}`"
-              @click="clearFilter('search')"
-            >
-              关键词：{{ searchText }} <span aria-hidden="true">×</span>
-            </button>
-          </div>
-
-          <div class="resource-toolbar">
-            <h3>课件列表</h3>
-            <el-radio-group v-model="viewMode" size="large" class="view-mode-toggle" aria-label="课件显示方式">
-              <el-radio-button value="grid">卡片视图</el-radio-button>
-              <el-radio-button value="list">列表视图</el-radio-button>
-            </el-radio-group>
-          </div>
-
-          <div v-if="resourceStatus === 'loading'" class="resource-loading" role="status" aria-live="polite">
-            <span class="sr-only">正在加载课件资源…</span>
-            <div v-for="index in 8" :key="index" class="resource-skeleton" aria-hidden="true">
-              <span></span><span></span><span></span>
+              </nav>
             </div>
           </div>
-
-          <div v-else-if="resourceStatus === 'error'" class="state-panel resource-state error-state" role="alert">
-            <strong>课件资源没有加载成功</strong>
-            <p>{{ resourceError }}</p>
-            <el-button type="primary" @click="loadAnimations">重新加载课件</el-button>
-          </div>
-
-          <div v-else-if="!animations.length" class="state-panel resource-state">
-            <strong>{{ hasActiveFilters ? '没有找到符合条件的课件' : '暂时没有已发布课件' }}</strong>
-            <p>{{ hasActiveFilters ? '可以清除筛选，或换一个学科、章节和关键词。' : '课件发布后会显示在这里。' }}</p>
-            <el-button v-if="hasActiveFilters" type="primary" @click="resetFilters">清除筛选并查看全部</el-button>
-          </div>
-
-          <div v-else-if="viewMode === 'grid'" class="resource-grid">
-            <article v-for="animation in animations" :key="animation.id" class="resource-card">
-              <RouterLink
-                class="resource-card-button"
-                :to="`/animations/${animation.id}`"
-                :aria-label="`打开课件：${animation.title}`"
-              >
-                <span class="thumbnail">
-                  <img
-                    v-if="animation.thumbnail"
-                    :src="resolveAssetUrl(animation.thumbnail)"
-                    :alt="`${animation.title}课件缩略图`"
-                    loading="lazy"
-                  />
-                  <span v-else class="thumbnail-fallback" aria-hidden="true">
-                    <span v-if="canUseSourceFilter" class="thumbnail-format">
-                      {{ formatSourceType(animation.source_type) }}
-                    </span>
-                    <span>{{ animation.subject_name || '互动课件' }}</span>
-                  </span>
-                </span>
-                <span class="resource-body">
-                  <strong>{{ animation.title }}</strong>
-                  <span class="resource-path">{{ animation.textbook_path || '未标注教材章节' }}</span>
-                  <span class="resource-meta">
-                    <span v-if="canUseSourceFilter">{{ formatSourceType(animation.source_type) }}</span>
-                    <span
-                      v-if="animation.may_lag"
-                      class="lag-badge"
-                      :title="animation.lag_reason || '体积较大或交互复杂，低配平板可能卡顿'"
-                    >
-                      可能卡顿
-                    </span>
-                    <span>{{ animation.view_count }} 次观看</span>
-                    <span v-if="animation.avg_rating">评分 {{ animation.avg_rating }}</span>
-                  </span>
-                  <span class="resource-open" aria-hidden="true">打开课件</span>
-                </span>
-              </RouterLink>
-            </article>
-          </div>
-
-          <div v-else class="resource-list">
-            <article v-for="animation in animations" :key="animation.id" class="resource-row">
-              <RouterLink
-                class="resource-row-button"
-                :to="`/animations/${animation.id}`"
-                :aria-label="`打开课件：${animation.title}`"
-              >
-                <span class="resource-row-main">
-                  <strong>{{ animation.title }}</strong>
-                  <span>{{ animation.textbook_path || '未标注教材章节' }}</span>
-                  <span class="resource-description">{{ animation.description || '该课件暂无补充说明' }}</span>
-                </span>
-                <span class="resource-row-meta">
-                  <span>{{ animation.subject_name || '未分类' }}</span>
-                  <span v-if="canUseSourceFilter">{{ formatSourceType(animation.source_type) }}</span>
-                  <span
-                    v-if="animation.may_lag"
-                    class="lag-badge"
-                    :title="animation.lag_reason || '体积较大或交互复杂，低配平板可能卡顿'"
-                  >
-                    可能卡顿
-                  </span>
-                  <span>{{ animation.view_count }} 次观看</span>
-                  <span aria-hidden="true">打开课件</span>
-                </span>
-              </RouterLink>
-            </article>
-          </div>
-
-          <nav v-if="resourceStatus === 'success' && totalAnimations > pageSize" class="pagination-shell" aria-label="课件分页">
-            <el-pagination
-              v-model:current-page="currentPage"
-              :page-size="pageSize"
-              :total="totalAnimations"
-              layout="prev, pager, next"
-              background
-              @current-change="handlePageChange"
-            />
-          </nav>
         </section>
       </div>
     </el-main>
@@ -381,7 +357,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import axios from 'axios'
@@ -396,8 +372,6 @@ const subjects = ref([])
 const textbookOptions = ref([])
 const animations = ref([])
 const recentAnimations = ref([])
-const textbookField = ref(null)
-const textbookCascader = ref(null)
 const totalAnimations = ref(0)
 const searchText = ref('')
 const selectedSubjectId = ref(null)
@@ -699,26 +673,6 @@ const scrollToDirectory = () => {
   heading?.focus({ preventScroll: true })
 }
 
-const focusLearningSelection = async () => {
-  if (!selectedSubjectId.value) {
-    const subjectHeading = document.getElementById('subject-title')
-    subjectHeading?.scrollIntoView({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-      block: 'center'
-    })
-    subjectHeading?.focus({ preventScroll: true })
-    return
-  }
-
-  textbookField.value?.scrollIntoView({
-    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-    block: 'center'
-  })
-  await nextTick()
-  textbookCascader.value?.focus()
-  textbookCascader.value?.togglePopperVisible?.(true)
-}
-
 const handleLogout = async () => {
   if (!window.confirm('确定退出登录吗？')) return
   const redirectedToSso = await userStore.logout()
@@ -779,8 +733,8 @@ watch(
 
 .home-header {
   height: auto;
-  min-height: 76px;
-  padding: 12px 24px;
+  min-height: 64px;
+  padding: 10px 24px;
   background: #10233f;
   border-bottom: 1px solid rgba(245, 251, 255, 0.24);
   box-shadow: none;
@@ -796,6 +750,16 @@ watch(
   gap: 20px;
 }
 
+.toolbox-heading {
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  gap: 14px;
+}
+
+.page-header-copy {
+  flex: 0 1 auto;
+}
+
 .page-header-copy h1 {
   margin: 0;
   color: #f5fbff;
@@ -805,13 +769,14 @@ watch(
 }
 
 .page-header-copy p {
-  margin: 4px 0 0;
+  margin: 2px 0 0;
   color: rgba(245, 251, 255, 0.82);
   font-size: 13px;
   line-height: 1.6;
 }
 
 .page-header-actions {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -827,12 +792,13 @@ watch(
 
 .home-shell :deep(.el-main) {
   padding: 0;
+  overflow: visible;
 }
 
 .home-content {
   width: min(1240px, 100%);
   margin: 0 auto;
-  padding: 28px 24px 48px;
+  padding: 24px 24px 48px;
 }
 
 .section-heading,
@@ -848,8 +814,9 @@ watch(
 .section-heading h2,
 .resource-toolbar h3,
 .subsection-heading h3,
-.panel-heading h3,
-.chapter-panel h3 {
+.panel-heading h2,
+.filter-panel > h2,
+.recent-title {
   margin: 0;
   color: var(--home-ink);
   text-wrap: balance;
@@ -869,49 +836,71 @@ watch(
   text-wrap: pretty;
 }
 
-.start-layout {
-  margin-top: 18px;
-  display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.75fr);
-  gap: 16px;
+.directory-section {
+  scroll-margin-top: 16px;
 }
 
-.continue-panel,
-.chapter-panel,
-.filter-panel,
+.directory-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.directory-sidebar,
 .state-panel {
   border: 1px solid var(--home-border);
   border-radius: 16px;
   background: var(--home-surface);
 }
 
-.continue-panel,
-.chapter-panel {
+.directory-sidebar {
+  position: sticky;
+  top: 16px;
   min-width: 0;
-  padding: 22px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(84, 125, 173, 0.42) transparent;
+}
+
+.directory-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.directory-sidebar::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(84, 125, 173, 0.42);
+}
+
+.directory-main {
+  min-width: 0;
 }
 
 .continue-panel {
-  min-height: 236px;
+  min-width: 0;
+  padding: 18px;
+  border-bottom: 1px solid var(--home-border);
 }
 
-.continue-panel.is-empty {
-  min-height: 0;
+.panel-heading {
+  align-items: center;
 }
 
-.chapter-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #e6f0fb;
+.panel-heading h2,
+.filter-panel > h2 {
+  font-size: 18px;
+  line-height: 1.4;
 }
 
-.chapter-panel .status-label,
-.chapter-panel p {
-  color: var(--home-ink);
+.recent-title {
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
-.status-label,
 .status-note,
 .result-count,
 .recent-list-title,
@@ -922,46 +911,33 @@ watch(
   line-height: 1.6;
 }
 
-.panel-heading h3,
-.chapter-panel h3 {
-  margin-top: 6px;
-  font-size: 20px;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
-}
-
 .status-note {
   flex: 0 0 auto;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 999px;
   background: #e6f0fb;
   color: var(--home-primary);
+  font-size: 12px;
 }
 
 .continue-path,
-.chapter-panel p,
 .empty-copy {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   color: var(--home-muted);
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: 13px;
+  line-height: 1.6;
   overflow-wrap: anywhere;
 }
 
-.continue-action,
-.chapter-action {
+.continue-action {
+  width: 100%;
   min-height: 44px;
-  margin-top: 18px;
-}
-
-.chapter-action {
-  margin-top: auto;
-  padding-top: 20px;
+  margin-top: 14px;
 }
 
 .recent-list {
-  margin-top: 20px;
-  padding-top: 16px;
+  margin-top: 16px;
+  padding-top: 12px;
   border-top: 1px solid var(--home-border);
 }
 
@@ -977,7 +953,7 @@ watch(
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   border: 0;
   border-bottom: 1px solid var(--home-border);
   background: transparent;
@@ -1005,11 +981,6 @@ watch(
   font-weight: 600;
 }
 
-.directory-section {
-  margin-top: 40px;
-  scroll-margin-top: 16px;
-}
-
 .directory-heading {
   align-items: flex-end;
 }
@@ -1019,15 +990,15 @@ watch(
   color: var(--home-ink);
 }
 
-.subject-nav {
-  margin-top: 22px;
-}
-
 .subsection-heading {
   align-items: center;
 }
 
-.subsection-heading h3,
+.subsection-heading h3 {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .resource-toolbar h3 {
   font-size: 20px;
   line-height: 1.5;
@@ -1035,30 +1006,30 @@ watch(
 
 .subject-list,
 .subject-skeletons {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .subject-button,
 .subject-skeleton {
-  min-width: 112px;
-  min-height: 48px;
+  min-width: 0;
+  min-height: 44px;
   border-radius: 14px;
 }
 
 .subject-button {
-  padding: 9px 14px;
+  padding: 8px 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   border: 1px solid var(--home-border);
   background: var(--home-surface);
   color: var(--home-ink);
   font-family: inherit;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.5;
   cursor: pointer;
@@ -1077,20 +1048,14 @@ watch(
 }
 
 .selected-mark {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .filter-panel {
-  margin-top: 20px;
+  min-width: 0;
   padding: 18px;
   display: grid;
-  grid-template-columns: minmax(260px, 1.35fr) minmax(180px, 0.7fr) minmax(240px, 1fr) auto;
-  align-items: end;
   gap: 16px;
-}
-
-.filter-panel.is-student {
-  grid-template-columns: minmax(260px, 1.35fr) minmax(240px, 1fr) auto;
 }
 
 .filter-field {
@@ -1108,18 +1073,22 @@ watch(
   width: 100%;
 }
 
-.filter-actions {
-  display: flex;
+.filter-actions,
+.filter-actions :deep(.el-button) {
+  width: 100%;
+}
+
+.filter-actions :deep(.el-button + .el-button) {
+  margin-left: 0;
 }
 
 .filter-error {
-  grid-column: 1 / -1;
   min-height: 44px;
   padding: 10px 12px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
   border-radius: 14px;
   background: rgba(199, 55, 75, 0.1);
   color: var(--home-ink);
@@ -1140,7 +1109,7 @@ watch(
 }
 
 .active-filters {
-  margin-top: 14px;
+  margin-top: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1163,7 +1132,7 @@ watch(
 }
 
 .resource-toolbar {
-  margin-top: 28px;
+  margin-top: 24px;
   align-items: center;
 }
 
@@ -1183,12 +1152,11 @@ watch(
 }
 
 .resource-grid {
-  grid-template-columns: repeat(auto-fill, minmax(250px, 300px));
-  justify-content: start;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
 
 .resource-loading {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .resource-card,
@@ -1556,14 +1524,6 @@ button:focus-visible,
     align-items: flex-start;
   }
 
-  .filter-panel {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .filter-actions {
-    align-items: end;
-  }
-
   .resource-row-meta {
     flex-basis: 190px;
   }
@@ -1574,8 +1534,7 @@ button:focus-visible,
     padding: 12px 18px;
   }
 
-  .page-header-bar,
-  .start-layout {
+  .page-header-bar {
     display: grid;
     grid-template-columns: 1fr;
   }
@@ -1595,13 +1554,19 @@ button:focus-visible,
     padding: 24px 18px 40px;
   }
 
-  .continue-panel {
-    min-height: 0;
+  .directory-layout {
+    grid-template-columns: 1fr;
   }
 
-  .chapter-action {
-    margin-top: 18px;
-    padding-top: 0;
+  .directory-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .subject-list,
+  .subject-skeletons {
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
   }
 
   .resource-loading {
@@ -1618,7 +1583,6 @@ button:focus-visible,
     align-items: stretch;
   }
 
-  .filter-panel,
   .resource-grid,
   .resource-loading {
     grid-template-columns: 1fr;
@@ -1626,7 +1590,6 @@ button:focus-visible,
 
   .filter-actions .el-button,
   .continue-action,
-  .chapter-action,
   .view-mode-toggle {
     width: 100%;
   }
