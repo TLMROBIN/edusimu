@@ -88,11 +88,14 @@ def read_items(db, subject_id):
 
         marker = f"{MARKER} {code}"
         row = db.query(Animation).filter(Animation.review_notes.contains(marker)).one_or_none()
-        collision = db.query(Animation.id).filter_by(subject_id=subject_id, title=title)
         if row:
-            collision = collision.filter(Animation.id != row.id)
-        if collision.first():
-            raise RuntimeError(f"发现独立的同名课件，需先核对来源：{title}")
+            title = row.title
+        else:
+            titles = db.query(Animation.id).filter_by(subject_id=subject_id)
+            if titles.filter_by(title=title).first():
+                title = f"{title} · 力学实验"
+                if titles.filter_by(title=title).first():
+                    raise RuntimeError(f"发现独立的同名课件，需先核对来源：{title}")
 
         yield code, source.name, title, body, manifest, section, row, marker
 
