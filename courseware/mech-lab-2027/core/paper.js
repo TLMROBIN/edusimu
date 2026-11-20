@@ -86,12 +86,63 @@
   function keypad() {
     if (kp) return kp;
     var keys = ['7', '8', '9', '⌫', '4', '5', '6', '−', '1', '2', '3', '×10ⁿ', '0', '.', '清空', '完成'];
-    kp = h('div.ml-keypad', { role: 'group', 'aria-label': '数字键盘' },
+    kp = h('div.ml-keypad', { hidden: true, role: 'group', 'aria-label': '数字键盘' },
       keys.map(function (k) {
         return h('button.kp-key' + (k === '完成' ? '.primary' : ''), { type: 'button', onclick: function () { press(k); } }, k);
       }));
     document.body.appendChild(kp);
+    window.addEventListener('scroll', positionKeypad, { capture: true, passive: true });
+    window.addEventListener('resize', positionKeypad);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('scroll', positionKeypad);
+      window.visualViewport.addEventListener('resize', positionKeypad);
+    }
     return kp;
+  }
+  function positionKeypad() {
+    if (!kpTarget) return;
+    var viewport = window.visualViewport;
+    var gap = 10;
+    var left = (viewport ? viewport.offsetLeft : 0) + gap;
+    var right = left + (viewport ? viewport.width : document.documentElement.clientWidth) - 2 * gap;
+    var viewportTop = viewport ? viewport.offsetTop : 0;
+    var main = kpTarget.el.closest('.ml-main');
+    var top = Math.max(viewportTop, main.getBoundingClientRect().top) + gap;
+    // 给平板底部的系统导航留出空间。
+    var bottom = viewportTop + (viewport ? viewport.height : window.innerHeight) - 28;
+    var anchor = kpTarget.el.getBoundingClientRect();
+    if (anchor.bottom <= top - gap || anchor.top >= bottom + 28 ||
+        anchor.right <= left - gap || anchor.left >= right + gap) {
+      closeKeypad();
+      return;
+    }
+
+    kp.style.maxWidth = Math.max(0, right - left) + 'px';
+    kp.style.maxHeight = Math.max(0, bottom - top) + 'px';
+    var width = kp.offsetWidth, height = kp.offsetHeight;
+    var unit = kpTarget.el.nextElementSibling;
+    var fieldRight = unit ? unit.getBoundingClientRect().right : anchor.right;
+    var x = anchor.left, y = anchor.bottom + gap;
+    if (fieldRight + gap + width <= right) {
+      x = fieldRight + gap;
+      y = anchor.top;
+    } else if (anchor.left - gap - width >= left) {
+      x = anchor.left - gap - width;
+      y = anchor.top;
+    } else if (y + height > bottom) {
+      var above = anchor.top - gap - height;
+      if (above >= top) {
+        y = above;
+      } else {
+        var roomAbove = anchor.top - gap - top, roomBelow = bottom - y;
+        var useAbove = roomAbove > roomBelow;
+        var available = useAbove ? roomAbove : roomBelow;
+        kp.style.maxHeight = Math.max(0, available) + 'px';
+        if (useAbove) y = anchor.top - gap - kp.offsetHeight;
+      }
+    }
+    kp.style.left = Math.max(left, Math.min(x, right - width)) + 'px';
+    kp.style.top = Math.max(top, Math.min(y, bottom - kp.offsetHeight)) + 'px';
   }
   function press(k) {
     if (!kpTarget) return;
@@ -106,10 +157,10 @@
   }
   function openKeypad(target) {
     keypad(); if (kpTarget && kpTarget.el) kpTarget.el.classList.remove('focus');
-    kpTarget = target; target.el.classList.add('focus'); kp.classList.add('show');
-    target.el.scrollIntoView({ block: 'center', behavior: ML.perf.low ? 'auto' : 'smooth' });
+    kpTarget = target; target.el.classList.add('focus'); kp.hidden = false;
+    positionKeypad();
   }
-  function closeKeypad() { if (kp) kp.classList.remove('show'); if (kpTarget && kpTarget.el) kpTarget.el.classList.remove('focus'); kpTarget = null; }
+  function closeKeypad() { if (kp) kp.hidden = true; if (kpTarget) kpTarget.el.classList.remove('focus'); kpTarget = null; }
 
   // 每个参考点必须匹配一个不同的作答点。
   function matchPlotPoints(points, reference, tolerance) {
@@ -136,7 +187,7 @@
     var self = this;
     this.el.appendChild(h('div.paper-head', h('div.paper-title', opts.title || '练·真题'), h('div.paper-sub', '在题面上直接作答，每题“提交”后立即判分并显示解析。')));
     questions.forEach(function (q, qi) { self.el.appendChild(self.renderQ(q, qi)); });
-    document.addEventListener('pointerdown', function (e) { if (kp && kp.classList.contains('show') && !kp.contains(e.target) && !(e.target.closest && e.target.closest('.blank'))) closeKeypad(); });
+    document.addEventListener('pointerdown', function (e) { if (kpTarget && !kp.contains(e.target) && !(e.target.closest && e.target.closest('.blank'))) closeKeypad(); });
     ML.bus.on('tab', closeKeypad);
   }
   Paper.prototype.renderQ = function (q, qi) {
@@ -208,7 +259,10 @@
       };
     } else if (t === 'numeric') {
       var blank = h('span.blank', { tabindex: '0', role: 'textbox', 'aria-label': '填空 ' + (pt.label || '') }), unit = pt.unit ? h('span.unit', pt.unit) : null;
-      var target = { el: blank, value: saved || '', onInput: function (v) { blank.textContent = v || ' '; changed(); } };
+      var target = { el: blank, value: saved || '', onInput: function (v) {
+        blank.textContent = v || ' '; changed();
+        if (kpTarget === target) positionKeypad();
+      } };
       blank.textContent = target.value || ' ';
       function open() { if (!R.el.parentNode.classList.contains('submitted')) openKeypad(target); }
       blank.addEventListener('click', open);
