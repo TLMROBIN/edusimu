@@ -11,6 +11,7 @@
   <section
     v-else-if="collections.length"
     class="collection-banner"
+    :class="{ 'single-slide': collections.length === 1 }"
     aria-label="推荐动画合集"
     aria-roledescription="轮播图"
     tabindex="0"
@@ -402,6 +403,19 @@ onBeforeUnmount(() => {
     left: 14px;
     max-width: none;
     padding: 14px 16px;
+  }
+
+  .banner-slide {
+    background: #10233f;
+  }
+
+  .banner-slide img {
+    height: 72%;
+    object-position: right center;
+  }
+
+  .single-slide .banner-caption {
+    bottom: 12px;
   }
 
   .banner-caption strong {
