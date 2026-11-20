@@ -4195,21 +4195,36 @@ table.dt th{background:#F3F7FC;font-weight:600}
       }
       setD(4);
     } else if (p.widget === 'caliper-bob-demo') {
-      var l0 = 0.790;
-      var swL = h('div.side-row', h('span.side-l', '摆长口径'));
-      var gbHost = h('div');
-      var info = h('div.cmp-note');
-      box.appendChild(swL); box.appendChild(gbHost); box.appendChild(info);
-      new GV.GaugeBench(gbHost, { height: 255, state: { type: 'caliper', div: 10, valMm: 19.0, hintAlign: true, locked: true } });
-      [['l+r', 'L = l + d/2（球心，正确）'], ['l', 'L = l（漏加半径）'], ['l+d', 'L = l + d（误到球下沿）']].forEach(function (it) {
-        swL.appendChild(h('button.chip' + (it[0] === 'l+r' ? '.on' : ''), { type: 'button', data: { m: it[0] }, onclick: function () { pickL(it[0]); } }, it[1]));
+      var l0 = 0.790, diameter = 0.019;
+      var period = PM.simulatePeriod({ l: l0, d: diameter, thetaDeg: 4, ideal: true }).T;
+      var swL = h('div.side-row', h('span.side-l', '从悬点量到哪里？'));
+      var diagram = h('div');
+      var info = h('div.cmp-note', { 'aria-live': 'polite' });
+      box.appendChild(swL); box.appendChild(diagram); box.appendChild(info);
+      var endpoints = [
+        { mode: 'l', label: '球上沿', y: 82, formula: 'l', result: '少量一个半径，算出的 g 偏小' },
+        { mode: 'l+r', label: '球心', y: 105, formula: 'l + d/2', result: '量到球心，得到实际摆长' },
+        { mode: 'l+d', label: '球下沿', y: 128, formula: 'l + d', result: '多量一个半径，算出的 g 偏大' }
+      ];
+      endpoints.forEach(function (end) {
+        swL.appendChild(h('button.chip', { type: 'button', data: { m: end.mode }, onclick: function () { pickL(end.mode); } }, end.label));
       });
-      function pickL(m) {
-        ML.$$('.chip', swL).forEach(function (c) { c.classList.toggle('on', c.dataset.m === m); });
-        var T = PM.simulatePeriod({ l: l0, d: 0.0190, thetaDeg: 4, ideal: true }).T;
-        var L = PM.recordedLength(l0, 0.0190, m);
-        var g = PM.calcG(L, T);
-        info.innerHTML = '游标读出 d = <b>19.0 mm</b>（10 分度不估读），线长 l = 79.00 cm：当前口径 L = <b>' + (L * 100).toFixed(2) + ' cm</b> → 单组 g = <b>' + g.toFixed(2) + ' m/s²</b>';
+      function pickL(mode) {
+        var end = endpoints.filter(function (item) { return item.mode === mode; })[0];
+        ML.$$('.chip', swL).forEach(function (c) {
+          c.classList.toggle('on', c.dataset.m === mode);
+          c.setAttribute('aria-pressed', String(c.dataset.m === mode));
+        });
+        var length = PM.recordedLength(l0, diameter, mode);
+        diagram.innerHTML = '<svg viewBox="0 0 310 146" style="display:block;width:100%;height:146px" role="img" aria-label="测量线从悬点到' + end.label + '，摆球示意放大">' +
+          '<path d="M72 14h64 M104 14v68" fill="none" stroke="#344865" stroke-width="3"/>' +
+          '<circle cx="104" cy="105" r="23" fill="#dce7ef" stroke="#344865" stroke-width="2"/><circle cx="104" cy="105" r="2.5" fill="#344865"/>' +
+          '<path d="M104 14h64 M104 ' + end.y + 'h64" stroke="#1661aa" stroke-dasharray="4 3"/>' +
+          '<path d="M164 14h8 M168 14V' + end.y + ' M164 ' + end.y + 'h8" stroke="#1661aa" stroke-width="3" fill="none"/>' +
+          '<circle cx="104" cy="' + end.y + '" r="4" fill="#c35117"/><g fill="#23364d" font-size="14"><text x="178" y="20">悬点</text><text x="178" y="' + (end.y + 4) + '">' + end.label + '</text></g></svg>';
+        info.innerHTML = '同一只摆，周期不变。绳长 79.00 cm，球直径 1.90 cm（图中摆球放大）。<br>记录长度 ' +
+          end.formula + ' = <b>' + (length * 100).toFixed(2) + ' cm</b>，代入 g = 4π²L/T² 得 <b>' +
+          PM.calcG(length, period).toFixed(2) + ' m/s²</b>。' + end.result + '。';
       }
       pickL('l+r');
     } else if (p.widget === 'timing-pos-demo') {

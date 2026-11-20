@@ -1522,15 +1522,15 @@
       var bar4 = h('div.side-row', h('span.side-l', '参数'),
         [4, 6, 8, 10].map(function (wv) { return h('button.chip' + (wv === w4 ? '.on' : ''), { type: 'button', data: { w: String(wv) }, onclick: function () { w4 = wv; up4(); } }, 'ω=' + wv); }),
         [0.10, 0.15, 0.20].map(function (rv) { return h('button.chip' + (rv === r4 ? '.on' : ''), { type: 'button', data: { r: String(rv) }, onclick: function () { r4 = rv; up4(); } }, 'r=' + (rv * 100) + 'cm'); }));
-      var gbHost = h('div'), note4 = h('div.cmp-note');
-      box.appendChild(bar4); box.appendChild(gbHost); box.appendChild(note4);
-      new GV.GaugeBench(gbHost, { height: 230, state: { type: 'caliper', div: 10, valMm: 10.0, hintAlign: true, locked: true } });
+      var note4 = h('div.cmp-note', { 'aria-live': 'polite' });
+      box.appendChild(h('p', '遮光条宽度固定为 10.0 mm，小球质量固定为 0.100 kg。先保持半径不变，比较不同角速度下的遮光时间与向心力。'));
+      box.appendChild(bar4); box.appendChild(note4);
       function up4() {
         ML.$$('.chip', bar4).forEach(function (c) {
           c.classList.toggle('on', (+c.dataset.w === w4) || (Math.abs(+c.dataset.r - r4) < 1e-4));
         });
         var s = MC.simulateB({ m: 0.100, r: r4, d: 0.0100, w: w4, ideal: true }, 1);
-        note4.innerHTML = '游标卡尺读出遮光条 d = <b>10.0 mm</b>（m = 0.100 kg）：Δt = <b>' + (s.dt * 1000).toFixed(2) + ' ms</b> ⇒ v = d/Δt = <b>' + s.vMeas.toFixed(2) + ' m/s</b> ⇒ F = md²/(rΔt²) = <b>' + s.F.toFixed(3) + ' N</b>。';
+        note4.innerHTML = '遮光时间 Δt = <b>' + (s.dt * 1000).toFixed(2) + ' ms</b> ⇒ v = d/Δt = <b>' + s.vMeas.toFixed(2) + ' m/s</b> ⇒ F = md²/(rΔt²) = <b>' + s.F.toFixed(3) + ' N</b>。';
       }
       up4();
     } else if (p.widget === 'chart-demo') {
