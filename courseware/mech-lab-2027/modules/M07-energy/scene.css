@@ -1,0 +1,85 @@
+/* M07 scene.css — 验证机械能守恒定律：竖直落体台、气轨光电门、纸带能量分析、教学部件 */
+.bench{max-width:1360px;margin:0 auto;padding:10px 14px 40px}
+.bench-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.bench-top .spacer{flex:1}
+.seg{display:flex;gap:4px;background:#fff;padding:3px;border-radius:999px;border:1px solid var(--line)}
+.seg .chip{border:0;min-height:36px}
+.bench-banner{background:#FFF8EC;border:1px solid #F3D3A1;border-radius:var(--rs);padding:8px 14px;margin-bottom:8px;font-size:14px}
+.bench-row{display:grid;grid-template-columns:1fr 346px;gap:12px;align-items:start}
+.bench-stage{position:relative;height:min(58vh,480px);min-height:330px;background:#EAF1F8;border-radius:var(--r);overflow:hidden}
+.bench-side{background:#fff;border-radius:var(--r);padding:12px 14px;max-height:calc(58vh + 180px);display:flex;flex-direction:column;overflow:hidden}
+.side-ctl{flex:0 0 auto}
+.side-k{font-weight:700;font-size:13px;color:var(--cyan);margin:7px 0 5px}
+.side-row{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:5px 0}
+.side-l{font-size:13px;color:var(--ink2);min-width:54px}
+.side-acts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}
+.side-acts .btn.sm{grid-column:span 2}
+.side-tip{font-size:13px;color:var(--ink2);background:#F6F9FD;border-radius:var(--rs);padding:8px 10px}
+.btn.pulse{border-color:var(--warn);background:#FFF3DB;color:#9A5A00}
+.steps{padding-left:20px;margin:0;flex:1 1 auto;overflow-y:auto}
+.steps li{margin-bottom:7px;font-size:13.5px;padding:4px 6px;border-radius:8px;border-left:3px solid transparent}
+.steps li.ok .st-t{color:#17784F}
+.steps li.cur{background:#EEF4FF;border-left-color:var(--blue)}
+.steps li.cur .st-t{color:var(--blue)}
+.st-t{font-weight:700}
+.st-how{color:var(--ink2);font-size:12.5px}
+.st-why{color:var(--ink2);font-size:11px;margin-top:1px;line-height:1.35}
+.link.sm{font-size:12.5px;min-height:32px;padding:2px 0}
+.gate-t{width:100%;margin-top:8px}
+.gate-res{margin-top:8px;font-size:14px;line-height:1.9}
+.muted{color:var(--ink2);font-size:13px}
+.analysis{margin-top:14px;background:#fff;border-radius:var(--r);padding:14px 18px}
+.ana-h{margin:0 0 6px;font-size:20px}
+.ana-tapes,.ana-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0}
+.ana-tags .tag{cursor:pointer;min-height:30px}
+.ana-hint{background:#EEF4FF;border-radius:var(--rs);padding:8px 12px;margin:8px 0;font-size:14px}
+.twomm-badge{border-radius:var(--rs);padding:8px 12px;margin:8px 0;font-size:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.twomm-badge.ok{background:#EEF9F4;border:1px solid #BCE6D2;color:#17784F}
+.twomm-badge.bad{background:#FFF4F5;border:1px solid #F2BFC8;color:#A12738}
+.ana-strip{border:1px solid var(--line);border-radius:var(--rs);position:relative}
+.tape-strip{position:relative;width:100%;background:#fff}
+.ana-ctl{margin-top:8px}
+.ana-block{margin-top:14px}
+.ana-block h3{font-size:15px;margin:0 0 6px}
+.tbl-wrap{overflow-x:auto}
+.warnline{color:var(--err);font-weight:600;margin-top:6px;background:#FFF4F5;border:1px solid #F2BFC8;border-radius:var(--rs);padding:8px 12px}
+.okline{color:#17784F;font-weight:600;margin-top:6px;background:#EEF9F4;border:1px solid #BCE6D2;border-radius:var(--rs);padding:8px 12px}
+.chip.bad-on{border-color:var(--err);background:#FDECEF;color:var(--err);font-weight:700}
+.learn-widget{margin-top:12px}
+.widget-stage{position:relative;height:176px;border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;margin:6px 0}
+.cmp-note{font-size:14px;margin:8px 0;background:#F6F9FD;border-radius:var(--rs);padding:8px 12px}
+.cmp-table tr.hl td{background:#FFF4F5;color:var(--err);font-weight:700}
+.cmp-table th.bad{color:var(--err)}
+.diag{max-width:1180px;margin:0 auto;padding:16px}
+.diag-h{font-size:19px;margin:14px 0 4px}
+.err-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.err-card{background:#fff;border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;border:1.5px solid transparent}
+.err-card.done{border-color:#BCE6D2}
+.err-name{font-weight:700}
+.err-note{font-size:13px;color:var(--ink2);flex:1}
+.err-card .btn{align-self:flex-start}
+@media (max-width:900px),(orientation:portrait){
+  .bench-row{grid-template-columns:1fr}
+  .bench-stage{height:min(46vh,68vw);min-height:270px}
+  .bench-side{max-height:none;overflow:visible}
+  .steps{overflow:visible}
+}
+@media (max-height:640px) and (orientation:landscape) and (min-width:901px){
+  .bench{padding:5px 10px 6px}
+  .bench-top{margin-bottom:4px;gap:5px}
+  .seg .chip{min-height:31px;font-size:12.5px;padding:0 9px}
+  .bench-top>.chip{min-height:31px;font-size:12.5px;padding:0 10px}
+  .bench-row{grid-template-columns:1fr 324px;gap:8px}
+  .bench-stage,.bench-side{height:calc(100vh - 106px);min-height:300px;max-height:none}
+  .bench.has-banner .bench-stage,.bench.has-banner .bench-side{height:calc(100vh - 150px);min-height:256px}
+  .bench-side{padding:8px 10px}
+  .bench-side .chip{min-height:29px;padding:0 8px;font-size:12px}
+  .side-l{min-width:44px;font-size:12px}
+  .side-row{margin:3px 0;gap:4px}.side-k{margin:4px 0 3px;font-size:12px}
+  .side-acts{margin:5px 0 4px;gap:5px}.side-acts .btn{min-height:33px;font-size:12.5px;padding:0 8px}
+  .side-acts .btn.sm{min-height:27px;font-size:12px}
+  .steps{padding-left:18px}
+  .steps li{margin-bottom:4px;font-size:12.5px;padding:3px 6px}
+  .st-how{font-size:11.5px}
+  .link.sm{min-height:28px}
+}

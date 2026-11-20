@@ -18,6 +18,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/collections/:id',
+    name: 'CollectionDetail',
+    component: () => import('../views/CollectionDetail.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/animations/:id',
     name: 'AnimationPlayer',
     component: () => import('../views/AnimationPlayer.vue'),
@@ -40,6 +46,12 @@ const routes = [
     name: 'AnimationManage',
     component: () => import('../views/AnimationManage.vue'),
     meta: { requiresAuth: true, requiresRole: ['teacher', 'admin'] }
+  },
+  {
+    path: '/admin/collections',
+    name: 'CollectionManage',
+    component: () => import('../views/CollectionManage.vue'),
+    meta: { requiresAuth: true, requiresRole: ['admin'] }
   },
   {
     path: '/admin/geogebra',

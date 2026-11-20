@@ -21,6 +21,8 @@ def ensure_animation_columns(db: Session):
         "source_type": "ALTER TABLE animations ADD COLUMN source_type VARCHAR(20) DEFAULT 'original'",
         "may_lag": "ALTER TABLE animations ADD COLUMN may_lag BOOLEAN DEFAULT FALSE",
         "lag_reason": "ALTER TABLE animations ADD COLUMN lag_reason TEXT",
+        "has_quiz": "ALTER TABLE animations ADD COLUMN has_quiz BOOLEAN DEFAULT FALSE NOT NULL",
+        "quiz_manifest": "ALTER TABLE animations ADD COLUMN quiz_manifest TEXT",
     }
 
     for column_name, ddl in missing_columns.items():
@@ -32,10 +34,12 @@ def ensure_animation_columns(db: Session):
         "SET review_status = COALESCE(review_status, CASE WHEN is_published THEN 'approved' ELSE 'pending_review' END), "
         "validation_status = COALESCE(validation_status, CASE WHEN is_published THEN 'passed' ELSE 'pending' END), "
         "source_type = COALESCE(NULLIF(source_type, ''), 'original'), "
-        "may_lag = COALESCE(may_lag, FALSE)"
+        "may_lag = COALESCE(may_lag, FALSE), "
+        "has_quiz = COALESCE(has_quiz, FALSE)"
     ))
     db.execute(text("CREATE INDEX IF NOT EXISTS ix_animations_source_type ON animations (source_type)"))
     db.execute(text("CREATE INDEX IF NOT EXISTS ix_animations_may_lag ON animations (may_lag)"))
+    db.execute(text("CREATE INDEX IF NOT EXISTS ix_animations_has_quiz ON animations (has_quiz)"))
     db.commit()
 
 

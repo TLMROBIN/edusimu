@@ -27,6 +27,9 @@
           <el-menu-item index="/admin/animations">
             <span>动画管理</span>
           </el-menu-item>
+          <el-menu-item v-if="isAdmin" index="/admin/collections">
+            <span>合集与 Banner</span>
+          </el-menu-item>
           <el-menu-item index="/admin/geogebra">
             <span>GeoGebra 制作</span>
           </el-menu-item>
@@ -128,9 +131,14 @@
           <el-table-column v-if="isAdmin" type="selection" width="55" />
           <el-table-column prop="title" label="标题" min-width="180" show-overflow-tooltip />
           <el-table-column prop="subject_name" label="学科" width="100" />
-          <el-table-column label="来源" width="90">
+          <el-table-column label="来源" width="150">
             <template #default="scope">
-              <el-tag size="small" effect="plain">{{ formatSourceType(scope.row.source_type) }}</el-tag>
+              <div style="display: flex; flex-wrap: wrap; gap: 4px">
+                <el-tag size="small" effect="plain">{{ formatSourceType(scope.row.source_type) }}</el-tag>
+                <el-tag v-if="scope.row.has_quiz" size="small" type="success" effect="plain">
+                  含随堂练{{ scope.row.quiz_count ? ` ${scope.row.quiz_count}` : '' }}
+                </el-tag>
+              </div>
             </template>
           </el-table-column>
           <el-table-column prop="textbook_path" label="教材目录" min-width="220" show-overflow-tooltip />
@@ -227,6 +235,7 @@
                 <el-button size="small" @click="openEditDialog(scope.row)">编辑信息</el-button>
                 <el-button size="small" type="primary" plain @click="openReplaceDialog(scope.row)">更新文件</el-button>
                 <el-button size="small" @click="showReview(scope.row)">查看校验</el-button>
+                <el-button v-if="scope.row.has_quiz" size="small" @click="openQuizStats(scope.row)">作答统计</el-button>
                 <el-button size="small" type="danger" @click="deleteAnimation(scope.row.id)">删除</el-button>
               </div>
             </template>
@@ -320,6 +329,23 @@
               />
               <div class="guide-action-row">
                 <el-button type="primary" @click="copyPrompt(recommendedGuidePrompt)">复制推荐 Prompt</el-button>
+              </div>
+            </section>
+
+            <section class="guide-section">
+              <div class="guide-title">EduSimu 课件题目规范 v1（需要作答统计时使用）</div>
+              <div class="guide-list">
+                <div>普通动画无需接入。需要自动认题和教师统计时，同时添加标准题单与提交上报，两者缺一将只按普通动画处理。</div>
+                <div>题单最多 200 题、总计不超过 64KB；题目类型支持 choice、multi、numeric、fill、expr、plot、open。</div>
+              </div>
+              <el-input
+                :model-value="quizGuidePrompt"
+                type="textarea"
+                :rows="18"
+                readonly
+              />
+              <div class="guide-action-row">
+                <el-button type="primary" plain @click="copyPrompt(quizGuidePrompt)">复制题目规范 Prompt</el-button>
               </div>
             </section>
 
@@ -492,6 +518,26 @@
           </template>
         </el-dialog>
 
+        <el-dialog v-model="showQuizStats" title="作答统计" width="min(900px, 94vw)" destroy-on-close>
+          <template v-if="quizTarget">
+            <el-form label-width="auto">
+              <el-form-item label="课件">{{ quizTarget.title }}</el-form-item>
+              <el-form-item label="班级">
+                <el-select v-model="quizClassName" aria-label="统计班级" placeholder="选择班级" :loading="quizClassesLoading">
+                  <el-option v-for="name in quizClasses" :key="name" :label="name" :value="name" />
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <el-alert v-if="quizClassesError" :title="quizClassesError" type="error" :closable="false" />
+            <CoursewareQuizStatsPanel
+              v-if="quizClassName"
+              :animation-id="quizTarget.id"
+              :class-name="quizClassName"
+              allow-export
+            />
+          </template>
+        </el-dialog>
+
         <el-dialog v-model="showReplaceDialog" title="上传修订版课件" width="560px">
           <template v-if="replaceTarget">
           <el-alert
@@ -535,17 +581,44 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import CoursewareQuizStatsPanel from '../components/CoursewareQuizStatsPanel.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
 const isAdmin = computed(() => userStore.user?.role === 'admin')
 const pageTitle = computed(() => (isAdmin.value ? '课件审核与管理' : '我的课件'))
-const tableMinWidth = computed(() => (isAdmin.value ? '1500px' : '1280px'))
+const tableMinWidth = computed(() => (isAdmin.value ? '1560px' : '1340px'))
 
 const animations = ref([])
 const filteredAnimations = ref([])
 const selectedAnimations = ref([])
 const subjects = ref([])
+const showQuizStats = ref(false)
+const quizTarget = ref(null)
+const quizClasses = ref([])
+const quizClassName = ref('')
+const quizClassesLoading = ref(false)
+const quizClassesError = ref('')
+
+const openQuizStats = async row => {
+  if (quizClassesLoading.value) return
+  quizTarget.value = row
+  quizClasses.value = []
+  quizClassName.value = ''
+  quizClassesError.value = ''
+  showQuizStats.value = true
+  quizClassesLoading.value = true
+  try {
+    const { data } = await axios.get('/api/classroom/classes')
+    quizClasses.value = data
+    quizClassName.value = data[0] || ''
+    if (!data.length) quizClassesError.value = '当前账号暂无可统计班级'
+  } catch {
+    quizClassesError.value = '班级列表加载失败，请重新打开作答统计'
+  } finally {
+    quizClassesLoading.value = false
+  }
+}
 const textbookOptions = ref([])
 const editTextbookOptions = ref([])
 const filterSubject = ref('')
@@ -618,6 +691,41 @@ const recommendedGuidePrompt = `请为校内平板教学生成一个单文件 HT
 互动方式：{{在这里写点击、切换、滑块、拖动中的一种或几种}}
 
 只返回完整 HTML 代码。`
+
+const quizGuidePrompt = `请在保留原有教学内容的前提下，为这个 HTML 课件接入《EduSimu 课件题目规范 v1》，只返回完整 HTML。
+
+1. 在 HTML 内嵌标准题目清单：
+<script type="application/json" id="edusimu-quiz-manifest">
+{
+  "version": 1,
+  "questions": [
+    {
+      "id": "q1",
+      "title": "第1题：在这里填写题干",
+      "type": "choice",
+      "options": ["A. 选项一", "B. 选项二", "C. 选项三", "D. 选项四"],
+      "answer": "A",
+      "maxScore": 1
+    }
+  ]
+}
+<\/script>
+
+2. 题单要求：questions 为 1-200 题的非空数组，总 JSON 不超过 64KB。每题 id 唯一且不超过 80 字符，title 不超过 200 字符；type 只能是 choice、multi、numeric、fill、expr、plot、open。options 必须是字符串数组，answer 不超过 200 字符，maxScore 是大于等于 1 的整数，默认 1。
+
+3. 学生每次提交或判分时，向父窗口发送：
+window.parent.postMessage({
+  type: 'EDUSIMU_QUIZ_SUBMIT',
+  version: 1,
+  questionId: 'q1',
+  answer: 'B',
+  isCorrect: false,
+  score: 0,
+  mistakeTag: '可选错因标签'
+}, '*');
+
+4. questionId 必须与题单一致；answer 序列化后不超过 1024 字节，mistakeTag 不超过 50 字符。score 可省略，平台默认按 isCorrect 和 maxScore 计分。
+5. 课件必须继续支持本地双击离线运行，不得 fetch 平台接口，不得读取或要求登录 token。只在 window.parent 存在且不等于 window 时发送消息。`
 
 const reactGuidePrompt = `请用 React 的写法设计一个课堂互动课件，但最终输出必须是“可直接运行的完整 HTML 文件”，而不是 React 源码工程。
 

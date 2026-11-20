@@ -1,0 +1,111 @@
+/* M03 scene.css — 探究加速度与力、质量的关系：实验台、数据表、图像与诊断页 */
+.bench{max-width:1360px;margin:0 auto;padding:10px 14px 40px}
+.bench-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.bench-top .spacer{flex:1}
+.seg{display:flex;gap:3px;background:#fff;padding:3px;border-radius:999px;border:1px solid var(--line)}
+.seg .chip{border:0;min-height:36px;padding:0 10px;font-size:13.5px}
+.bench-banner{background:#FFF8EC;border:1px solid #F3D3A1;border-radius:var(--rs);padding:8px 14px;margin-bottom:8px;font-size:14px}
+.bench-row{display:grid;grid-template-columns:1fr 346px;gap:12px;align-items:start}
+.bench-stage{position:relative;height:min(58vh,470px);min-height:330px;background:#EAF1F8;border-radius:var(--r);overflow:hidden}
+.hold{position:absolute;right:16px;top:16px;z-index:3;background:var(--warn);border-color:var(--warn);color:#fff}
+.stage-hint{position:absolute;left:12px;bottom:10px;z-index:2;background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--ink2);pointer-events:none}
+.bench-side{background:#fff;border-radius:var(--r);padding:12px 14px;max-height:calc(58vh + 180px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+.side-ctl{flex:0 0 auto}
+.side-k{font-weight:700;font-size:13px;color:var(--cyan);margin:6px 0 4px;display:flex;justify-content:space-between;align-items:center}
+.side-row{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:5px 0}
+.side-l{font-size:13px;color:var(--ink2);min-width:50px}
+.side-v{min-width:52px;text-align:center;font-size:13.5px}
+.theta-range{flex:1;min-width:80px;accent-color:var(--blue);cursor:pointer;height:28px}
+.side-acts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0 6px}
+.side-acts .btn{min-height:40px;font-size:14px;padding:0 10px}
+.side-acts .btn.sm{min-height:32px;font-size:13px}
+.live-stat{background:#F4F8FD;border:1px solid var(--line);border-radius:var(--rs);padding:6px 10px;font-size:12.5px;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between;margin-bottom:4px}
+.live-stat b{color:var(--ink)}
+.side-tip{font-size:13px;color:var(--ink2);background:#F6F9FD;border-radius:var(--rs);padding:8px 10px;overflow-y:auto;flex:1 1 auto}
+.steps{padding-left:20px;margin:0;flex:1 1 auto;overflow-y:auto}
+.steps li{margin-bottom:7px;font-size:13.5px;padding:4px 6px;border-radius:8px;border-left:3px solid transparent}
+.steps li.ok .st-t{color:#17784F}
+.steps li.cur{background:#EEF4FF;border-left-color:var(--blue)}
+.steps li.cur .st-t{color:var(--blue)}
+.st-t{font-weight:700}
+.st-how{color:var(--ink2);font-size:12.5px}
+.st-why{color:var(--ink2);font-size:11px;margin-top:1px;line-height:1.35}
+.link.sm{font-size:12.5px;min-height:32px;padding:2px 0}
+.gate-t{width:100%;margin-top:6px}
+.gate-res{margin-top:6px;font-size:13.5px;line-height:1.75}
+.muted{color:var(--ink2);font-size:13px}
+
+/* 下方纸带分析与图像区 */
+.analysis{margin-top:14px;background:#fff;border-radius:var(--r);padding:14px 18px;border:1px solid var(--line)}
+.ana-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ana-h{margin:0;font-size:19px}
+.ana-tapes,.ana-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0}
+.ana-tags .tag{cursor:pointer;min-height:30px}
+.ana-hint{background:#EEF4FF;border-radius:var(--rs);padding:8px 12px;margin:8px 0;font-size:14px}
+.ana-strip{border:1px solid var(--line);border-radius:var(--rs);position:relative}
+.tape-strip{position:relative;width:100%;background:#fff}
+.ana-ctl{margin-top:8px}
+.ana-block{margin-top:12px}
+.ana-block h3{font-size:15px;margin:0 0 6px}
+.ana-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:16px;align-items:start;margin-top:10px}
+.tbl-wrap{overflow-x:auto}
+.formula{font-size:16.5px;margin:6px 0}
+.verdict{border-radius:var(--rs);padding:10px 14px;margin:8px 0;font-size:14px;font-weight:600}
+.verdict.ok{background:#EEF9F4;border:1px solid #BCE6D2;color:#17784F}
+.verdict.warn{background:#FFF8EC;border:1px solid #F3D3A1;color:#9A5A00}
+.verdict.bad{background:#FFF4F5;border:1px solid #F2BFC8;color:var(--err)}
+
+/* 学·原理小部件 */
+.learn-widget{margin-top:12px}
+.comp-widget-stage{position:relative;height:142px;border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;margin:6px 0}
+.tens-widget-stage{position:relative;height:152px;border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;margin:6px 0}
+.cmp-note{font-size:14px;margin:8px 0;background:#F6F9FD;border-radius:var(--rs);padding:8px 12px}
+.cmp-table tr.hl td{background:#FFF4F5;color:var(--err);font-weight:700}
+.cmp-table th.bad{color:var(--err)}
+.cmp-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.cmp-box{border:1px solid var(--line);border-radius:var(--rs);padding:8px 10px;background:#FBFCFE}
+.cmp-box-t{font-size:13px;font-weight:700;margin-bottom:4px;text-align:center}
+
+/* 诊·误差 */
+.diag{max-width:1180px;margin:0 auto;padding:16px}
+.diag-h{font-size:19px;margin:14px 0 4px}
+.err-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.err-card{background:#fff;border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;border:1.5px solid transparent}
+.err-card.done{border-color:#BCE6D2}
+.err-name{font-weight:700}
+.err-note{font-size:13px;color:var(--ink2);flex:1}
+.err-card .btn{align-self:flex-start}
+
+@media (min-width:960px){
+  .bench-top{flex-wrap:nowrap}
+}
+@media (max-width:900px),(orientation:portrait){
+  .bench-row,.ana-grid,.cmp-split{grid-template-columns:1fr}
+  .bench-stage{height:min(46vh,64vw);min-height:260px}
+  .bench-side{max-height:none;overflow:visible}
+  .steps{overflow:visible}
+}
+@media (max-height:640px) and (orientation:landscape) and (min-width:901px){
+  .bench{padding:5px 10px 6px}
+  .bench-top{margin-bottom:4px;gap:5px;flex-wrap:nowrap}
+  .seg{padding:2px;gap:2px}
+  .seg .chip{min-height:30px;padding:0 8px;font-size:12px}
+  .bench-top > .chip{min-height:32px;padding:0 9px;font-size:12px}
+  .bench-row{grid-template-columns:1fr 324px;gap:8px}
+  .bench-stage,.bench-side{height:calc(100vh - 106px);min-height:300px;max-height:none}
+  .bench.has-banner .bench-stage,.bench.has-banner .bench-side{height:calc(100vh - 150px);min-height:256px}
+  .bench-side{padding:7px 10px}
+  .bench-side .chip{min-height:28px;padding:0 6px;font-size:12px}
+  .side-l{min-width:42px;font-size:12px}
+  .side-v{min-width:38px;font-size:12px}
+  .side-row{margin:3px 0;gap:3px}
+  .side-k{margin:3px 0 2px;font-size:12px}
+  .side-acts{margin:5px 0 4px;gap:5px}
+  .side-acts .btn{min-height:32px;font-size:12.5px;padding:0 8px}
+  .side-acts .btn.sm{min-height:28px;font-size:12px}
+  .live-stat{padding:4px 8px;font-size:12px;margin-bottom:3px}
+  .steps{padding-left:18px}
+  .steps li{margin-bottom:4px;font-size:12.5px;padding:2px 6px}
+  .st-how{font-size:11.5px}
+  .link.sm{min-height:28px;font-size:12px}
+}

@@ -1,0 +1,442 @@
+[
+  {
+    "title": "基础仪器与读数",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 91
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 107
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 95
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 98
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 117
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 91
+      },
+      {
+        "id": "E7",
+        "error": null,
+        "timedOut": false,
+        "textLen": 84
+      }
+    ]
+  },
+  {
+    "title": "实验：探究小车速度随时间变化的规律",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 28
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 31
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 120
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 102
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 40
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 39
+      },
+      {
+        "id": "E7",
+        "error": null,
+        "timedOut": false,
+        "textLen": 9
+      },
+      {
+        "id": "E9",
+        "error": null,
+        "timedOut": false,
+        "textLen": 83
+      },
+      {
+        "id": "E8",
+        "error": null,
+        "timedOut": false,
+        "textLen": 221
+      },
+      {
+        "id": "M1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 62
+      }
+    ]
+  },
+  {
+    "title": "实验：探究弹簧弹力与形变量的关系",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 118
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 155
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 0
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 0
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 90
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 57
+      }
+    ]
+  },
+  {
+    "title": "实验：探究加速度与力、质量的关系",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 75
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 88
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 274
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 222
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 194
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 104
+      }
+    ]
+  },
+  {
+    "title": "实验：探究平抛运动的特点",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 64
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 50
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 127
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 305
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 76
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 63
+      }
+    ]
+  },
+  {
+    "title": "探究向心力大小与半径、角速度、质量的关系",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 219
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 69
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 52
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 52
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 53
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 80
+      }
+    ]
+  },
+  {
+    "title": "实验：探究两个互成角度的力的合成规律",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 58
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 58
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 58
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 53
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 66
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 66
+      }
+    ]
+  },
+  {
+    "title": "实验：验证机械能守恒定律",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 140
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 87
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 481
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 123
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 76
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 221
+      }
+    ]
+  },
+  {
+    "title": "实验：验证动量守恒定律",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 92
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 55
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 189
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 41
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 91
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 200
+      }
+    ]
+  },
+  {
+    "title": "实验：用单摆测量重力加速度",
+    "results": [
+      {
+        "id": "E1",
+        "error": null,
+        "timedOut": false,
+        "textLen": 53
+      },
+      {
+        "id": "E2",
+        "error": null,
+        "timedOut": false,
+        "textLen": 174
+      },
+      {
+        "id": "E3",
+        "error": null,
+        "timedOut": false,
+        "textLen": 181
+      },
+      {
+        "id": "E4",
+        "error": null,
+        "timedOut": false,
+        "textLen": 97
+      },
+      {
+        "id": "E5",
+        "error": null,
+        "timedOut": false,
+        "textLen": 95
+      },
+      {
+        "id": "E6",
+        "error": null,
+        "timedOut": false,
+        "textLen": 98
+      }
+    ]
+  }
+]

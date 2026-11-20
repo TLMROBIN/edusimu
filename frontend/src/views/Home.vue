@@ -28,6 +28,7 @@
 
     <el-main>
       <div class="home-content">
+        <CollectionBanner />
         <section id="resource-directory" class="directory-section" aria-labelledby="directory-title">
           <div class="directory-layout">
             <aside class="directory-sidebar" aria-label="继续学习与课件筛选">
@@ -293,6 +294,7 @@
                       <span class="resource-path">{{ animation.textbook_path || '未标注教材章节' }}</span>
                       <span class="resource-meta">
                         <span v-if="canUseSourceFilter">{{ formatSourceType(animation.source_type) }}</span>
+                        <span v-if="animation.has_quiz" class="quiz-badge">含随堂练</span>
                         <span
                           v-if="animation.may_lag"
                           class="lag-badge"
@@ -363,6 +365,7 @@ import { useUserStore } from '../stores/user'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { resolveAssetUrl } from '../utils/apiBase'
+import CollectionBanner from '../components/CollectionBanner.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -1264,6 +1267,19 @@ watch(
   gap: 6px 12px;
   color: var(--home-muted);
   font-size: 12px;
+  line-height: 1.5;
+}
+
+.quiz-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  border: 1px solid #86efac;
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 700;
   line-height: 1.5;
 }
 

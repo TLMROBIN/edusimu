@@ -1,0 +1,338 @@
+[
+  {
+    "id": "G1",
+    "source": "2024·海南卷·第14(2)题",
+    "verified": true,
+    "score": 4,
+    "stem": "某同学做“验证力的平行四边形定则”实验：将橡皮条一端固定在水平木板上的 G 点，另一端系两根细绳套，用两只弹簧测力计互成角度拉橡皮条使结点到达 O 点，此时示数分别为 F₁ = 3.60 N、F₂ = 2.90 N；再改用一只弹簧测力计将结点拉到同一 O 点，示数为 F = 5.60 N。根据所选标度在白纸上作出的力的图示如图所示（图中 F' 为根据 F₁、F₂ 按平行四边形定则作出的合力）。<svg viewBox=\"0 0 380 198\" width=\"380\" role=\"img\" aria-label=\"2024海南14(2)力的图示\"><rect x=\"8\" y=\"8\" width=\"364\" height=\"182\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"22\" y=\"28\" font-size=\"11\" fill=\"#4A5B73\">标度：1 格 = 1.0 N</text><line x1=\"22\" y1=\"36\" x2=\"38\" y2=\"36\" stroke=\"#10233F\" stroke-width=\"1.6\"/><line x1=\"22\" y1=\"32\" x2=\"22\" y2=\"40\" stroke=\"#10233F\"/><line x1=\"38\" y1=\"32\" x2=\"38\" y2=\"40\" stroke=\"#10233F\"/><circle cx=\"190\" cy=\"24\" r=\"4\" fill=\"#10233F\"/><text x=\"200\" y=\"28\" font-size=\"12\" font-weight=\"700\" fill=\"#10233F\">G</text><line x1=\"190\" y1=\"24\" x2=\"190\" y2=\"72\" stroke=\"#7A5C3E\" stroke-width=\"3.5\"/><circle cx=\"190\" cy=\"72\" r=\"3.5\" fill=\"#12A9C4\" stroke=\"#10233F\"/><text x=\"176\" y=\"72\" font-size=\"12\" font-weight=\"700\" fill=\"#10233F\">O</text><line x1=\"190\" y1=\"72\" x2=\"190\" y2=\"178\" stroke=\"#94A3B8\" stroke-dasharray=\"4 3\"/><line x1=\"190\" y1=\"72\" x2=\"168\" y2=\"125\" stroke=\"#12A9C4\" stroke-width=\"2\"/><polygon points=\"168,125 167,115 175,119\" fill=\"#12A9C4\"/><text x=\"152\" y=\"114\" font-size=\"12\" font-weight=\"700\" fill=\"#0E8CA3\">F₁</text><line x1=\"190\" y1=\"72\" x2=\"221\" y2=\"107\" stroke=\"#E07B24\" stroke-width=\"2\"/><polygon points=\"221,107 212,103 218,97\" fill=\"#E07B24\"/><text x=\"226\" y=\"104\" font-size=\"12\" font-weight=\"700\" fill=\"#E07B24\">F₂</text><line x1=\"168\" y1=\"125\" x2=\"199\" y2=\"160\" stroke=\"#94A3B8\" stroke-dasharray=\"4 3\"/><line x1=\"221\" y1=\"107\" x2=\"199\" y2=\"160\" stroke=\"#94A3B8\" stroke-dasharray=\"4 3\"/><line x1=\"190\" y1=\"72\" x2=\"190\" y2=\"162\" stroke=\"#25A870\" stroke-width=\"2.4\"/><polygon points=\"190,162 186,152 194,152\" fill=\"#25A870\"/><text x=\"176\" y=\"164\" font-size=\"13\" font-weight=\"700\" fill=\"#17784F\">F</text><line x1=\"190\" y1=\"72\" x2=\"199\" y2=\"160\" stroke=\"#1661FF\" stroke-width=\"2\"/><polygon points=\"199,160 194,151 202,150\" fill=\"#1661FF\"/><text x=\"208\" y=\"164\" font-size=\"13\" font-weight=\"700\" fill=\"#1661FF\">F'</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "图中的 F 与 F' 两个力，方向一定沿 GO 方向的是",
+        "options": ["F", "F'"],
+        "answer": 0,
+        "replay": "E1",
+        "explain": "注意本题符号约定：F 是用一只弹簧测力计直接把橡皮条结点拉到 O 点时的实际拉力，它直接与沿 GO 的橡皮条弹力平衡，故方向一定沿 GO；而 F' 是按平行四边形定则作出的理论合力，可能因误差偏离 GO。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "实验结果发现 F' 与 F 的大小和方向存在一定偏差，产生这种偏差的常见操作原因可能是____。",
+        "options": [
+          "弹簧测力计、细线或橡皮条没有与木板保持平行（或读数时视线未正视刻度盘）",
+          "两次拉橡皮条时结点都准确到达了同一 O 点",
+          "选用了适当较长的两根细绳套",
+          "两分力之间的夹角选在 60°～100° 之间"
+        ],
+        "answer": 0,
+        "replay": "E3",
+        "explain": "测力计、细线、橡皮条未与木板平面平行时，测力计读数偏大且存在壳体摩擦；或读数时未正对刻度线产生视差，都会使按读数作出的平行四边形合力 F' 偏离实际值 F。"
+      }
+    ]
+  },
+  {
+    "id": "G2",
+    "source": "2026·云南卷·第11题（节选）",
+    "verified": true,
+    "stem": "某同学利用如图甲所示水平仪及装置“探究两个互成角度的力的合成规律”：实验前将木板平放于水平实验台；某次实验中用两只 0–5 N（分度值 0.1 N）弹簧测力计共同拉橡皮条至 O 点，图乙为其中一只测力计示数 F₁ 的局部放大图，图丙方格纸每小格边长代表 0.5 N，记录了某组互成角度的两个分力矢量。<svg viewBox=\"0 0 640 186\" width=\"640\" role=\"img\" aria-label=\"2026云南11题水平仪与测力计和方格图\"><g transform=\"translate(8,8)\"><rect x=\"0\" y=\"0\" width=\"170\" height=\"170\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"85\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图甲：水平仪校平</text><rect x=\"24\" y=\"48\" width=\"122\" height=\"76\" rx=\"4\" fill=\"#D9B98C\" stroke=\"#7A5C3E\"/><rect x=\"42\" y=\"72\" width=\"86\" height=\"24\" rx=\"12\" fill=\"#E8F7F0\" stroke=\"#25A870\" stroke-width=\"1.4\"/><line x1=\"74\" y1=\"72\" x2=\"74\" y2=\"96\" stroke=\"#10233F\"/><line x1=\"96\" y1=\"72\" x2=\"96\" y2=\"96\" stroke=\"#10233F\"/><ellipse cx=\"85\" cy=\"84\" rx=\"9\" ry=\"7\" fill=\"#fff\" stroke=\"#12A9C4\" stroke-width=\"1.5\"/><text x=\"85\" y=\"152\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">气泡居中在两刻线之间</text></g><g transform=\"translate(190,8)\"><rect x=\"0\" y=\"0\" width=\"200\" height=\"170\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"100\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图乙：测力计 F₁（N）</text><rect x=\"58\" y=\"28\" width=\"84\" height=\"128\" fill=\"#F3F7FC\" stroke=\"#CBD5E1\"/><line x1=\"68\" y1=\"36\" x2=\"90\" y2=\"36\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"102\" y=\"40\" font-size=\"11.5\" font-weight=\"700\" fill=\"#10233F\">2.0</text><line x1=\"68\" y1=\"47\" x2=\"80\" y2=\"47\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"58\" x2=\"80\" y2=\"58\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"69\" x2=\"80\" y2=\"69\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"80\" x2=\"80\" y2=\"80\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"91\" x2=\"86\" y2=\"91\" stroke=\"#10233F\"/><text x=\"102\" y=\"95\" font-size=\"11\" fill=\"#10233F\">2.5</text><line x1=\"68\" y1=\"102\" x2=\"80\" y2=\"102\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"113\" x2=\"80\" y2=\"113\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"124\" x2=\"80\" y2=\"124\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"135\" x2=\"80\" y2=\"135\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"146\" x2=\"90\" y2=\"146\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"102\" y=\"150\" font-size=\"11.5\" font-weight=\"700\" fill=\"#10233F\">3.0</text><line x1=\"44\" y1=\"146\" x2=\"96\" y2=\"146\" stroke=\"#C7374B\" stroke-width=\"2.4\"/><polygon points=\"44,141 56,146 44,151\" fill=\"#C7374B\"/></g><g transform=\"translate(402,8)\"><rect x=\"0\" y=\"0\" width=\"230\" height=\"170\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"115\" y=\"17\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图丙：方格纸（每小格 0.5 N）</text><g stroke=\"#DCE5F0\" stroke-width=\"1\"><line x1=\"45\" y1=\"26\" x2=\"185\" y2=\"26\"/><line x1=\"45\" y1=\"40\" x2=\"185\" y2=\"40\"/><line x1=\"45\" y1=\"54\" x2=\"185\" y2=\"54\"/><line x1=\"45\" y1=\"68\" x2=\"185\" y2=\"68\"/><line x1=\"45\" y1=\"82\" x2=\"185\" y2=\"82\"/><line x1=\"45\" y1=\"96\" x2=\"185\" y2=\"96\"/><line x1=\"45\" y1=\"110\" x2=\"185\" y2=\"110\"/><line x1=\"45\" y1=\"124\" x2=\"185\" y2=\"124\"/><line x1=\"45\" y1=\"138\" x2=\"185\" y2=\"138\"/><line x1=\"45\" y1=\"152\" x2=\"185\" y2=\"152\"/><line x1=\"45\" y1=\"26\" x2=\"45\" y2=\"152\"/><line x1=\"59\" y1=\"26\" x2=\"59\" y2=\"152\"/><line x1=\"73\" y1=\"26\" x2=\"73\" y2=\"152\"/><line x1=\"87\" y1=\"26\" x2=\"87\" y2=\"152\"/><line x1=\"101\" y1=\"26\" x2=\"101\" y2=\"152\"/><line x1=\"115\" y1=\"26\" x2=\"115\" y2=\"152\"/><line x1=\"129\" y1=\"26\" x2=\"129\" y2=\"152\"/><line x1=\"143\" y1=\"26\" x2=\"143\" y2=\"152\"/><line x1=\"157\" y1=\"26\" x2=\"157\" y2=\"152\"/><line x1=\"171\" y1=\"26\" x2=\"171\" y2=\"152\"/><line x1=\"185\" y1=\"26\" x2=\"185\" y2=\"152\"/></g><circle cx=\"115\" cy=\"152\" r=\"3.2\" fill=\"#10233F\"/><text x=\"115\" y=\"164\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">O</text><line x1=\"115\" y1=\"152\" x2=\"73\" y2=\"82\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><polygon points=\"73,82 74,92 81,87\" fill=\"#1661FF\"/><text x=\"65\" y=\"79\" font-size=\"11\" font-weight=\"700\" fill=\"#1661FF\">Fₐ</text><line x1=\"115\" y1=\"152\" x2=\"157\" y2=\"110\" stroke=\"#E07B24\" stroke-width=\"2.2\"/><polygon points=\"157,110 148,113 154,119\" fill=\"#E07B24\"/><text x=\"164\" y=\"108\" font-size=\"11\" font-weight=\"700\" fill=\"#E07B24\">F<tspan dy=\"3\" font-size=\"8.5\">b</tspan></text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "choice",
+        "prompt": "安装木板前用水平仪检测台面，气泡处于正中央（图甲），说明____。",
+        "options": [
+          "实验台面已处于水平状态，可直接平放木板并使弹簧测力计水平调零",
+          "实验台面左高右低，需要将木板垫高以补偿摩擦力",
+          "橡皮条已经达到最大弹性限度",
+          "两只弹簧测力计的弹簧劲度系数必然完全相同"
+        ],
+        "answer": 0,
+        "explain": "水平仪气泡居中说明实验台面处于水平面内，此时把方木板平放台面上并将测力计水平调零，能确保拉动过程中力的方向在同一水平面内。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "由图乙读出弹簧测力计的示数 F₁ =（按题目要求保留一位小数）",
+        "unit": "N",
+        "answer": 3.0,
+        "tol": 0.05,
+        "sig": 2,
+        "show": "3.0",
+        "explain": "指针正对 3.0 N 刻线；按该题要求保留一位小数，读作 3.0 N。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "在图丙方格纸上按平行四边形定则作出 Fₐ 与 F<sub>b</sub> 的合力，求得合力的大小为（保留一位小数）",
+        "unit": "N",
+        "answer": 4.0,
+        "tol": 0.1,
+        "sig": 2,
+        "show": "4.0",
+        "explain": "方格纸上 Fₐ = (−3 格, +5 格)，F<sub>b</sub> = (+3 格, +3 格)，由平行四边形定则得合力矢量为 (0 格, +8 格)，即竖直向上共 8 小格。每小格代表 0.5 N，故合力大小 F = 8 × 0.5 N = 4.0 N。"
+      }
+    ]
+  },
+  {
+    "id": "G3",
+    "source": "2024·重庆卷·第11题",
+    "verified": true,
+    "score": 6,
+    "stem": "元代王祯《农书》记载了一种用“戽斗”汲水的方法。某同学据此原理设计了如图 1 所示的实验装置：两轻质定滑轮 P、Q 固定在同一水平高度，细线绕过滑轮，一端固定，另一端连在可水平拉动的力传感器上，下方悬挂沙桶（总质量 m = 136.0 g）。最初沙桶静止在较低位置 A，随后迅速向右拉动力传感器将沙桶拉升，沙桶越过平衡位置到达最高点 B 后经过小幅摆动，最终静止停在较高平衡位置 C 点。视频跟踪得到的沙桶高度变化 y-t 图像如图 2 所示（以初始静止位置 A 为 y = 0，B 点为最高点，最终平衡位置 C 点高度 y<sub>C</sub> = 0.082 m）。<svg viewBox=\"0 0 600 186\" width=\"600\" role=\"img\" aria-label=\"2024重庆11题戽斗装置与y-t图\"><g transform=\"translate(10,8)\"><rect x=\"0\" y=\"0\" width=\"264\" height=\"170\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"132\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图 1：两绳悬吊沙桶示意图</text><line x1=\"24\" y1=\"36\" x2=\"240\" y2=\"36\" stroke=\"#596574\" stroke-width=\"3\"/><circle cx=\"66\" cy=\"48\" r=\"10\" fill=\"#DCE4EC\" stroke=\"#4A5B73\" stroke-width=\"1.4\"/><circle cx=\"198\" cy=\"48\" r=\"10\" fill=\"#DCE4EC\" stroke=\"#4A5B73\" stroke-width=\"1.4\"/><text x=\"48\" y=\"50\" font-size=\"11\" font-weight=\"700\" text-anchor=\"end\">P</text><text x=\"216\" y=\"50\" font-size=\"11\" font-weight=\"700\">Q</text><line x1=\"66\" y1=\"48\" x2=\"132\" y2=\"108\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"198\" y1=\"48\" x2=\"132\" y2=\"108\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"24\" y1=\"58\" x2=\"66\" y2=\"58\" stroke=\"#1661FF\" stroke-width=\"1.5\"/><line x1=\"198\" y1=\"58\" x2=\"234\" y2=\"58\" stroke=\"#1661FF\" stroke-width=\"1.5\"/><rect x=\"226\" y=\"50\" width=\"16\" height=\"16\" rx=\"3\" fill=\"#12A9C4\"/><polygon points=\"120,114 144,114 140,144 124,144\" fill=\"#D9B98C\" stroke=\"#7A5C3E\" stroke-width=\"1.4\"/><line x1=\"132\" y1=\"108\" x2=\"132\" y2=\"114\" stroke=\"#10233F\"/><text x=\"132\" y=\"160\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">沙桶质量 m = 136.0 g</text></g><g transform=\"translate(286,8)\"><rect x=\"0\" y=\"0\" width=\"304\" height=\"170\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"162\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图 2：沙桶高度 y-t 图像</text><line x1=\"52\" y1=\"136\" x2=\"284\" y2=\"136\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"52\" y1=\"146\" x2=\"52\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"288\" y=\"140\" font-size=\"11\">t</text><text x=\"46\" y=\"24\" font-size=\"11\" text-anchor=\"end\">y/m</text><line x1=\"52\" y1=\"86\" x2=\"274\" y2=\"86\" stroke=\"#94A3B8\" stroke-dasharray=\"4 3\"/><text x=\"48\" y=\"90\" font-size=\"10.5\" text-anchor=\"end\" font-weight=\"700\" fill=\"#1661FF\">0.082</text><text x=\"48\" y=\"139\" font-size=\"10.5\" text-anchor=\"end\">0</text><path d=\"M52 136 C86 124, 108 42, 134 42 C162 42, 182 110, 206 86 C230 74, 246 86, 274 86\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2\"/><circle cx=\"52\" cy=\"136\" r=\"3.2\" fill=\"#10233F\"/><text x=\"58\" y=\"131\" font-size=\"11\" font-weight=\"700\">A</text><circle cx=\"134\" cy=\"42\" r=\"3.5\" fill=\"#C7374B\"/><text x=\"134\" y=\"35\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#C7374B\">B</text><circle cx=\"260\" cy=\"86\" r=\"3.5\" fill=\"#25A870\"/><text x=\"260\" y=\"78\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#17784F\">C</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "沙桶在两线缓慢拉升过程中，两根细线间的夹角逐渐增大，在此过程中每根细线的拉力将",
+        "options": ["逐渐增大", "逐渐减小", "保持不变"],
+        "answer": 0,
+        "replay": "E5",
+        "explain": "合力大小恒等于沙桶重力 mg。由平衡条件 2T cos(θ/2) = mg 得 T = {{frac|mg|2 cos(θ/2)}}，两线夹角 θ 增大时 cos(θ/2) 减小，故每根细线的拉力 T 逐渐增大。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "结合 y-t 图像判断，沙桶运动到最高点 B 时的加速度方向为",
+        "options": ["竖直向下", "竖直向上", "水平向左"],
+        "answer": 0,
+        "explain": "B 点为上升的最高点，速度为零并即将向下回落，因此沙桶受到的重力大于细线拉力的竖直分量，合外力和加速度方向均为竖直向下。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "取 g = 9.80 m/s²，从初位置 A 到最终静止在平衡位置 C 的过程中，沙桶机械能的增加量为（保留两位有效数字）",
+        "unit": "J",
+        "answer": 0.11,
+        "tol": 0.01,
+        "sig": 2,
+        "show": "0.11",
+        "explain": "初态 A 和末态 C 沙桶均静止（动能变化为 0），机械能增加量等于重力势能增加量：ΔE = mgy<sub>C</sub> = 0.1360 × 9.80 × 0.082 J ≈ 0.11 J。"
+      }
+    ]
+  },
+  {
+    "id": "G4",
+    "source": "2025·黑吉辽蒙卷·第12题（节选·力的平衡迁移）",
+    "verified": true,
+    "score": 4,
+    "stem": "某同学利用橡皮筋与轻绳设计了一个测量水杯质量的实验装置（图甲）：轻绳 1 一端固定在 O 点，与竖直方向夹角保持 θ = 30° 不变；橡皮筋连接结点 A 与弹簧测力计挂钩，结点 A 下方悬挂待测水杯（总重力 mg）。图乙为保持结点 A 和绳 1 方向不变、缓慢转动橡皮筋方向时的动态矢量三角形。<svg viewBox=\"0 0 430 176\" width=\"430\" role=\"img\" aria-label=\"2025黑吉辽蒙12题动态平衡矢量图\"><g transform=\"translate(8,8)\"><rect x=\"0\" y=\"0\" width=\"200\" height=\"160\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"100\" y=\"17\" font-size=\"11.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图甲：实验装置</text><line x1=\"36\" y1=\"28\" x2=\"164\" y2=\"28\" stroke=\"#596574\" stroke-width=\"3\"/><line x1=\"56\" y1=\"28\" x2=\"92\" y2=\"90\" stroke=\"#10233F\" stroke-width=\"2\"/><line x1=\"56\" y1=\"28\" x2=\"56\" y2=\"78\" stroke=\"#94A3B8\" stroke-dasharray=\"3 2\"/><text x=\"60\" y=\"58\" font-size=\"10.5\" fill=\"#4A5B73\">θ</text><text x=\"84\" y=\"56\" font-size=\"10.5\" font-weight=\"700\" fill=\"#10233F\">绳 1</text><line x1=\"92\" y1=\"90\" x2=\"168\" y2=\"60\" stroke=\"#7A5C3E\" stroke-width=\"2.6\"/><text x=\"134\" y=\"62\" font-size=\"10.5\" font-weight=\"700\" fill=\"#7A5C3E\">橡皮筋</text><circle cx=\"92\" cy=\"90\" r=\"3.5\" fill=\"#12A9C4\"/><text x=\"80\" y=\"96\" font-size=\"11\" font-weight=\"700\">A</text><line x1=\"92\" y1=\"90\" x2=\"92\" y2=\"116\" stroke=\"#10233F\" stroke-width=\"1.6\"/><rect x=\"80\" y=\"116\" width=\"24\" height=\"28\" rx=\"3\" fill=\"#DCE8FF\" stroke=\"#1661FF\"/><text x=\"92\" y=\"134\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#1661FF\">mg</text></g><g transform=\"translate(222,8)\"><rect x=\"0\" y=\"0\" width=\"200\" height=\"160\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"100\" y=\"17\" font-size=\"11.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图乙：动态矢量三角形</text><line x1=\"128\" y1=\"38\" x2=\"128\" y2=\"130\" stroke=\"#25A870\" stroke-width=\"2.4\"/><polygon points=\"128,130 124,120 132,120\" fill=\"#25A870\"/><text x=\"136\" y=\"90\" font-size=\"11.5\" font-weight=\"700\" fill=\"#17784F\">mg</text><line x1=\"128\" y1=\"130\" x2=\"68\" y2=\"26\" stroke=\"#12A9C4\" stroke-width=\"1.6\" stroke-dasharray=\"4 3\"/><line x1=\"128\" y1=\"130\" x2=\"88\" y2=\"61\" stroke=\"#0E8CA3\" stroke-width=\"2.0\"/><polygon points=\"88,61 90,71 97,67\" fill=\"#0E8CA3\"/><text x=\"66\" y=\"98\" font-size=\"11\" font-weight=\"700\" text-anchor=\"end\" fill=\"#0E8CA3\">F₁</text><line x1=\"88\" y1=\"61\" x2=\"128\" y2=\"38\" stroke=\"#1661FF\" stroke-width=\"2.4\"/><polygon points=\"128,38 118,39 122,46\" fill=\"#1661FF\"/><polyline points=\"94,70 103,65 98,56\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"1.2\"/><text x=\"114\" y=\"33\" font-size=\"10.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1661FF\">F₂(min)</text><line x1=\"77\" y1=\"42\" x2=\"128\" y2=\"38\" stroke=\"#C7374B\" stroke-width=\"1.4\" stroke-dasharray=\"3 2\"/><text x=\"100\" y=\"149\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#4A5B73\">垂线段最短：F₂ ⊥ F₁</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "在保持结点 A 位置及轻绳 1 方向不变的条件下，只有橡皮筋与轻绳 1 垂直时橡皮筋拉力最小。若某次读数时橡皮筋尚未垂直于轻绳 1，则此时的拉力读数比理论最小值",
+        "options": ["偏大", "偏小", "相等"],
+        "answer": 0,
+        "replay": "E5",
+        "explain": "在平衡矢量三角形中，重力 mg 恒定、绳 1 拉力 F₁ 方向恒定，橡皮筋拉力 F₂ 的末端落在 F₁ 方向线上。点到直线以垂线段最短，未垂直时为斜线段，故拉力读数一定偏大。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "若想在橡皮筋与弹簧测力计量程不变的前提下，增大该装置所能测量物体的质量上限，应____轻绳 1 与竖直方向的夹角 θ。",
+        "options": ["减小", "增大", "保持不变"],
+        "answer": 0,
+        "explain": "当橡皮筋与绳 1 垂直时 F<sub>2,min</sub> = mg sin θ。当最大量程 F<sub>max</sub> 一定时，可测最大质量 m<sub>max</sub> = {{frac|F<sub>max</sub>|g sin θ}}，因此<b>减小</b>夹角 θ 可增大测量质量上限。"
+      }
+    ]
+  },
+  {
+    "id": "G5",
+    "source": "2025·云南卷·第11题",
+    "verified": true,
+    "stem": "某物理兴趣小组利用电动机匀速拉动长木板测量木质滑块（质量 250 g）与木板间的动摩擦因数 μ。实验中在滑块上加放不同质量的配重，测得多组正压力与滑动摩擦力数据如下表；如图为实验装置示意图（滑块保持静止，细线连接滑块左侧挂钩、绕过固定在左侧的定滑轮后接在竖直测力计上）。<br><svg viewBox=\"0 0 460 128\" width=\"460\" role=\"img\" aria-label=\"2025云南11题测动摩擦因数装置图\"><rect x=\"8\" y=\"6\" width=\"444\" height=\"116\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><rect x=\"124\" y=\"76\" width=\"246\" height=\"16\" fill=\"#D9B98C\" stroke=\"#7A5C3E\"/><line x1=\"370\" y1=\"84\" x2=\"420\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"2\"/><polygon points=\"426,84 416,79 416,89\" fill=\"#10233F\"/><text x=\"402\" y=\"76\" font-size=\"10.5\" fill=\"#10233F\">木板运动</text><rect x=\"216\" y=\"48\" width=\"68\" height=\"28\" rx=\"3\" fill=\"#C9A97A\" stroke=\"#7A5C3E\"/><text x=\"250\" y=\"66\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">滑块+配重</text><circle cx=\"112\" cy=\"72\" r=\"10\" fill=\"#DCE4EC\" stroke=\"#4A5B73\" stroke-width=\"1.4\"/><line x1=\"216\" y1=\"54\" x2=\"112\" y2=\"62\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"102\" y1=\"72\" x2=\"102\" y2=\"108\" stroke=\"#1661FF\" stroke-width=\"1.8\"/><rect x=\"92\" y=\"92\" width=\"20\" height=\"22\" rx=\"3\" fill=\"#fff\" stroke=\"#12A9C4\" stroke-width=\"1.4\"/><text x=\"164\" y=\"46\" font-size=\"10.5\" fill=\"#1661FF\" text-anchor=\"middle\">挂钩略高于滑轮（斜向下拉）</text></svg><table class=\"dt\"><tr><th>滑块+配重总质量 m / kg</th><td>0.250</td><td>0.300</td><td>0.350</td><td>0.400</td></tr><tr><th>正压力 F<sub>N</sub> / N</th><td>2.45</td><td>2.94</td><td>3.43</td><td>3.92</td></tr><tr><th>滑动摩擦力 f / N</th><td>1.13</td><td>1.35</td><td>1.58</td><td>1.80</td></tr></table>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "当滑块与配重总质量为 0.300 kg 时，测力计示数为 1.35 N（取 g = 9.80 m/s²），由此求得滑块与木板间的动摩擦因数 μ =（保留三位有效数字）",
+        "unit": "",
+        "answer": 0.459,
+        "tol": 0.005,
+        "sig": 3,
+        "show": "0.459",
+        "explain": "当细线水平时 f = μmg，故 μ = {{frac|1.35|0.300 × 9.80}} ≈ 0.459。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "分析表中多组数据可知，在同一接触面下滑动摩擦力 f 与正压力 F<sub>N</sub>____，动摩擦因数 μ 与正压力大小____。",
+        "options": [
+          "成正比；无关",
+          "成反比；成正比",
+          "成正比；成正比",
+          "无关；无关"
+        ],
+        "answer": 0,
+        "explain": "表中各组比值 f / F<sub>N</sub> 均在 0.46 左右恒定不变，说明滑动摩擦力 f 与正压力 F<sub>N</sub> 成正比，比例系数 μ 仅与接触面材料和粗糙程度有关，与压力大小无关。"
+      },
+      {
+        "label": "(3)",
+        "type": "text-choice",
+        "prompt": "若实际实验时滑块左侧固定细线的挂钩略高于定滑轮（导致细线向左下方倾斜拉着滑块），数据处理时仍按 μ = F / (mg) 计算，则测得的动摩擦因数 μ 比真实值",
+        "options": ["偏大", "偏小", "不变"],
+        "answer": 0,
+        "replay": "E3",
+        "explain": "细线向左下方成角 θ 拉住静止滑块时，滑块受向下的拉力分力 F sin θ，正压力增大为 N = mg + F sin θ；水平方向 F cos θ = μ(mg + F sin θ)。因此 μ<sub>测</sub> = {{frac|F|mg}} = {{frac|μ|cos θ − μ sin θ}} > μ，测得结果系统性偏大。"
+      }
+    ]
+  },
+  {
+    "id": "G6",
+    "source": "2026·山东卷·第13题（节选·压轴迁移）",
+    "verified": true,
+    "stem": "某同学利用内置拉力传感器的智能小车在左侧拉动水平桌面上的物块（重力 G = 4.00 N）测量动摩擦因数，采样得到细绳拉力随时间变化的 F-t 图像如图 2 所示。<svg viewBox=\"0 0 600 176\" width=\"600\" role=\"img\" aria-label=\"2026山东13题智能小车拉力F-t图\"><g transform=\"translate(8,8)\"><rect x=\"0\" y=\"0\" width=\"246\" height=\"160\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"123\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图 1：智能小车向左拉动物块</text><line x1=\"18\" y1=\"114\" x2=\"228\" y2=\"114\" stroke=\"#4A5B73\" stroke-width=\"2.5\"/><rect x=\"30\" y=\"76\" width=\"54\" height=\"30\" rx=\"5\" fill=\"#DCE8FF\" stroke=\"#1661FF\" stroke-width=\"1.5\"/><circle cx=\"42\" cy=\"109\" r=\"5\" fill=\"#4A5B73\"/><circle cx=\"72\" cy=\"109\" r=\"5\" fill=\"#4A5B73\"/><text x=\"57\" y=\"95\" font-size=\"10.5\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#1661FF\">小车</text><line x1=\"84\" y1=\"94\" x2=\"156\" y2=\"94\" stroke=\"#12A9C4\" stroke-width=\"2\"/><rect x=\"156\" y=\"82\" width=\"46\" height=\"32\" rx=\"3\" fill=\"#D9B98C\" stroke=\"#7A5C3E\" stroke-width=\"1.4\"/><text x=\"179\" y=\"102\" font-size=\"11\" text-anchor=\"middle\" font-weight=\"700\">物块</text><line x1=\"62\" y1=\"60\" x2=\"32\" y2=\"60\" stroke=\"#1661FF\" stroke-width=\"2\"/><polygon points=\"26,60 35,55 35,65\" fill=\"#1661FF\"/><text x=\"46\" y=\"53\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#1661FF\">运动方向</text></g><g transform=\"translate(268,8)\"><rect x=\"0\" y=\"0\" width=\"324\" height=\"160\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"172\" y=\"17\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图 2：传感器拉力 F-t 图像</text><line x1=\"46\" y1=\"132\" x2=\"304\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"46\" y1=\"132\" x2=\"46\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.4\"/><g stroke=\"#E3EAF3\" stroke-width=\"1\"><line x1=\"86\" y1=\"24\" x2=\"86\" y2=\"132\"/><line x1=\"126\" y1=\"24\" x2=\"126\" y2=\"132\"/><line x1=\"166\" y1=\"24\" x2=\"166\" y2=\"132\"/><line x1=\"206\" y1=\"24\" x2=\"206\" y2=\"132\"/><line x1=\"246\" y1=\"24\" x2=\"246\" y2=\"132\"/><line x1=\"286\" y1=\"24\" x2=\"286\" y2=\"132\"/><line x1=\"46\" y1=\"102\" x2=\"304\" y2=\"102\"/><line x1=\"46\" y1=\"72\" x2=\"304\" y2=\"72\"/><line x1=\"46\" y1=\"42\" x2=\"304\" y2=\"42\"/></g><g font-size=\"10\" fill=\"#4A5B73\" text-anchor=\"middle\"><text x=\"46\" y=\"145\">0</text><text x=\"86\" y=\"145\">1.0</text><text x=\"126\" y=\"145\">2.0</text><text x=\"166\" y=\"145\">3.0</text><text x=\"206\" y=\"145\">4.0</text><text x=\"246\" y=\"145\">5.0</text><text x=\"286\" y=\"145\">6.0</text></g><text x=\"308\" y=\"145\" font-size=\"10.5\">t/s</text><text x=\"42\" y=\"135\" font-size=\"10\" text-anchor=\"end\">0</text><text x=\"42\" y=\"105\" font-size=\"10\" text-anchor=\"end\">1.0</text><text x=\"42\" y=\"75\" font-size=\"10\" text-anchor=\"end\">2.0</text><text x=\"42\" y=\"45\" font-size=\"10\" text-anchor=\"end\">3.0</text><text x=\"34\" y=\"28\" font-size=\"10.5\">F/N</text><line x1=\"46\" y1=\"64.8\" x2=\"286\" y2=\"64.8\" stroke=\"#25A870\" stroke-dasharray=\"3 2\"/><text x=\"288\" y=\"62\" font-size=\"10.5\" font-weight=\"700\" fill=\"#17784F\">2.24</text><path d=\"M46 132 L150 42 L156 80 L174 60 L190 66 L206 64.8 L286 64.8\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><line x1=\"150\" y1=\"42\" x2=\"150\" y2=\"132\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\"/><text x=\"150\" y=\"145\" font-size=\"9.5\" text-anchor=\"middle\" fill=\"#C7374B\">2.6</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "在 t < 2.6 s 的时间内，物块尚未克服最大静摩擦力，物块处于",
+        "options": ["静止", "匀速直线运动", "匀加速直线运动"],
+        "answer": 0,
+        "explain": "t < 2.6 s 时细绳拉力随时间线性增大但仍小于最大静摩擦力（3.00 N），物块受静摩擦力平衡而处于静止状态。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "为了准确得出物块与桌面间的动摩擦因数，应当截取图 2 中哪一段的拉力数据？",
+        "options": ["0～2.6 s", "2.6～4.0 s", "4.0～6.0 s", "t = 2.6 s 峰值点"],
+        "answer": 2,
+        "explain": "2.6～4.0 s 内物块刚启动存在加减速振荡；4.0～6.0 s 内拉力保持恒定 2.24 N，说明物块做匀速直线运动，此时传感器拉力等于滑动摩擦力。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "已知物块重力 G = 4.00 N，求得动摩擦因数 μ =（保留两位有效数字）",
+        "unit": "",
+        "answer": 0.56,
+        "tol": 0.02,
+        "sig": 2,
+        "show": "0.56",
+        "explain": "匀速阶段滑动摩擦力 f = F = 2.24 N，正压力 N = G = 4.00 N，故 μ = {{frac|2.24|4.00}} = 0.56。"
+      },
+      {
+        "label": "(4)",
+        "type": "text-choice",
+        "prompt": "若实验中桌面右端略高（物块在智能小车向左牵引下沿略微倾斜的桌面向左下方匀速滑行），仍按水平桌面公式 μ = F / G 计算，则测得的 μ 比真实值",
+        "options": ["偏小", "偏大", "不变"],
+        "answer": 0,
+        "explain": "桌面右端略高时，物块沿斜面向下匀速运动，重力沿斜面向下的分力 mg sin α 助推运动：F + mg sin α = μ mg cos α ⇒ μ<sub>测</sub> = {{frac|F|mg}} = μ cos α − sin α < μ，故测得 μ 偏小。"
+      }
+    ]
+  },
+  {
+    "id": "G7",
+    "source": "改编自 2026·河北卷·第11(1)题",
+    "verified": true,
+    "score": 4,
+    "stem": "探究互成角度力的合成前，需对两只相同的弹簧测力计（0–5 N，最小分度 0.1 N）进行对拉校准：如图甲将甲、乙两只测力计挂钩互勾，水平置于桌面向两侧对拉。某次校准时乙测力计的指针放大图如图乙所示；换用多组不同拉力重复对拉时，发现甲表的示数总是比乙表大 0.20 N。<svg viewBox=\"0 0 460 148\" width=\"460\" role=\"img\" aria-label=\"2026河北11(1)改编测力计对拉与读数图\"><g transform=\"translate(8,6)\"><rect x=\"0\" y=\"0\" width=\"212\" height=\"136\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"106\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图甲：两表水平互勾对拉</text><rect x=\"24\" y=\"52\" width=\"72\" height=\"28\" rx=\"6\" fill=\"#E2E8F0\" stroke=\"#4A5B73\"/><text x=\"60\" y=\"70\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">甲</text><rect x=\"116\" y=\"52\" width=\"72\" height=\"28\" rx=\"6\" fill=\"#E2E8F0\" stroke=\"#4A5B73\"/><text x=\"152\" y=\"70\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">乙</text><path d=\"M96 66 H116\" stroke=\"#12A9C4\" stroke-width=\"3\"/><line x1=\"24\" y1=\"66\" x2=\"6\" y2=\"66\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><line x1=\"188\" y1=\"66\" x2=\"206\" y2=\"66\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><text x=\"106\" y=\"114\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">甲示数始终比乙多 0.20 N</text></g><g transform=\"translate(232,6)\"><rect x=\"0\" y=\"0\" width=\"220\" height=\"136\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"110\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">图乙：乙测力计刻度放大（N）</text><rect x=\"64\" y=\"26\" width=\"92\" height=\"102\" fill=\"#F3F7FC\" stroke=\"#CBD5E1\"/><line x1=\"74\" y1=\"34\" x2=\"92\" y2=\"34\" stroke=\"#10233F\"/><text x=\"106\" y=\"38\" font-size=\"11\" fill=\"#10233F\">1.5</text><line x1=\"74\" y1=\"42.6\" x2=\"86\" y2=\"42.6\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"51.2\" x2=\"86\" y2=\"51.2\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"59.8\" x2=\"86\" y2=\"59.8\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"68.4\" x2=\"86\" y2=\"68.4\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"77\" x2=\"98\" y2=\"77\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"106\" y=\"81\" font-size=\"12\" font-weight=\"700\" fill=\"#10233F\">2.0</text><line x1=\"74\" y1=\"85.6\" x2=\"86\" y2=\"85.6\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"94.2\" x2=\"86\" y2=\"94.2\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"102.8\" x2=\"86\" y2=\"102.8\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"111.4\" x2=\"86\" y2=\"111.4\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"120\" x2=\"92\" y2=\"120\" stroke=\"#10233F\"/><text x=\"106\" y=\"124\" font-size=\"11\" fill=\"#10233F\">2.5</text><line x1=\"48\" y1=\"77\" x2=\"102\" y2=\"77\" stroke=\"#C7374B\" stroke-width=\"2.4\"/><polygon points=\"48,72 60,77 48,82\" fill=\"#C7374B\"/></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "按弹簧测力计最小分度 0.1 N 估读到下一位，图乙中测力计乙的示数为",
+        "unit": "N",
+        "answer": 2.00,
+        "tol": 0.02,
+        "sig": 3,
+        "show": "2.00",
+        "explain": "0.1 N 分度的弹簧测力计须估读到 0.01 N，指针恰好对齐 2.0 N 刻线，故读数为 2.00 N。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "两只测力计互勾对拉时，甲表读数始终比乙表大 0.20 N 的原因是____。",
+        "options": [
+          "两只弹簧测力计的弹簧劲度系数不同",
+          "甲测力计拉力大于乙测力计拉力",
+          "使用前至少有一只弹簧测力计未正确调零",
+          "对拉时桌面产生了大小相等的摩擦力"
+        ],
+        "answer": 2,
+        "replay": "E2",
+        "explain": "依据牛顿第三定律，甲、乙挂钩之间的作用力与反作用力大小始终相等；两表示数恒差 0.20 N（与拉力大小无关），说明使用前至少有一只弹簧测力计未水平调零。"
+      }
+    ]
+  },
+  {
+    "id": "Y1",
+    "source": "原创",
+    "verified": true,
+    "stem": "某实验小组用方木板、白纸、橡皮条、两根细绳套和两只 0–5 N 弹簧测力计做“探究两个互成角度的力的合成规律”实验。如图为记录的结点 O、细绳方向点 P₁、P₂ 及 AO 延长线示意图。<svg viewBox=\"0 0 380 166\" width=\"380\" role=\"img\" aria-label=\"力的合成规范操作示意图\"><rect x=\"8\" y=\"8\" width=\"364\" height=\"150\" rx=\"8\" fill=\"#D9B98C\" stroke=\"#7A5C3E\"/><rect x=\"28\" y=\"18\" width=\"324\" height=\"130\" rx=\"4\" fill=\"#fff\" stroke=\"#9AA8B8\"/><circle cx=\"190\" cy=\"30\" r=\"4\" fill=\"#10233F\"/><text x=\"202\" y=\"34\" font-size=\"11.5\" font-weight=\"700\">A</text><line x1=\"190\" y1=\"30\" x2=\"190\" y2=\"72\" stroke=\"#7A5C3E\" stroke-width=\"3.5\"/><circle cx=\"190\" cy=\"72\" r=\"4\" fill=\"#12A9C4\" stroke=\"#10233F\"/><text x=\"176\" y=\"74\" font-size=\"11.5\" font-weight=\"700\">O</text><line x1=\"190\" y1=\"72\" x2=\"190\" y2=\"142\" stroke=\"#94A3B8\" stroke-dasharray=\"4 3\"/><line x1=\"190\" y1=\"72\" x2=\"120\" y2=\"136\" stroke=\"#1661FF\" stroke-width=\"1.8\"/><circle cx=\"124\" cy=\"132\" r=\"3\" fill=\"#C7374B\"/><text x=\"112\" y=\"132\" font-size=\"11\" font-weight=\"700\" fill=\"#C7374B\">P₁</text><line x1=\"190\" y1=\"72\" x2=\"268\" y2=\"134\" stroke=\"#E07B24\" stroke-width=\"1.8\"/><circle cx=\"264\" cy=\"131\" r=\"3\" fill=\"#C7374B\"/><text x=\"276\" y=\"132\" font-size=\"11\" font-weight=\"700\" fill=\"#C7374B\">P₂</text><text x=\"198\" y=\"142\" font-size=\"10.5\" fill=\"#4A5B73\">AO 延长线</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "本实验中“两力共同拉至 O 点”与“单力单独拉至 O 点”必须重合在同一个 O 点，目的是使两次拉橡皮条产生的",
+        "options": ["作用效果（形变大小和方向）相同", "两分力之和等于单力大小", "两细绳伸长量相等"],
+        "answer": 0,
+        "replay": "E1",
+        "explain": "本实验运用等效替代法，将橡皮条结点拉到同一位置 O，保证橡皮条的伸长长度和方向均相同，即力的作用效果完全等效。"
+      },
+      {
+        "label": "(2)",
+        "type": "multi",
+        "prompt": "关于实验操作的规范性，下列说法正确的是____（多选）。",
+        "options": [
+          "弹簧测力计、细绳套与橡皮条均应与木板平面保持平行",
+          "用铅笔沿细绳描点记录方向时，描点位置应尽量靠近结点 O",
+          "同一次实验中结点 O 位置不可变，不同次重复实验时结点 O 位置可以改变",
+          "两分力的夹角必须严格取 90° 且两分力大小必须相等"
+        ],
+        "answer": [0, 2],
+        "replay": "E4",
+        "explain": "A 正确：必须贴近并平行于木板平面；B 错：描点 P₁、P₂ 应离结点 O 适当远以减小角度误差；C 正确：不同次实验换用不同力与夹角时可重新确定新 O 点；D 错：夹角选 60°～120° 即可，不需 90° 或等大。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "保持结点 O 位置不动及分力 F₁ 方向（与 AO 延长线成 35°）不变，将另一分力 F₂ 从 θ₂ = 20° 逆时针缓慢增大至 θ₂ = 80°（两力夹角由 55° 增至 115°），此过程中 F₂ 的大小变化是____。",
+        "options": [
+          "一直增大",
+          "一直减小",
+          "先减小后增大，且在 F₂ ⊥ F₁（两力夹角 90°）时达到最小",
+          "先增大后减小"
+        ],
+        "answer": 2,
+        "replay": "E5",
+        "explain": "在矢量三角形中 F₂ = {{frac|F<sub>eq</sub> sin 35°|sin(35° + θ₂)}}。当 θ₂ 从 20° 增至 80° 时，夹角 α = 35° + θ₂ 由 55° 经过 90° 增至 115°，sin α 先增大到 1 再减小，故 F₂ 先减小后增大，并在 F₂ ⊥ F₁（即 θ₂ = 55°）时取最小。"
+      }
+    ]
+  },
+  {
+    "id": "Y2",
+    "source": "原创",
+    "verified": true,
+    "stem": "某同学想通过实验进一步定量检验互成角度两力的合成公式 F² = F₁² + F₂² + 2F₁F₂ cos α。他保持两只测力计的拉力大小恒为 F₁ = 3.00 N、F₂ = 4.00 N，改变两分力夹角 α，测得单拉等效力 F 并计算出 cos α 与 F² 的多组数据如下表：<table class=\"dt\"><tr><th>cos α</th><td>−0.80</td><td>−0.50</td><td>0.00</td><td>0.20</td><td>0.50</td><td>0.80</td></tr><tr><th>F² / N²</th><td>5.8</td><td>13.0</td><td>25.0</td><td>29.8</td><td>37.0</td><td>44.2</td></tr></table>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "plot",
+        "prompt": "请在坐标纸上描出表中的 6 组 (cos α, F²) 数据点，并拖动直线手柄作出 F² - cos α 拟合直线。",
+        "x": [-1, 1],
+        "y": [0, 50],
+        "xLabel": "cos α",
+        "yLabel": "F² / N²",
+        "points": [[-0.8, 5.8], [-0.5, 13.0], [0, 25.0], [0.2, 29.8], [0.5, 37.0], [0.8, 44.2]],
+        "snap": [0.1, 0.2],
+        "ptTol": [0.1, 1.0],
+        "slope": 24.0,
+        "tol": 1.5,
+        "lineInit": [[-0.8, 12], [0.8, 36]],
+        "explain": "根据 F² = (F₁² + F₂²) + 2F₁F₂ cos α，当 F₁ = 3.00 N、F₂ = 4.00 N 时，纵截距为 F₁² + F₂² = 25.0 N²，直线斜率为 k = 2F₁F₂ = 2 × 3.00 × 4.00 = 24.0 N²。"
+      },
+      {
+        "label": "(2)",
+        "type": "expr",
+        "prompt": "当两分力大小 F₁、F₂ 的夹角恰好为直角（α = 90°）时，合力大小 F 的表达式为",
+        "lhs": "F =",
+        "vars": { "F1": "F₁", "F2": "F₂" },
+        "extra": ["2"],
+        "answer": "sqrt(F1^2+F2^2)",
+        "show": "√(F₁² + F₂²)",
+        "explain": "当 α = 90° 时 cos α = 0，平行四边形退化为矩形，由勾股定理得合力大小 F = {{sqrt|F₁² + F₂²}}。"
+      }
+    ]
+  }
+]

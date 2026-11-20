@@ -1,0 +1,72 @@
+/* M00 scene.css — 基础仪器与读数（1016×563 横屏一屏紧凑适配） */
+.bench{max-width:1360px;margin:0 auto;padding:10px 14px 32px}
+.bench-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.bench-top .spacer{flex:1}
+.seg{display:flex;gap:4px;background:#fff;padding:3px;border-radius:999px;border:1px solid var(--line)}
+.seg .chip{border:0;min-height:36px}
+.bench-banner{background:#FFF8EC;border:1px solid #F3D3A1;border-radius:var(--rs);padding:7px 12px;margin-bottom:8px;font-size:14px}
+.bench-row{display:grid;grid-template-columns:1fr 350px;gap:12px;align-items:start}
+.bench-stage-wrap{display:flex;flex-direction:column;gap:8px}
+.bench-side{background:#fff;border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+.side-ctl{flex:0 0 auto}
+.side-k{font-weight:700;font-size:13px;color:var(--cyan);margin:6px 0 4px;display:flex;justify-content:space-between;align-items:center}
+.side-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:5px 0}
+.side-l{font-size:13px;color:var(--ink2);min-width:52px}
+.m00-read-row{display:flex;align-items:center;gap:6px;margin:6px 0}
+.m00-disp{flex:1;min-height:38px;border:1.5px solid var(--line);border-radius:var(--rs);padding:4px 10px;font-size:17px;font-weight:700;display:flex;align-items:center;background:#FBFCFE;cursor:text}
+.m00-disp.focus{border-color:var(--blue);background:#EEF4FF}
+.m00-disp.empty{color:#8E99A6;font-weight:500;font-size:13.5px}
+.m00-unit{font-weight:700;color:var(--ink2);min-width:30px}
+.m00-pad{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:4px 0 6px}
+.m00-k{min-height:32px;border:1px solid var(--line);border-radius:8px;background:#F6F9FD;cursor:pointer;font-weight:600;font-size:14px}
+.m00-k:active{background:#DCE8FF}
+.m00-fb{border-radius:var(--rs);padding:7px 10px;font-size:13px;margin:4px 0;background:#F6F9FD}
+.m00-fb.ok{background:#EEF9F4;border:1px solid #BCE6D2;color:#17784F}
+.m00-fb.bad{background:#FFF4F5;border:1px solid #F2BFC8;color:var(--err)}
+.m00-fb .link{padding:0;min-height:24px;font-size:13px}
+.steps{padding-left:18px;margin:4px 0 0;flex:1 1 auto;overflow-y:auto}
+.steps li{margin-bottom:6px;font-size:13.5px;padding:4px 6px;border-radius:8px;border-left:3px solid transparent}
+.steps li.ok .st-t{color:#17784F}
+.steps li.cur{background:#EEF4FF;border-left-color:var(--blue)}
+.steps li.cur .st-t{color:var(--blue)}
+.st-t{font-weight:700}.st-how{color:var(--ink2);font-size:12.5px}.st-why{color:var(--ink2);margin-top:2px}
+.ana-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.ana-tags .tag{cursor:pointer;min-height:34px;font:inherit;font-size:12.5px}
+.link.sm{font-size:12.5px;min-height:32px;padding:0 4px}
+.diag{max-width:1180px;margin:0 auto;padding:16px}
+.diag-h{font-size:19px;margin:14px 0 4px}
+.err-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.err-card{background:#fff;border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;border:1.5px solid transparent}
+.err-card.done{border-color:#BCE6D2}
+.err-name{font-weight:700}.err-note{font-size:13px;color:var(--ink2);flex:1}
+.err-card .btn{align-self:flex-start}
+.cmp-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.cmp-box{border-radius:var(--rs);padding:10px 12px;font-size:14px}
+.cmp-box.good{background:#EEF9F4;border:1px solid #BCE6D2}
+.cmp-box.bad{background:#FFF4F5;border:1px solid #F2BFC8}
+.cmp-box b{display:block;font-size:16px;margin-top:2px}
+.learn-widget{margin-top:10px}
+@media (max-width:900px),(orientation:portrait){
+  .bench-row{grid-template-columns:1fr}
+  .cmp-split{grid-template-columns:1fr}
+}
+@media (max-height:640px) and (orientation:landscape) and (min-width:901px){
+  .bench{padding:5px 10px 6px}
+  .bench-top{margin-bottom:4px;gap:6px}
+  .seg .chip{min-height:32px}
+  .bench-top .btn{min-height:34px;padding:0 12px;font-size:13.5px}
+  .bench-row{grid-template-columns:1fr 334px;gap:8px}
+  .bench-side{height:calc(100vh - 106px);padding:8px 10px}
+  .bench-banner:not([hidden]) + .bench-row .bench-side{height:calc(100vh - 148px)}
+  .bench-side .chip{min-height:28px;padding:0 8px;font-size:12.5px}
+  .side-l{min-width:44px;font-size:12.5px}
+  .side-row{margin:3px 0;gap:4px}
+  .side-k{margin:2px 0 3px;font-size:12.5px}
+  .m00-read-row{margin:4px 0}
+  .m00-disp{min-height:34px;font-size:16px}
+  .m00-pad{gap:3px;margin:3px 0 4px}
+  .m00-k{min-height:28px;font-size:13px}
+  .m00-fb{padding:5px 8px;font-size:12px}
+  .steps li{margin-bottom:4px;font-size:12.5px;padding:3px 6px}
+  .st-how{font-size:11.5px}
+}

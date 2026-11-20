@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .database import SessionLocal, settings
 from .init_db import init_database
-from .routers import admin, animations, auth, favorites_ratings, game, stats, users
+from .routers import admin, animations, auth, classroom, collections, favorites_ratings, game, stats, users
 
 app = FastAPI(
     title="教育动画展示系统",
@@ -28,10 +28,12 @@ app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads"
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(animations.router)
+app.include_router(collections.router)
 app.include_router(favorites_ratings.router)
 app.include_router(stats.router)
 app.include_router(admin.router)
 app.include_router(game.router)
+app.include_router(classroom.router)
 
 @app.on_event("startup")
 def startup():

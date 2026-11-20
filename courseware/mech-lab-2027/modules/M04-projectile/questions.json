@@ -1,0 +1,418 @@
+[
+  {
+    "id": "G1",
+    "source": "2026·全国卷·第22题",
+    "verified": true,
+    "stem": "某同学利用如图所示装置探究平抛运动竖直方向分运动的特点：将小钢球 A、B 置于同一高度，用小锤击打弹性金属片，使 B 球沿水平方向飞出，同时 A 球被松开做自由落体运动。<svg viewBox=\"0 0 420 205\" width=\"420\" role=\"img\" aria-label=\"平抛竖落仪示意图\"><line x1=\"24\" y1=\"185\" x2=\"396\" y2=\"185\" stroke=\"#10233F\" stroke-width=\"2\"/><g stroke=\"#10233F\" stroke-width=\"1.2\"><line x1=\"40\" y1=\"185\" x2=\"32\" y2=\"195\"/><line x1=\"70\" y1=\"185\" x2=\"62\" y2=\"195\"/><line x1=\"100\" y1=\"185\" x2=\"92\" y2=\"195\"/><line x1=\"130\" y1=\"185\" x2=\"122\" y2=\"195\"/><line x1=\"160\" y1=\"185\" x2=\"152\" y2=\"195\"/><line x1=\"190\" y1=\"185\" x2=\"182\" y2=\"195\"/><line x1=\"220\" y1=\"185\" x2=\"212\" y2=\"195\"/><line x1=\"250\" y1=\"185\" x2=\"242\" y2=\"195\"/><line x1=\"280\" y1=\"185\" x2=\"272\" y2=\"195\"/><line x1=\"310\" y1=\"185\" x2=\"302\" y2=\"195\"/><line x1=\"340\" y1=\"185\" x2=\"332\" y2=\"195\"/><line x1=\"370\" y1=\"185\" x2=\"362\" y2=\"195\"/></g><rect x=\"48\" y=\"78\" width=\"72\" height=\"10\" fill=\"#4A5B73\" rx=\"2\"/><rect x=\"108\" y=\"16\" width=\"8\" height=\"42\" fill=\"#8E99A6\"/><rect x=\"114\" y=\"22\" width=\"4\" height=\"64\" fill=\"#10233F\"/><rect x=\"118\" y=\"78\" width=\"40\" height=\"8\" fill=\"#4A5B73\" rx=\"2\"/><path d=\"M56 20 L88 42 L81 51 L49 29 Z\" fill=\"#8E99A6\" stroke=\"#10233F\"/><line x1=\"54\" y1=\"25\" x2=\"30\" y2=\"12\" stroke=\"#7A5C3E\" stroke-width=\"4\" stroke-linecap=\"round\"/><circle cx=\"104\" cy=\"68\" r=\"10\" fill=\"#C9D1D9\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"88\" y=\"72\" font-size=\"13\" font-weight=\"700\" fill=\"#10233F\" text-anchor=\"end\">A</text><circle cx=\"130\" cy=\"68\" r=\"10\" fill=\"#1661FF\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"144\" y=\"62\" font-size=\"13\" font-weight=\"700\" fill=\"#1661FF\">B</text><line x1=\"104\" y1=\"78\" x2=\"104\" y2=\"175\" stroke=\"#25A870\" stroke-width=\"1.6\" stroke-dasharray=\"5 4\"/><path d=\"M140 68 Q250 72 308 175\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"1.8\" stroke-dasharray=\"5 4\"/><circle cx=\"104\" cy=\"175\" r=\"9\" fill=\"#E8F7F0\" stroke=\"#25A870\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><circle cx=\"308\" cy=\"175\" r=\"9\" fill=\"#EAF1FF\" stroke=\"#1661FF\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"70\" y=\"13\" font-size=\"12\" fill=\"#10233F\">小锤</text><text x=\"126\" y=\"34\" font-size=\"12\" fill=\"#10233F\">弹性金属片</text><text x=\"104\" y=\"199\" font-size=\"11\" fill=\"#25A870\" text-anchor=\"middle\">自由落体</text><text x=\"308\" y=\"199\" font-size=\"11\" fill=\"#1661FF\" text-anchor=\"middle\">平抛</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "改变装置距地面的高度多次实验，每次均观察到两球同时落地，说明平抛运动在竖直方向上的分运动是",
+        "options": ["自由落体运动", "匀速直线运动", "匀减速直线运动"],
+        "answer": 0,
+        "explain": "无论高度如何变化，平抛球 B 与自由落体球 A 总是同时落地，说明两球在竖直方向上的运动规律完全相同，即平抛运动的竖直分运动是自由落体运动。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "保持高度不变，增加小锤击打弹性金属片的力度，观察到 B 球落地点更远，这说明 B 球的____增大，但两球仍同时落地。",
+        "options": ["水平抛出初速度", "下落加速度", "空中运动时间"],
+        "answer": 0,
+        "explain": "增加击打力度增大了 B 球的水平初速度 v₀，水平射程 x = v₀t 增大；而竖直高度不变，竖直分运动不受水平初速度影响，两球依然同时落地。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "假设某次实验发现 A 球比 B 球早落地，最可能的原因是此次实验中 B 球抛出方向____。",
+        "options": ["斜向上", "斜向下", "严格水平且速度更大", "严格水平且速度更小"],
+        "answer": 0,
+        "replay": "E1",
+        "explain": "A 球做自由落体运动。若 B 球抛出方向<b>斜向上</b>，则 B 球竖直方向有向上的初速度分量，会先上升再下落，导致空中运动时间变长，从而 A 球比 B 球早落地。"
+      }
+    ]
+  },
+  {
+    "id": "G2",
+    "source": "2026·浙江1月选考·第14题",
+    "verified": true,
+    "stem": "在“探究平抛运动的规律”实验中：<svg viewBox=\"0 0 640 200\" width=\"640\" role=\"img\" aria-label=\"2026浙江1月14题三图\"><g transform=\"translate(10,8)\"><rect x=\"0\" y=\"0\" width=\"190\" height=\"184\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"95\" y=\"16\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 1：分运动对比装置</text><text x=\"48\" y=\"34\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">甲</text><rect x=\"22\" y=\"52\" width=\"24\" height=\"6\" fill=\"#4A5B73\"/><line x1=\"46\" y1=\"36\" x2=\"46\" y2=\"62\" stroke=\"#10233F\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"48\" r=\"4.5\" fill=\"#25A870\"/><circle cx=\"53\" cy=\"48\" r=\"4.5\" fill=\"#1661FF\"/><line x1=\"40\" y1=\"54\" x2=\"40\" y2=\"92\" stroke=\"#25A870\" stroke-dasharray=\"3 2\"/><path d=\"M56 48 Q78 52 86 92\" fill=\"none\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\"/><line x1=\"18\" y1=\"94\" x2=\"92\" y2=\"94\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"140\" y=\"34\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">乙</text><path d=\"M104 38 L122 56 H140\" fill=\"none\" stroke=\"#8E99A6\" stroke-width=\"3\"/><path d=\"M104 82 L122 100 H180\" fill=\"none\" stroke=\"#8E99A6\" stroke-width=\"3\"/><circle cx=\"142\" cy=\"53\" r=\"4\" fill=\"#1661FF\"/><circle cx=\"142\" cy=\"97\" r=\"4\" fill=\"#25A870\"/><path d=\"M144 53 Q166 56 174 96\" fill=\"none\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\"/><text x=\"95\" y=\"174\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">乙：双斜槽+光滑水平轨道</text></g><g transform=\"translate(216,8)\"><rect x=\"0\" y=\"0\" width=\"190\" height=\"184\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"95\" y=\"16\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 2：斜槽描迹装置</text><rect x=\"54\" y=\"26\" width=\"114\" height=\"134\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.4\"/><path d=\"M14 40 L44 68 H68\" fill=\"none\" stroke=\"#596574\" stroke-width=\"4\"/><circle cx=\"22\" cy=\"42\" r=\"5\" fill=\"#1661FF\"/><line x1=\"68\" y1=\"68\" x2=\"68\" y2=\"154\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><line x1=\"56\" y1=\"122\" x2=\"164\" y2=\"136\" stroke=\"#D9B98C\" stroke-width=\"6\"/><path d=\"M68 64 Q112 72 136 128\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"1.5\" stroke-dasharray=\"4 3\"/><circle cx=\"136\" cy=\"128\" r=\"3.5\" fill=\"#C7374B\"/><text x=\"95\" y=\"174\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">斜槽、背板与倾斜挡板</text></g><g transform=\"translate(422,8)\"><rect x=\"0\" y=\"0\" width=\"208\" height=\"184\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><text x=\"104\" y=\"16\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 3：坐标轨迹图</text><line x1=\"34\" y1=\"34\" x2=\"192\" y2=\"34\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"34\" y1=\"34\" x2=\"34\" y2=\"164\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"24\" y=\"34\" font-size=\"11\" fill=\"#10233F\">O</text><text x=\"186\" y=\"28\" font-size=\"11\" fill=\"#10233F\">x</text><text x=\"22\" y=\"164\" font-size=\"11\" fill=\"#10233F\">y</text><path d=\"M34 34 Q102 42 152 156\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2\"/><circle cx=\"124\" cy=\"118\" r=\"3.5\" fill=\"#C7374B\"/><text x=\"116\" y=\"116\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#C7374B\">A(11.0,15.8)</text><circle cx=\"141\" cy=\"133\" r=\"3.8\" fill=\"#1661FF\"/><text x=\"148\" y=\"150\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#1661FF\" font-weight=\"700\">B(11.8,19.6)</text><text x=\"104\" y=\"174\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">单位：cm（A 偏离曲线）</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "为探究平抛运动<b>水平方向</b>分运动的特点，应选用图 1 中的____装置。",
+        "options": ["甲", "乙"],
+        "answer": 1,
+        "explain": "图 1 甲只能验证竖直分运动是自由落体；图 1 乙中两球从双斜槽同一高度静止释放，上槽球平抛、下槽球沿光滑水平面匀速运动，两球在下方相遇，可探究水平分运动为匀速直线运动。"
+      },
+      {
+        "label": "(2)",
+        "type": "multi",
+        "prompt": "采用图 2 装置进行实验，下列说法正确的是____（多选）。",
+        "options": [
+          "调节装置使其背板竖直",
+          "调节斜槽使其末端切线水平",
+          "以斜槽的末端在白纸上的投影点为坐标原点",
+          "钢球在斜槽静止释放的高度应等间距下降"
+        ],
+        "answer": [0, 1],
+        "replay": "E1",
+        "explain": "背板必须竖直（A 正确），斜槽末端切线必须水平（B 正确）。C 错：原点应取球离开槽口时<b>球心</b>在白纸上的投影（槽口正上方 R 处）；D 错：每次必须从斜槽<b>同一位置</b>由静止释放，才能保证初速度相同。"
+      },
+      {
+        "label": "(3)",
+        "type": "text-choice",
+        "prompt": "如图 3，抛出点为坐标原点，A 点 (11.0 cm, 15.8 cm) 是记录的印迹，B 点 (11.8 cm, 19.6 cm) 是平滑曲线上的点，为得到小球的水平初速度，应取____点进行计算。",
+        "options": ["A", "B"],
+        "answer": 1,
+        "explain": "描迹后已作出平滑曲线，应当选取落在平滑曲线上且离原点较远的点（B 点）来计算，舍去偏离曲线较远的偶然误差点 A。"
+      },
+      {
+        "label": "(4)",
+        "type": "numeric",
+        "prompt": "取 g = 9.8 m/s²，由所选点坐标求得小球水平初速度 v₀ =（保留两位有效数字）",
+        "unit": "m/s",
+        "answer": 0.59,
+        "tol": 0.01,
+        "sig": 2,
+        "show": "0.59",
+        "explain": "取 B 点 (0.118 m, 0.196 m)，由 y = {{frac|1|2}}gt² 得 t = {{sqrt|{{frac|2 × 0.196|9.8}}}} = 0.20 s，则 v₀ = {{frac|x|t}} = {{frac|0.118|0.20}} m/s = 0.59 m/s。"
+      }
+    ]
+  },
+  {
+    "id": "G3",
+    "source": "2026·北京卷·第16题",
+    "verified": true,
+    "score": 10,
+    "stem": "用如图 1 所示装置研究平抛运动。将白纸和复写纸固定在背板上，钢球沿斜槽轨道滑下后飞出，落在水平挡板上挤压出印迹，移动挡板重复实验留下一系列印迹。<svg viewBox=\"0 0 640 198\" width=\"640\" role=\"img\" aria-label=\"2026北京16题三图\"><g transform=\"translate(8,8)\"><rect x=\"60\" y=\"12\" width=\"136\" height=\"148\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.6\"/><rect x=\"68\" y=\"20\" width=\"120\" height=\"132\" fill=\"none\" stroke=\"#4A5B73\" stroke-dasharray=\"4 3\"/><path d=\"M8 32 L46 60 H74\" fill=\"none\" stroke=\"#8E99A6\" stroke-width=\"5\"/><circle cx=\"16\" cy=\"32\" r=\"6\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.4\"/><circle cx=\"74\" cy=\"53\" r=\"6\" fill=\"none\" stroke=\"#12A9C4\" stroke-width=\"1.4\" stroke-dasharray=\"3 2\"/><line x1=\"74\" y1=\"59\" x2=\"74\" y2=\"142\" stroke=\"#10233F\" stroke-width=\"1.3\"/><polygon points=\"74,148 70,138 78,138\" fill=\"#10233F\"/><rect x=\"54\" y=\"114\" width=\"148\" height=\"9\" fill=\"#D9B98C\" stroke=\"#10233F\"/><circle cx=\"172\" cy=\"108\" r=\"6\" fill=\"none\" stroke=\"#12A9C4\" stroke-width=\"1.4\" stroke-dasharray=\"3 2\"/><text x=\"128\" y=\"10\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">背板与白纸</text><text x=\"34\" y=\"100\" font-size=\"11\" fill=\"#10233F\">重锤线</text><text x=\"186\" y=\"136\" font-size=\"11\" fill=\"#10233F\">挡板</text><text x=\"128\" y=\"178\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 1</text></g><g transform=\"translate(230,8)\"><line x1=\"24\" y1=\"24\" x2=\"170\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.6\"/><line x1=\"24\" y1=\"24\" x2=\"24\" y2=\"156\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"14\" y=\"22\" font-size=\"12\" font-style=\"italic\" fill=\"#10233F\">O</text><text x=\"164\" y=\"18\" font-size=\"12\" font-style=\"italic\" fill=\"#10233F\">x</text><text x=\"12\" y=\"154\" font-size=\"12\" font-style=\"italic\" fill=\"#10233F\">y</text><path d=\"M24 24 Q95 36 142 146\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"2\"/><text x=\"96\" y=\"178\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 2</text></g><g transform=\"translate(430,8)\"><line x1=\"34\" y1=\"146\" x2=\"184\" y2=\"146\" stroke=\"#10233F\" stroke-width=\"1.6\"/><line x1=\"34\" y1=\"146\" x2=\"34\" y2=\"18\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"20\" y=\"160\" font-size=\"12\" font-style=\"italic\" fill=\"#10233F\">O'</text><text x=\"180\" y=\"160\" font-size=\"12\" font-style=\"italic\" fill=\"#10233F\">x</text><text x=\"44\" y=\"28\" font-size=\"13\" font-style=\"italic\" fill=\"#10233F\">y/x</text><text x=\"22\" y=\"120\" font-size=\"12\" font-style=\"italic\" fill=\"#10233F\">b</text><line x1=\"34\" y1=\"116\" x2=\"174\" y2=\"44\" stroke=\"#10233F\" stroke-width=\"1.8\"/><g stroke=\"#C7374B\" stroke-width=\"1.6\"><line x1=\"54\" y1=\"101\" x2=\"62\" y2=\"109\"/><line x1=\"62\" y1=\"101\" x2=\"54\" y2=\"109\"/><line x1=\"84\" y1=\"86\" x2=\"92\" y2=\"94\"/><line x1=\"92\" y1=\"86\" x2=\"84\" y2=\"94\"/><line x1=\"114\" y1=\"70\" x2=\"122\" y2=\"78\"/><line x1=\"122\" y1=\"70\" x2=\"114\" y2=\"78\"/><line x1=\"146\" y1=\"54\" x2=\"154\" y2=\"62\"/><line x1=\"154\" y1=\"54\" x2=\"146\" y2=\"62\"/></g><text x=\"108\" y=\"178\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 3</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "multi",
+        "prompt": "下列实验操作必要的是____（多选）。",
+        "options": [
+          "背板调节到竖直平面内",
+          "斜槽轨道的末端保持水平",
+          "等间距移动挡板"
+        ],
+        "answer": [0, 1],
+        "replay": "E1",
+        "explain": "背板必须竖直（A 正确），斜槽末端切线必须保持水平（B 正确）；移动挡板是为了得到不同高度的印迹点，不必等间距移动（C 错）。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "实验操作时，钢球每次从同一个位置由静止释放，目的是____。",
+        "options": [
+          "使钢球每次从斜槽轨道的末端飞出的速度相同",
+          "减小钢球在斜槽上受到的摩擦力",
+          "使斜槽轨道的末端切线保持水平",
+          "使相邻印迹点间的水平距离一定相等"
+        ],
+        "answer": 0,
+        "replay": "E2",
+        "explain": "多次释放才能描出多点轨迹，每次从同一位置静止释放可保证到达末端飞出时的初速度大小相同。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "如图 2，以抛出点为原点建立坐标系。已知竖直分运动为自由落体运动，为探究水平分运动规律，应在轨迹上怎样选点来确定“相等的时间间隔”？",
+        "options": [
+          "在 y 轴上从 O 起取纵坐标之比为 1 : 4 : 9 : … 的点，作水平线与轨迹相交",
+          "在 y 轴上从 O 起取纵坐标之比为 1 : 2 : 3 : … 的点，作水平线与轨迹相交",
+          "在轨迹上每隔相等的弧长取一个点",
+          "在 x 轴上取等间距的点，再作竖直线与轨迹相交"
+        ],
+        "answer": 0,
+        "explain": "因为竖直方向满足 y = {{frac|1|2}}gt²，从抛出点 O 开始，当时间 t 取 T、2T、3T… 时，纵坐标 y₁ : y₂ : y₃ = 1 : 4 : 9 : …（即连续相等时间内的竖直位移之比为 1 : 3 : 5 : …），过这些纵坐标作水平线与轨迹的交点即对应相等的时间间隔。"
+      },
+      {
+        "label": "(4)",
+        "type": "expr",
+        "prompt": "（第 4 问第 1 空）某同学以轨迹上某点 O' 为原点建立坐标系，作出的 y/x - x 图像斜率为 k、截距为 b（图 3）。则抛出点在 O' 坐标系中的横坐标",
+        "lhs": "x₀ =",
+        "vars": { "b": "b", "k": "k" },
+        "extra": ["1", "2", "4"],
+        "answer": "-b/(2*k)",
+        "show": "−b ÷ (2k)",
+        "explain": "设抛出点在 O' 系中为 (x₀, y₀)，轨迹满足 y − y₀ = k(x − x₀)²，且 O'(0, 0) 在轨迹上故 −y₀ = kx₀²。展开得 {{frac|y|x}} = kx − 2kx₀，对比截距 b = −2kx₀ 得 x₀ = −{{frac|b|2k}}。"
+      },
+      {
+        "label": "(5)",
+        "type": "expr",
+        "prompt": "（第 4 问第 2 空）抛出点在 O' 坐标系中的纵坐标",
+        "lhs": "y₀ =",
+        "vars": { "b": "b", "k": "k" },
+        "extra": ["1", "2", "4"],
+        "answer": "-b^2/(4*k)",
+        "show": "−b² ÷ (4k)",
+        "explain": "由 −y₀ = kx₀² 与 x₀ = −{{frac|b|2k}} 代入，得 y₀ = −k(−{{frac|b|2k}})² = −{{frac|b²|4k}}。"
+      }
+    ]
+  },
+  {
+    "id": "G4",
+    "source": "2025·贵州卷·第11题",
+    "verified": true,
+    "stem": "在“探究平抛运动的特点”实验中，某同学用高速摄像机录制小钢球平抛过程，提取每隔 T = 0.05 s 小钢球的位置，测得相邻两个位置的水平间距 Δx 和竖直间距 Δy 如下表所示：<table class=\"dt\"><tr><th>间隔序号</th><th>1</th><th>2</th><th>3</th><th>4</th></tr><tr><th>水平间距 Δx / m</th><td>0.0517</td><td>0.0514</td><td>0.0505</td><td>0.0504</td></tr><tr><th>竖直间距 Δy / m</th><td>0.0975</td><td>0.1217</td><td>0.1465</td><td>0.1704</td></tr></table>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "安装器材时，固定斜槽轨道并使其末端",
+        "options": ["水平", "略向上翘", "略向下倾"],
+        "answer": 0,
+        "replay": "E1",
+        "explain": "只有斜槽末端切线水平，钢球飞出时初速度才沿水平方向，运动才是平抛运动。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "充分利用数据算得小钢球水平方向速度大小为（保留 2 位小数）",
+        "unit": "m/s",
+        "answer": 1.02,
+        "tol": 0.015,
+        "sig": 3,
+        "show": "1.02",
+        "explain": "平均每段水平位移 {{bar|Δx}} = {{frac|0.0517 + 0.0514 + 0.0505 + 0.0504|4}} = 0.0510 m，故水平速度 vₓ = {{frac|0.0510|0.05}} m/s = 1.02 m/s。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "利用逐差法算得小钢球竖直方向加速度大小为（保留 2 位小数）",
+        "unit": "m/s²",
+        "answer": 9.77,
+        "tol": 0.02,
+        "sig": 3,
+        "show": "9.77",
+        "explain": "四段逐差法：a = {{frac|(y₃ + y₄) − (y₁ + y₂)|4T²}} = {{frac|(0.1465 + 0.1704) − (0.0975 + 0.1217)|4 × 0.05²}} m/s² = 9.77 m/s²。"
+      }
+    ]
+  },
+  {
+    "id": "G5",
+    "source": "2025·天津卷·第9题",
+    "verified": true,
+    "stem": "某实验小组探究平抛运动的特点：<br>（1）采用图 1 装置，在竖直背板上固定白纸和复写纸，钢球从斜槽末端水平飞出落在挡板上留下痕迹点。<br>（2）利用视频分析软件得到钢球平抛过程的水平位移和竖直位移随时间变化的图像如图 2 所示。<svg viewBox=\"0 0 600 220\" width=\"600\" role=\"img\" aria-label=\"2025天津9题实验图与位移时间图\"><g transform=\"translate(16,10)\"><rect x=\"50\" y=\"14\" width=\"140\" height=\"150\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.5\"/><path d=\"M4 22 L40 44 H76\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"5\"/><circle cx=\"16\" cy=\"24\" r=\"5\" fill=\"#8E99A6\" stroke=\"#10233F\"/><line x1=\"74\" y1=\"46\" x2=\"74\" y2=\"164\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"62\" y1=\"46\" x2=\"62\" y2=\"154\" stroke=\"#4A5B73\" stroke-width=\"1.2\"/><rect x=\"72\" y=\"110\" width=\"94\" height=\"8\" fill=\"#D9B98C\" stroke=\"#10233F\"/><line x1=\"34\" y1=\"164\" x2=\"206\" y2=\"164\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"108\" y=\"196\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 1</text></g><g transform=\"translate(250,10)\"><rect x=\"58\" y=\"10\" width=\"256\" height=\"168\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.2\"/><g stroke=\"#DCE5F0\" stroke-width=\"1\"><line x1=\"58\" y1=\"34\" x2=\"314\" y2=\"34\"/><line x1=\"58\" y1=\"58\" x2=\"314\" y2=\"58\"/><line x1=\"58\" y1=\"82\" x2=\"314\" y2=\"82\"/><line x1=\"58\" y1=\"130\" x2=\"314\" y2=\"130\"/><line x1=\"58\" y1=\"154\" x2=\"314\" y2=\"154\"/><line x1=\"90\" y1=\"10\" x2=\"90\" y2=\"178\"/><line x1=\"122\" y1=\"10\" x2=\"122\" y2=\"178\"/><line x1=\"154\" y1=\"10\" x2=\"154\" y2=\"178\"/><line x1=\"186\" y1=\"10\" x2=\"186\" y2=\"178\"/><line x1=\"218\" y1=\"10\" x2=\"218\" y2=\"178\"/><line x1=\"250\" y1=\"10\" x2=\"250\" y2=\"178\"/><line x1=\"282\" y1=\"10\" x2=\"282\" y2=\"178\"/></g><line x1=\"58\" y1=\"106\" x2=\"314\" y2=\"106\" stroke=\"#4A5B73\" stroke-width=\"1.2\"/><g font-size=\"10.5\" fill=\"#10233F\" text-anchor=\"end\"><text x=\"53\" y=\"15\">0.8</text><text x=\"53\" y=\"38\">0.6</text><text x=\"53\" y=\"62\">0.4</text><text x=\"53\" y=\"86\">0.2</text><text x=\"53\" y=\"110\">0.0</text><text x=\"53\" y=\"134\">-0.2</text><text x=\"53\" y=\"158\">-0.4</text><text x=\"53\" y=\"181\">-0.6</text></g><g font-size=\"10\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"58\" y=\"191\">0.00</text><text x=\"122\" y=\"191\">0.10</text><text x=\"186\" y=\"191\">0.20</text><text x=\"250\" y=\"191\">0.30</text><text x=\"314\" y=\"191\">0.40</text></g><text x=\"186\" y=\"207\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">时间 t / s</text><text x=\"18\" y=\"96\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\" transform=\"rotate(-90 18 96)\">位移 / m</text><line x1=\"58\" y1=\"106\" x2=\"282\" y2=\"22\" stroke=\"#1661FF\" stroke-width=\"2\"/><path d=\"M58 106 Q170 106 282 178\" fill=\"none\" stroke=\"#C7374B\" stroke-width=\"2\"/><g fill=\"#10233F\"><circle cx=\"58\" cy=\"106\" r=\"2.8\"/><circle cx=\"154\" cy=\"70\" r=\"3\"/><circle cx=\"250\" cy=\"34\" r=\"3\"/><circle cx=\"186\" cy=\"130\" r=\"3\"/><circle cx=\"282\" cy=\"178\" r=\"3\"/></g><text x=\"218\" y=\"40\" font-size=\"12\" font-weight=\"700\" fill=\"#1661FF\">甲</text><text x=\"236\" y=\"148\" font-size=\"12\" font-weight=\"700\" fill=\"#C7374B\">乙</text><text x=\"300\" y=\"16\" font-size=\"12\" font-weight=\"700\" fill=\"#10233F\">图 2</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "为正确研究钢球运动的规律，将白纸从背板上取下前还应根据____在白纸上标记竖直方向。",
+        "options": ["铅垂线", "斜槽末端", "水平挡板"],
+        "answer": 0,
+        "replay": "E5",
+        "explain": "应根据自然下垂的铅垂线（重锤线）在白纸上确定竖直方向（y 轴）。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "图 2 中图线____为水平位移随时间变化的图线。",
+        "options": ["甲", "乙"],
+        "answer": 0,
+        "explain": "平抛运动水平方向做匀速直线运动，位移与时间成正比，x-t 图像是一条过原点的倾斜直线，即图线甲（图线乙为竖直方向 y-t 抛物线）。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "由图 2 可得此次钢球做平抛运动的初速度大小为",
+        "unit": "m/s",
+        "answer": 2,
+        "tol": 0.1,
+        "show": "2",
+        "explain": "甲为 x-t 直线，从图上读出 t = 0.15 s 时 x = 0.30 m（或 t = 0.30 s 时 x = 0.60 m），直线斜率即为初速度 v₀ = {{frac|0.30|0.15}} m/s = 2 m/s（2.0 m/s 也可）。"
+      }
+    ]
+  },
+  {
+    "id": "G6",
+    "source": "2024·河北卷·第11(2)题",
+    "verified": true,
+    "stem": "图 1 为探究平抛运动特点的装置，其斜槽位置固定且末端水平，固定坐标纸的背板处于竖直面内，钢球从斜槽滚下飞出后落在倾斜挡板上挤压复写纸留下印迹。多次释放钢球得到如图 2 所示的印迹，坐标纸的 y 轴对应竖直方向，坐标原点对应平抛起点。<svg viewBox=\"0 0 600 264\" width=\"600\" role=\"img\" aria-label=\"2024河北11题装置与方格印迹图\"><g transform=\"translate(10,16)\"><rect x=\"54\" y=\"14\" width=\"130\" height=\"164\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.5\"/><path d=\"M6 18 L44 46 H74\" fill=\"none\" stroke=\"#596574\" stroke-width=\"5\"/><circle cx=\"18\" cy=\"18\" r=\"6\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"70\" y1=\"52\" x2=\"70\" y2=\"172\" stroke=\"#8E99A6\" stroke-width=\"5\"/><line x1=\"166\" y1=\"52\" x2=\"166\" y2=\"172\" stroke=\"#8E99A6\" stroke-width=\"5\"/><polygon points=\"64,138 172,114 174,124 66,148\" fill=\"#E6EEF8\" stroke=\"#10233F\"/><line x1=\"34\" y1=\"178\" x2=\"204\" y2=\"178\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"119\" y=\"214\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 1</text></g><g transform=\"translate(256,16)\"><rect x=\"36\" y=\"14\" width=\"176\" height=\"220\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.2\"/><g stroke=\"#E3EAF3\" stroke-width=\"1\"><line x1=\"58\" y1=\"14\" x2=\"58\" y2=\"234\"/><line x1=\"80\" y1=\"14\" x2=\"80\" y2=\"234\"/><line x1=\"102\" y1=\"14\" x2=\"102\" y2=\"234\"/><line x1=\"124\" y1=\"14\" x2=\"124\" y2=\"234\"/><line x1=\"146\" y1=\"14\" x2=\"146\" y2=\"234\"/><line x1=\"168\" y1=\"14\" x2=\"168\" y2=\"234\"/><line x1=\"190\" y1=\"14\" x2=\"190\" y2=\"234\"/><line x1=\"36\" y1=\"36\" x2=\"212\" y2=\"36\"/><line x1=\"36\" y1=\"58\" x2=\"212\" y2=\"58\"/><line x1=\"36\" y1=\"80\" x2=\"212\" y2=\"80\"/><line x1=\"36\" y1=\"102\" x2=\"212\" y2=\"102\"/><line x1=\"36\" y1=\"124\" x2=\"212\" y2=\"124\"/><line x1=\"36\" y1=\"146\" x2=\"212\" y2=\"146\"/><line x1=\"36\" y1=\"168\" x2=\"212\" y2=\"168\"/><line x1=\"36\" y1=\"190\" x2=\"212\" y2=\"190\"/><line x1=\"36\" y1=\"212\" x2=\"212\" y2=\"212\"/></g><line x1=\"36\" y1=\"14\" x2=\"234\" y2=\"14\" stroke=\"#10233F\" stroke-width=\"1.6\"/><line x1=\"36\" y1=\"14\" x2=\"36\" y2=\"244\" stroke=\"#10233F\" stroke-width=\"1.6\"/><g font-size=\"10.5\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"36\" y=\"10\">0</text><text x=\"58\" y=\"10\">2</text><text x=\"80\" y=\"10\">4</text><text x=\"102\" y=\"10\">6</text><text x=\"124\" y=\"10\">8</text><text x=\"146\" y=\"10\">10</text><text x=\"168\" y=\"10\">12</text><text x=\"190\" y=\"10\">14</text><text x=\"212\" y=\"10\">16</text><text x=\"246\" y=\"18\">x/cm</text></g><g font-size=\"10.5\" fill=\"#10233F\" text-anchor=\"end\"><text x=\"31\" y=\"39\">2</text><text x=\"31\" y=\"61\">4</text><text x=\"31\" y=\"83\">6</text><text x=\"31\" y=\"105\">8</text><text x=\"31\" y=\"127\">10</text><text x=\"31\" y=\"149\">12</text><text x=\"31\" y=\"171\">14</text><text x=\"31\" y=\"193\">16</text><text x=\"31\" y=\"215\">18</text><text x=\"31\" y=\"237\">20</text><text x=\"24\" y=\"246\">y/cm</text></g><g fill=\"#10233F\"><circle cx=\"36\" cy=\"14\" r=\"3\"/><circle cx=\"62.4\" cy=\"18.4\" r=\"2.8\"/><circle cx=\"82.2\" cy=\"31.6\" r=\"2.8\"/><circle cx=\"102.0\" cy=\"51.4\" r=\"2.8\"/><circle cx=\"115.2\" cy=\"66.8\" r=\"2.8\"/><circle cx=\"124.0\" cy=\"75.6\" r=\"2.8\"/><circle cx=\"143.8\" cy=\"106.4\" r=\"2.8\"/><circle cx=\"154.8\" cy=\"135.0\" r=\"2.8\"/><circle cx=\"161.4\" cy=\"148.2\" r=\"2.8\"/><circle cx=\"174.6\" cy=\"170.2\" r=\"2.8\"/><circle cx=\"181.2\" cy=\"181.2\" r=\"2.8\"/><circle cx=\"183.4\" cy=\"201.0\" r=\"2.8\"/><circle cx=\"201.0\" cy=\"234.0\" r=\"3\"/></g><text x=\"124\" y=\"246\" font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">图 2（每大格 2 cm）</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "每次由静止释放钢球时，钢球在斜槽上的高度应",
+        "options": ["相同", "不同"],
+        "answer": 0,
+        "replay": "E2",
+        "explain": "保证每次钢球离开斜槽末端的初速度相同，这样多次打出的印迹点才落在同一条轨迹上。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "根据图 2 印迹描绘钢球平抛轨迹时，正确的做法是____。",
+        "options": [
+          "用平滑曲线连接各点，使尽量多的点落在线上，个别偏差较大的点舍去",
+          "用折线将全部印迹点依次连接起来",
+          "只保留最下方的两个点直接连线"
+        ],
+        "answer": 0,
+        "explain": "平抛轨迹是光滑抛物线，作图时应用平滑曲线拟合，偏差较大的坏点应舍去，其余点均匀分布在曲线两侧。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "由图 2 轨迹算得钢球平抛初速度大小约为（g 取 9.8 m/s²，保留 2 位有效数字）",
+        "unit": "m/s",
+        "answer": 0.72,
+        "tol": 0.04,
+        "sig": 2,
+        "show": "0.72",
+        "explain": "平滑轨迹经过 (14.4 cm, 20.0 cm) 附近（或取 x = 10.0 cm, y ≈ 9.6 cm）：代入 v₀ = x{{sqrt|{{frac|g|2y}}}} ≈ 0.144 × {{sqrt|{{frac|9.8|0.40}}}} ≈ 0.71–0.72 m/s（官方评分参考范围为 0.69～0.76 m/s，填 0.71～0.74 均正确）。"
+      }
+    ]
+  },
+  {
+    "id": "G7",
+    "source": "2025·山东泰安模拟（大一轮复习课件）",
+    "verified": true,
+    "stem": "某同学用图甲装置“探究平抛运动及其特点”，在小球 A、B 处于同一高度时用小锤轻击弹性金属片使 A 球水平飞出，同时 B 球被松开；再用描迹法得到图丙轨迹（a、b、c 为轨迹上三点）；另一同学以抛出点为原点作出 y-x² 图像如图丁所示。<svg viewBox=\"0 0 640 194\" width=\"640\" role=\"img\" aria-label=\"2025山东泰安模拟甲丙丁图\"><g transform=\"translate(10,8)\"><rect x=\"0\" y=\"0\" width=\"192\" height=\"178\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><line x1=\"18\" y1=\"146\" x2=\"174\" y2=\"146\" stroke=\"#10233F\" stroke-width=\"1.6\"/><rect x=\"24\" y=\"62\" width=\"34\" height=\"6\" fill=\"#4A5B73\"/><line x1=\"58\" y1=\"36\" x2=\"58\" y2=\"70\" stroke=\"#10233F\" stroke-width=\"2\"/><circle cx=\"51\" cy=\"54\" r=\"5.5\" fill=\"#25A870\"/><circle cx=\"66\" cy=\"54\" r=\"5.5\" fill=\"#1661FF\"/><text x=\"42\" y=\"48\" font-size=\"11\" font-weight=\"700\" fill=\"#25A870\">B</text><text x=\"74\" y=\"48\" font-size=\"11\" font-weight=\"700\" fill=\"#1661FF\">A</text><line x1=\"51\" y1=\"60\" x2=\"51\" y2=\"140\" stroke=\"#25A870\" stroke-dasharray=\"3 2\"/><path d=\"M68 54 Q112 62 134 140\" fill=\"none\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\"/><text x=\"96\" y=\"168\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">甲</text></g><g transform=\"translate(220,8)\"><rect x=\"0\" y=\"0\" width=\"202\" height=\"178\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><line x1=\"42\" y1=\"24\" x2=\"186\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"42\" y1=\"24\" x2=\"42\" y2=\"148\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"172\" y=\"18\" font-size=\"11\" fill=\"#10233F\">x/cm</text><text x=\"18\" y=\"152\" font-size=\"11\" fill=\"#10233F\">y/cm</text><text x=\"34\" y=\"20\" font-size=\"10.5\" fill=\"#10233F\">0</text><text x=\"94\" y=\"18\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#10233F\">30</text><text x=\"146\" y=\"18\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#10233F\">60</text><text x=\"36\" y=\"60\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#10233F\">10</text><text x=\"36\" y=\"92\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#10233F\">20</text><text x=\"36\" y=\"124\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#10233F\">30</text><path d=\"M42 24 Q94 40 146 120\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"94\" y1=\"24\" x2=\"94\" y2=\"56\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><line x1=\"42\" y1=\"56\" x2=\"94\" y2=\"56\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><line x1=\"146\" y1=\"24\" x2=\"146\" y2=\"120\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><line x1=\"42\" y1=\"120\" x2=\"146\" y2=\"120\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><circle cx=\"42\" cy=\"24\" r=\"3.2\" fill=\"#C7374B\"/><circle cx=\"94\" cy=\"56\" r=\"3.2\" fill=\"#C7374B\"/><circle cx=\"146\" cy=\"120\" r=\"3.2\" fill=\"#C7374B\"/><text x=\"48\" y=\"38\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">a</text><text x=\"96\" y=\"69\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">b</text><text x=\"150\" y=\"132\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">c</text><text x=\"101\" y=\"168\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">丙</text></g><g transform=\"translate(440,8)\"><rect x=\"0\" y=\"0\" width=\"190\" height=\"178\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><line x1=\"42\" y1=\"142\" x2=\"174\" y2=\"142\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"42\" y1=\"142\" x2=\"42\" y2=\"22\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"154\" y=\"156\" font-size=\"11\" fill=\"#10233F\">x²/m²</text><text x=\"48\" y=\"26\" font-size=\"11\" fill=\"#10233F\">y/m</text><line x1=\"42\" y1=\"142\" x2=\"162\" y2=\"34\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"42\" y1=\"56\" x2=\"138\" y2=\"56\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><line x1=\"138\" y1=\"56\" x2=\"138\" y2=\"142\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><circle cx=\"138\" cy=\"56\" r=\"3.2\" fill=\"#10233F\"/><text x=\"38\" y=\"60\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#10233F\">0.8</text><text x=\"138\" y=\"154\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#10233F\">0.04</text><text x=\"36\" y=\"154\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#10233F\">0</text><text x=\"95\" y=\"168\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">丁</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "用图甲装置实验时，观察到的现象是小球 A、B____落地；",
+        "options": ["同时", "先后"],
+        "answer": 0,
+        "explain": "A 球平抛、B 球自由落体，在竖直方向运动规律完全相同，因此两球同时落地。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "上述现象说明平抛运动的竖直分运动是____运动。",
+        "options": ["自由落体", "匀速直线"],
+        "answer": 0,
+        "explain": "与做自由落体运动的 B 球同时落地，说明平抛运动的竖直分运动是自由落体运动。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "在图丙中，a、b、c 水平距离相等，重力加速度 g 取 10 m/s²，则小球初速度 v₀ =（保留两位有效数字）",
+        "unit": "m/s",
+        "answer": 3,
+        "tol": 0.05,
+        "sig": 2,
+        "show": "3.0",
+        "replay": "E4",
+        "explain": "ab、bc 水平距离均为 x = 0.30 m，运动时间相等设为 T。竖直方向 Δy = (30 − 10 − 10) × 10⁻² m = 0.10 m = gT²，得 T = 0.1 s，故 v₀ = {{frac|0.30|0.1}} m/s = 3.0 m/s。"
+      },
+      {
+        "label": "(4)",
+        "type": "numeric",
+        "prompt": "图丁中直线过 (0.04 m², 0.8 m)，g 取 10 m/s²，则此小球平抛的初速度 v₀ =",
+        "unit": "m/s",
+        "answer": 0.5,
+        "tol": 0.02,
+        "show": "0.5",
+        "explain": "由 y = {{frac|g|2v₀²}}x² 得斜率 k = {{frac|g|2v₀²}} = {{frac|0.8|0.04}} = 20 m⁻¹，解得 v₀ = {{sqrt|{{frac|10|2 × 20}}}} = 0.5 m/s。"
+      }
+    ]
+  },
+  {
+    "id": "Y1",
+    "source": "原创",
+    "verified": true,
+    "score": 8,
+    "stem": "某同学以平抛抛出点为原点建立坐标系，测出轨迹上 5 个点的坐标数据并算出对应 x² 如下表（取 g = 10 m/s²）：<table class=\"dt\"><tr><th>x² / m²</th><td>0.02</td><td>0.04</td><td>0.08</td><td>0.12</td><td>0.16</td></tr><tr><th>y / m</th><td>0.10</td><td>0.20</td><td>0.40</td><td>0.60</td><td>0.80</td></tr></table>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "plot",
+        "prompt": "请在坐标纸上描出这 5 个点并调整拟合直线，作出 y-x² 图像：",
+        "x": [0, 0.2],
+        "y": [0, 1.0],
+        "xLabel": "x² / m²",
+        "yLabel": "y / m",
+        "snap": [0.01, 0.05],
+        "ptTol": [0.008, 0.03],
+        "points": [[0.02, 0.1], [0.04, 0.2], [0.08, 0.4], [0.12, 0.6], [0.16, 0.8]],
+        "slope": 5.0,
+        "tol": 0.4,
+        "lineInit": [[0, 0], [0.16, 0.5]],
+        "explain": "5 个点共线且过原点，直线斜率 k = {{frac|0.80 − 0|0.16 − 0}} = 5.0 m⁻¹。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "由 y-x² 图像斜率算得小球平抛初速度 v₀ =（保留两位有效数字）",
+        "unit": "m/s",
+        "answer": 1.0,
+        "tol": 0.05,
+        "sig": 2,
+        "show": "1.0",
+        "explain": "由 y = {{frac|g|2v₀²}}x² 知斜率 k = {{frac|g|2v₀²}} = 5.0 m⁻¹，则 v₀ = {{sqrt|{{frac|10|2 × 5.0}}}} = 1.0 m/s。"
+      }
+    ]
+  },
+  {
+    "id": "Y2",
+    "source": "原创",
+    "verified": true,
+    "score": 10,
+    "stem": "如图所示为用频闪照相方法拍摄的小球平抛运动轨迹的一部分，图中背景方格的边长均为 L = 5.0 cm，A、B、C 为连续三个闪光时刻小球所处的位置（g 取 10 m/s²）。<svg viewBox=\"0 0 360 225\" width=\"360\" role=\"img\" aria-label=\"方格纸无抛出点频闪轨迹\"><g stroke=\"#C9D6E5\" stroke-width=\"1\"><line x1=\"40\" y1=\"20\" x2=\"260\" y2=\"20\"/><line x1=\"40\" y1=\"42\" x2=\"260\" y2=\"42\"/><line x1=\"40\" y1=\"64\" x2=\"260\" y2=\"64\"/><line x1=\"40\" y1=\"86\" x2=\"260\" y2=\"86\"/><line x1=\"40\" y1=\"108\" x2=\"260\" y2=\"108\"/><line x1=\"40\" y1=\"130\" x2=\"260\" y2=\"130\"/><line x1=\"40\" y1=\"152\" x2=\"260\" y2=\"152\"/><line x1=\"40\" y1=\"174\" x2=\"260\" y2=\"174\"/><line x1=\"40\" y1=\"196\" x2=\"260\" y2=\"196\"/><line x1=\"40\" y1=\"218\" x2=\"260\" y2=\"218\"/><line x1=\"40\" y1=\"20\" x2=\"40\" y2=\"218\"/><line x1=\"62\" y1=\"20\" x2=\"62\" y2=\"218\"/><line x1=\"84\" y1=\"20\" x2=\"84\" y2=\"218\"/><line x1=\"106\" y1=\"20\" x2=\"106\" y2=\"218\"/><line x1=\"128\" y1=\"20\" x2=\"128\" y2=\"218\"/><line x1=\"150\" y1=\"20\" x2=\"150\" y2=\"218\"/><line x1=\"172\" y1=\"20\" x2=\"172\" y2=\"218\"/><line x1=\"194\" y1=\"20\" x2=\"194\" y2=\"218\"/><line x1=\"216\" y1=\"20\" x2=\"216\" y2=\"218\"/><line x1=\"238\" y1=\"20\" x2=\"238\" y2=\"218\"/><line x1=\"260\" y1=\"20\" x2=\"260\" y2=\"218\"/></g><path d=\"M62 20 Q128 64 194 196\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"1.8\" stroke-dasharray=\"4 3\"/><circle cx=\"62\" cy=\"20\" r=\"4.5\" fill=\"#C7374B\"/><circle cx=\"128\" cy=\"86\" r=\"4.5\" fill=\"#C7374B\"/><circle cx=\"194\" cy=\"196\" r=\"4.5\" fill=\"#C7374B\"/><text x=\"48\" y=\"16\" font-size=\"13\" font-weight=\"700\" fill=\"#10233F\">A</text><text x=\"136\" y=\"82\" font-size=\"13\" font-weight=\"700\" fill=\"#10233F\">B</text><text x=\"202\" y=\"192\" font-size=\"13\" font-weight=\"700\" fill=\"#10233F\">C</text><path d=\"M272 20 V42\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"280\" y=\"35\" font-size=\"12\" fill=\"#10233F\">L = 5.0 cm</text></svg><div style=\"font-size:13px;color:#4A5B73\">（A→B 水平 3 格、竖直 3 格；B→C 水平 3 格、竖直 5 格）</div>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "相邻两次闪光的时间间隔 T =（保留两位有效数字）",
+        "unit": "s",
+        "answer": 0.1,
+        "tol": 0.002,
+        "sig": 2,
+        "show": "0.10",
+        "replay": "E4",
+        "explain": "竖直方向 Δy = y<sub>BC</sub> − y<sub>AB</sub> = (5L − 3L) = 2L = 0.10 m，由 Δy = gT² 得 T = {{sqrt|{{frac|0.10|10}}}} = 0.10 s。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "小球做平抛运动的初速度大小 v₀ =（保留两位有效数字）",
+        "unit": "m/s",
+        "answer": 1.5,
+        "tol": 0.02,
+        "sig": 2,
+        "show": "1.5",
+        "explain": "水平方向匀速运动，v₀ = {{frac|3L|T}} = {{frac|0.15|0.10}} m/s = 1.5 m/s。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "小球经过 B 点时的竖直分速度大小 v<sub>By</sub> =（保留两位有效数字）",
+        "unit": "m/s",
+        "answer": 2.0,
+        "tol": 0.02,
+        "sig": 2,
+        "show": "2.0",
+        "explain": "B 是 A 到 C 的中间时刻，v<sub>By</sub> = {{frac|y<sub>AC</sub>|2T}} = {{frac|8L|2T}} = {{frac|0.40|0.20}} m/s = 2.0 m/s。"
+      },
+      {
+        "label": "(4)",
+        "type": "numeric",
+        "prompt": "小球经过 B 点时的瞬时速度大小 v<sub>B</sub> =（保留两位有效数字）",
+        "unit": "m/s",
+        "answer": 2.5,
+        "tol": 0.02,
+        "sig": 2,
+        "show": "2.5",
+        "explain": "合速度 v<sub>B</sub> = {{sqrt|v₀² + v<sub>By</sub>²}} = {{sqrt|1.5² + 2.0²}} m/s = 2.5 m/s。"
+      },
+      {
+        "label": "(5)",
+        "type": "choice",
+        "prompt": "关于图中的 A 点，下列说法正确的是____。",
+        "options": [
+          "A 点不是抛出点，因为 y<sub>AB</sub> : y<sub>BC</sub> = 3 : 5，并非从静止开始的 1 : 3",
+          "A 点就是平抛运动的抛出点",
+          "用 y<sub>AB</sub> = ½gT² 算出的 T 与 Δy = gT² 相同"
+        ],
+        "answer": 0,
+        "replay": "E4",
+        "explain": "因 y<sub>AB</sub> : y<sub>BC</sub> = 3 : 5 ≠ 1 : 3，可知在 A 点时竖直分速度 v<sub>Ay</sub> = v<sub>By</sub> − gT = 1.0 m/s ≠ 0，A 点不是抛出点，切勿错用 1 : 3 : 5 或 y<sub>AB</sub> = {{frac|1|2}}gT²。"
+      }
+    ]
+  }
+]

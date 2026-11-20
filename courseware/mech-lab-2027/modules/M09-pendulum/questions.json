@@ -1,0 +1,662 @@
+[
+  {
+    "id": "G1",
+    "source": "2025·海南卷·第14题",
+    "verified": true,
+    "stem": "某实验小组用如图所示的单摆测量当地重力加速度：<svg viewBox=\"0 0 320 190\" width=\"320\" role=\"img\" aria-label=\"单摆装置图\"><rect x=\"10\" y=\"164\" width=\"300\" height=\"12\" rx=\"3\" fill=\"#D9B98C\" stroke=\"#9F7C49\"/><rect x=\"34\" y=\"150\" width=\"66\" height=\"14\" rx=\"3\" fill=\"#CBD5E1\" stroke=\"#596574\"/><rect x=\"52\" y=\"18\" width=\"8\" height=\"132\" fill=\"#8E99A6\" stroke=\"#4A5B73\"/><rect x=\"48\" y=\"24\" width=\"124\" height=\"8\" rx=\"3\" fill=\"#8E99A6\" stroke=\"#4A5B73\"/><rect x=\"156\" y=\"20\" width=\"12\" height=\"16\" rx=\"2\" fill=\"#3B4B60\"/><line x1=\"162\" y1=\"36\" x2=\"162\" y2=\"144\" stroke=\"#94A3B8\" stroke-dasharray=\"4 3\" stroke-width=\"1.3\"/><line x1=\"162\" y1=\"36\" x2=\"176\" y2=\"136\" stroke=\"#10233F\" stroke-width=\"1.6\"/><circle cx=\"176\" cy=\"136\" r=\"10\" fill=\"#8E99A6\" stroke=\"#10233F\" stroke-width=\"1.4\"/><path d=\"M162 72 A36 36 0 0 0 167 71\" fill=\"none\" stroke=\"#12A9C4\" stroke-width=\"1.6\"/><text x=\"172\" y=\"70\" font-size=\"11\" fill=\"#12A9C4\" font-weight=\"700\">θ &lt; 5°</text><text x=\"182\" y=\"88\" font-size=\"12\" fill=\"#10233F\">l = 79 cm</text><text x=\"192\" y=\"140\" font-size=\"12\" fill=\"#10233F\">d = 20 mm</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "用游标卡尺测得小球直径 d = 20 mm，用刻度尺测得摆线长 l = 79 cm，则单摆摆长 L =（保留四位有效数字）",
+        "unit": "cm",
+        "answer": 80,
+        "tol": 0.01,
+        "sig": 4,
+        "show": "80.00",
+        "replay": "E3",
+        "explain": "摆长 L = l + {{frac|d|2}} = 79.00 cm + 1.00 cm = 80.00 cm（保留四位有效数字须写足两位小数）。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "拉动小球，使摆线伸直且与竖直方向夹角为 θ（θ &lt; 5°），无初速度释放小球，小球经过____点时开始计时。",
+        "options": [
+          "最高",
+          "最低"
+        ],
+        "answer": 1,
+        "replay": "E1",
+        "explain": "摆球经过最低点时速度最大，视觉判断位置偏差引起的计时误差 Δt = Δx/v 最小。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "记录小球做了 30 次全振动用时 t = 54.00 s，则单摆周期 T =（保留三位有效数字）",
+        "unit": "s",
+        "answer": 1.8,
+        "tol": 0.01,
+        "sig": 3,
+        "show": "1.80",
+        "replay": "E2",
+        "explain": "T = {{frac|t|n}} = {{frac|54.00 s|30}} = 1.80 s。"
+      },
+      {
+        "label": "(4)",
+        "type": "numeric",
+        "prompt": "由此可得当地重力加速度 g =（取 π² ≈ 10，结果保留三位有效数字）",
+        "unit": "m/s²",
+        "answer": 9.88,
+        "tol": 0.02,
+        "sig": 3,
+        "show": "9.88",
+        "explain": "由 T = 2π{{sqrt|{{frac|L|g}}}} 得 g = {{frac|4π²L|T²}} = {{frac|4 × 10 × 0.8000|1.80²}} m/s² ≈ 9.88 m/s²。"
+      }
+    ]
+  },
+  {
+    "id": "G2",
+    "source": "2025·浙江6月选考·第14-Ⅱ题",
+    "verified": true,
+    "score": 7,
+    "stem": "在“用单摆测重力加速度”的实验中：<svg viewBox=\"0 0 660 156\" width=\"660\" role=\"img\" aria-label=\"2025浙江单摆实验四图\"><rect x=\"6\" y=\"6\" width=\"186\" height=\"126\" rx=\"6\" fill=\"#FBFCFE\" stroke=\"#DCE5F0\"/><rect x=\"20\" y=\"108\" width=\"54\" height=\"10\" rx=\"2\" fill=\"#93C5FD\" stroke=\"#3B4B60\"/><rect x=\"28\" y=\"16\" width=\"6\" height=\"92\" fill=\"#60A5FA\" stroke=\"#3B4B60\"/><rect x=\"24\" y=\"22\" width=\"68\" height=\"6\" fill=\"#60A5FA\" stroke=\"#3B4B60\"/><rect x=\"76\" y=\"19\" width=\"14\" height=\"12\" rx=\"2\" fill=\"#1E3A8A\"/><line x1=\"83\" y1=\"31\" x2=\"83\" y2=\"92\" stroke=\"#10233F\" stroke-width=\"1.4\"/><circle cx=\"83\" cy=\"94\" r=\"7\" fill=\"#8E99A6\" stroke=\"#10233F\"/><path d=\"M62 92 Q83 102 104 92\" fill=\"none\" stroke=\"#12A9C4\" stroke-dasharray=\"3 2\"/><text x=\"98\" y=\"29\" font-size=\"10.5\" fill=\"#10233F\">悬点力传感器</text><rect x=\"98\" y=\"84\" width=\"16\" height=\"18\" fill=\"none\" stroke=\"#3B4B60\" stroke-width=\"1.2\"/><circle cx=\"106\" cy=\"93\" r=\"2\" fill=\"#C7374B\"/><text x=\"118\" y=\"96\" font-size=\"10.5\" fill=\"#10233F\">光电门</text><text x=\"99\" y=\"148\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图1</text><rect x=\"200\" y=\"6\" width=\"252\" height=\"126\" rx=\"6\" fill=\"#fff\" stroke=\"#10233F\"/><line x1=\"210\" y1=\"12\" x2=\"210\" y2=\"122\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"210\" y1=\"122\" x2=\"446\" y2=\"122\" stroke=\"#10233F\" stroke-width=\"1.2\"/><polyline points=\"214,92.6 216,77.1 218,61.0 220,52.4 222,55.4 224,68.6 226,85.4 228,97.6 230,99.1 232,89.2 234,72.8 236,57.9 238,52.0 240,57.9 242,72.8 244,89.2 246,99.1 248,97.6 250,85.4 252,68.6 254,55.4 256,52.4 258,61.0 260,77.1 262,92.6 264,99.9 266,95.4 268,81.3 270,64.6 272,53.5 274,53.5 276,64.6 278,81.3 280,95.4 282,99.9 284,92.6 286,77.1 288,61.0 290,52.4 292,55.4 294,68.6 296,85.4 298,97.6 300,99.1 302,89.2 304,72.8 306,57.9 308,52.0 310,57.9 312,72.8 314,89.2 316,99.1 318,97.6 320,85.4 322,68.6 324,55.4 326,52.4 328,61.0 330,77.1 332,92.6 334,99.9 336,95.4 338,81.3 340,64.6 342,53.5 344,53.5 346,64.6 348,81.3 350,95.4 352,99.9 354,92.6 356,77.1 358,61.0 360,52.4 362,55.4 364,68.6 366,85.4 368,97.6 370,99.1 372,89.2 374,72.8 376,57.9 378,52.0 380,57.9 382,72.8 384,89.2 386,99.1 388,97.6 390,85.4 392,68.6 394,55.4 396,52.4 398,61.0 400,77.1 402,92.6 404,99.9 406,95.4 408,81.3 410,64.6 412,53.5 414,53.5 416,64.6 418,81.3 420,95.4 422,99.9 424,92.6 426,77.1 428,61.0 430,52.4 432,55.4 434,68.6 436,85.4 438,97.6 440,99.1 442,89.2\" fill=\"none\" stroke=\"#C7374B\" stroke-width=\"1.6\"/><line x1=\"238\" y1=\"18\" x2=\"238\" y2=\"122\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\" stroke-width=\"1.3\"/><line x1=\"413\" y1=\"18\" x2=\"413\" y2=\"122\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\" stroke-width=\"1.3\"/><text x=\"242\" y=\"30\" font-size=\"10.5\" fill=\"#10233F\">起始值: 1.1277 s</text><text x=\"408\" y=\"114\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#10233F\">终止值: 7.6530 s</text><text x=\"326\" y=\"148\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图2（F−t 曲线）</text><line x1=\"472\" y1=\"118\" x2=\"472\" y2=\"20\" stroke=\"#10233F\" stroke-width=\"1.3\"/><line x1=\"468\" y1=\"114\" x2=\"554\" y2=\"114\" stroke=\"#10233F\" stroke-width=\"1.3\"/><text x=\"466\" y=\"26\" font-size=\"11.5\" font-style=\"italic\">l</text><text x=\"548\" y=\"128\" font-size=\"11.5\" font-style=\"italic\">T²</text><text x=\"460\" y=\"126\" font-size=\"11\">O</text><line x1=\"490\" y1=\"114\" x2=\"544\" y2=\"34\" stroke=\"#C7374B\" stroke-width=\"1.8\"/><circle cx=\"490\" cy=\"114\" r=\"2.6\" fill=\"#10233F\"/><text x=\"490\" y=\"127\" font-size=\"11\" text-anchor=\"middle\" font-style=\"italic\">b</text><text x=\"510\" y=\"148\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图3</text><path d=\"M566 86 Q610 112 654 86 L654 112 L566 112 Z\" fill=\"#F3F7FC\" stroke=\"#10233F\" stroke-width=\"1.3\"/><circle cx=\"610\" cy=\"92\" r=\"7\" fill=\"#8E99A6\" stroke=\"#10233F\"/><text x=\"610\" y=\"148\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图4（5° 圆弧槽）</text></svg>",
+    "parts": [
+      {
+        "label": "(1)①",
+        "type": "numeric",
+        "prompt": "如图 1，可在单摆悬点处安装力传感器，也可在摆球平衡位置处安装光电门。甲同学利用力传感器获得力与时间的关系图像如图 2 所示（起始峰值时刻 1.1277 s，终止峰值时刻 7.6530 s），则单摆的周期 T =（保留 3 位有效数字）",
+        "unit": "s",
+        "answer": 1.31,
+        "tol": 0.01,
+        "sig": 3,
+        "show": "1.31",
+        "explain": "F − t 图像中相邻两波峰间隔为半周期 {{frac|T|2}}。从 1.1277 s 到 7.6530 s 共经历 10 个峰间隔（即 5 个全振动周期），T = {{frac|7.6530 − 1.1277|5}} s ≈ 1.31 s。"
+      },
+      {
+        "label": "(1)②",
+        "type": "expr",
+        "prompt": "乙同学利用光电门，从小钢球第 1 次遮光开始计时，记下第 n 次遮光的时刻 t，则单摆的周期",
+        "lhs": "T =",
+        "vars": {
+          "t": "t",
+          "n": "n"
+        },
+        "extra": [
+          "1",
+          "2"
+        ],
+        "answer": "2*t/(n-1)",
+        "show": "2t ÷ (n − 1)",
+        "explain": "小钢球每半个周期经过平衡位置遮光 1 次，从第 1 次到第 n 次共经历 (n − 1) 个半周期，即 (n − 1)·{{frac|T|2}} = t，故 T = {{frac|2t|n − 1}}。"
+      },
+      {
+        "label": "(2)①",
+        "type": "expr",
+        "prompt": "丙同学发现小钢球已变形，他改变摆线长度 l，测出对应的周期 T，作出 l − T² 关系图线如图 3 所示，算出斜率 k 和横轴截距 b，则重力加速度",
+        "lhs": "g =",
+        "vars": {
+          "k": "k"
+        },
+        "extra": [
+          "π",
+          "2",
+          "4"
+        ],
+        "answer": "4*pi^2*k",
+        "show": "4π²k",
+        "explain": "设摆球重心到摆线下端距离为 h，则 T = 2π{{sqrt|{{frac|l + h|g}}}}，整理得 l = {{frac|g|4π²}}T² − h。由斜率 k = {{frac|g|4π²}} 得 g = 4π²k。"
+      },
+      {
+        "label": "(2)②",
+        "type": "expr",
+        "prompt": "（接上问）小钢球重心到摆线下端的高度差（用 k、b 表示）",
+        "lhs": "h =",
+        "vars": {
+          "k": "k",
+          "b": "b"
+        },
+        "extra": [
+          "1",
+          "2"
+        ],
+        "answer": "k*b",
+        "show": "kb",
+        "replay": "E3",
+        "explain": "在 l = kT² − h 中令 l = 0，得 T² = {{frac|h|k}} = b，因此 h = kb。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "丁同学制作了圆心角等于 5°、半径已知的圆弧槽（图 4），测出小钢球在槽中运动的周期后算得重力加速度为 8.64 m/s²。若周期测量无误，偏离实际值的最主要原因是____。",
+        "options": [
+          "5° 圆心角太大，不满足小角度近似",
+          "小钢球在槽中存在滚动（转动）而非纯平动，且受空气阻力，导致实际周期偏大",
+          "圆弧槽太浅，小钢球飞出了槽外",
+          "必须用质点公式改算斜率"
+        ],
+        "answer": 1,
+        "explain": "小钢球在圆弧槽内不是纯平动滑动而是伴随滚动（部分重力势能转化为转动动能），加上阻力的影响，导致周期大于质点单摆周期，算出的 g 明显偏小。"
+      }
+    ]
+  },
+  {
+    "id": "G3",
+    "source": "2026·湖南卷·第11题（节选）",
+    "verified": true,
+    "stem": "某实验小组用手机录像并导入软件分析单摆运动：拉离平衡位置约 4° 由静止释放，拟合出的水平速度 v − t 图像如图甲；再用刻度尺竖直测量摆长如图乙（刻度尺 0 刻度线对齐悬点，a、b、c 分别为摆球上沿、球心、下沿）。<svg viewBox=\"0 0 560 154\" width=\"560\" role=\"img\" aria-label=\"2026湖南手机单摆v-t图与摆长测量\"><line x1=\"44\" y1=\"16\" x2=\"44\" y2=\"128\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"36\" y1=\"74\" x2=\"262\" y2=\"74\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"34\" y=\"22\" font-size=\"12\" font-style=\"italic\">v</text><text x=\"256\" y=\"88\" font-size=\"12\">t/s</text><text x=\"36\" y=\"88\" font-size=\"11\">O</text><polyline points=\"44,74.0 47,67.7 50,61.6 53,55.7 56,50.2 59,45.2 62,40.7 65,37.0 68,34.0 71,31.8 74,30.4 77,30.0 80,30.4 83,31.8 86,34.0 89,37.0 92,40.7 95,45.2 98,50.2 101,55.7 104,61.6 107,67.7 110,74.0 113,80.3 116,86.4 119,92.3 122,97.8 125,102.8 128,107.3 131,111.0 134,114.0 137,116.2 140,117.6 143,118.0 146,117.6 149,116.2 152,114.0 155,111.0 158,107.3 161,102.8 164,97.8 167,92.3 170,86.4 173,80.3 176,74.0 179,67.7 182,61.6 185,55.7 188,50.2 191,45.2 194,40.7 197,37.0 200,34.0 203,31.8 206,30.4 209,30.0 212,30.4 215,31.8 218,34.0 221,37.0 224,40.7 227,45.2 230,50.2 233,55.7 236,61.6 239,67.7\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2\"/><circle cx=\"110\" cy=\"74\" r=\"2.8\" fill=\"#C7374B\"/><text x=\"112\" y=\"90\" font-size=\"11\" text-anchor=\"middle\">0.3π</text><circle cx=\"176\" cy=\"74\" r=\"2.8\" fill=\"#C7374B\"/><text x=\"178\" y=\"90\" font-size=\"11\" text-anchor=\"middle\">0.6π</text><text x=\"150\" y=\"144\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图甲（v−t 图像）</text><line x1=\"340\" y1=\"18\" x2=\"430\" y2=\"18\" stroke=\"#3B4B60\" stroke-width=\"4\"/><line x1=\"378\" y1=\"18\" x2=\"378\" y2=\"100\" stroke=\"#10233F\" stroke-width=\"1.5\"/><circle cx=\"378\" cy=\"112\" r=\"12\" fill=\"#8E99A6\" stroke=\"#10233F\" stroke-width=\"1.3\"/><circle cx=\"378\" cy=\"112\" r=\"2\" fill=\"#10233F\"/><rect x=\"412\" y=\"14\" width=\"32\" height=\"122\" fill=\"#FBFCFE\" stroke=\"#9AA8B8\"/><line x1=\"378\" y1=\"18\" x2=\"424\" y2=\"18\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\"/><text x=\"428\" y=\"22\" font-size=\"11\" font-weight=\"700\" fill=\"#1661FF\">0</text><line x1=\"378\" y1=\"100\" x2=\"424\" y2=\"100\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><text x=\"428\" y=\"103\" font-size=\"11.5\" font-weight=\"700\">a</text><line x1=\"378\" y1=\"112\" x2=\"424\" y2=\"112\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\"/><text x=\"428\" y=\"116\" font-size=\"11.5\" font-weight=\"700\" fill=\"#C7374B\">b</text><line x1=\"378\" y1=\"124\" x2=\"424\" y2=\"124\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><text x=\"428\" y=\"128\" font-size=\"11.5\" font-weight=\"700\">c</text><text x=\"396\" y=\"148\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图乙（刻度尺测摆长）</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "expr",
+        "prompt": "由图甲 v − t 图像可知，此单摆的周期（结果可保留 π）",
+        "lhs": "T =",
+        "vars": {},
+        "extra": [
+          "0",
+          ".",
+          "3",
+          "6",
+          "π"
+        ],
+        "answer": "0.6*pi",
+        "show": "0.6π",
+        "explain": "由 v − t 正弦曲线可读出一个完整周期为 0.6π s。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "用刻度尺测量摆长时 0 刻度线与悬点对齐，图乙中摆长 l 应读取位置____的读数。",
+        "options": [
+          "a（摆球上沿）",
+          "b（摆球球心）",
+          "c（摆球下沿）"
+        ],
+        "answer": 1,
+        "replay": "E3",
+        "explain": "摆长是从悬点到摆球球心的距离，因此应读取球心所在的 b 位置读数。"
+      },
+      {
+        "label": "(3)",
+        "type": "expr",
+        "prompt": "已知测得摆长为 l、周期为 T，重力加速度的表达式为",
+        "lhs": "g =",
+        "vars": {
+          "l": "l",
+          "T": "T"
+        },
+        "extra": [
+          "π",
+          "2",
+          "4"
+        ],
+        "answer": "4*pi^2*l/T^2",
+        "show": "4π²l ÷ T²",
+        "explain": "由 T = 2π{{sqrt|{{frac|l|g}}}} 平方移项得 g = {{frac|4π²l|T²}}。"
+      },
+      {
+        "label": "(4)",
+        "type": "text-choice",
+        "prompt": "若最终测得的重力加速度小于当地真实值，可能的原因是测量摆长时刻度尺的 0 刻度线____悬点。",
+        "options": [
+          "高于",
+          "低于"
+        ],
+        "answer": 1,
+        "replay": "E3",
+        "explain": "0 刻度线低于悬点时，读取的摆长 l 比真实悬点到球心距离偏小；由 g = {{frac|4π²l|T²}} 可知 g 测量值偏小。"
+      }
+    ]
+  },
+  {
+    "id": "G4",
+    "source": "2026·贵州卷·第11题（节选）",
+    "verified": true,
+    "stem": "某同学居家设计简易单摆测量重力加速度：测得摆线长 L 与小球直径 d，当有效摆长 L + {{frac|d|2}} = 100.37 cm 时，三次测得小球完成 20 次全振动的总时间分别为 40.43 s、40.50 s、40.38 s。<svg viewBox=\"0 0 280 148\" width=\"280\" role=\"img\" aria-label=\"摆长L与球径d示意图\"><line x1=\"60\" y1=\"16\" x2=\"180\" y2=\"16\" stroke=\"#3B4B60\" stroke-width=\"4\"/><line x1=\"120\" y1=\"16\" x2=\"120\" y2=\"104\" stroke=\"#10233F\" stroke-width=\"1.6\"/><circle cx=\"120\" cy=\"116\" r=\"12\" fill=\"#8E99A6\" stroke=\"#10233F\" stroke-width=\"1.4\"/><circle cx=\"120\" cy=\"116\" r=\"1.8\" fill=\"#10233F\"/><path d=\"M148 16 V104 M144 16 H152 M144 104 H152\" stroke=\"#1661FF\" fill=\"none\"/><text x=\"158\" y=\"64\" font-size=\"12\" fill=\"#1661FF\" font-weight=\"700\">摆线长 L</text><path d=\"M96 104 V128 M92 104 H100 M92 128 H100\" stroke=\"#C7374B\" fill=\"none\"/><text x=\"86\" y=\"120\" font-size=\"12\" text-anchor=\"end\" fill=\"#C7374B\" font-weight=\"700\">d</text><text x=\"164\" y=\"120\" font-size=\"11.5\" fill=\"#4A5B73\">有效摆长 L + d/2</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "该组测量对应的单摆周期 T =（保留三位有效数字）",
+        "unit": "s",
+        "answer": 2.02,
+        "tol": 0.01,
+        "sig": 3,
+        "show": "2.02",
+        "explain": "三次总时间平均值 {{bar|t}} = {{frac|40.43 + 40.50 + 40.38|3}} ≈ 40.44 s，周期 T = {{frac|{{bar|t}}|20}} ≈ 2.02 s。"
+      },
+      {
+        "label": "(2)",
+        "type": "expr",
+        "prompt": "用摆线长 L、摆球直径 d 和周期 T 表示当地重力加速度",
+        "lhs": "g =",
+        "vars": {
+          "L": "L",
+          "d": "d",
+          "T": "T"
+        },
+        "extra": [
+          "π",
+          "2",
+          "4"
+        ],
+        "answer": "4*pi^2*(L+d/2)/T^2",
+        "show": "4π²(L + d/2) ÷ T²",
+        "explain": "有效摆长为 L + {{frac|d|2}}，代入周期公式得 g = {{frac|4π²(L + d/2)|T²}}。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "为减小空气阻力和小球体积带来的误差，应尽量选择____的金属球。",
+        "options": [
+          "质量大、体积小",
+          "质量小、体积大",
+          "质量大、体积大",
+          "质量小、体积小"
+        ],
+        "answer": 0,
+        "replay": "E6",
+        "explain": "质量大可减小空气阻力对摆动的影响，体积小可把小球近似看作质点并减小摆长定位误差。"
+      }
+    ]
+  },
+  {
+    "id": "G5",
+    "source": "2024·黑吉辽卷·第11题（节选·压轴迁移）",
+    "verified": true,
+    "score": 8,
+    "stem": "（迁移压轴）某同学探究半圆拱形积木在水平桌面上小幅摆动的周期 T 与其外径 D 的关系：<svg viewBox=\"0 0 520 144\" width=\"520\" role=\"img\" aria-label=\"2024辽吉黑半圆拱形积木外径与lnT-lnD图\"><rect x=\"14\" y=\"88\" width=\"246\" height=\"36\" fill=\"#FBFCFE\" stroke=\"#9AA8B8\"/><line x1=\"30.0\" y1=\"88\" x2=\"30.0\" y2=\"104\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"33.6\" y1=\"88\" x2=\"33.6\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"37.2\" y1=\"88\" x2=\"37.2\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"40.8\" y1=\"88\" x2=\"40.8\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"44.4\" y1=\"88\" x2=\"44.4\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"48.0\" y1=\"88\" x2=\"48.0\" y2=\"99\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"51.6\" y1=\"88\" x2=\"51.6\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"55.2\" y1=\"88\" x2=\"55.2\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"58.8\" y1=\"88\" x2=\"58.8\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"62.4\" y1=\"88\" x2=\"62.4\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"66.0\" y1=\"88\" x2=\"66.0\" y2=\"104\" stroke=\"#10233F\" stroke-width=\"1\"/><text x=\"30\" y=\"116\" font-size=\"11\" text-anchor=\"middle\" font-weight=\"700\">0</text><line x1=\"150.0\" y1=\"88\" x2=\"150.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"157.0\" y1=\"88\" x2=\"157.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"164.0\" y1=\"88\" x2=\"164.0\" y2=\"104\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"171.0\" y1=\"88\" x2=\"171.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"178.0\" y1=\"88\" x2=\"178.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"185.0\" y1=\"88\" x2=\"185.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"192.0\" y1=\"88\" x2=\"192.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"199.0\" y1=\"88\" x2=\"199.0\" y2=\"99\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"206.0\" y1=\"88\" x2=\"206.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"213.0\" y1=\"88\" x2=\"213.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"220.0\" y1=\"88\" x2=\"220.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"227.0\" y1=\"88\" x2=\"227.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"234.0\" y1=\"88\" x2=\"234.0\" y2=\"104\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"241.0\" y1=\"88\" x2=\"241.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"248.0\" y1=\"88\" x2=\"248.0\" y2=\"95\" stroke=\"#10233F\" stroke-width=\"1\"/><text x=\"164\" y=\"116\" font-size=\"11\" text-anchor=\"middle\" font-weight=\"700\">7</text><text x=\"234\" y=\"116\" font-size=\"11\" text-anchor=\"middle\" font-weight=\"700\">8 cm</text><text x=\"108\" y=\"106\" font-size=\"12\" text-anchor=\"middle\" fill=\"#4A5B73\">…</text><path d=\"M30 88 A86 72 0 0 1 202.5 88 L174.5 88 A58 46 0 0 0 58 88 Z\" fill=\"#93C5FD\" stroke=\"#1661FF\" stroke-width=\"1.5\"/><line x1=\"202.5\" y1=\"74\" x2=\"202.5\" y2=\"108\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\" stroke-width=\"1.4\"/><text x=\"136\" y=\"138\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图甲（蓝色半圆拱积木外径 D）</text><line x1=\"316\" y1=\"118\" x2=\"316\" y2=\"18\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"308\" y1=\"112\" x2=\"486\" y2=\"112\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"312\" y=\"14\" font-size=\"12\" font-style=\"italic\">ln T</text><text x=\"480\" y=\"126\" font-size=\"12\" font-style=\"italic\">ln D</text><line x1=\"332\" y1=\"98\" x2=\"468\" y2=\"30\" stroke=\"#1661FF\" stroke-width=\"2\"/><path d=\"M364 82 H424 V52\" fill=\"none\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\" stroke-width=\"1.2\"/><text x=\"404\" y=\"96\" font-size=\"11\" fill=\"#C7374B\">斜率 k = 0.50</text><text x=\"400\" y=\"138\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图乙（ln T − ln D 图像）</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "用毫米刻度尺测量蓝色半圆拱积木的外径 D，左端对齐 0 刻线，右端如图甲所示，则外径 D =",
+        "unit": "cm",
+        "answer": 7.55,
+        "tol": 0.02,
+        "sig": 3,
+        "show": "7.55",
+        "explain": "毫米刻度尺须估读到 0.1 mm（0.01 cm），积木右端位于 7.5 cm 与 7.6 cm 中间，读数为 7.55 cm。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "将积木轻轻压下一端由静止释放，每经过平衡位置计数一次：第 0 次经过时按下停表，第 20 次经过时停止计时，测得总时间为 t，则这期间积木完成的全振动次数 N =",
+        "unit": "次",
+        "answer": 10,
+        "tol": 0,
+        "show": "10",
+        "replay": "E2",
+        "explain": "一个全振动周期内物体往返两次经过平衡位置。从第 0 次到第 20 次共经历 20 个半周期，对应 N = {{frac|20|2}} = 10 个全振动周期。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "测出不同外径 D 的半圆拱积木对应的周期 T，作出 ln T − ln D 图像（如图乙，斜率为 0.50 的直线），则周期 T 与外径 D 的关系最可能是____。",
+        "options": [
+          "T ∝ √D",
+          "T ∝ D",
+          "T ∝ D²",
+          "T ∝ 1/√D"
+        ],
+        "answer": 0,
+        "explain": "设 T ∝ Dⁿ，两边取对数得 ln T = n ln D + C。图像斜率 n = 0.50 = {{frac|1|2}}，故 T ∝ {{sqrt|D}}（与单摆 T ∝ {{sqrt|L}} 同源）。可进一步用光电门或视频法测周期、防止桌面上打滑来改进精度。"
+      }
+    ]
+  },
+  {
+    "id": "G6",
+    "source": "2024·湖南卷·第12题（节选·弹簧振子周期迁移）",
+    "verified": true,
+    "stem": "（迁移压轴）在太空完全失重环境下无法用天平测质量，某同学设计了用气垫导轨与弹簧振子测物体质量的方案：把滑块拉至离平衡位置 20 cm 处静止释放，第 1 次经过平衡位置开始计时，第 21 次经过平衡位置停止计时测得周期 T；依次增加固定在滑块上的砝码质量 m，数据如下表：<svg viewBox=\"0 0 460 106\" width=\"460\" role=\"img\" aria-label=\"2024湖南气垫导轨弹簧振子装置图\"><rect x=\"20\" y=\"72\" width=\"420\" height=\"12\" rx=\"3\" fill=\"#CBD5E1\" stroke=\"#4A5B73\"/><rect x=\"24\" y=\"42\" width=\"10\" height=\"30\" fill=\"#3B4B60\"/><polyline points=\"34,57 46,57 52,48 60,66 68,48 76,66 84,48 92,66 100,48 108,66 114,57 148,57\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"1.6\"/><rect x=\"148\" y=\"44\" width=\"54\" height=\"26\" rx=\"4\" fill=\"#60A5FA\" stroke=\"#1661FF\" stroke-width=\"1.4\"/><rect x=\"163\" y=\"32\" width=\"24\" height=\"12\" rx=\"2\" fill=\"#E69B2D\" stroke=\"#9A5A00\"/><text x=\"175\" y=\"41\" font-size=\"10\" text-anchor=\"middle\" fill=\"#fff\" font-weight=\"700\">m</text><text x=\"175\" y=\"61\" font-size=\"11\" text-anchor=\"middle\" fill=\"#fff\" font-weight=\"700\">滑块</text><line x1=\"250\" y1=\"26\" x2=\"250\" y2=\"72\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\" stroke-width=\"1.4\"/><rect x=\"244\" y=\"20\" width=\"12\" height=\"14\" fill=\"#3B4B60\"/><text x=\"250\" y=\"15\" font-size=\"11\" text-anchor=\"middle\" fill=\"#C7374B\">光电门（平衡位置 O）</text><path d=\"M206 57 H296\" stroke=\"#12A9C4\" stroke-dasharray=\"4 3\" stroke-width=\"1.4\"/><text x=\"348\" y=\"54\" font-size=\"11.5\" fill=\"#4A5B73\">拉离 20 cm 静止释放</text></svg><table class=\"dt\"><tr><th>m / kg</th><td>0.000</td><td>0.050</td><td>0.100</td><td>0.150</td><td>0.200</td><td>0.250</td></tr><tr><th>T / s</th><td>0.632</td><td>0.775</td><td>0.893</td><td>1.001</td><td>1.105</td><td>1.175</td></tr><tr><th>T² / s²</th><td>0.399</td><td>0.601</td><td>0.797</td><td>1.002</td><td>1.221</td><td>1.381</td></tr></table>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "plot",
+        "prompt": "在 T² − m 坐标纸上描出表格中的 6 组数据点并拖动直线拟合（注意第 1 次到第 21 次经过平衡位置共 10 个周期）。",
+        "x": [
+          0,
+          0.3
+        ],
+        "y": [
+          0,
+          1.6
+        ],
+        "xLabel": "m / kg",
+        "yLabel": "T² / s²",
+        "snap": [
+          0.025,
+          0.02
+        ],
+        "ptTol": [
+          0.015,
+          0.025
+        ],
+        "points": [
+          [
+            0,
+            0.399
+          ],
+          [
+            0.05,
+            0.601
+          ],
+          [
+            0.1,
+            0.797
+          ],
+          [
+            0.15,
+            1.002
+          ],
+          [
+            0.2,
+            1.221
+          ],
+          [
+            0.25,
+            1.381
+          ]
+        ],
+        "lineInit": [
+          [
+            0.02,
+            0.25
+          ],
+          [
+            0.26,
+            0.78
+          ]
+        ],
+        "slope": 3.97,
+        "tol": 0.45,
+        "explain": "六个点基本落在一条向上倾斜的直线上，直线斜率 k = {{frac|4π²|k<sub>弹</sub>}} ≈ 4.0 s²/kg，纵截距对应滑块（含弹簧等效质量）的 T₀² ≈ 0.40 s²。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "由 T² − m 图像可知，弹簧振子振动周期的平方与砝码质量的关系是____。",
+        "options": [
+          "线性的",
+          "非线性的"
+        ],
+        "answer": 0,
+        "explain": "由弹簧振子周期公式 T = 2π{{sqrt|{{frac|M + m|k<sub>弹</sub>}}}} 得 T² = {{frac|4π²|k<sub>弹</sub>}}m + {{frac|4π²M|k<sub>弹</sub>}}，图像为直线，即线性的。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "取下砝码后将待测物体固定在滑块上，测得 T² = 0.880 s²，则待测物体质量是（保留 3 位有效数字）",
+        "unit": "kg",
+        "answer": 0.12,
+        "tol": 0.004,
+        "sig": 3,
+        "show": "0.120",
+        "explain": "在 T² − m 拟合直线上纵坐标为 0.880 s² 处对应的横坐标约为 0.120 kg（(0.880 − 0.400) ÷ 4.00 = 0.120 kg）。"
+      },
+      {
+        "label": "(4)",
+        "type": "text-choice",
+        "prompt": "若换一个质量较小的滑块重做上述实验，所得 T² − m 图线与原图线相比将沿纵轴____移动。",
+        "options": [
+          "正方向",
+          "负方向",
+          "不"
+        ],
+        "answer": 1,
+        "explain": "换用质量更小的滑块（M 减小），在相同砝码质量 m 下总质量减小、T² 减小，纵截距 {{frac|4π²M|k<sub>弹</sub>}} 变小，图线沿纵轴负方向平移（与单摆 L − T² 截距平移规律相通）。"
+      }
+    ]
+  },
+  {
+    "id": "G7",
+    "source": "2026·北京海淀期末（复习课件 例1）",
+    "verified": true,
+    "stem": "某同学用图甲所示装置测量当地重力加速度，并改变摆长作出 L − T² 图像如图乙所示：<svg viewBox=\"0 0 540 162\" width=\"540\" role=\"img\" aria-label=\"2026北京海淀单摆装置与L-T2图像\"><polygon points=\"20,96 150,74 236,102 106,126\" fill=\"#DCE5F0\" stroke=\"#4A5B73\"/><rect x=\"92\" y=\"84\" width=\"38\" height=\"12\" rx=\"2\" fill=\"#fff\" stroke=\"#4A5B73\"/><line x1=\"111\" y1=\"16\" x2=\"111\" y2=\"88\" stroke=\"#596574\" stroke-width=\"4\"/><line x1=\"104\" y1=\"24\" x2=\"194\" y2=\"38\" stroke=\"#596574\" stroke-width=\"3.5\"/><rect x=\"176\" y=\"31\" width=\"10\" height=\"10\" fill=\"#3B4B60\"/><line x1=\"181\" y1=\"41\" x2=\"181\" y2=\"128\" stroke=\"#10233F\" stroke-width=\"1.6\"/><circle cx=\"181\" cy=\"134\" r=\"8\" fill=\"#8E99A6\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"128\" y=\"154\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图甲</text><line x1=\"304\" y1=\"132\" x2=\"304\" y2=\"16\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"300\" y1=\"132\" x2=\"490\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"292\" y=\"22\" font-size=\"12\" font-style=\"italic\">L</text><text x=\"488\" y=\"146\" font-size=\"12\" font-style=\"italic\">T²</text><text x=\"292\" y=\"144\" font-size=\"11.5\">O</text><line x1=\"316\" y1=\"132\" x2=\"472\" y2=\"28\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"304\" y1=\"88\" x2=\"382\" y2=\"88\" stroke=\"#4A5B73\" stroke-dasharray=\"4 3\"/><line x1=\"382\" y1=\"88\" x2=\"382\" y2=\"132\" stroke=\"#4A5B73\" stroke-dasharray=\"4 3\"/><line x1=\"304\" y1=\"46\" x2=\"445\" y2=\"46\" stroke=\"#4A5B73\" stroke-dasharray=\"4 3\"/><line x1=\"445\" y1=\"46\" x2=\"445\" y2=\"132\" stroke=\"#4A5B73\" stroke-dasharray=\"4 3\"/><circle cx=\"382\" cy=\"88\" r=\"3.2\" fill=\"#C7374B\"/><circle cx=\"445\" cy=\"46\" r=\"3.2\" fill=\"#C7374B\"/><text x=\"372\" y=\"80\" font-size=\"12\" font-style=\"italic\">A</text><text x=\"435\" y=\"38\" font-size=\"12\" font-style=\"italic\">B</text><text x=\"296\" y=\"92\" font-size=\"11\" text-anchor=\"end\">L₁</text><text x=\"296\" y=\"50\" font-size=\"11\" text-anchor=\"end\">L₂</text><text x=\"382\" y=\"146\" font-size=\"11\" text-anchor=\"middle\">T₁²</text><text x=\"445\" y=\"146\" font-size=\"11\" text-anchor=\"middle\">T₂²</text><text x=\"396\" y=\"158\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图乙</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "multi",
+        "prompt": "关于器材选择及测量时的一些实验操作，下列说法正确的是____（多选）。",
+        "options": [
+          "摆线尽量选择细些、伸缩性小些且适当长一些的",
+          "摆球尽量选择质量大些、体积小些的",
+          "为了使单摆的周期大一些以方便测量，应使摆角大一些"
+        ],
+        "answer": [
+          0,
+          1
+        ],
+        "replay": "E5",
+        "explain": "摆线需细且伸缩性小（A 对）；摆球需质量大、体积小以减小空气阻力（B 对）；单摆简谐近似要求摆角不超过 5°，不能故意增大摆角（C 错）。"
+      },
+      {
+        "label": "(2)",
+        "type": "expr",
+        "prompt": "在某次实验中，测得单摆摆长为 L、单摆完成 n 次全振动的时间为 t，则重力加速度的表达式为",
+        "lhs": "g =",
+        "vars": {
+          "n": "n",
+          "L": "L",
+          "t": "t"
+        },
+        "extra": [
+          "π",
+          "2",
+          "4"
+        ],
+        "answer": "4*pi^2*n^2*L/t^2",
+        "show": "4π²n²L ÷ t²",
+        "explain": "单摆周期 T = {{frac|t|n}}，代入 g = {{frac|4π²L|T²}} 得 g = {{frac|4π²n²L|t²}}。"
+      },
+      {
+        "label": "(3)①",
+        "type": "expr",
+        "prompt": "改变摆长作出 L − T² 图像如图乙，利用图线上 A(T₁², L₁)、B(T₂², L₂) 两点的坐标可得重力加速度的表达式为",
+        "lhs": "g =",
+        "vars": {
+          "L1": "L₁",
+          "L2": "L₂",
+          "T1": "T₁",
+          "T2": "T₂"
+        },
+        "extra": [
+          "π",
+          "2",
+          "4"
+        ],
+        "answer": "4*pi^2*(L2-L1)/(T2^2-T1^2)",
+        "show": "4π²(L₂ − L₁) ÷ (T₂² − T₁²)",
+        "explain": "由 L = {{frac|g|4π²}}T² 可知斜率 k = {{frac|L₂ − L₁|T₂² − T₁²}} = {{frac|g|4π²}}，故 g = {{frac|4π²(L₂ − L₁)|T₂² − T₁²}}。"
+      },
+      {
+        "label": "(3)②",
+        "type": "text-choice",
+        "prompt": "因摆球质量分布不均匀，小球的重心位于其几何中心的正下方。若只考虑摆长测量偏小造成的影响，则由 (3)① 计算得到的重力加速度测量值____真实值。",
+        "options": [
+          "大于",
+          "等于",
+          "小于"
+        ],
+        "answer": 1,
+        "replay": "E3",
+        "explain": "重心在球心下方 Δ 处时，L<sub>实</sub> = L<sub>测</sub> + Δ，两点相减 L₂ − L₁ 把恒定偏差 Δ 消去，图像斜率不变，因此测量值等于真实值。"
+      }
+    ]
+  },
+  {
+    "id": "G8",
+    "source": "2026·广东江门期末（复习课件 题4）",
+    "verified": true,
+    "stem": "实验小组用图甲所示装置做“用单摆测量重力加速度”实验：将细线一端拴接小球，另一端固定在拉力传感器上，摆线长与球半径之和记为摆长 L。<svg viewBox=\"0 0 650 144\" width=\"650\" role=\"img\" aria-label=\"2026广东江门单摆拉力传感器、游标卡尺与F-t图\"><rect x=\"14\" y=\"108\" width=\"146\" height=\"10\" rx=\"2\" fill=\"#94A3B8\" stroke=\"#3B4B60\"/><rect x=\"34\" y=\"18\" width=\"6\" height=\"90\" fill=\"#CBD5E1\" stroke=\"#4A5B73\"/><rect x=\"30\" y=\"26\" width=\"84\" height=\"6\" fill=\"#CBD5E1\" stroke=\"#4A5B73\"/><rect x=\"92\" y=\"22\" width=\"16\" height=\"14\" rx=\"2\" fill=\"#3B4B60\"/><path d=\"M98 22 Q100 8 118 10\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"1.2\"/><text x=\"122\" y=\"14\" font-size=\"10.5\" fill=\"#10233F\">接电脑</text><text x=\"114\" y=\"34\" font-size=\"10.5\" fill=\"#10233F\">拉力传感器</text><line x1=\"100\" y1=\"36\" x2=\"100\" y2=\"96\" stroke=\"#10233F\" stroke-width=\"1.5\"/><circle cx=\"100\" cy=\"98\" r=\"8\" fill=\"#8E99A6\" stroke=\"#10233F\"/><text x=\"88\" y=\"138\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图甲</text><line x1=\"196\" y1=\"74\" x2=\"404\" y2=\"74\" stroke=\"#10233F\" stroke-width=\"1.3\"/><line x1=\"208.0\" y1=\"74\" x2=\"208.0\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"219.5\" y1=\"74\" x2=\"219.5\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"231.0\" y1=\"74\" x2=\"231.0\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"242.5\" y1=\"74\" x2=\"242.5\" y2=\"56\" stroke=\"#10233F\" stroke-width=\"1.2\"/><text x=\"242.5\" y=\"52\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">2</text><line x1=\"254.0\" y1=\"74\" x2=\"254.0\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"265.5\" y1=\"74\" x2=\"265.5\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"277.0\" y1=\"74\" x2=\"277.0\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"288.5\" y1=\"74\" x2=\"288.5\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"300.0\" y1=\"74\" x2=\"300.0\" y2=\"61\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"311.5\" y1=\"74\" x2=\"311.5\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"323.0\" y1=\"74\" x2=\"323.0\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"334.5\" y1=\"74\" x2=\"334.5\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"346.0\" y1=\"74\" x2=\"346.0\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"357.5\" y1=\"74\" x2=\"357.5\" y2=\"56\" stroke=\"#10233F\" stroke-width=\"1.2\"/><text x=\"357.5\" y=\"52\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">3</text><line x1=\"369.0\" y1=\"74\" x2=\"369.0\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"380.5\" y1=\"74\" x2=\"380.5\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"392.0\" y1=\"74\" x2=\"392.0\" y2=\"65\" stroke=\"#10233F\" stroke-width=\"1.2\"/><text x=\"392\" y=\"52\" font-size=\"11\" fill=\"#4A5B73\">cm</text><rect x=\"221.0\" y=\"74\" width=\"123.5\" height=\"38\" fill=\"#E8EEF5\" stroke=\"#4A5B73\"/><line x1=\"231.0\" y1=\"74\" x2=\"231.0\" y2=\"90\" stroke=\"#1661FF\" stroke-width=\"1.2\"/><text x=\"231.0\" y=\"104\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1661FF\">0</text><line x1=\"241.3\" y1=\"74\" x2=\"241.3\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"251.7\" y1=\"74\" x2=\"251.7\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"262.1\" y1=\"74\" x2=\"262.1\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"272.4\" y1=\"74\" x2=\"272.4\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"282.8\" y1=\"74\" x2=\"282.8\" y2=\"90\" stroke=\"#10233F\" stroke-width=\"1.2\"/><text x=\"282.8\" y=\"104\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">5</text><line x1=\"293.1\" y1=\"74\" x2=\"293.1\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"303.4\" y1=\"74\" x2=\"303.4\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"313.8\" y1=\"74\" x2=\"313.8\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"324.2\" y1=\"74\" x2=\"324.2\" y2=\"84\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"334.5\" y1=\"74\" x2=\"334.5\" y2=\"90\" stroke=\"#10233F\" stroke-width=\"1.2\"/><text x=\"334.5\" y=\"104\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">10</text><text x=\"300\" y=\"138\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图乙（10 分度游标卡尺）</text><line x1=\"436\" y1=\"118\" x2=\"436\" y2=\"18\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"432\" y1=\"114\" x2=\"636\" y2=\"114\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"424\" y=\"24\" font-size=\"12\" font-style=\"italic\">F</text><text x=\"632\" y=\"128\" font-size=\"12\" font-style=\"italic\">t</text><line x1=\"436\" y1=\"44\" x2=\"626\" y2=\"44\" stroke=\"#94A3B8\" stroke-dasharray=\"3 2\"/><line x1=\"436\" y1=\"104\" x2=\"626\" y2=\"104\" stroke=\"#94A3B8\" stroke-dasharray=\"3 2\"/><text x=\"430\" y=\"48\" font-size=\"11\" text-anchor=\"end\">F₁</text><text x=\"430\" y=\"106\" font-size=\"11\" text-anchor=\"end\">F₂</text><polyline points=\"442,63.4 445,70.4 448,77.6 451,84.6 454,91.0 457,96.5 460,100.6 463,103.1 466,104.0 469,103.1 472,100.6 475,96.5 478,91.0 481,84.6 484,77.6 487,70.4 490,63.4 493,57.0 496,51.5 499,47.4 502,44.9 505,44.0 508,44.9 511,47.4 514,51.5 517,57.0 520,63.4 523,70.4 526,77.6 529,84.6 532,91.0 535,96.5 538,100.6 541,103.1 544,104.0 547,103.1 550,100.6 553,96.5 556,91.0 559,84.6 562,77.6 565,70.4 568,63.4 571,57.0 574,51.5 577,47.4 580,44.9 583,44.0 586,44.9 589,47.4 592,51.5 595,57.0 598,63.4 601,70.4 604,77.6 607,84.6 610,91.0 613,96.5 616,100.6 619,103.1 622,104.0 625,103.1\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"1.8\"/><line x1=\"466\" y1=\"104\" x2=\"466\" y2=\"114\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\"/><line x1=\"544\" y1=\"104\" x2=\"544\" y2=\"114\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\"/><text x=\"466\" y=\"126\" font-size=\"11\" text-anchor=\"middle\">t₁</text><text x=\"544\" y=\"126\" font-size=\"11\" text-anchor=\"middle\">t₂</text><text x=\"536\" y=\"140\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图丙</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "用 10 分度游标卡尺测量摆球的直径，如图乙所示，可读出摆球的直径 d =",
+        "unit": "mm",
+        "answer": 19,
+        "tol": 0.05,
+        "sig": 3,
+        "show": "19.0",
+        "explain": "游标 0 刻线正好对齐主尺 1.9 cm（19 mm）刻线，第 0 格（及第 10 格）对齐，10 分度不估读但精度末尾 0 不能省，读为 19.0 mm。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "拉动小球使摆线与竖直方向成一个很小的角度，由静止释放，电脑显示拉力随时间的变化如图丙。单摆运动的回复力是____。",
+        "options": [
+          "摆球的重力",
+          "摆球重力在垂直摆线方向上的分力",
+          "摆线对摆球的拉力",
+          "摆球所受重力和摆线对摆球拉力的合力"
+        ],
+        "answer": 1,
+        "explain": "摆球受到重力与拉力，二者合力沿切线方向的分量（即重力垂直于摆线方向的分力 mg sinθ）提供回复力；法向合力提供向心力，因此总合力不是回复力。"
+      },
+      {
+        "label": "(3)①",
+        "type": "expr",
+        "prompt": "由图丙可知（t₁、t₂ 为相邻两波谷时刻），单摆运动的周期",
+        "lhs": "T =",
+        "vars": {
+          "t1": "t₁",
+          "t2": "t₂"
+        },
+        "extra": [
+          "1",
+          "2"
+        ],
+        "answer": "2*(t2-t1)",
+        "show": "2(t₂ − t₁)",
+        "explain": "摆球每半个周期到达一次最高点（拉力最小波谷），因此相邻两波谷（或波峰）间隔为 {{frac|T|2}}，周期 T = 2(t₂ − t₁)。"
+      },
+      {
+        "label": "(3)②",
+        "type": "expr",
+        "prompt": "（接上问）结合摆长 L，可得当地的重力加速度",
+        "lhs": "g =",
+        "vars": {
+          "L": "L",
+          "t1": "t₁",
+          "t2": "t₂"
+        },
+        "extra": [
+          "π",
+          "2",
+          "4"
+        ],
+        "answer": "pi^2*L/(t2-t1)^2",
+        "show": "π²L ÷ (t₂ − t₁)²",
+        "explain": "将 T = 2(t₂ − t₁) 代入 g = {{frac|4π²L|T²}} = {{frac|4π²L|4(t₂ − t₁)²}} = {{frac|π²L|(t₂ − t₁)²}}。"
+      },
+      {
+        "label": "(4)",
+        "type": "multi",
+        "prompt": "某同学测得的重力加速度数值大于当地实际值，造成这一情况的原因可能是____（多选）。",
+        "options": [
+          "开始摆动时振幅较小",
+          "开始计时时，过早按下停表",
+          "测量周期时，误将摆球 (n − 1) 次全振动的时间记为 n 次全振动的时间",
+          "测量摆长时，以悬点到小球下端边缘的距离为摆长"
+        ],
+        "answer": [
+          2,
+          3
+        ],
+        "replay": "E2",
+        "explain": "振幅对小摆角周期无影响（A 错）；过早按停表使 t 偏大、T 偏大、g 偏小（B 错）；把 (n − 1) 次记为 n 次使 T 偏小、g 偏大（C 对）；摆长量到球下沿使 L 偏大、g 偏大（D 对）。"
+      }
+    ]
+  },
+  {
+    "id": "Y1",
+    "source": "原创（停表读数与 L−T² 坐标作图综合）",
+    "verified": true,
+    "stem": "某同学在“用单摆测量重力加速度”实验中：当摆长 L = 0.850 m 时，用机械停表测出单摆完成 30 次全振动的时间如图所示；随后改变摆长，测得 5 组 (T², L) 数据如下表。<br><svg viewBox=\"0 0 480 176\" width=\"480\" role=\"img\" aria-label=\"机械停表读数图\"><circle cx=\"104\" cy=\"90\" r=\"80\" fill=\"#D5DEE8\" stroke=\"#596574\"/><circle cx=\"104\" cy=\"90\" r=\"74\" fill=\"#fff\" stroke=\"#596574\"/><text x=\"104\" y=\"34\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\">30</text><text x=\"160\" y=\"94\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\">7.5</text><text x=\"104\" y=\"154\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\">15</text><text x=\"48\" y=\"94\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\">22.5</text><circle cx=\"104\" cy=\"63.4\" r=\"20\" fill=\"#F8FBFF\" stroke=\"#9AA8B8\"/><line x1=\"104\" y1=\"63.4\" x2=\"109.3\" y2=\"50.4\" stroke=\"#C7374B\" stroke-width=\"2\"/><line x1=\"104\" y1=\"90\" x2=\"50.0\" y2=\"55.7\" stroke=\"#10233F\" stroke-width=\"2\"/><circle cx=\"104\" cy=\"90\" r=\"3.5\" fill=\"#C7374B\"/><rect x=\"206\" y=\"10\" width=\"264\" height=\"68\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><text x=\"216\" y=\"26\" font-size=\"11\" font-weight=\"700\" fill=\"#C7374B\">小表盘放大（红线为半分钟线）</text><line x1=\"224\" y1=\"54\" x2=\"452\" y2=\"54\" stroke=\"#9AA8B8\"/><line x1=\"240\" y1=\"38\" x2=\"240\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"240\" y=\"68\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\">0</text><line x1=\"288\" y1=\"43\" x2=\"288\" y2=\"54\" stroke=\"#C7374B\" stroke-width=\"1.6\"/><text x=\"288\" y=\"38\" font-size=\"10\" text-anchor=\"middle\" fill=\"#C7374B\">0.5</text><line x1=\"336\" y1=\"38\" x2=\"336\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"336\" y=\"68\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\">1</text><line x1=\"384\" y1=\"43\" x2=\"384\" y2=\"54\" stroke=\"#C7374B\" stroke-width=\"1.6\"/><text x=\"384\" y=\"38\" font-size=\"10\" text-anchor=\"middle\" fill=\"#C7374B\">1.5</text><line x1=\"432\" y1=\"38\" x2=\"432\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"432\" y=\"68\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\">2</text><polygon points=\"328.3,53 323.3,40 333.3,40\" fill=\"#C7374B\"/><rect x=\"206\" y=\"88\" width=\"264\" height=\"78\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><text x=\"216\" y=\"104\" font-size=\"11\" font-weight=\"700\" fill=\"#1661FF\">大表盘放大（黑 0~30 s / 红 30~60 s）</text><line x1=\"218\" y1=\"132\" x2=\"458\" y2=\"132\" stroke=\"#9AA8B8\"/><line x1=\"224.0\" y1=\"114\" x2=\"224.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"224.0\" y=\"145\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\">23</text><text x=\"224.0\" y=\"158\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#C7374B\">53</text><line x1=\"229.6\" y1=\"124\" x2=\"229.6\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"235.2\" y1=\"124\" x2=\"235.2\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"240.8\" y1=\"124\" x2=\"240.8\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"246.4\" y1=\"124\" x2=\"246.4\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"252.0\" y1=\"119\" x2=\"252.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"257.6\" y1=\"124\" x2=\"257.6\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"263.2\" y1=\"124\" x2=\"263.2\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"268.8\" y1=\"124\" x2=\"268.8\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"274.4\" y1=\"124\" x2=\"274.4\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"280.0\" y1=\"114\" x2=\"280.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"280.0\" y=\"145\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\">24</text><text x=\"280.0\" y=\"158\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#C7374B\">54</text><line x1=\"285.6\" y1=\"124\" x2=\"285.6\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"291.2\" y1=\"124\" x2=\"291.2\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"296.8\" y1=\"124\" x2=\"296.8\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"302.4\" y1=\"124\" x2=\"302.4\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"308.0\" y1=\"119\" x2=\"308.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"313.6\" y1=\"124\" x2=\"313.6\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"319.2\" y1=\"124\" x2=\"319.2\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"324.8\" y1=\"124\" x2=\"324.8\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"330.4\" y1=\"124\" x2=\"330.4\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"336.0\" y1=\"114\" x2=\"336.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"336.0\" y=\"145\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\">25</text><text x=\"336.0\" y=\"158\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#C7374B\">55</text><line x1=\"341.6\" y1=\"124\" x2=\"341.6\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"347.2\" y1=\"124\" x2=\"347.2\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"352.8\" y1=\"124\" x2=\"352.8\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"358.4\" y1=\"124\" x2=\"358.4\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"364.0\" y1=\"119\" x2=\"364.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"369.6\" y1=\"124\" x2=\"369.6\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"375.2\" y1=\"124\" x2=\"375.2\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"380.8\" y1=\"124\" x2=\"380.8\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"386.4\" y1=\"124\" x2=\"386.4\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"392.0\" y1=\"114\" x2=\"392.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"392.0\" y=\"145\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\">26</text><text x=\"392.0\" y=\"158\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#C7374B\">56</text><line x1=\"397.6\" y1=\"124\" x2=\"397.6\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"403.2\" y1=\"124\" x2=\"403.2\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"408.8\" y1=\"124\" x2=\"408.8\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"414.4\" y1=\"124\" x2=\"414.4\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"420.0\" y1=\"119\" x2=\"420.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"425.6\" y1=\"124\" x2=\"425.6\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"431.2\" y1=\"124\" x2=\"431.2\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"436.8\" y1=\"124\" x2=\"436.8\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"442.4\" y1=\"124\" x2=\"442.4\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"0.9\"/><line x1=\"448.0\" y1=\"114\" x2=\"448.0\" y2=\"132\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"448.0\" y=\"145\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\">27</text><text x=\"448.0\" y=\"158\" font-size=\"10\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#C7374B\">57</text><line x1=\"347.2\" y1=\"108\" x2=\"347.2\" y2=\"140\" stroke=\"#1661FF\" stroke-width=\"2.4\"/></svg><table class=\"dt\"><tr><th>T² / s²</th><td>2.00</td><td>2.50</td><td>3.00</td><td>3.50</td><td>4.00</td></tr><tr><th>L / m</th><td>0.50</td><td>0.62</td><td>0.74</td><td>0.86</td><td>1.00</td></tr></table>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "停表记录的总时间 t =",
+        "unit": "s",
+        "answer": 55.2,
+        "tol": 0.1,
+        "sig": 3,
+        "show": "55.2",
+        "explain": "小表盘指针在 0 和 1 min 之间且已过 0.5 min 红线，故大表盘读 30～60 s 内圈为 55.2 s（机械停表不估读，分度 0.1 s）。"
+      },
+      {
+        "label": "(2)",
+        "type": "plot",
+        "prompt": "根据上表 5 组数据，在 L − T² 坐标纸上描点并拖动直线拟合。",
+        "x": [
+          0,
+          4.4
+        ],
+        "y": [
+          0,
+          1.1
+        ],
+        "xLabel": "T² / s²",
+        "yLabel": "L / m",
+        "snap": [
+          0.1,
+          0.02
+        ],
+        "ptTol": [
+          0.12,
+          0.025
+        ],
+        "points": [
+          [
+            2.0,
+            0.5
+          ],
+          [
+            2.5,
+            0.62
+          ],
+          [
+            3.0,
+            0.74
+          ],
+          [
+            3.5,
+            0.86
+          ],
+          [
+            4.0,
+            1.0
+          ]
+        ],
+        "lineInit": [
+          [
+            0.5,
+            0.22
+          ],
+          [
+            3.8,
+            0.65
+          ]
+        ],
+        "slope": 0.248,
+        "tol": 0.05,
+        "explain": "5 组点几乎落在过原点的直线上，斜率 k ≈ 0.248 m/s²，于是 g = 4π²k ≈ 9.79 m/s²。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "若实验时摆角达到了 35°，单摆周期会明显变长，用小角公式算出的重力加速度与真实值相比将____。",
+        "options": [
+          "偏大",
+          "偏小",
+          "相等",
+          "先偏大后偏小"
+        ],
+        "answer": 1,
+        "replay": "E5",
+        "explain": "摆角过大时 sinθ < θ，实际周期约按 1 + {{frac|θ₀²|16}} 增大（35° 时偏大约 2.4%），代入 g = {{frac|4π²L|T²}} 导致测量值偏小约 4.6%。"
+      }
+    ]
+  }
+]

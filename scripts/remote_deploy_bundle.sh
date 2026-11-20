@@ -34,7 +34,37 @@ MINGXING_DESCRIPTION_INSPECT_MARKER="${PROJECT_ROOT}/.inspect-mingxing-descripti
 MINGXING_DESCRIPTION_BACKFILL_MARKER="${PROJECT_ROOT}/.backfill-mingxing-descriptions"
 UNIT_REVIEW_INSPECT_MARKER="${PROJECT_ROOT}/.inspect-unit-review-courseware"
 UNIT_REVIEW_IMPORT_MARKER="${PROJECT_ROOT}/.import-unit-review-courseware"
+TABLET_DIAGNOSTIC_INSPECT_MARKER="${PROJECT_ROOT}/.inspect-tablet-diagnostic-courseware"
+TABLET_DIAGNOSTIC_IMPORT_MARKER="${PROJECT_ROOT}/.import-tablet-diagnostic-courseware"
+TABLET_DIAGNOSTIC_UNPUBLISH_MARKER="${PROJECT_ROOT}/.unpublish-tablet-diagnostic-courseware"
 TABLET_MAINTENANCE_MARKER="${PROJECT_ROOT}/.tablet-maintenance-action"
+MECHANICS_LAB_MARKER="${PROJECT_ROOT}/.import-mechanics-lab"
+
+if [[ -f "${MECHANICS_LAB_MARKER}" ]]; then
+  rm -f "${MECHANICS_LAB_MARKER}"
+  cd "${PROJECT_ROOT}"
+  EDUSIMU_BACKEND_DIR="/var/www/edusimu/backend" \
+    /var/www/edusimu/backend/venv/bin/python \
+    "${PROJECT_ROOT}/scripts/import_mechanics_lab.py" apply
+  exit $?
+fi
+
+if [[ -f "${TABLET_DIAGNOSTIC_INSPECT_MARKER}" || -f "${TABLET_DIAGNOSTIC_IMPORT_MARKER}" || -f "${TABLET_DIAGNOSTIC_UNPUBLISH_MARKER}" ]]; then
+  TABLET_DIAGNOSTIC_ACTION="inspect"
+  if [[ -f "${TABLET_DIAGNOSTIC_IMPORT_MARKER}" ]]; then
+    TABLET_DIAGNOSTIC_ACTION="apply"
+  fi
+  if [[ -f "${TABLET_DIAGNOSTIC_UNPUBLISH_MARKER}" ]]; then
+    TABLET_DIAGNOSTIC_ACTION="unpublish"
+  fi
+  rm -f "${TABLET_DIAGNOSTIC_INSPECT_MARKER}" "${TABLET_DIAGNOSTIC_IMPORT_MARKER}" "${TABLET_DIAGNOSTIC_UNPUBLISH_MARKER}"
+  echo "核对并维护平板性能检测课件"
+  cd "${PROJECT_ROOT}"
+  EDUSIMU_BACKEND_DIR="/var/www/edusimu/backend" \
+    /var/www/edusimu/backend/venv/bin/python \
+    "${PROJECT_ROOT}/scripts/import_tablet_diagnostic.py" "${TABLET_DIAGNOSTIC_ACTION}"
+  exit $?
+fi
 
 if [[ -f "${TABLET_MAINTENANCE_MARKER}" ]]; then
   MAINTENANCE_ACTION="$(cat "${TABLET_MAINTENANCE_MARKER}")"

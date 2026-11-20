@@ -27,6 +27,9 @@
           <el-menu-item index="/admin/animations">
             <span>动画管理</span>
           </el-menu-item>
+          <el-menu-item index="/admin/collections">
+            <span>合集与 Banner</span>
+          </el-menu-item>
           <el-menu-item index="/admin/users">
             <span>用户管理</span>
           </el-menu-item>

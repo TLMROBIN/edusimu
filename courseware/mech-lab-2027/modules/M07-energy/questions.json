@@ -1,0 +1,473 @@
+[
+ {
+  "id": "G1",
+  "source": "2024·浙江6月选考·第16-Ⅰ题",
+  "verified": true,
+  "score": 4,
+  "stem": "在“验证机械能守恒定律”的实验中：",
+  "parts": [
+   {
+    "label": "(1)",
+    "type": "choice",
+    "prompt": "下列释放纸带前的操作示意图正确的是____。<svg viewBox=\"0 0 600 182\" width=\"600\" role=\"img\" aria-label=\"2024浙江6月选考操作图ABC\"><g transform=\"translate(10,8)\"><rect x=\"0\" y=\"0\" width=\"180\" height=\"166\" rx=\"10\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><text x=\"90\" y=\"20\" font-size=\"13\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">A</text><rect x=\"18\" y=\"146\" width=\"144\" height=\"8\" fill=\"#8E99A6\"/><rect x=\"30\" y=\"32\" width=\"6\" height=\"114\" fill=\"#8E99A6\"/><rect x=\"36\" y=\"48\" width=\"34\" height=\"6\" fill=\"#8E99A6\"/><rect x=\"68\" y=\"40\" width=\"32\" height=\"22\" rx=\"3\" fill=\"#4F6A8A\"/><rect x=\"81\" y=\"24\" width=\"6\" height=\"90\" fill=\"#F6F1E3\" stroke=\"#CDBF98\"/><path d=\"M74 26 Q84 18 94 26\" fill=\"none\" stroke=\"#C98C6B\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"75\" y=\"114\" width=\"18\" height=\"24\" rx=\"3\" fill=\"#6B7785\"/></g><g transform=\"translate(210,8)\"><rect x=\"0\" y=\"0\" width=\"180\" height=\"166\" rx=\"10\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><text x=\"90\" y=\"20\" font-size=\"13\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">B</text><rect x=\"18\" y=\"146\" width=\"144\" height=\"8\" fill=\"#8E99A6\"/><rect x=\"30\" y=\"32\" width=\"6\" height=\"114\" fill=\"#8E99A6\"/><rect x=\"36\" y=\"48\" width=\"34\" height=\"6\" fill=\"#8E99A6\"/><rect x=\"68\" y=\"40\" width=\"32\" height=\"22\" rx=\"3\" fill=\"#4F6A8A\"/><rect x=\"81\" y=\"24\" width=\"6\" height=\"44\" fill=\"#F6F1E3\" stroke=\"#CDBF98\"/><path d=\"M74 26 Q84 18 94 26\" fill=\"none\" stroke=\"#C98C6B\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"75\" y=\"68\" width=\"18\" height=\"24\" rx=\"3\" fill=\"#6B7785\"/></g><g transform=\"translate(410,8)\"><rect x=\"0\" y=\"0\" width=\"180\" height=\"166\" rx=\"10\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><text x=\"90\" y=\"20\" font-size=\"13\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">C</text><rect x=\"18\" y=\"146\" width=\"144\" height=\"8\" fill=\"#8E99A6\"/><rect x=\"30\" y=\"32\" width=\"6\" height=\"114\" fill=\"#8E99A6\"/><rect x=\"36\" y=\"48\" width=\"34\" height=\"6\" fill=\"#8E99A6\"/><rect x=\"68\" y=\"40\" width=\"32\" height=\"22\" rx=\"3\" fill=\"#4F6A8A\"/><rect x=\"81\" y=\"32\" width=\"6\" height=\"36\" fill=\"#F6F1E3\" stroke=\"#CDBF98\"/><rect x=\"75\" y=\"68\" width=\"18\" height=\"24\" rx=\"3\" fill=\"#6B7785\"/><path d=\"M70 96 H98\" stroke=\"#C98C6B\" stroke-width=\"6\" stroke-linecap=\"round\"/></g></svg>",
+    "options": [
+     "A",
+     "B",
+     "C"
+    ],
+    "answer": 1,
+    "replay": "E5",
+    "explain": "正确操作是手提纸带上端保持竖直，使重锤紧靠打点计时器下方由静止释放，选 B。重锤远离计时器（A）会减少有效点数；手托重锤（C）会使纸带松弛并给重锤带来额外初扰动。"
+   },
+   {
+    "label": "(2)",
+    "type": "numeric",
+    "prompt": "实验获得一条纸带，截取点迹清晰的一段并测得各点到点 0 的距离如图所示（单位：cm）。已知打点频率为 50 Hz，则打点“13”时重锤下落的速度大小为（保留三位有效数字）<svg viewBox=\"0 0 600 104\" width=\"600\" role=\"img\" aria-label=\"2024浙江6月纸带数据\"><rect x=\"12\" y=\"26\" width=\"576\" height=\"30\" fill=\"#F6F1E3\" stroke=\"#CDBF98\"/><text x=\"28\" y=\"45\" font-size=\"12\" fill=\"#4A5B73\">0 …</text><circle cx=\"95\" cy=\"41\" r=\"3\" fill=\"#2B2B2B\"/><circle cx=\"243\" cy=\"41\" r=\"3\" fill=\"#2B2B2B\"/><circle cx=\"401\" cy=\"41\" r=\"3\" fill=\"#C7374B\"/><circle cx=\"568\" cy=\"41\" r=\"3\" fill=\"#2B2B2B\"/><g font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\"><text x=\"95\" y=\"18\">11</text><text x=\"243\" y=\"18\">12</text><text x=\"401\" y=\"18\" fill=\"#C7374B\">13</text><text x=\"568\" y=\"18\">14</text></g><g font-size=\"12\" text-anchor=\"middle\" fill=\"#1661FF\" font-weight=\"600\"><text x=\"95\" y=\"78\">41.28</text><text x=\"243\" y=\"78\">47.33</text><text x=\"401\" y=\"78\" fill=\"#C7374B\">53.83</text><text x=\"568\" y=\"78\">60.69</text></g><text x=\"300\" y=\"96\" font-size=\"11.5\" text-anchor=\"middle\" fill=\"#4A5B73\">各点到起点 0 的距离（单位：cm）</text></svg>",
+    "unit": "m/s",
+    "answer": 3.34,
+    "tol": 0.005,
+    "sig": 3,
+    "show": "3.34",
+    "explain": "相邻打点间隔 T = 0.02 s，点 13 是点 12 到点 14 的中间时刻：v₁₃ = {{frac|(60.69 − 47.33) × 10⁻² m|2 × 0.02 s}} = 3.34 m/s。"
+   },
+   {
+    "label": "(3)",
+    "type": "text-choice",
+    "prompt": "某同学用纸带的数据求出重力加速度 g = 9.77 m/s²，并用此 g 值计算得出打点“1”到“13”过程重锤的重力势能减小值为 5.09m，另计算得动能增加值为 5.08m（m 为重锤质量），则该结果____验证机械能守恒定律。",
+    "options": [
+     "能",
+     "不能"
+    ],
+    "answer": 1,
+    "replay": "E4",
+    "explain": "不能。用纸带数据算出的 g′ = 9.77 m/s² 是重锤下落的真实加速度 a，其中已扣除了空气和纸带阻力；再把 a 当成 g 代入 mgh，恒有 ½mv² = ma·h，只是在验证运动学恒等式。"
+   },
+   {
+    "label": "(4)",
+    "type": "choice",
+    "prompt": "做出上述判断的理由是____。",
+    "options": [
+     "在误差允许范围内",
+     "没有用当地的重力加速度 g"
+    ],
+    "answer": 1,
+    "replay": "E4",
+    "explain": "验证机械能守恒时，重力势能减少量必须代入当地真实的重力加速度 g（如 9.80 m/s²），不能用纸带测得的加速度替代。"
+   }
+  ]
+ },
+ {
+  "id": "G2",
+  "source": "2025·河南卷·第12题（节选）",
+  "verified": true,
+  "stem": "实验小组利用铁架台、打点计时器与重锤组成自由落体装置验证机械能守恒定律。可选用的器材有：交流电源（频率 50 Hz）、铁架台、电子天平、重锤、打点计时器、纸带、刻度尺等。",
+  "parts": [
+   {
+    "label": "(1)",
+    "type": "choice",
+    "prompt": "下列所给实验步骤中，有 4 个是完成实验必需且正确的，把它们选择出来并按实验顺序排列：____。<br>① 先接通电源，打点计时器开始打点，然后再释放纸带　② 先释放纸带，然后再接通电源，打点计时器开始打点　③ 用电子天平称量重锤的质量　④ 将纸带下端固定在重锤上，穿过打点计时器的限位孔，用手捏住纸带上端　⑤ 在纸带上选取一段，用刻度尺测量该段内各点到起点的距离，记录分析数据　⑥ 关闭电源，取下纸带",
+    "options": [
+     "④①⑥⑤",
+     "④②⑥⑤",
+     "③④①⑤",
+     "④①⑤⑥"
+    ],
+    "answer": 0,
+    "replay": "E1",
+    "explain": "验证式 mgh = ½mv² 中质量 m 可约去，不需要步骤 ③ 称量质量；正确操作先装纸带 ④ → 先通电后释放 ① → 关电源取纸带 ⑥ → 测量分析数据 ⑤。"
+   },
+   {
+    "label": "(2)",
+    "type": "numeric",
+    "prompt": "如图所示是纸带上连续打出的五个点 A、B、C、D、E 到起点的距离（单位：cm），则打出 B 点时重锤下落的速度大小为（保留 3 位有效数字）<svg viewBox=\"0 0 600 100\" width=\"600\" role=\"img\" aria-label=\"2025河南卷纸带数据\"><rect x=\"12\" y=\"24\" width=\"576\" height=\"28\" fill=\"#F6F1E3\" stroke=\"#CDBF98\"/><text x=\"30\" y=\"42\" font-size=\"12\" fill=\"#4A5B73\">O …</text><circle cx=\"92\" cy=\"38\" r=\"3\" fill=\"#2B2B2B\"/><circle cx=\"196\" cy=\"38\" r=\"3\" fill=\"#C7374B\"/><circle cx=\"310\" cy=\"38\" r=\"3\" fill=\"#2B2B2B\"/><circle cx=\"437\" cy=\"38\" r=\"3\" fill=\"#2B2B2B\"/><circle cx=\"574\" cy=\"38\" r=\"3\" fill=\"#2B2B2B\"/><g font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\"><text x=\"92\" y=\"17\">A</text><text x=\"196\" y=\"17\" fill=\"#C7374B\">B</text><text x=\"310\" y=\"17\">C</text><text x=\"437\" y=\"17\">D</text><text x=\"574\" y=\"17\">E</text></g><g font-size=\"12\" text-anchor=\"middle\" fill=\"#1661FF\" font-weight=\"600\"><text x=\"92\" y=\"72\">13.20</text><text x=\"196\" y=\"72\" fill=\"#C7374B\">16.60</text><text x=\"310\" y=\"72\">20.34</text><text x=\"437\" y=\"72\">24.50</text><text x=\"574\" y=\"72\">29.00</text></g><text x=\"300\" y=\"92\" font-size=\"11.5\" text-anchor=\"middle\" fill=\"#4A5B73\">A～E 各点到起点的距离（单位：cm）</text></svg>",
+    "unit": "m/s",
+    "answer": 1.79,
+    "tol": 0.005,
+    "sig": 3,
+    "show": "1.79",
+    "explain": "连续打点 T = 0.02 s，B 为 AC 中间时刻：v<sub>B</sub> = {{frac|(20.34 − 13.20) × 10⁻² m|2 × 0.02 s}} = 1.785 m/s ≈ 1.79 m/s。"
+   },
+   {
+    "label": "(3)",
+    "type": "text-choice",
+    "prompt": "纸带上各点与起点间的距离即为重锤下落高度 h，计算相应的重锤下落速度 v，并绘制 v² - h 关系图像。理论上，若机械能守恒，图中直线应____原点",
+    "options": [
+     "通过",
+     "不通过"
+    ],
+    "answer": 0,
+    "explain": "由 mgh = ½mv² 得 v² = 2gh，当 h = 0 时 v² = 0，理论上直线应通过坐标原点。"
+   },
+   {
+    "label": "(4)",
+    "type": "expr",
+    "prompt": "（接上问）理论上，该 v² - h 直线的斜率为（用重力加速度大小 g 表示）",
+    "lhs": "k =",
+    "vars": {
+     "g": "g"
+    },
+    "extra": [
+     "1",
+     "2"
+    ],
+    "answer": "2*g",
+    "show": "2g",
+    "explain": "由 v² = 2gh 与一次函数 y = kx 对照，可知理论斜率 k = 2g。"
+   },
+   {
+    "label": "(5)",
+    "type": "expr",
+    "prompt": "定义单次测量的相对误差 η = |(E<sub>p</sub> − E<sub>k</sub>)/E<sub>p</sub>| × 100%，其中 E<sub>p</sub> 是重锤重力势能的减小量，E<sub>k</sub> 是其动能增加量。若实验测得 v² - h 拟合直线的斜率为 k（k < 2g），则由该斜率算出的相对误差 η / 100% =（用字母 k 和 g 表示）",
+    "lhs": "η / 100% =",
+    "vars": {
+     "g": "g",
+     "k": "k"
+    },
+    "extra": [
+     "1",
+     "2"
+    ],
+    "answer": "(2*g-k)/(2*g)",
+    "show": "(2g − k) ÷ (2g)",
+    "explain": "因为 v² = k·h，所以 E<sub>k</sub> = ½mv² = ½mkh，E<sub>p</sub> = mgh。代入相对误差公式得 η = |{{frac|mgh − ½mkh|mgh}}| × 100% = {{frac|2g − k|2g}} × 100%。（原卷该问后续还要求由图读取斜率 k 并代入 g = 9.80 计算百分比。）"
+   }
+  ]
+ },
+ {
+  "id": "G3",
+  "source": "2025·河北卷·第11题",
+  "verified": true,
+  "stem": "某学习小组在倾斜的气垫导轨上验证机械能守恒定律，实验装置如图所示，当地重力加速度为 g。<svg viewBox=\"0 0 560 156\" width=\"560\" role=\"img\" aria-label=\"2025河北卷倾斜气垫导轨装置图\"><line x1=\"40\" y1=\"140\" x2=\"520\" y2=\"140\" stroke=\"#8E99A6\" stroke-width=\"2\"/><rect x=\"76\" y=\"77\" width=\"32\" height=\"63\" fill=\"#C9D1D9\" stroke=\"#596574\"/><polygon points=\"60,64 504,132 502,140 58,72\" fill=\"#D5DEE8\" stroke=\"#596574\"/><rect x=\"116\" y=\"52\" width=\"44\" height=\"22\" rx=\"3\" transform=\"rotate(8.7,138,63)\" fill=\"#3E6FD0\"/><rect x=\"148\" y=\"34\" width=\"5\" height=\"22\" transform=\"rotate(8.7,150,45)\" fill=\"#10233F\"/><text x=\"152\" y=\"26\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">遮光条 d₁</text><rect x=\"246\" y=\"64\" width=\"12\" height=\"34\" transform=\"rotate(8.7,252,81)\" fill=\"#3B4B60\"/><circle cx=\"252\" cy=\"75\" r=\"2.5\" fill=\"#C7374B\"/><text x=\"252\" y=\"58\" font-size=\"11.5\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">光电门 A</text><rect x=\"406\" y=\"88\" width=\"12\" height=\"34\" transform=\"rotate(8.7,412,105)\" fill=\"#3B4B60\"/><circle cx=\"412\" cy=\"99\" r=\"2.5\" fill=\"#C7374B\"/><text x=\"412\" y=\"82\" font-size=\"11.5\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">光电门 B</text><line x1=\"422\" y1=\"105\" x2=\"472\" y2=\"105\" stroke=\"#12A9C4\" stroke-dasharray=\"3 3\"/><line x1=\"258\" y1=\"81\" x2=\"472\" y2=\"81\" stroke=\"#12A9C4\" stroke-dasharray=\"3 3\"/><path d=\"M466 81 V105\" stroke=\"#12A9C4\" stroke-width=\"1.4\"/><text x=\"476\" y=\"97\" font-size=\"12\" font-weight=\"700\" fill=\"#0E8CA3\">h</text></svg>",
+  "parts": [
+   {
+    "label": "(1)",
+    "type": "text-choice",
+    "prompt": "方案设计阶段，该小组同学对需要测量哪些物理量产生了不同意见：<br><b>甲同学：</b>需测量滑块和遮光条的总质量、滑块通过两个光电门的速度、两个光电门间的竖直高度差。<br><b>乙同学：</b>只需测量滑块通过两个光电门的速度、两个光电门间的竖直高度差。<br><b>丙同学：</b>只需测量滑块通过两个光电门的速度、两个光电门间的距离。<br>你认为____同学的方案不可行。",
+    "options": [
+     "甲",
+     "乙",
+     "丙"
+    ],
+    "answer": 2,
+    "explain": "验证式 mgh = ½mv<sub>B</sub>² − ½mv<sub>A</sub>² 中质量 m 可以约去（只需测速度与竖直高度差 h），甲、乙方案都可行；丙同学只测沿导轨的距离而未测竖直高度差 h（也未测倾角），无法计算重力势能减少量，因此不可行。"
+   },
+   {
+    "label": "(2)",
+    "type": "numeric",
+    "prompt": "实验中使用的遮光条宽度 d₁ = 10.0 mm，光电门宽度 d₂ = 20.0 mm。某次测量时记录通过光电门 A 的遮光时间为 Δt = 25.0 ms，则滑块经过光电门 A 的速度大小为",
+    "unit": "m/s",
+    "answer": 0.4,
+    "tol": 0.005,
+    "show": "0.40",
+    "explain": "光电门宽度 d₂ = 20.0 mm 是干扰数据；遮光时间由滑块上的遮光条宽度 d₁ = 10.0 mm 决定。故 v<sub>A</sub> = {{frac|d₁|Δt}} = {{frac|10.0 × 10⁻³ m|25.0 × 10⁻³ s}} = 0.40 m/s（或 0.400 m/s）。"
+   }
+  ]
+ },
+ {
+  "id": "G4",
+  "source": "2025·江西卷·第11题",
+  "verified": true,
+  "stem": "某小组利用气垫导轨、两个光电门、滑块、遮光片等，组成具有一定倾角的导轨装置，研究机械能守恒定律，装置如图 (a) 所示。重力加速度 g 取 9.80 m/s²。<svg viewBox=\"0 0 560 156\" width=\"560\" role=\"img\" aria-label=\"2025江西卷气垫导轨装置图\"><line x1=\"36\" y1=\"142\" x2=\"524\" y2=\"142\" stroke=\"#8E99A6\" stroke-width=\"2\"/><rect x=\"64\" y=\"73\" width=\"30\" height=\"69\" fill=\"#C9D1D9\" stroke=\"#596574\"/><polygon points=\"52,60 510,130 508,138 50,68\" fill=\"#D5DEE8\" stroke=\"#596574\"/><rect x=\"114\" y=\"51\" width=\"46\" height=\"20\" rx=\"3\" transform=\"rotate(8.7,137,61)\" fill=\"#3E6FD0\"/><rect x=\"134\" y=\"34\" width=\"4\" height=\"18\" transform=\"rotate(8.7,136,43)\" fill=\"#10233F\"/><text x=\"96\" y=\"30\" font-size=\"11\" fill=\"#3E6FD0\" font-weight=\"600\">释放起点</text><rect x=\"116\" y=\"40\" width=\"10\" height=\"32\" transform=\"rotate(8.7,121,56)\" fill=\"#C7374B\"/><text x=\"162\" y=\"28\" font-size=\"11.5\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#C7374B\">光电门 1</text><rect x=\"388\" y=\"84\" width=\"10\" height=\"32\" transform=\"rotate(8.7,393,100)\" fill=\"#3B4B60\"/><text x=\"393\" y=\"76\" font-size=\"11.5\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\">光电门 2</text><text x=\"265\" y=\"118\" font-size=\"11.5\" fill=\"#10233F\">L</text><text x=\"475\" y=\"122\" font-size=\"11.5\" fill=\"#4A5B73\">θ</text><text x=\"280\" y=\"152\" font-size=\"11.5\" text-anchor=\"middle\" fill=\"#4A5B73\">图 (a)</text></svg><br>实验时，导轨倾角正弦值 sinθ = 0.0613，遮光片宽度 d = 4.82 mm。从导轨最左端静止释放滑块，记录通过光电门 1、2 的遮光时间 Δt₁ 和 Δt₂，移动光电门 2 改变间距 L，部分实验数据如下：<table class=\"dt\"><tr><th>L / cm</th><td>10.00</td><td>20.00</td><td>30.00</td><td>60.00</td><td>65.00</td><td>70.00</td></tr><tr><th>Δt₁ / ms</th><td>9.982</td><td>10.019</td><td>10.049</td><td>10.073</td><td>10.066</td><td>10.170</td></tr><tr><th>Δt₂ / ms</th><td>8.016</td><td>7.032</td><td>6.310</td><td>4.938</td><td>4.787</td><td>4.677</td></tr></table>",
+  "parts": [
+   {
+    "label": "(1)",
+    "type": "text-choice",
+    "prompt": "实验前应合理安装器材。图 (a) 中位置安装不合理的是____",
+    "options": [
+     "光电门 1",
+     "光电门 2"
+    ],
+    "answer": 0,
+    "explain": "光电门 1 放置得过于靠左，滑块尚未充分释放就已经遮光或妨碍静止释放，安装不合理的是光电门 1。"
+   },
+   {
+    "label": "(2)",
+    "type": "choice",
+    "prompt": "针对上述不合理处，正确的调整方法是____。",
+    "options": [
+     "适当向左移动光电门 1",
+     "适当向右移动光电门 1",
+     "换用更宽的遮光片",
+     "把气垫导轨调平"
+    ],
+    "answer": 1,
+    "explain": "应适当向右移动光电门 1，使滑块由最左端静止释放后加速一段距离再穿过光电门 1。"
+   },
+   {
+    "label": "(3)",
+    "type": "numeric",
+    "prompt": "当 L = 65.00 cm 时，滑块通过光电门 2 的速度大小 v₂ =（保留 3 位有效数字）",
+    "unit": "m/s",
+    "answer": 1.01,
+    "tol": 0.01,
+    "sig": 3,
+    "show": "1.01",
+    "explain": "v₂ = {{frac|d|Δt₂}} = {{frac|4.82 × 10⁻³ m|4.787 × 10⁻³ s}} ≈ 1.01 m/s。"
+   },
+   {
+    "label": "(4)",
+    "type": "numeric",
+    "prompt": "当 L = 65.00 cm 时，滑块在两光电门间下降的竖直高度 H =（保留 3 位有效数字）",
+    "unit": "cm",
+    "answer": 3.98,
+    "tol": 0.01,
+    "sig": 3,
+    "show": "3.98",
+    "explain": "H = L·sinθ = 65.00 cm × 0.0613 = 3.9845 cm ≈ 3.98 cm。"
+   },
+   {
+    "label": "(5)",
+    "type": "choice",
+    "prompt": "根据多组数据绘出 Δv² − H 图像（其中 Δv² = v₂² − v₁²），拟合直线过原点且斜率约为 19.6 m/s²，说明机械能守恒。该直线斜率的理论表达式为____。",
+    "options": [
+     "g",
+     "2g",
+     "g / 2",
+     "g·sinθ"
+    ],
+    "answer": 1,
+    "explain": "由 mgH = ½mv₂² − ½mv₁² 消去 m 并乘以 2，得 Δv² = v₂² − v₁² = 2g·H，故 Δv² − H 图的斜率理论值为 2g ≈ 19.6 m/s²。"
+   }
+  ]
+ },
+ {
+  "id": "G5",
+  "source": "2025·江苏卷·第11题",
+  "verified": true,
+  "stem": "小明同学探究机械能守恒定律：将小钢球在斜槽上某位置 A 由静止释放，沿斜槽通过末端 O 处的光电门，测得遮光时间 t 与钢球直径 d，由 v = d/t 求出速度，再用刻度尺测出钢球下降高度 h。已知钢球质量 m = 0.02 kg，g = 9.80 m/s²。<svg viewBox=\"0 0 560 144\" width=\"560\" role=\"img\" aria-label=\"2025江苏卷斜槽钢球与游标卡尺图\"><g transform=\"translate(8,8)\"><rect x=\"0\" y=\"0\" width=\"230\" height=\"128\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><path d=\"M26 24 Q50 92 178 96\" fill=\"none\" stroke=\"#8E99A6\" stroke-width=\"6\" stroke-linecap=\"round\"/><line x1=\"178\" y1=\"96\" x2=\"178\" y2=\"116\" stroke=\"#596574\" stroke-width=\"4\"/><line x1=\"24\" y1=\"116\" x2=\"204\" y2=\"116\" stroke=\"#10233F\" stroke-width=\"2\"/><circle cx=\"34\" cy=\"24\" r=\"7\" fill=\"#596574\"/><text x=\"46\" y=\"26\" font-size=\"11.5\" font-weight=\"700\">A</text><rect x=\"162\" y=\"76\" width=\"10\" height=\"24\" fill=\"#3B4B60\"/><circle cx=\"167\" cy=\"88\" r=\"2.2\" fill=\"#C7374B\"/><text x=\"167\" y=\"70\" font-size=\"11\" text-anchor=\"middle\">光电门 O</text><text x=\"115\" y=\"110\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">斜槽装置</text></g><g transform=\"translate(252,8)\"><rect x=\"0\" y=\"0\" width=\"144\" height=\"128\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><text x=\"72\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">甲</text><rect x=\"22\" y=\"42\" width=\"96\" height=\"14\" fill=\"#D5DEE8\" stroke=\"#596574\"/><polygon points=\"56,56 56,94 64,78 64,56\" fill=\"#B8C4D0\" stroke=\"#596574\"/><polygon points=\"88,56 88,94 80,78 80,56\" fill=\"#B8C4D0\" stroke=\"#596574\"/><circle cx=\"72\" cy=\"78\" r=\"11.5\" fill=\"#7E8A98\" stroke=\"#10233F\"/><text x=\"72\" y=\"116\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">外测量爪</text></g><g transform=\"translate(406,8)\"><rect x=\"0\" y=\"0\" width=\"144\" height=\"128\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><text x=\"72\" y=\"18\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">乙</text><rect x=\"22\" y=\"74\" width=\"96\" height=\"14\" fill=\"#D5DEE8\" stroke=\"#596574\"/><polygon points=\"56,74 56,42 64,56 64,74\" fill=\"#B8C4D0\" stroke=\"#596574\"/><polygon points=\"88,74 88,42 80,56 80,74\" fill=\"#B8C4D0\" stroke=\"#596574\"/><circle cx=\"72\" cy=\"54\" r=\"11.5\" fill=\"#7E8A98\" stroke=\"#10233F\"/><text x=\"72\" y=\"116\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">内测量爪</text></g></svg><div style=\"font-size:12.5px;font-weight:700;margin-top:4px;color:#10233F\">表 1</div><table class=\"dt\"><tr><th>h / (10⁻² m)</th><td>4.00</td><td>5.00</td><td>6.00</td><td>7.00</td><td>8.00</td></tr><tr><th>ΔE<sub>k</sub> / (10⁻³ J)</th><td>4.90</td><td>6.25</td><td>7.45</td><td>8.78</td><td>10.0</td></tr><tr><th>ΔE<sub>p</sub> / (10⁻³ J)</th><td>7.84</td><td>9.80</td><td>11.8</td><td>13.7</td><td>(　)</td></tr></table>",
+  "parts": [
+   {
+    "label": "(1)",
+    "type": "choice",
+    "prompt": "安装实验装置的操作有：① 在斜槽末端安装光电门　② 调节斜槽在竖直平面内　③ 调节斜槽末端水平　④ 将斜槽安装到底座上。合理顺序是____。",
+    "options": [
+     "①②③④",
+     "④②③①",
+     "④③①②",
+     "②③④①"
+    ],
+    "answer": 1,
+    "explain": "应先将斜槽固定在底座上（④），调至竖直平面（②）并使末端水平（③），最后在末端安装光电门（①），即 ④②③①。"
+   },
+   {
+    "label": "(2)",
+    "type": "text-choice",
+    "prompt": "用游标卡尺测量钢球直径的正确操作是图中的____",
+    "options": [
+     "甲",
+     "乙"
+    ],
+    "answer": 0,
+    "explain": "测量小球外径必须使用游标卡尺下方的外测量爪（甲）；内测量爪（乙）用于测圆孔内径。"
+   },
+   {
+    "label": "(3)",
+    "type": "numeric",
+    "prompt": "将表中 h = 8.00 × 10⁻² m 处的重力势能减少量补充完整：ΔE<sub>p</sub> =（保留 3 位有效数字）",
+    "unit": "×10⁻³ J",
+    "answer": 15.7,
+    "tol": 0.1,
+    "sig": 3,
+    "show": "15.7",
+    "explain": "ΔE<sub>p</sub> = mgh = 0.02 × 9.80 × 8.00 × 10⁻² J = 15.68 × 10⁻³ J ≈ 15.7 × 10⁻³ J。"
+   },
+   {
+    "label": "(4)",
+    "type": "expr",
+    "prompt": "实验数据表明 ΔE<sub>k</sub> 明显小于 ΔE<sub>p</sub>。为检验机械能损失是否主要由摩擦力做功引起，另取相同斜槽平滑对接，钢球从左侧 A 点静止释放后到达右侧最高点 B，A、B 高度差为 H，则全过程中克服摩擦力做功大小的理论值",
+    "lhs": "W<sub>理</sub> =",
+    "vars": {
+     "m": "m",
+     "g": "g",
+     "H": "H"
+    },
+    "extra": [
+     "1",
+     "2"
+    ],
+    "answer": "m*g*H",
+    "show": "mgH",
+    "explain": "钢球从 A 静止释放到 B 静止，动能变化为 0，由能量守恒得克服摩擦力做功的理论值 W<sub>理</sub> = mgH。"
+   },
+   {
+    "label": "(5)",
+    "type": "text-choice",
+    "prompt": "实验测得上述对接往返过程的实际摩擦损耗远小于表中的 ΔE<sub>p</sub> − ΔE<sub>k</sub>。因此小明猜测“表中的巨大差值主要是由摩擦力做功造成的”，你是否同意该猜测？",
+    "options": [
+     "同意",
+     "不同意"
+    ],
+    "answer": 1,
+    "explain": "不同意。实测摩擦耗功远小于 ΔE<sub>p</sub> − ΔE<sub>k</sub>，说明主要原因不是摩擦，而是还有另一部分动能未计入。"
+   },
+   {
+    "label": "(6)",
+    "type": "choice",
+    "prompt": "产生表 1 中 ΔE<sub>k</sub> 明显小于 ΔE<sub>p</sub> 的主要原因是____。",
+    "options": [
+     "重力加速度 g 取值偏大",
+     "减少的重力势能有一部分转化为钢球的转动动能（未计入平动动能 ½mv² 中）",
+     "游标卡尺没有估读",
+     "斜槽末端没有调水平"
+    ],
+    "answer": 1,
+    "explain": "钢球沿斜槽滚下时既平动又绕自身球心转动，减少的重力势能转化为平动动能和转动动能；用 ½mv² 只计算了平动动能，因此明显偏小。"
+   }
+  ]
+ },
+ {
+  "id": "G6",
+  "source": "2025·甘肃卷·第11题",
+  "verified": true,
+  "stem": "某学习小组使用如图所示的实验装置验证机械能守恒定律：用不可伸长的细线悬挂一直径为 d 的小球，光电门置于最低点处（光线通过球心）。将小球拉至高度 h 处由静止释放，记录小球经过光电门的挡光时间 Δt。<svg viewBox=\"0 0 420 148\" width=\"420\" role=\"img\" aria-label=\"2025甘肃卷单摆光电门装置\"><line x1=\"140\" y1=\"16\" x2=\"260\" y2=\"16\" stroke=\"#596574\" stroke-width=\"4\"/><circle cx=\"200\" cy=\"16\" r=\"3\" fill=\"#10233F\"/><line x1=\"200\" y1=\"16\" x2=\"120\" y2=\"86\" stroke=\"#4A5B73\" stroke-width=\"1.4\" stroke-dasharray=\"4 3\"/><circle cx=\"120\" cy=\"86\" r=\"10\" fill=\"#E69B2D\" stroke=\"#10233F\"/><line x1=\"200\" y1=\"16\" x2=\"200\" y2=\"116\" stroke=\"#10233F\" stroke-width=\"1.4\"/><circle cx=\"200\" cy=\"116\" r=\"10\" fill=\"#7E8A98\" stroke=\"#10233F\"/><rect x=\"180\" y=\"110\" width=\"40\" height=\"14\" fill=\"none\" stroke=\"#3B4B60\" stroke-width=\"2\"/><line x1=\"176\" y1=\"116\" x2=\"224\" y2=\"116\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\"/><line x1=\"120\" y1=\"86\" x2=\"288\" y2=\"86\" stroke=\"#12A9C4\" stroke-dasharray=\"3 3\"/><line x1=\"200\" y1=\"116\" x2=\"288\" y2=\"116\" stroke=\"#12A9C4\" stroke-dasharray=\"3 3\"/><path d=\"M280 86 V116\" stroke=\"#12A9C4\" stroke-width=\"1.5\"/><text x=\"288\" y=\"105\" font-size=\"12\" font-weight=\"700\" fill=\"#0E8CA3\">h</text><text x=\"236\" y=\"132\" font-size=\"11.5\" fill=\"#3B4B60\">光电门（Δt）</text></svg>",
+  "parts": [
+   {
+    "label": "(1)",
+    "type": "choice",
+    "prompt": "改变高度 h 测得多组 Δt，若以 h 为横坐标作线性图像来验证机械能守恒，则应选用的纵坐标与理论斜率（用 g、d 表示）分别是____。",
+    "options": [
+     "纵坐标 {{frac|1|(Δt)²}}，斜率 {{frac|2g|d²}}",
+     "纵坐标 (Δt)²，斜率 {{frac|d²|2g}}",
+     "纵坐标 {{frac|1|Δt}}，斜率 {{frac|{{sqrt|2g}}|d}}",
+     "纵坐标 {{frac|1|(Δt)²}}，斜率 {{frac|g|2d²}}"
+    ],
+    "answer": 0,
+    "explain": "小球过最低点速度 v = {{frac|d|Δt}}。由 mgh = {{frac|1|2}}mv² 得 ({{frac|d|Δt}})² = 2gh，即 {{frac|1|(Δt)²}} = {{frac|2g|d²}}·h。因此以 h 为横坐标、{{frac|1|(Δt)²}} 为纵坐标作图，理论斜率为 {{frac|2g|d²}}。"
+   },
+   {
+    "label": "(2)",
+    "type": "choice",
+    "prompt": "某同学用游标卡尺测得小球直径（或遮光宽），规范记录的读数为 <b>1.024 cm</b>，则他所用游标卡尺的规格为____。",
+    "options": [
+     "10 分度（精度 0.1 mm）",
+     "20 分度（精度 0.05 mm）",
+     "50 分度（精度 0.02 mm）"
+    ],
+    "answer": 2,
+    "explain": "1.024 cm = 10.24 mm，小数部分 0.24 mm 只能是 50 分度游标卡尺（精度 0.02 mm）的整数倍，10 分度和 20 分度均无法读出 0.24 mm。"
+   },
+   {
+    "label": "(3)",
+    "type": "numeric",
+    "prompt": "（接上问）该次测量中，游标尺上第____条刻度线（0 线除外）与主尺某刻度线对齐",
+    "unit": "条",
+    "answer": 12,
+    "tol": 0,
+    "sig": 2,
+    "show": "12",
+    "explain": "0.24 mm ÷ 0.02 mm = 12，即游标尺上第 12 条刻度线与主尺刻度线对齐。"
+   }
+  ]
+ },
+ {
+  "id": "G7",
+  "source": "2025·湖北卷·第12题（阿特伍德机压轴迁移）",
+  "verified": true,
+  "stem": "（迁移压轴）某同学用如图 (a) 所示的阿特伍德机装置测量重力加速度 g：细绳跨过固定在铁架台上<b>不可转动的小圆柱体</b>，两端挂有质量为 m 的重锤 1（含遮光片，总质量 m）与质量为 M（M > m）的重锤 2。重锤 1 压在桌面上静止时，遮光片中心到光电门的竖直高度差为 H；释放后重锤 1 由静止向上运动，测得遮光片通过光电门的挡光时间为 t。<svg viewBox=\"0 0 560 164\" width=\"560\" role=\"img\" aria-label=\"2025湖北卷阿特伍德机与20分度游标卡尺\"><g transform=\"translate(8,8)\"><rect x=\"0\" y=\"0\" width=\"198\" height=\"148\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><rect x=\"14\" y=\"130\" width=\"170\" height=\"8\" fill=\"#C9A97A\"/><rect x=\"28\" y=\"18\" width=\"5\" height=\"112\" fill=\"#8E99A6\"/><rect x=\"33\" y=\"24\" width=\"76\" height=\"5\" fill=\"#8E99A6\"/><circle cx=\"109\" cy=\"26\" r=\"8\" fill=\"#B8C4D0\" stroke=\"#596574\"/><line x1=\"101\" y1=\"26\" x2=\"101\" y2=\"114\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"117\" y1=\"26\" x2=\"117\" y2=\"72\" stroke=\"#10233F\" stroke-width=\"1.4\"/><rect x=\"92\" y=\"114\" width=\"18\" height=\"16\" fill=\"#556272\"/><rect x=\"99\" y=\"100\" width=\"4\" height=\"14\" fill=\"#10233F\"/><rect x=\"88\" y=\"62\" width=\"24\" height=\"10\" fill=\"#3B4B60\"/><text x=\"74\" y=\"70\" font-size=\"10\" text-anchor=\"end\">光电门</text><line x1=\"103\" y1=\"67\" x2=\"136\" y2=\"67\" stroke=\"#12A9C4\" stroke-dasharray=\"2 2\"/><line x1=\"103\" y1=\"107\" x2=\"136\" y2=\"107\" stroke=\"#12A9C4\" stroke-dasharray=\"2 2\"/><path d=\"M132 67 V107\" stroke=\"#12A9C4\" stroke-width=\"1.3\"/><text x=\"138\" y=\"91\" font-size=\"11\" font-weight=\"700\" fill=\"#0E8CA3\">H</text><rect x=\"107\" y=\"72\" width=\"20\" height=\"22\" fill=\"#7E8A98\"/><text x=\"117\" y=\"87\" font-size=\"11\" text-anchor=\"middle\" fill=\"#fff\" font-weight=\"700\">M</text><text x=\"84\" y=\"126\" font-size=\"10.5\" text-anchor=\"end\">m</text><text x=\"99\" y=\"144\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">图 (a)</text></g><g transform=\"translate(216,8)\"><rect x=\"0\" y=\"0\" width=\"336\" height=\"148\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><rect x=\"8\" y=\"16\" width=\"320\" height=\"46\" fill=\"#F3F7FC\" stroke=\"#9AA8B8\"/><line x1=\"24.0\" y1=\"62\" x2=\"24.0\" y2=\"40\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"24.0\" y=\"36\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">0</text><line x1=\"35.0\" y1=\"62\" x2=\"35.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"46.0\" y1=\"62\" x2=\"46.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"57.0\" y1=\"62\" x2=\"57.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"68.0\" y1=\"62\" x2=\"68.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"79.0\" y1=\"62\" x2=\"79.0\" y2=\"48\" stroke=\"#10233F\"/><line x1=\"90.0\" y1=\"62\" x2=\"90.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"101.0\" y1=\"62\" x2=\"101.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"112.0\" y1=\"62\" x2=\"112.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"123.0\" y1=\"62\" x2=\"123.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"134.0\" y1=\"62\" x2=\"134.0\" y2=\"40\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"134.0\" y=\"36\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">1</text><line x1=\"145.0\" y1=\"62\" x2=\"145.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"156.0\" y1=\"62\" x2=\"156.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"167.0\" y1=\"62\" x2=\"167.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"178.0\" y1=\"62\" x2=\"178.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"189.0\" y1=\"62\" x2=\"189.0\" y2=\"48\" stroke=\"#10233F\"/><line x1=\"200.0\" y1=\"62\" x2=\"200.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"211.0\" y1=\"62\" x2=\"211.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"222.0\" y1=\"62\" x2=\"222.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"233.0\" y1=\"62\" x2=\"233.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"244.0\" y1=\"62\" x2=\"244.0\" y2=\"40\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"244.0\" y=\"36\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">2</text><line x1=\"255.0\" y1=\"62\" x2=\"255.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"266.0\" y1=\"62\" x2=\"266.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"277.0\" y1=\"62\" x2=\"277.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"288.0\" y1=\"62\" x2=\"288.0\" y2=\"53\" stroke=\"#10233F\"/><line x1=\"299.0\" y1=\"62\" x2=\"299.0\" y2=\"48\" stroke=\"#10233F\"/><text x=\"322\" y=\"30\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">cm</text><rect x=\"58.65\" y=\"62\" width=\"246.00\" height=\"48\" fill=\"#E8EEF5\" stroke=\"#596574\"/><line x1=\"80.65\" y1=\"62\" x2=\"80.65\" y2=\"82\" stroke=\"#1661FF\" stroke-width=\"1.5\"/><text x=\"80.65\" y=\"96\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1661FF\">0</text><line x1=\"91.10\" y1=\"62\" x2=\"91.10\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"101.55\" y1=\"62\" x2=\"101.55\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"112.00\" y1=\"62\" x2=\"112.00\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"122.45\" y1=\"62\" x2=\"122.45\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"132.90\" y1=\"62\" x2=\"132.90\" y2=\"82\" stroke=\"#10233F\"/><text x=\"132.90\" y=\"96\" font-size=\"11\" text-anchor=\"middle\">5</text><line x1=\"143.35\" y1=\"62\" x2=\"143.35\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"153.80\" y1=\"62\" x2=\"153.80\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"164.25\" y1=\"62\" x2=\"164.25\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"174.70\" y1=\"62\" x2=\"174.70\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"185.15\" y1=\"62\" x2=\"185.15\" y2=\"82\" stroke=\"#10233F\"/><text x=\"185.15\" y=\"96\" font-size=\"11\" text-anchor=\"middle\">10</text><line x1=\"195.60\" y1=\"62\" x2=\"195.60\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"206.05\" y1=\"62\" x2=\"206.05\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"216.50\" y1=\"62\" x2=\"216.50\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"226.95\" y1=\"62\" x2=\"226.95\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"237.40\" y1=\"62\" x2=\"237.40\" y2=\"82\" stroke=\"#10233F\"/><text x=\"237.40\" y=\"96\" font-size=\"11\" text-anchor=\"middle\">15</text><line x1=\"247.85\" y1=\"62\" x2=\"247.85\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"258.30\" y1=\"62\" x2=\"258.30\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"268.75\" y1=\"62\" x2=\"268.75\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"279.20\" y1=\"62\" x2=\"279.20\" y2=\"73\" stroke=\"#10233F\"/><line x1=\"289.65\" y1=\"62\" x2=\"289.65\" y2=\"82\" stroke=\"#10233F\"/><text x=\"289.65\" y=\"96\" font-size=\"11\" text-anchor=\"middle\">20</text><text x=\"168\" y=\"138\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">图 (b)：20 分度游标卡尺</text></g></svg>",
+  "parts": [
+   {
+    "label": "(1)",
+    "type": "numeric",
+    "prompt": "用 20 分度游标卡尺测量遮光片宽度 d，示数如图 (b) 所示，则 d =（单位：cm）",
+    "unit": "cm",
+    "answer": 0.515,
+    "tol": 0.002,
+    "sig": 3,
+    "show": "0.515",
+    "explain": "主尺读数 5 mm，20 分度游标尺第 3 条刻线对齐主尺 8 mm 线，精度 0.05 mm：d = 5 mm + 3 × 0.05 mm = 5.15 mm = 0.515 cm。"
+   },
+   {
+    "label": "(2)",
+    "type": "expr",
+    "prompt": "若不计细绳与小圆柱体间的摩擦，由机械能守恒定律可得当地重力加速度表达式（用 M、m、d、H、t 表示）",
+    "lhs": "g =",
+    "vars": {
+     "M": "M",
+     "m": "m",
+     "d": "d",
+     "H": "H",
+     "t": "t"
+    },
+    "extra": [
+     "2"
+    ],
+    "answer": "(M+m)*d^2/(2*(M-m)*H*t^2)",
+    "show": "(M + m)d² ÷ [2(M − m)Ht²]",
+    "explain": "重锤过光电门速度 v = {{frac|d|t}}；系统减少的重力势能 (M − m)gH 等于增加的动能 {{frac|1|2}}(M + m)v²，联立解得 g = {{frac|(M + m)d²|2(M − m)Ht²}}。"
+   },
+   {
+    "label": "(3)",
+    "type": "numeric",
+    "prompt": "考虑小圆柱体与细绳间的摩擦阻力后，保持 M + m 不变，令 β = {{frac|M − m|M + m}}，测得多组 β 与系统加速度 a 的数据如下表。利用逐差法求得当地重力加速度 g =（保留 3 位有效数字）<table class=\"dt\"><tr><th>β</th><td>0.04</td><td>0.06</td><td>0.08</td><td>0.10</td></tr><tr><th>a / (m·s⁻²)</th><td>0.084</td><td>0.281</td><td>0.477</td><td>0.673</td></tr></table>",
+    "unit": "m/s²",
+    "answer": 9.81,
+    "tol": 0.02,
+    "sig": 3,
+    "show": "9.81",
+    "explain": "恒定阻力下 a = βg − a<sub>f</sub>，四组逐差得 g = {{frac|(a₄ + a₃) − (a₂ + a₁)|(β₄ + β₃) − (β₂ + β₁)}} = {{frac|(0.673 + 0.477) − (0.281 + 0.084)|(0.10 + 0.08) − (0.06 + 0.04)}} = {{frac|0.785|0.08}} m/s² ≈ 9.81 m/s²。"
+   }
+  ]
+ },
+ {
+  "id": "Y1",
+  "source": "原创（2 mm 判据与 ½v²-h 图像综合）",
+  "verified": true,
+  "score": 10,
+  "stem": "某同学使用电磁打点计时器（电源频率 50 Hz，当地 g = 9.80 m/s²）做“验证机械能守恒定律”实验，得到一条点迹清晰的纸带，以第 1 个点 O 为参考起点测得部分点到 O 的距离如图所示（单位：cm）。<svg viewBox=\"0 0 600 98\" width=\"600\" role=\"img\" aria-label=\"纸带2mm判据与速度测量示意图\"><rect x=\"12\" y=\"24\" width=\"576\" height=\"28\" fill=\"#F6F1E3\" stroke=\"#CDBF98\"/><circle cx=\"42\" cy=\"38\" r=\"3\" fill=\"#1661FF\"/><circle cx=\"66\" cy=\"38\" r=\"2.8\" fill=\"#2B2B2B\"/><circle cx=\"104\" cy=\"38\" r=\"2.8\" fill=\"#2B2B2B\"/><text x=\"162\" y=\"42\" font-size=\"12\" fill=\"#4A5B73\">……</text><circle cx=\"240\" cy=\"38\" r=\"3\" fill=\"#2B2B2B\"/><circle cx=\"385\" cy=\"38\" r=\"3\" fill=\"#C7374B\"/><circle cx=\"545\" cy=\"38\" r=\"3\" fill=\"#2B2B2B\"/><g font-size=\"12\" text-anchor=\"middle\" font-weight=\"700\" fill=\"#10233F\"><text x=\"42\" y=\"17\" fill=\"#1661FF\">0</text><text x=\"66\" y=\"17\">1</text><text x=\"104\" y=\"17\">2</text><text x=\"240\" y=\"17\">8</text><text x=\"385\" y=\"17\" fill=\"#C7374B\">9</text><text x=\"545\" y=\"17\">10</text></g><g font-size=\"12\" text-anchor=\"middle\" fill=\"#1661FF\" font-weight=\"600\"><text x=\"42\" y=\"72\">0.00</text><text x=\"66\" y=\"72\">0.19</text><text x=\"104\" y=\"72\">0.77</text><text x=\"240\" y=\"72\">12.29</text><text x=\"385\" y=\"72\" fill=\"#C7374B\">15.55</text><text x=\"545\" y=\"72\">19.20</text></g><text x=\"300\" y=\"92\" font-size=\"11.5\" text-anchor=\"middle\" fill=\"#4A5B73\">各点到起点 0 的距离（单位：cm）</text></svg><br>进一步算出各位置对应的 {{frac|1|2}}v² 与下落高度 h 的 5 组实验数据如下表：<table class=\"dt\"><tr><th>h / m</th><td>0.05</td><td>0.10</td><td>0.15</td><td>0.20</td><td>0.25</td></tr><tr><th>{{frac|1|2}}v² / (m²·s⁻²)</th><td>0.48</td><td>0.96</td><td>1.44</td><td>1.92</td><td>2.40</td></tr></table>",
+  "parts": [
+   {
+    "label": "(1)",
+    "type": "text-choice",
+    "prompt": "观察第 1、2 点（点 0 到点 1）间距为 0.19 cm（1.9 mm），据此判断能否把点 0 视为初速度为零的起点？____",
+    "options": [
+     "可以，间距约 2 mm 说明初速度近似为零",
+     "不可以，必须舍去前 10 个点"
+    ],
+    "answer": 0,
+    "replay": "E1",
+    "explain": "50 Hz 时自由落体首两点理论间距 h₁ = {{frac|1|2}}gT² = {{frac|1|2}} × 9.80 × (0.02)² = 1.96 mm ≈ 2 mm。实测 1.9 mm 与理论吻合，说明打点 0 时初速度近似为零。"
+   },
+   {
+    "label": "(2)",
+    "type": "numeric",
+    "prompt": "打点“9”时重锤的瞬时速度 v₉ =（保留 3 位有效数字）",
+    "unit": "m/s",
+    "answer": 1.73,
+    "tol": 0.01,
+    "sig": 3,
+    "show": "1.73",
+    "explain": "T = 0.02 s，v₉ = {{frac|(19.20 − 12.29) × 10⁻² m|2 × 0.02 s}} = 1.7275 m/s ≈ 1.73 m/s。"
+   },
+   {
+    "label": "(3)",
+    "type": "plot",
+    "prompt": "在坐标纸上描出表格中的 5 组 (h, {{frac|1|2}}v²) 数据点并作出拟合直线（拖动手柄调节直线位置），读出斜率并判断是否接近 g。",
+    "x": [0, 0.3],
+    "y": [0, 3.0],
+    "xLabel": "h / m",
+    "yLabel": "½v² / (m²·s⁻²)",
+    "snap": [0.01, 0.02],
+    "ptTol": [0.011, 0.025],
+    "points": [[0.05, 0.48], [0.10, 0.96], [0.15, 1.44], [0.20, 1.92], [0.25, 2.40]],
+    "lineInit": [[0, 0.2], [0.24, 1.8]],
+    "slope": 9.6,
+    "tol": 0.6,
+    "explain": "5 个数据点严格共线，直线过原点且斜率 k = {{frac|2.40 − 0.48|0.25 − 0.05}} = 9.60 m/s²，略小于当地 g = 9.80 m/s²（偏差约 2.0%），在阻力允许范围内验证了机械能守恒。"
+   },
+   {
+    "label": "(4)",
+    "type": "multi",
+    "prompt": "关于本实验的数据处理与误差分析，下列说法正确的是____（多选）",
+    "options": [
+     "本实验不需要用天平测重物质量",
+     "求点 9 速度可以用 v₉ = gt₉ 代替中间时刻公式",
+     "因空气与纸带阻力做负功，½v² - h 拟合直线斜率略小于当地 g",
+     "用纸带算出的加速度代替当地 g 计算势能，仍能有效验证守恒"
+    ],
+    "answer": [0, 2],
+    "replay": "E3",
+    "explain": "mgh = ½mv² 中质量 m 可约去，不需要天平（A 正确）；阻力做负功使实际加速度 a < g，所以 ½v² - h 斜率略小于 g（C 正确）。用 v = gt 属于循环论证（B 错），用纸带 a 代替当地 g 是验证恒等式（D 错）。"
+   }
+  ]
+ }
+]

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, ForeignKey, CheckConstraint, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, ForeignKey, CheckConstraint, Index, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .database import Base
@@ -75,6 +75,8 @@ class Animation(Base):
     file_size = Column(Integer)
     may_lag = Column(Boolean, default=False, nullable=False, index=True)
     lag_reason = Column(Text)
+    has_quiz = Column(Boolean, default=False, nullable=False, index=True)
+    quiz_manifest = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
@@ -84,6 +86,44 @@ class Animation(Base):
     favorites = relationship("Favorite", back_populates="animation", cascade="all, delete-orphan")
     ratings = relationship("Rating", back_populates="animation", cascade="all, delete-orphan")
     view_histories = relationship("ViewHistory", back_populates="animation", cascade="all, delete-orphan")
+    collection_items = relationship("CollectionItem", back_populates="animation", cascade="all, delete-orphan")
+
+
+class AnimationCollection(Base):
+    __tablename__ = "animation_collections"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), nullable=False)
+    description = Column(Text)
+    cover_image = Column(String(500))
+    is_banner = Column(Boolean, default=False, nullable=False, index=True)
+    banner_order = Column(Integer, default=0, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    items = relationship(
+        "CollectionItem",
+        back_populates="collection",
+        cascade="all, delete-orphan",
+        order_by="CollectionItem.sort_order",
+    )
+
+
+class CollectionItem(Base):
+    __tablename__ = "collection_items"
+    __table_args__ = (
+        UniqueConstraint("collection_id", "animation_id", name="uq_collection_animation"),
+        Index("ix_collection_items_order", "collection_id", "sort_order"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    collection_id = Column(Integer, ForeignKey("animation_collections.id"), nullable=False, index=True)
+    animation_id = Column(Integer, ForeignKey("animations.id"), nullable=False, index=True)
+    sort_order = Column(Integer, default=0, nullable=False)
+
+    collection = relationship("AnimationCollection", back_populates="items")
+    animation = relationship("Animation", back_populates="collection_items")
+
 
 class Favorite(Base):
     __tablename__ = "favorites"
@@ -131,6 +171,80 @@ class ViewHistory(Base):
     user = relationship("User", back_populates="view_histories")
     animation = relationship("Animation", back_populates="view_histories")
     interactions = relationship("AnimationInteraction", back_populates="view_history", cascade="all, delete-orphan")
+
+
+class CoursewareQuizAttempt(Base):
+    __tablename__ = "courseware_quiz_attempts"
+    __table_args__ = (
+        UniqueConstraint("user_id", "animation_id", "question_key", name="uq_quiz_attempt_user_anim_q"),
+        Index("ix_quiz_attempt_animation_user", "animation_id", "user_id"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    animation_id = Column(Integer, ForeignKey("animations.id"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    question_key = Column(String(80), nullable=False, index=True)
+    question_title = Column(String(200), nullable=False)
+    question_type = Column(String(20), nullable=False)
+    is_correct = Column(Boolean, nullable=False)
+    first_is_correct = Column(Boolean, nullable=False)
+    score = Column(Integer, nullable=False, default=0)
+    max_score = Column(Integer, nullable=False, default=1)
+    student_answer = Column(Text)
+    expected_answer = Column(String(200))
+    mistake_tag = Column(String(50))
+    attempt_count = Column(Integer, nullable=False, default=1)
+    first_submitted_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
+
+
+class DanmakuSession(Base):
+    __tablename__ = "danmaku_sessions"
+    __table_args__ = (
+        Index("ix_danmaku_sessions_active", "animation_id", "class_name", "closed_early", "expires_at"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    animation_id = Column(Integer, ForeignKey("animations.id"), nullable=False, index=True)
+    class_name = Column(String(50), nullable=False, index=True)
+    opened_by = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    opened_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+    expires_at = Column(DateTime(timezone=True), nullable=False, index=True)
+    closed_early = Column(Boolean, nullable=False, default=False)
+
+
+class DanmakuMessage(Base):
+    __tablename__ = "danmaku_messages"
+    __table_args__ = (
+        Index("ix_danmaku_messages_session_poll", "animation_id", "class_name", "session_id", "id"),
+        Index("ix_danmaku_messages_history_hot", "animation_id", "is_deleted", "is_pinned", "upvote_count"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    session_id = Column(Integer, ForeignKey("danmaku_sessions.id"), nullable=False, index=True)
+    animation_id = Column(Integer, ForeignKey("animations.id"), nullable=False, index=True)
+    class_name = Column(String(50), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    content = Column(String(40), nullable=False)
+    upvote_count = Column(Integer, nullable=False, default=0)
+    is_pinned = Column(Boolean, nullable=False, default=False)
+    is_deleted = Column(Boolean, nullable=False, default=False)
+    teacher_reply = Column(Text)
+    replied_at = Column(DateTime(timezone=True))
+    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now(), index=True)
+
+
+class DanmakuUpvote(Base):
+    __tablename__ = "danmaku_upvotes"
+    __table_args__ = (
+        UniqueConstraint("message_id", "user_id", name="uq_danmaku_upvote_message_user"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    message_id = Column(Integer, ForeignKey("danmaku_messages.id"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
 
 class AnimationInteraction(Base):
     __tablename__ = "animation_interactions"

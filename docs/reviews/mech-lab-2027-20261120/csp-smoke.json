@@ -1,0 +1,62 @@
+[
+  {
+    "title": "基础仪器与读数",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "实验：探究小车速度随时间变化的规律",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "实验：探究弹簧弹力与形变量的关系",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "实验：探究加速度与力、质量的关系",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "实验：探究平抛运动的特点",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "探究向心力大小与半径、角速度、质量的关系",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "实验：探究两个互成角度的力的合成规律",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "实验：验证机械能守恒定律",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "实验：验证动量守恒定律",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  },
+  {
+    "title": "实验：用单摆测量重力加速度",
+    "tabs": 4,
+    "csp": true,
+    "paper": true
+  }
+]

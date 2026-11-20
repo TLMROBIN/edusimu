@@ -1,0 +1,361 @@
+[
+  {
+    "id": "Q1",
+    "source": "2024·新课标卷·第22题",
+    "verified": true,
+    "score": 6,
+    "stem": "某同学用如图所示的装置验证动量守恒定律。将斜槽轨道固定在水平桌面上，轨道末段水平，右侧端点在水平木板上的垂直投影为 O，木板上叠放着白纸和复写纸。实验时先将小球 a 从斜槽轨道上 Q 处由静止释放，a 从轨道右端水平飞出后落在木板上；重复多次，测出落点的平均位置 P 与 O 点的距离 x<sub>P</sub>。将与 a 半径相等的小球 b 置于轨道右侧端点，再将小球 a 从 Q 处由静止释放，两球碰撞后均落在木板上；重复多次，分别测出 a、b 两球落点的平均位置 M、N 与 O 点的距离 x<sub>M</sub>、x<sub>N</sub>。<svg viewBox=\"0 0 540 190\" width=\"540\" role=\"img\" aria-label=\"2024新课标卷第22题实验装置图\"><line x1=\"20\" y1=\"160\" x2=\"520\" y2=\"160\" stroke=\"#10233F\" stroke-width=\"2\"/><g stroke=\"#4A5B73\" stroke-width=\"1.2\"><line x1=\"32\" y1=\"160\" x2=\"24\" y2=\"168\"/><line x1=\"56\" y1=\"160\" x2=\"48\" y2=\"168\"/><line x1=\"80\" y1=\"160\" x2=\"72\" y2=\"168\"/><line x1=\"104\" y1=\"160\" x2=\"96\" y2=\"168\"/><line x1=\"128\" y1=\"160\" x2=\"120\" y2=\"168\"/><line x1=\"152\" y1=\"160\" x2=\"144\" y2=\"168\"/><line x1=\"176\" y1=\"160\" x2=\"168\" y2=\"168\"/><line x1=\"200\" y1=\"160\" x2=\"192\" y2=\"168\"/><line x1=\"224\" y1=\"160\" x2=\"216\" y2=\"168\"/><line x1=\"248\" y1=\"160\" x2=\"240\" y2=\"168\"/><line x1=\"272\" y1=\"160\" x2=\"264\" y2=\"168\"/><line x1=\"296\" y1=\"160\" x2=\"288\" y2=\"168\"/><line x1=\"320\" y1=\"160\" x2=\"312\" y2=\"168\"/><line x1=\"344\" y1=\"160\" x2=\"336\" y2=\"168\"/><line x1=\"368\" y1=\"160\" x2=\"360\" y2=\"168\"/><line x1=\"392\" y1=\"160\" x2=\"384\" y2=\"168\"/><line x1=\"416\" y1=\"160\" x2=\"408\" y2=\"168\"/><line x1=\"440\" y1=\"160\" x2=\"432\" y2=\"168\"/><line x1=\"464\" y1=\"160\" x2=\"456\" y2=\"168\"/><line x1=\"488\" y1=\"160\" x2=\"480\" y2=\"168\"/><line x1=\"512\" y1=\"160\" x2=\"504\" y2=\"168\"/></g><rect x=\"30\" y=\"84\" width=\"150\" height=\"8\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><rect x=\"125\" y=\"92\" width=\"12\" height=\"68\" fill=\"#8E99A6\" stroke=\"#10233F\"/><rect x=\"48\" y=\"76\" width=\"156\" height=\"8\" fill=\"#D9B98C\" stroke=\"#10233F\"/><path d=\"M62 24 L132 76 H204\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"3\"/><rect x=\"64\" y=\"52\" width=\"12\" height=\"24\" fill=\"#E6ECF2\" stroke=\"#10233F\"/><rect x=\"54\" y=\"15\" width=\"8\" height=\"16\" transform=\"rotate(-37 58 23)\" fill=\"#fff\" stroke=\"#10233F\"/><text x=\"46\" y=\"14\" font-size=\"13\" font-style=\"italic\">Q</text><circle cx=\"75\" cy=\"26\" r=\"7\" fill=\"#1661FF\" stroke=\"#10233F\"/><text x=\"87\" y=\"25\" font-size=\"13\" font-style=\"italic\">a</text><circle cx=\"200\" cy=\"69\" r=\"7\" fill=\"#E69B2D\" stroke=\"#10233F\"/><text x=\"198\" y=\"57\" font-size=\"13\" font-style=\"italic\">b</text><line x1=\"204\" y1=\"76\" x2=\"204\" y2=\"160\" stroke=\"#10233F\" stroke-dasharray=\"4 3\"/><path d=\"M204 69 Q268 72 308 160\" fill=\"none\" stroke=\"#10233F\" stroke-dasharray=\"5 4\"/><path d=\"M204 69 Q302 72 372 160\" fill=\"none\" stroke=\"#10233F\" stroke-dasharray=\"5 4\"/><path d=\"M204 69 Q354 72 448 160\" fill=\"none\" stroke=\"#10233F\" stroke-dasharray=\"5 4\"/><g font-size=\"13\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"204\" y=\"182\" font-style=\"italic\">O</text><text x=\"308\" y=\"182\" font-style=\"italic\">M</text><text x=\"372\" y=\"182\" font-style=\"italic\">P</text><text x=\"448\" y=\"182\" font-style=\"italic\">N</text><text x=\"484\" y=\"145\">木板</text></g><line x1=\"484\" y1=\"149\" x2=\"472\" y2=\"160\" stroke=\"#10233F\"/></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "记 a、b 两球的质量分别为 m<sub>a</sub>、m<sub>b</sub>，实验中须满足条件 m<sub>a</sub> ____ m<sub>b</sub>。",
+        "options": [">", "<"],
+        "answer": 0,
+        "replay": "E1",
+        "explain": "为了保证入射球 a 与被碰球 b 碰撞后不反弹（碰后两球都向右飞出），要求入射球质量大于被碰球质量，即 m<sub>a</sub> > m<sub>b</sub>。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "如果测得的 x<sub>P</sub>、x<sub>M</sub>、x<sub>N</sub>、m<sub>a</sub> 和 m<sub>b</sub> 在实验误差范围内满足关系式 ____，则验证了两小球在碰撞中满足动量守恒定律。",
+        "options": [
+          "m<sub>a</sub>x<sub>P</sub> = m<sub>a</sub>x<sub>M</sub> + m<sub>b</sub>x<sub>N</sub>",
+          "m<sub>a</sub>x<sub>M</sub> = m<sub>a</sub>x<sub>P</sub> + m<sub>b</sub>x<sub>N</sub>",
+          "m<sub>b</sub>x<sub>P</sub> = m<sub>b</sub>x<sub>M</sub> + m<sub>a</sub>x<sub>N</sub>",
+          "m<sub>a</sub>x<sub>P</sub>² = m<sub>a</sub>x<sub>M</sub>² + m<sub>b</sub>x<sub>N</sub>²"
+        ],
+        "answer": 0,
+        "explain": "碰撞前 a 球速度 v₀ = x<sub>P</sub>/t，碰撞后 a、b 速度分别为 v<sub>a</sub> = x<sub>M</sub>/t、v<sub>b</sub> = x<sub>N</sub>/t，代入 m<sub>a</sub>v₀ = m<sub>a</sub>v<sub>a</sub> + m<sub>b</sub>v<sub>b</sub> 并消去时间 t 得 m<sub>a</sub>x<sub>P</sub> = m<sub>a</sub>x<sub>M</sub> + m<sub>b</sub>x<sub>N</sub>。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "实验中，用小球落点与 O 点的距离来代替小球水平飞出时的速度，依据是 ____。",
+        "options": [
+          "小球离开斜槽末端后做平抛运动，下落高度相同故飞行时间相同，水平方向匀速，水平位移与平抛初速度成正比",
+          "两小球质量越大，在空中飞行的时间越短",
+          "斜槽对小球做的功与水平距离成正比",
+          "小球在空中只受重力和水平推力"
+        ],
+        "answer": 0,
+        "replay": "E6",
+        "explain": "小球从水平末端飞出做平抛运动，由 h = {{frac|1|2}}gt² 可知下落高度相同时飞行时间 t 相等；水平方向 x = v₀t，故水平位移 x 与初速度 v₀ 成正比。"
+      }
+    ]
+  },
+  {
+    "id": "Q2",
+    "source": "2024·北京卷·第16题",
+    "verified": true,
+    "score": 10,
+    "stem": "如图甲所示，让两个小球在斜槽末端碰撞来验证动量守恒定律。<svg viewBox=\"0 0 520 175\" width=\"520\" role=\"img\" aria-label=\"2024北京卷第16题图甲\"><rect x=\"24\" y=\"78\" width=\"160\" height=\"10\" fill=\"#D9B98C\" stroke=\"#10233F\"/><rect x=\"112\" y=\"88\" width=\"14\" height=\"62\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"54\" y=\"62\" width=\"8\" height=\"16\" fill=\"#8E6B38\" stroke=\"#10233F\"/><path d=\"M24 22 Q70 72 135 72 H208\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"3\"/><circle cx=\"56\" cy=\"40\" r=\"7\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><text x=\"67\" y=\"40\" font-size=\"13\" font-style=\"italic\">m₁</text><text x=\"46\" y=\"25\" font-size=\"13\" font-style=\"italic\">S</text><circle cx=\"208\" cy=\"64\" r=\"7\" fill=\"none\" stroke=\"#12A9C4\" stroke-width=\"1.8\" stroke-dasharray=\"3 2\"/><text x=\"218\" y=\"52\" font-size=\"13\" font-style=\"italic\">m₂</text><line x1=\"208\" y1=\"72\" x2=\"208\" y2=\"148\" stroke=\"#10233F\"/><polygon points=\"208,150 204,142 212,142\" fill=\"#10233F\"/><path d=\"M212 64 Q268 70 310 150\" fill=\"none\" stroke=\"#12A9C4\" stroke-width=\"1.6\" stroke-dasharray=\"5 3\"/><path d=\"M212 64 Q295 70 360 150\" fill=\"none\" stroke=\"#12A9C4\" stroke-width=\"1.6\" stroke-dasharray=\"5 3\"/><path d=\"M212 64 Q360 70 462 150\" fill=\"none\" stroke=\"#12A9C4\" stroke-width=\"1.6\" stroke-dasharray=\"5 3\"/><line x1=\"50\" y1=\"150\" x2=\"496\" y2=\"150\" stroke=\"#10233F\" stroke-width=\"2\"/><g font-size=\"13\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"208\" y=\"168\" font-style=\"italic\">O</text><text x=\"310\" y=\"168\" font-style=\"italic\">M</text><text x=\"360\" y=\"168\" font-style=\"italic\">P</text><text x=\"462\" y=\"168\" font-style=\"italic\">N</text><text x=\"255\" y=\"172\">甲</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "multi",
+        "prompt": "关于本实验，下列做法正确的是 ____。（多选）",
+        "options": [
+          "实验前，调节装置，使斜槽末端水平",
+          "选用两个半径不同的小球进行实验",
+          "用质量大的小球碰撞质量小的小球"
+        ],
+        "answer": [0, 2],
+        "replay": "E3",
+        "explain": "A 正确：斜槽末端水平才能保证小球做平抛运动。B 错：必须选用半径相同的两球，才能发生对心正碰。C 正确：m₁ > m₂ 可防止入射球碰后反弹。"
+      },
+      {
+        "label": "(2)a",
+        "type": "choice",
+        "prompt": "图甲中 O 点是小球抛出点在地面上的垂直投影，图乙为实验的落点记录，简要说明如何确定平均落点 ____。<svg viewBox=\"0 0 500 72\" width=\"500\" role=\"img\" aria-label=\"2024北京卷第16题图乙落点记录\"><rect x=\"8\" y=\"6\" width=\"484\" height=\"52\" rx=\"22\" fill=\"#FBFAF5\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"30\" y=\"42\" font-size=\"14\" font-style=\"italic\">O</text><circle cx=\"46\" cy=\"36\" r=\"2.4\" fill=\"#10233F\"/><g fill=\"#10233F\"><circle cx=\"218\" cy=\"26\" r=\"2.4\"/><circle cx=\"225\" cy=\"24\" r=\"2.4\"/><circle cx=\"215\" cy=\"33\" r=\"2.4\"/><circle cx=\"223\" cy=\"32\" r=\"2.4\"/><circle cx=\"229\" cy=\"30\" r=\"2.4\"/><circle cx=\"218\" cy=\"39\" r=\"2.4\"/><circle cx=\"226\" cy=\"40\" r=\"2.4\"/><circle cx=\"276\" cy=\"24\" r=\"2.4\"/><circle cx=\"282\" cy=\"29\" r=\"2.4\"/><circle cx=\"274\" cy=\"31\" r=\"2.4\"/><circle cx=\"288\" cy=\"28\" r=\"2.4\"/><circle cx=\"279\" cy=\"35\" r=\"2.4\"/><circle cx=\"284\" cy=\"33\" r=\"2.4\"/><circle cx=\"436\" cy=\"28\" r=\"2.4\"/><circle cx=\"442\" cy=\"27\" r=\"2.4\"/><circle cx=\"438\" cy=\"33\" r=\"2.4\"/><circle cx=\"446\" cy=\"30\" r=\"2.4\"/><circle cx=\"445\" cy=\"36\" r=\"2.4\"/><circle cx=\"443\" cy=\"41\" r=\"2.4\"/></g><text x=\"250\" y=\"69\" font-size=\"12\" text-anchor=\"middle\">乙</text></svg>",
+        "options": [
+          "用圆规画圆，尽可能用最小的圆把各个落点圈住，这个圆的圆心位置代表平均落点",
+          "在每簇点中只选取最靠近 O 点的那个点作为平均落点",
+          "将各次落点用折线连接，取线段的中点",
+          "用刻度尺直接测量最外侧两个落点间的距离作为射程"
+        ],
+        "answer": 0,
+        "replay": "E4",
+        "explain": "多次实验后落点集中在一个小区域内，用圆规画尽量小的圆把各个落点圈住，圆心即为平均落点，这样可有效减小偶然误差。"
+      },
+      {
+        "label": "(2)b",
+        "type": "expr",
+        "prompt": "分别测出 O 点到平均落点的距离，记为 OP、OM 和 ON（P 为 m₁ 单独滑落时的平均落点）。在误差允许范围内，若以下关系式成立，即可验证碰撞前后动量守恒：",
+        "lhs": "m₁·OP =",
+        "vars": { "m1": "m₁", "m2": "m₂", "OM": "OM", "ON": "ON" },
+        "extra": ["1", "2"],
+        "answer": "m1*OM+m2*ON",
+        "show": "m₁·OM + m₂·ON",
+        "explain": "三球平抛下落高度相同、飞行时间相等，由 v = x/t 可得 m₁·OP = m₁·OM + m₂·ON。"
+      },
+      {
+        "label": "(3)",
+        "type": "expr",
+        "prompt": "受上述实验启发，某同学改用如图丙所示的双摆方案：两等长轻绳将半径相同、质量分别为 m 和 M（m < M）的小球 1、2 悬于等高的 O、O′ 点（OO′ 等于球直径）。将小球 1 拉至 A 点静止释放，在最低点 B 与静止于 C 点的小球 2 正碰；碰后小球 1 向左反弹至 A′，小球 2 向右摆至 D。测得弦长 AB = l₁、A′B = l₂、CD = l₃。则满足以下关系即可验证动量守恒：<svg viewBox=\"0 0 360 175\" width=\"360\" role=\"img\" aria-label=\"2024北京卷第16题图丙双摆碰撞\"><line x1=\"156\" y1=\"16\" x2=\"240\" y2=\"16\" stroke=\"#10233F\" stroke-width=\"2\"/><circle cx=\"188\" cy=\"16\" r=\"2.2\" fill=\"#10233F\"/><circle cx=\"212\" cy=\"16\" r=\"2.2\" fill=\"#10233F\"/><line x1=\"188\" y1=\"16\" x2=\"188\" y2=\"128\" stroke=\"#10233F\" stroke-width=\"1.6\"/><line x1=\"212\" y1=\"16\" x2=\"212\" y2=\"128\" stroke=\"#10233F\" stroke-width=\"1.6\"/><line x1=\"188\" y1=\"16\" x2=\"95.2\" y2=\"78.6\" stroke=\"#12A9C4\" stroke-dasharray=\"4 3\"/><line x1=\"188\" y1=\"16\" x2=\"135.4\" y2=\"114.9\" stroke=\"#12A9C4\" stroke-dasharray=\"4 3\"/><line x1=\"212\" y1=\"16\" x2=\"281\" y2=\"104.3\" stroke=\"#12A9C4\" stroke-dasharray=\"4 3\"/><path d=\"M95.2 78.6 A112 112 0 0 0 188 128\" fill=\"none\" stroke=\"#12A9C4\" stroke-dasharray=\"4 3\"/><path d=\"M212 128 A112 112 0 0 0 281 104.3\" fill=\"none\" stroke=\"#12A9C4\" stroke-dasharray=\"4 3\"/><circle cx=\"95.2\" cy=\"78.6\" r=\"12\" fill=\"#fff\" stroke=\"#12A9C4\" stroke-dasharray=\"3 2\"/><circle cx=\"135.4\" cy=\"114.9\" r=\"12\" fill=\"#fff\" stroke=\"#12A9C4\" stroke-dasharray=\"3 2\"/><circle cx=\"281\" cy=\"104.3\" r=\"12\" fill=\"#fff\" stroke=\"#12A9C4\" stroke-dasharray=\"3 2\"/><circle cx=\"188\" cy=\"128\" r=\"12\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.6\"/><circle cx=\"212\" cy=\"128\" r=\"12\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.6\"/><g font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"188\" y=\"132\">1</text><text x=\"212\" y=\"132\">2</text><text x=\"175\" y=\"114\" font-style=\"italic\">m</text><text x=\"227\" y=\"114\" font-style=\"italic\">M</text><text x=\"188\" y=\"154\" font-style=\"italic\">B</text><text x=\"212\" y=\"154\" font-style=\"italic\">C</text><text x=\"76\" y=\"76\" font-style=\"italic\">A</text><text x=\"118\" y=\"131\" font-style=\"italic\">A′</text><text x=\"299\" y=\"114\" font-style=\"italic\">D</text><text x=\"188\" y=\"11\" font-style=\"italic\">O</text><text x=\"216\" y=\"11\" font-style=\"italic\">O′</text><text x=\"200\" y=\"170\">丙</text></g></svg>",
+        "lhs": "m·l₁ =",
+        "vars": { "m": "m", "M": "M", "l2": "l₂", "l3": "l₃" },
+        "extra": ["1", "2"],
+        "answer": "M*l3-m*l2",
+        "show": "M·l₃ − m·l₂",
+        "explain": "设绳长为 L，摆角为 θ，由几何关系知摆起高度 h = L(1 − cosθ) = 2L·sin²(θ/2)，而弦长 l = 2L·sin(θ/2)，故 h = {{frac|l²|2L}}。由机械能守恒 v = {{sqrt|2gh}} = l{{sqrt|{{frac|g|L}}}} ∝ l。规定向右为正方向，小球 1 碰后向左反弹速度取负号，得 m l₁ = −m l₂ + M l₃。"
+      }
+    ]
+  },
+  {
+    "id": "Q3",
+    "source": "2024·山东卷·第13题",
+    "verified": true,
+    "score": 6,
+    "stem": "在第四次“天宫课堂”中，航天员演示了动量守恒实验。受此启发，某同学使用如图甲所示的装置进行了碰撞实验，气垫导轨两端分别安装 a、b 两个位移传感器，a 测量滑块 A 与它的距离 x<sub>A</sub>，b 测量滑块 B 与它的距离 x<sub>B</sub>。部分实验步骤如下：① 测量两个滑块的质量，分别为 200.0 g 和 400.0 g；② 接通气源，调整气垫导轨水平；③ 拨动两滑块，使 A、B 均向右运动；④ 导出传感器记录的数据，绘制 x<sub>A</sub>、x<sub>B</sub> 随时间变化的图像，分别如图乙、图丙所示。<svg viewBox=\"0 0 540 82\" width=\"540\" role=\"img\" aria-label=\"2024山东卷第13题图甲装置\"><rect x=\"48\" y=\"26\" width=\"420\" height=\"18\" fill=\"#8E99A6\" stroke=\"#10233F\"/><rect x=\"48\" y=\"44\" width=\"420\" height=\"8\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"54\" y=\"64\" width=\"412\" height=\"7\" fill=\"#10233F\"/><rect x=\"62\" y=\"52\" width=\"10\" height=\"12\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><rect x=\"126\" y=\"52\" width=\"12\" height=\"12\" fill=\"#4A5B73\"/><rect x=\"372\" y=\"52\" width=\"12\" height=\"12\" fill=\"#4A5B73\"/><rect x=\"32\" y=\"18\" width=\"24\" height=\"28\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><rect x=\"460\" y=\"18\" width=\"24\" height=\"28\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><rect x=\"94\" y=\"16\" width=\"44\" height=\"24\" fill=\"#B8C3CF\" stroke=\"#10233F\"/><rect x=\"184\" y=\"16\" width=\"44\" height=\"24\" fill=\"#B8C3CF\" stroke=\"#10233F\"/><g font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"44\" y=\"12\">传感器 a</text><text x=\"116\" y=\"12\">滑块 A</text><text x=\"206\" y=\"12\">滑块 B</text><text x=\"472\" y=\"12\">传感器 b</text><text x=\"498\" y=\"65\">连气源</text><text x=\"260\" y=\"80\">甲</text></g><path d=\"M468 48 Q480 54 486 58\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"2\"/></svg><svg viewBox=\"0 0 560 218\" width=\"560\" role=\"img\" aria-label=\"2024山东卷第13题图乙和图丙x-t图像\"><g transform=\"translate(46,24)\"><g stroke=\"#B9C8DA\" stroke-width=\"0.8\"><line x1=\"0\" y1=\"0\" x2=\"192\" y2=\"0\"/><line x1=\"0\" y1=\"13\" x2=\"192\" y2=\"13\"/><line x1=\"0\" y1=\"26\" x2=\"192\" y2=\"26\"/><line x1=\"0\" y1=\"39\" x2=\"192\" y2=\"39\"/><line x1=\"0\" y1=\"52\" x2=\"192\" y2=\"52\"/><line x1=\"0\" y1=\"65\" x2=\"192\" y2=\"65\"/><line x1=\"0\" y1=\"78\" x2=\"192\" y2=\"78\"/><line x1=\"0\" y1=\"91\" x2=\"192\" y2=\"91\"/><line x1=\"0\" y1=\"104\" x2=\"192\" y2=\"104\"/><line x1=\"0\" y1=\"117\" x2=\"192\" y2=\"117\"/><line x1=\"0\" y1=\"130\" x2=\"192\" y2=\"130\"/><line x1=\"0\" y1=\"143\" x2=\"192\" y2=\"143\"/><line x1=\"0\" y1=\"156\" x2=\"192\" y2=\"156\"/><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"156\"/><line x1=\"16\" y1=\"0\" x2=\"16\" y2=\"156\"/><line x1=\"32\" y1=\"0\" x2=\"32\" y2=\"156\"/><line x1=\"48\" y1=\"0\" x2=\"48\" y2=\"156\"/><line x1=\"64\" y1=\"0\" x2=\"64\" y2=\"156\"/><line x1=\"80\" y1=\"0\" x2=\"80\" y2=\"156\"/><line x1=\"96\" y1=\"0\" x2=\"96\" y2=\"156\"/><line x1=\"112\" y1=\"0\" x2=\"112\" y2=\"156\"/><line x1=\"128\" y1=\"0\" x2=\"128\" y2=\"156\"/><line x1=\"144\" y1=\"0\" x2=\"144\" y2=\"156\"/><line x1=\"160\" y1=\"0\" x2=\"160\" y2=\"156\"/><line x1=\"176\" y1=\"0\" x2=\"176\" y2=\"156\"/><line x1=\"192\" y1=\"0\" x2=\"192\" y2=\"156\"/></g><path d=\"M0 156 V-12 M0 156 H208\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"1.4\"/><polyline points=\"0,143 80,78 192,13\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"end\"><text x=\"-4\" y=\"4\">120</text><text x=\"-4\" y=\"30\">100</text><text x=\"-4\" y=\"56\">80</text><text x=\"-4\" y=\"82\">60</text><text x=\"-4\" y=\"108\">40</text><text x=\"-4\" y=\"134\">20</text></g><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"0\" y=\"170\">0</text><text x=\"80\" y=\"170\">1.0</text><text x=\"160\" y=\"170\">2.0</text><text x=\"212\" y=\"170\" font-style=\"italic\">t/s</text><text x=\"96\" y=\"188\">乙</text></g><text x=\"6\" y=\"-8\" font-size=\"11.5\" font-style=\"italic\">x<tspan dy=\"3\" font-size=\"8.5\" font-style=\"normal\">A</tspan><tspan dy=\"-3\">/cm</tspan></text></g><g transform=\"translate(326,24)\"><g stroke=\"#B9C8DA\" stroke-width=\"0.8\"><line x1=\"0\" y1=\"0\" x2=\"192\" y2=\"0\"/><line x1=\"0\" y1=\"13\" x2=\"192\" y2=\"13\"/><line x1=\"0\" y1=\"26\" x2=\"192\" y2=\"26\"/><line x1=\"0\" y1=\"39\" x2=\"192\" y2=\"39\"/><line x1=\"0\" y1=\"52\" x2=\"192\" y2=\"52\"/><line x1=\"0\" y1=\"65\" x2=\"192\" y2=\"65\"/><line x1=\"0\" y1=\"78\" x2=\"192\" y2=\"78\"/><line x1=\"0\" y1=\"91\" x2=\"192\" y2=\"91\"/><line x1=\"0\" y1=\"104\" x2=\"192\" y2=\"104\"/><line x1=\"0\" y1=\"117\" x2=\"192\" y2=\"117\"/><line x1=\"0\" y1=\"130\" x2=\"192\" y2=\"130\"/><line x1=\"0\" y1=\"143\" x2=\"192\" y2=\"143\"/><line x1=\"0\" y1=\"156\" x2=\"192\" y2=\"156\"/><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"156\"/><line x1=\"16\" y1=\"0\" x2=\"16\" y2=\"156\"/><line x1=\"32\" y1=\"0\" x2=\"32\" y2=\"156\"/><line x1=\"48\" y1=\"0\" x2=\"48\" y2=\"156\"/><line x1=\"64\" y1=\"0\" x2=\"64\" y2=\"156\"/><line x1=\"80\" y1=\"0\" x2=\"80\" y2=\"156\"/><line x1=\"96\" y1=\"0\" x2=\"96\" y2=\"156\"/><line x1=\"112\" y1=\"0\" x2=\"112\" y2=\"156\"/><line x1=\"128\" y1=\"0\" x2=\"128\" y2=\"156\"/><line x1=\"144\" y1=\"0\" x2=\"144\" y2=\"156\"/><line x1=\"160\" y1=\"0\" x2=\"160\" y2=\"156\"/><line x1=\"176\" y1=\"0\" x2=\"176\" y2=\"156\"/><line x1=\"192\" y1=\"0\" x2=\"192\" y2=\"156\"/></g><path d=\"M0 156 V-12 M0 156 H208\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"1.4\"/><polyline points=\"0,13 80,39 192,130\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"end\"><text x=\"-4\" y=\"4\">120</text><text x=\"-4\" y=\"30\">100</text><text x=\"-4\" y=\"56\">80</text><text x=\"-4\" y=\"82\">60</text><text x=\"-4\" y=\"108\">40</text><text x=\"-4\" y=\"134\">20</text></g><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"0\" y=\"170\">0</text><text x=\"80\" y=\"170\">1.0</text><text x=\"160\" y=\"170\">2.0</text><text x=\"212\" y=\"170\" font-style=\"italic\">t/s</text><text x=\"96\" y=\"188\">丙</text></g><text x=\"6\" y=\"-8\" font-size=\"11.5\" font-style=\"italic\">x<tspan dy=\"3\" font-size=\"8.5\" font-style=\"normal\">B</tspan><tspan dy=\"-3\">/cm</tspan></text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "从图像可知两滑块在 t = ____ s 时发生碰撞（保留 2 位有效数字）；",
+        "unit": "s",
+        "answer": 1.0,
+        "tol": 0.05,
+        "sig": 2,
+        "show": "1.0",
+        "explain": "x-t 图像的斜率表示速度，图乙与图丙的斜率都在 t = 1.0 s 时发生突变，说明两滑块在 t = 1.0 s 时发生碰撞。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "滑块 B 碰撞前的速度大小 v = ____ m/s（保留 2 位有效数字）；",
+        "unit": "m/s",
+        "answer": 0.20,
+        "tol": 0.01,
+        "sig": 2,
+        "show": "0.20",
+        "explain": "由图丙，碰撞前（0～1.0 s）x<sub>B</sub> 从 110 cm 减小到 90 cm，速度大小 v = |90 − 110| cm / 1.0 s = 20 cm/s = 0.20 m/s。"
+      },
+      {
+        "label": "(3)",
+        "type": "text-choice",
+        "prompt": "通过分析，得出质量为 200.0 g 的滑块是 ____。",
+        "options": ["A", "B"],
+        "answer": 1,
+        "explain": "向右为正方向：图乙给出 v<sub>A</sub> = (60 − 10)/100 = 0.50 m/s，v<sub>A</sub>′ = (110 − 60)/(1.4 × 100) ≈ 0.357 m/s；图丙给出 v<sub>B</sub> = 0.20 m/s，v<sub>B</sub>′ = (90 − 20)/(1.4 × 100) = 0.50 m/s。由 m<sub>A</sub>(v<sub>A</sub> − v<sub>A</sub>′) = m<sub>B</sub>(v<sub>B</sub>′ − v<sub>B</sub>) 得 m<sub>A</sub> / m<sub>B</sub> ≈ 0.30 / 0.143 ≈ 2，故质量为 200.0 g（较小者）的滑块是 B。"
+      }
+    ]
+  },
+  {
+    "id": "Q4",
+    "source": "2025·广东卷·第11(2)题",
+    "verified": true,
+    "stem": "实验小组利用小车碰撞实验测量吸能材料的性能，装置如图所示，图中轨道由轨道甲和乙平滑拼接而成，且轨道乙倾角较大。选取相同的两辆小车，分别安装宽度为 1.00 cm 的遮光条。<svg viewBox=\"0 0 560 138\" width=\"560\" role=\"img\" aria-label=\"2025广东卷第11(2)题实验装置图\"><rect x=\"18\" y=\"96\" width=\"524\" height=\"8\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><rect x=\"94\" y=\"104\" width=\"12\" height=\"26\" fill=\"#8E99A6\" stroke=\"#10233F\"/><rect x=\"456\" y=\"104\" width=\"12\" height=\"26\" fill=\"#8E99A6\" stroke=\"#10233F\"/><polygon points=\"50,92 288,82 288,88 50,96\" fill=\"#DCE4EC\" stroke=\"#10233F\"/><polygon points=\"288,82 512,38 512,44 288,88\" fill=\"#DCE4EC\" stroke=\"#10233F\"/><rect x=\"272\" y=\"88\" width=\"12\" height=\"8\" fill=\"#10233F\"/><rect x=\"296\" y=\"87\" width=\"12\" height=\"9\" fill=\"#10233F\"/><line x1=\"278\" y1=\"96\" x2=\"286\" y2=\"114\" stroke=\"#10233F\"/><line x1=\"302\" y1=\"96\" x2=\"292\" y2=\"114\" stroke=\"#10233F\"/><text x=\"288\" y=\"128\" font-size=\"12\" text-anchor=\"middle\">螺母</text><rect x=\"94\" y=\"48\" width=\"12\" height=\"42\" fill=\"#fff\" stroke=\"#10233F\"/><circle cx=\"100\" cy=\"58\" r=\"3.5\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"214\" y=\"42\" width=\"12\" height=\"42\" fill=\"#fff\" stroke=\"#10233F\"/><circle cx=\"220\" cy=\"52\" r=\"3.5\" fill=\"#fff\" stroke=\"#10233F\"/><g transform=\"translate(144,58) rotate(-2.4)\"><rect x=\"0\" y=\"0\" width=\"38\" height=\"18\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"15\" y=\"-16\" width=\"7\" height=\"16\" fill=\"#E8B89C\" stroke=\"#10233F\"/><circle cx=\"9\" cy=\"22\" r=\"4.5\" fill=\"#fff\" stroke=\"#10233F\"/><circle cx=\"29\" cy=\"22\" r=\"4.5\" fill=\"#fff\" stroke=\"#10233F\"/></g><g transform=\"translate(426,22) rotate(-11.5)\"><rect x=\"0\" y=\"0\" width=\"38\" height=\"18\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"15\" y=\"-16\" width=\"7\" height=\"16\" fill=\"#E8B89C\" stroke=\"#10233F\"/><circle cx=\"9\" cy=\"22\" r=\"4.5\" fill=\"#fff\" stroke=\"#10233F\"/><circle cx=\"29\" cy=\"22\" r=\"4.5\" fill=\"#fff\" stroke=\"#10233F\"/></g><g font-size=\"12\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"36\" y=\"76\">轨道甲</text><text x=\"498\" y=\"28\">轨道乙</text><text x=\"96\" y=\"40\">光电门 B</text><text x=\"162\" y=\"36\">小车 1</text><text x=\"222\" y=\"36\">光电门 A</text><text x=\"440\" y=\"14\">小车 2</text><text x=\"452\" y=\"72\" font-style=\"italic\">M</text></g><line x1=\"44\" y1=\"80\" x2=\"66\" y2=\"91\" stroke=\"#10233F\"/><line x1=\"494\" y1=\"31\" x2=\"490\" y2=\"43\" stroke=\"#10233F\"/></svg>",
+    "parts": [
+      {
+        "label": "①",
+        "type": "choice",
+        "prompt": "调节螺母使轨道甲、乙连接处适当升高。将小车在轨道乙上释放，若测得小车通过光电门 A 和 B 的 ____，证明已平衡小车在轨道甲上所受摩擦力及其他阻力。",
+        "options": [
+          "时间相等",
+          "时间之和恒定",
+          "时间成反比",
+          "时间差等于零点误差"
+        ],
+        "answer": 0,
+        "replay": "E5",
+        "explain": "小车两遮光条等宽，通过光电门 A 和 B 的时间相等，表明小车在轨道甲上做匀速直线运动，摩擦力及其他阻力已被重力分力平衡。"
+      },
+      {
+        "label": "②",
+        "type": "text-choice",
+        "prompt": "先将小车 1 静置于光电门 A 和 B 中间，再将小车 2 在 M 点由静止释放，测得小车 2 通过光电门 A 的时间为 t₂，碰撞后小车 1 通过光电门 B 的时间为 t₁。若 t₂ ____ t₁，可将两小车的碰撞视为弹性碰撞。",
+        "options": [">", "=", "<"],
+        "answer": 1,
+        "explain": "两小车质量相等，发生一维弹性正碰时交换速度，即碰后小车 1 获得小车 2 碰前的全部速度、小车 2 停下，故 t₂ = t₁。"
+      },
+      {
+        "label": "③",
+        "type": "numeric",
+        "prompt": "将吸能材料紧贴于小车 2 前端重复步骤。测得小车 2 通过光电门 A 的时间为 10.00 ms，两车碰撞后依次测得小车 1 和 2 通过光电门 B 的时间分别为 15.00 ms、30.00 ms，不计吸能材料的质量，碰撞后两小车总动能与碰撞前小车 2 动能的比值为 ____（保留 2 位有效数字）。",
+        "answer": 0.56,
+        "tol": 0.01,
+        "sig": 2,
+        "show": "0.56",
+        "explain": "因两车质量与遮光条宽度相同，动能 Eₖ ∝ v² ∝ 1/t²。比值 η = {{frac|(1/15.00)² + (1/30.00)²|(1/10.00)²}} = ({{frac|10|15}})² + ({{frac|10|30}})² = {{frac|4|9}} + {{frac|1|9}} = {{frac|5|9}} ≈ 0.56。"
+      }
+    ]
+  },
+  {
+    "id": "Q5",
+    "source": "2026·甘肃卷·第11题",
+    "verified": true,
+    "stem": "某实验小组用如图所示的装置验证动量守恒定律。实验前在水平底板上铺白纸和复写纸，记下重垂线所指位置 O。先将入射小球 m₁ 从斜槽轨道 S 处由静止释放，重复实验找到落点中心位置 A；再将被碰小球 m₂ 静置于斜槽轨道末端，将 m₁ 从 S 处由静止释放与之碰撞，分别找到 m₁ 和 m₂ 相碰后落点的中心位置 B 和 C，测出 O 点到各落点中心的距离 OA、OB 和 OC。<svg viewBox=\"0 0 460 185\" width=\"460\" role=\"img\" aria-label=\"2026甘肃卷第11题实验装置图\"><rect x=\"128\" y=\"22\" width=\"280\" height=\"118\" fill=\"#fff\" stroke=\"#10233F\" stroke-width=\"1.4\"/><polygon points=\"128,140 408,140 434,174 108,174\" fill=\"#FBFAF5\" stroke=\"#10233F\" stroke-width=\"1.5\"/><rect x=\"108\" y=\"174\" width=\"326\" height=\"8\" fill=\"#DCE4EC\" stroke=\"#10233F\"/><path d=\"M16 30 L88 86 H172\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M16 30 L88 86 H172\" fill=\"none\" stroke=\"#fff\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><line x1=\"20\" y1=\"14\" x2=\"12\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.6\"/><circle cx=\"34\" cy=\"32\" r=\"9\" fill=\"#E8B89C\" stroke=\"#10233F\"/><circle cx=\"170\" cy=\"75\" r=\"9\" fill=\"#E8B89C\" stroke=\"#10233F\" stroke-dasharray=\"3 2\"/><line x1=\"172\" y1=\"86\" x2=\"172\" y2=\"148\" stroke=\"#10233F\" stroke-width=\"1.2\"/><polygon points=\"172,150 168,142 176,142\" fill=\"#10233F\"/><circle cx=\"172\" cy=\"155\" r=\"2.8\" fill=\"#fff\" stroke=\"#10233F\"/><circle cx=\"252\" cy=\"155\" r=\"2.8\" fill=\"#fff\" stroke=\"#10233F\"/><circle cx=\"304\" cy=\"155\" r=\"2.8\" fill=\"#fff\" stroke=\"#10233F\"/><circle cx=\"374\" cy=\"155\" r=\"2.8\" fill=\"#fff\" stroke=\"#10233F\"/><circle cx=\"134\" cy=\"166\" r=\"3\" fill=\"#10233F\"/><circle cx=\"416\" cy=\"166\" r=\"3\" fill=\"#10233F\"/><g font-size=\"13\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"12\" y=\"12\" font-style=\"italic\">S</text><text x=\"46\" y=\"48\" font-style=\"italic\">m₁</text><text x=\"190\" y=\"68\" font-style=\"italic\">m₂</text><text x=\"172\" y=\"171\" font-style=\"italic\">O</text><text x=\"252\" y=\"171\" font-style=\"italic\">B</text><text x=\"304\" y=\"171\" font-style=\"italic\">A</text><text x=\"374\" y=\"171\" font-style=\"italic\">C</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "multi",
+        "prompt": "关于实验装置和操作，下列说法正确的是 ____。（多选）",
+        "options": [
+          "两个小球的材质应相同",
+          "两个小球的大小应相等",
+          "斜槽轨道表面必须光滑",
+          "斜槽轨道末端应调节至水平"
+        ],
+        "answer": [1, 3],
+        "replay": "E3",
+        "explain": "A 错：只要两球半径相等且 m₁ > m₂，材质不必相同（如钢球撞玻璃球或硬铝球）。B 正确：两球等大才能对心正碰。C 错：斜槽不必光滑，只需每次从同一位置静止释放。D 正确：末端水平保证做平抛运动。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "改变被碰小球的质量 m₂，进行多组实验，测出对应的 OB 和 OC 值。以 m₂ 为横坐标，以 ____ 为纵坐标描点，若这些点都近似在一条直线上，则说明动量守恒定律成立。",
+        "options": [
+          "{{frac|OA − OB|OC}}",
+          "{{frac|OC − OB|OB}}",
+          "{{frac|OA − OB|OA}}",
+          "{{frac|OC − OB|OC}}"
+        ],
+        "answer": 0,
+        "explain": "动量守恒式为 m₁·OA = m₁·OB + m₂·OC，整理得 {{frac|OA − OB|OC}} = {{frac|1|m₁}}·m₂。保持 m₁ 不变时，{{frac|OA − OB|OC}} 与 m₂ 成正比（线性关系）。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "若 m₁ = 3m₂，且碰撞近似为弹性碰撞，则 OA 与 OB 的比值应为 ____。",
+        "answer": 2,
+        "tol": 0.05,
+        "show": "2",
+        "explain": "弹性碰撞碰后入射球速度 v₁′ = {{frac|m₁ − m₂|m₁ + m₂}}v₀ = {{frac|3 − 1|3 + 1}}v₀ = {{frac|1|2}}v₀，故 OB = {{frac|1|2}}OA，因此 {{frac|OA|OB}} = 2。"
+      }
+    ]
+  },
+  {
+    "id": "Q6",
+    "source": "2024·福建卷·第12题（节选·压轴迁移）",
+    "verified": true,
+    "stem": "（压轴迁移）某小组基于动量守恒定律测量玩具枪子弹离开枪口的速度大小。所用器材有：玩具枪、玩具子弹、装有挡光片的小车、轨道、光电门 A 和 B、光电计时器、10 分度游标卡尺、电子秤等。先用电子秤分别测出小车质量 M 和子弹质量 m。<svg viewBox=\"0 0 540 112\" width=\"540\" role=\"img\" aria-label=\"2024福建卷第12题实验装置示意图\"><rect x=\"24\" y=\"78\" width=\"492\" height=\"8\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><rect x=\"64\" y=\"86\" width=\"12\" height=\"18\" fill=\"#8E99A6\" stroke=\"#10233F\"/><rect x=\"460\" y=\"86\" width=\"12\" height=\"18\" fill=\"#8E99A6\" stroke=\"#10233F\"/><rect x=\"126\" y=\"34\" width=\"10\" height=\"44\" fill=\"#3B4B60\"/><rect x=\"272\" y=\"34\" width=\"10\" height=\"44\" fill=\"#3B4B60\"/><circle cx=\"131\" cy=\"46\" r=\"2.5\" fill=\"#C7374B\"/><circle cx=\"277\" cy=\"46\" r=\"2.5\" fill=\"#C7374B\"/><rect x=\"318\" y=\"56\" width=\"54\" height=\"18\" rx=\"3\" fill=\"#5C8DEB\" stroke=\"#10233F\"/><circle cx=\"330\" cy=\"76\" r=\"4\" fill=\"#2B2B2B\"/><circle cx=\"360\" cy=\"76\" r=\"4\" fill=\"#2B2B2B\"/><rect x=\"342\" y=\"38\" width=\"6\" height=\"18\" fill=\"#10233F\"/><rect x=\"414\" y=\"52\" width=\"74\" height=\"18\" rx=\"4\" fill=\"#4A5B73\" stroke=\"#10233F\"/><rect x=\"402\" y=\"58\" width=\"16\" height=\"6\" fill=\"#4A5B73\" stroke=\"#10233F\"/><circle cx=\"392\" cy=\"61\" r=\"4\" fill=\"#E69B2D\" stroke=\"#10233F\"/><path d=\"M388 61 H376\" stroke=\"#C7374B\" stroke-width=\"1.6\"/><polygon points=\"374,61 380,58 380,64\" fill=\"#C7374B\"/><g font-size=\"12\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"131\" y=\"26\">光电门 B</text><text x=\"277\" y=\"26\">光电门 A</text><text x=\"345\" y=\"32\">挡光片 d</text><text x=\"345\" y=\"100\">小车 M</text><text x=\"450\" y=\"44\">玩具枪与子弹 m</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "用 10 分度游标卡尺测量挡光片宽度 d，示数如图所示，宽度 d = ____ cm。<svg viewBox=\"0 0 460 116\" width=\"460\" role=\"img\" aria-label=\"2024福建卷第12题10分度游标卡尺0.99cm\"><rect x=\"24\" y=\"14\" width=\"412\" height=\"42\" fill=\"#F3F7FC\" stroke=\"#7E8C9B\"/><rect x=\"190\" y=\"56\" width=\"226\" height=\"42\" fill=\"#E8EEF5\" stroke=\"#7E8C9B\"/><line x1=\"24\" y1=\"56\" x2=\"436\" y2=\"56\" stroke=\"#10233F\" stroke-width=\"1.3\"/><g stroke=\"#10233F\" stroke-width=\"1\"><line x1=\"50\" y1=\"56\" x2=\"50\" y2=\"34\"/><line x1=\"68\" y1=\"56\" x2=\"68\" y2=\"44\"/><line x1=\"86\" y1=\"56\" x2=\"86\" y2=\"44\"/><line x1=\"104\" y1=\"56\" x2=\"104\" y2=\"44\"/><line x1=\"122\" y1=\"56\" x2=\"122\" y2=\"44\"/><line x1=\"140\" y1=\"56\" x2=\"140\" y2=\"38\"/><line x1=\"158\" y1=\"56\" x2=\"158\" y2=\"44\"/><line x1=\"176\" y1=\"56\" x2=\"176\" y2=\"44\"/><line x1=\"194\" y1=\"56\" x2=\"194\" y2=\"44\"/><line x1=\"212\" y1=\"56\" x2=\"212\" y2=\"44\"/><line x1=\"230\" y1=\"56\" x2=\"230\" y2=\"34\"/><line x1=\"248\" y1=\"56\" x2=\"248\" y2=\"44\"/><line x1=\"266\" y1=\"56\" x2=\"266\" y2=\"44\"/><line x1=\"284\" y1=\"56\" x2=\"284\" y2=\"44\"/><line x1=\"302\" y1=\"56\" x2=\"302\" y2=\"44\"/><line x1=\"320\" y1=\"56\" x2=\"320\" y2=\"38\"/><line x1=\"338\" y1=\"56\" x2=\"338\" y2=\"44\"/><line x1=\"356\" y1=\"56\" x2=\"356\" y2=\"44\"/><line x1=\"374\" y1=\"56\" x2=\"374\" y2=\"44\"/><line x1=\"392\" y1=\"56\" x2=\"392\" y2=\"44\"/><line x1=\"410\" y1=\"56\" x2=\"410\" y2=\"34\"/></g><g stroke=\"#10233F\" stroke-width=\"1\"><line x1=\"228.2\" y1=\"56\" x2=\"228.2\" y2=\"78\" stroke=\"#1661FF\" stroke-width=\"1.4\"/><line x1=\"244.4\" y1=\"56\" x2=\"244.4\" y2=\"72\"/><line x1=\"260.6\" y1=\"56\" x2=\"260.6\" y2=\"72\"/><line x1=\"276.8\" y1=\"56\" x2=\"276.8\" y2=\"72\"/><line x1=\"293.0\" y1=\"56\" x2=\"293.0\" y2=\"72\"/><line x1=\"309.2\" y1=\"56\" x2=\"309.2\" y2=\"76\"/><line x1=\"325.4\" y1=\"56\" x2=\"325.4\" y2=\"72\"/><line x1=\"341.6\" y1=\"56\" x2=\"341.6\" y2=\"72\"/><line x1=\"357.8\" y1=\"56\" x2=\"357.8\" y2=\"72\"/><line x1=\"374.0\" y1=\"56\" x2=\"374.0\" y2=\"72\"/><line x1=\"390.2\" y1=\"56\" x2=\"390.2\" y2=\"78\"/></g><g font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"50\" y=\"28\">0</text><text x=\"230\" y=\"28\">1</text><text x=\"410\" y=\"28\">2 cm</text><text x=\"228\" y=\"92\" fill=\"#1661FF\" font-weight=\"700\">0</text><text x=\"309\" y=\"92\">5</text><text x=\"390\" y=\"92\">0</text></g></svg>",
+        "unit": "cm",
+        "answer": 0.99,
+        "tol": 0.005,
+        "sig": 2,
+        "show": "0.99",
+        "explain": "游标 0 刻线位于主尺 9 mm 与 10 mm 之间（主尺读 9 mm），游标第 9 条刻线与主尺 18 mm 刻线对齐，故 d = 9 mm + 9 × 0.1 mm = 9.9 mm = 0.99 cm（游标卡尺不估读）。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "平衡小车沿轨道滑行过程中的阻力：让装有挡光片的小车以一定初速度由右向左先后经过光电门 A 和 B，测得挡光时间分别为 13.56 ms、17.90 ms，则应适当调高轨道的 ____ 端，直至两光电门挡光时间相等。",
+        "options": ["左", "右"],
+        "answer": 1,
+        "replay": "E5",
+        "explain": "挡光时间 13.56 ms < 17.90 ms，说明小车由右向左运动时速度减小（做减速运动），重力下滑分力不足以克服阻力，故应适当调高轨道<b>右</b>端。"
+      },
+      {
+        "label": "(3)",
+        "type": "expr",
+        "prompt": "让小车静止在 A 的右侧，枪口靠近小车发射子弹，子弹沿轨道方向射出并粘在小车上，小车向左运动经过光电门 A 的挡光时间为 Δt。则子弹离开枪口的速度大小",
+        "lhs": "v =",
+        "vars": { "m": "m", "M": "M", "d": "d", "t": "Δt" },
+        "extra": ["1", "2"],
+        "answer": "(m+M)*d/(m*t)",
+        "show": "(m + M)d ÷ (m·Δt)",
+        "explain": "子弹与小车碰撞后共同速度 v<sub>车</sub> = {{frac|d|Δt}}，由动量守恒 m v = (m + M) v<sub>车</sub> 得子弹初速度 v = {{frac|(m + M)d|m·Δt}}。"
+      }
+    ]
+  },
+  {
+    "id": "Q7",
+    "source": "2026·福建卷·第12题（动量定理迁移）",
+    "verified": true,
+    "stem": "（动量定理迁移）某小组利用如图（a）所示的实验装置验证动量定理。将气垫导轨左端用垫块垫高，测得两光电门中心距离 l = 50.00 cm，两光电门处轨道的高度差 h = 8.00 cm，滑块（含遮光板）质量 m = 200.0 g。<svg viewBox=\"0 0 540 155\" width=\"540\" role=\"img\" aria-label=\"2026福建卷第12题装置图与游标卡尺\"><g transform=\"translate(10,10)\"><line x1=\"8\" y1=\"120\" x2=\"260\" y2=\"120\" stroke=\"#10233F\" stroke-width=\"1.8\"/><rect x=\"18\" y=\"90\" width=\"12\" height=\"30\" fill=\"#8E99A6\" stroke=\"#10233F\"/><g transform=\"translate(14,76) rotate(8.5)\"><rect x=\"0\" y=\"0\" width=\"240\" height=\"14\" fill=\"#DCE4EC\" stroke=\"#10233F\"/><rect x=\"12\" y=\"-16\" width=\"26\" height=\"16\" fill=\"#10233F\"/><rect x=\"24\" y=\"-26\" width=\"3\" height=\"10\" fill=\"#10233F\"/><rect x=\"58\" y=\"-22\" width=\"7\" height=\"22\" fill=\"#3B4B60\"/><rect x=\"148\" y=\"-22\" width=\"7\" height=\"22\" fill=\"#3B4B60\"/></g><line x1=\"68\" y1=\"72\" x2=\"156\" y2=\"86\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\"/><line x1=\"68\" y1=\"72\" x2=\"68\" y2=\"95\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\"/><line x1=\"68\" y1=\"95\" x2=\"156\" y2=\"95\" stroke=\"#1661FF\" stroke-dasharray=\"3 2\"/><g font-size=\"11\" fill=\"#10233F\"><text x=\"10\" y=\"108\">垫块</text><text x=\"4\" y=\"68\">滑块</text><text x=\"18\" y=\"44\">遮光板</text><text x=\"58\" y=\"52\">光电门1</text><text x=\"142\" y=\"65\">光电门2</text><text x=\"110\" y=\"75\" font-style=\"italic\">l</text><text x=\"60\" y=\"92\" font-style=\"italic\">h</text><text x=\"190\" y=\"85\">气垫导轨</text><text x=\"130\" y=\"138\" text-anchor=\"middle\">图（a）</text></g></g><g transform=\"translate(285,18)\"><rect x=\"10\" y=\"14\" width=\"226\" height=\"28\" fill=\"#F3F7FC\" stroke=\"#7E8C9B\"/><rect x=\"70\" y=\"42\" width=\"130\" height=\"32\" fill=\"#E8EEF5\" stroke=\"#7E8C9B\"/><rect x=\"22\" y=\"76\" width=\"48\" height=\"32\" fill=\"#4A5B73\" stroke=\"#10233F\"/><line x1=\"22\" y1=\"42\" x2=\"22\" y2=\"108\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"70\" y1=\"42\" x2=\"70\" y2=\"108\" stroke=\"#10233F\" stroke-width=\"1.4\"/><g stroke=\"#10233F\" stroke-width=\"1\"><line x1=\"22\" y1=\"42\" x2=\"22\" y2=\"24\"/><line x1=\"26.8\" y1=\"42\" x2=\"26.8\" y2=\"33\"/><line x1=\"31.6\" y1=\"42\" x2=\"31.6\" y2=\"33\"/><line x1=\"36.4\" y1=\"42\" x2=\"36.4\" y2=\"33\"/><line x1=\"41.2\" y1=\"42\" x2=\"41.2\" y2=\"33\"/><line x1=\"46\" y1=\"42\" x2=\"46\" y2=\"28\"/><line x1=\"50.8\" y1=\"42\" x2=\"50.8\" y2=\"33\"/><line x1=\"55.6\" y1=\"42\" x2=\"55.6\" y2=\"33\"/><line x1=\"60.4\" y1=\"42\" x2=\"60.4\" y2=\"33\"/><line x1=\"65.2\" y1=\"42\" x2=\"65.2\" y2=\"33\"/><line x1=\"70\" y1=\"42\" x2=\"70\" y2=\"24\"/><line x1=\"74.8\" y1=\"42\" x2=\"74.8\" y2=\"33\"/><line x1=\"79.6\" y1=\"42\" x2=\"79.6\" y2=\"33\"/><line x1=\"84.4\" y1=\"42\" x2=\"84.4\" y2=\"33\"/><line x1=\"89.2\" y1=\"42\" x2=\"89.2\" y2=\"33\"/><line x1=\"94\" y1=\"42\" x2=\"94\" y2=\"28\"/><line x1=\"98.8\" y1=\"42\" x2=\"98.8\" y2=\"33\"/><line x1=\"103.6\" y1=\"42\" x2=\"103.6\" y2=\"33\"/><line x1=\"108.4\" y1=\"42\" x2=\"108.4\" y2=\"33\"/><line x1=\"113.2\" y1=\"42\" x2=\"113.2\" y2=\"33\"/><line x1=\"118\" y1=\"42\" x2=\"118\" y2=\"24\"/><line x1=\"122.8\" y1=\"42\" x2=\"122.8\" y2=\"33\"/><line x1=\"127.6\" y1=\"42\" x2=\"127.6\" y2=\"33\"/><line x1=\"132.4\" y1=\"42\" x2=\"132.4\" y2=\"33\"/><line x1=\"137.2\" y1=\"42\" x2=\"137.2\" y2=\"33\"/><line x1=\"142\" y1=\"42\" x2=\"142\" y2=\"28\"/><line x1=\"146.8\" y1=\"42\" x2=\"146.8\" y2=\"33\"/><line x1=\"151.6\" y1=\"42\" x2=\"151.6\" y2=\"33\"/><line x1=\"156.4\" y1=\"42\" x2=\"156.4\" y2=\"33\"/><line x1=\"161.2\" y1=\"42\" x2=\"161.2\" y2=\"33\"/><line x1=\"166\" y1=\"42\" x2=\"166\" y2=\"24\"/></g><g stroke=\"#10233F\" stroke-width=\"1\"><line x1=\"70\" y1=\"42\" x2=\"70\" y2=\"58\" stroke=\"#1661FF\" stroke-width=\"1.5\"/><line x1=\"74.32\" y1=\"42\" x2=\"74.32\" y2=\"54\"/><line x1=\"78.64\" y1=\"42\" x2=\"78.64\" y2=\"54\"/><line x1=\"82.96\" y1=\"42\" x2=\"82.96\" y2=\"54\"/><line x1=\"87.28\" y1=\"42\" x2=\"87.28\" y2=\"54\"/><line x1=\"91.6\" y1=\"42\" x2=\"91.6\" y2=\"57\"/><line x1=\"95.92\" y1=\"42\" x2=\"95.92\" y2=\"54\"/><line x1=\"100.24\" y1=\"42\" x2=\"100.24\" y2=\"54\"/><line x1=\"104.56\" y1=\"42\" x2=\"104.56\" y2=\"54\"/><line x1=\"108.88\" y1=\"42\" x2=\"108.88\" y2=\"54\"/><line x1=\"113.2\" y1=\"42\" x2=\"113.2\" y2=\"58\"/></g><g font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"22\" y=\"21\">0</text><text x=\"70\" y=\"21\">1</text><text x=\"118\" y=\"21\">2</text><text x=\"178\" y=\"21\">3 cm</text><text x=\"70\" y=\"69\" fill=\"#1661FF\" font-weight=\"700\">0</text><text x=\"92\" y=\"69\">5</text><text x=\"113\" y=\"69\">0</text><text x=\"125\" y=\"130\">图（b）</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "用游标卡尺测量遮光板宽度 d，示数如图（b）所示，读出 d = ____ mm。",
+        "unit": "mm",
+        "answer": 10.0,
+        "tol": 0.05,
+        "sig": 3,
+        "show": "10.0",
+        "explain": "10 分度游标卡尺（精度 0.1 mm，不估读），游标 0 刻线恰好对齐主尺 1.0 cm（10 mm）刻线，故读数为 10.0 mm（精度末尾 0 不能省略）。"
+      },
+      {
+        "label": "(2)",
+        "type": "expr",
+        "prompt": "将滑块移至位置 O 由静止释放，测得通过光电门 1、2 的平均遮光时间分别为 Δt₁ = 10.00 ms、Δt₂ = 6.25 ms（时间间隔 t = 390.00 ms）。滑块从光电门 1 运动到光电门 2 过程中动量变化量大小的表达式（用 m、d、Δt₁、Δt₂ 表示）：",
+        "lhs": "Δp =",
+        "vars": { "m": "m", "d": "d", "t1": "Δt₁", "t2": "Δt₂" },
+        "extra": ["1", "2"],
+        "answer": "m*(d/t2-d/t1)",
+        "show": "m(d/Δt₂ − d/Δt₁)",
+        "explain": "经过光电门 1、2 的速率分别为 v₁ = d/Δt₁、v₂ = d/Δt₂，故动量变化量大小 Δp = m(v₂ − v₁) = m({{frac|d|Δt₂}} − {{frac|d|Δt₁}})。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "代入测量数据，可算出 Δp = ____ kg·m/s（保留 3 位有效数字；合外力冲量 I = m g (h/l) t ≈ 0.122 N·s）。",
+        "unit": "kg·m/s",
+        "answer": 0.120,
+        "tol": 0.002,
+        "sig": 3,
+        "show": "0.120",
+        "explain": "v₁ = 0.0100 / 0.01000 = 1.00 m/s，v₂ = 0.0100 / 0.00625 = 1.60 m/s，Δp = 0.2000 × (1.60 − 1.00) = 0.120 kg·m/s，与冲量 I ≈ 0.122 N·s 在误差允许范围内一致。"
+      },
+      {
+        "label": "(4)",
+        "type": "choice",
+        "prompt": "关于本实验，下列说法正确的是 ____。",
+        "options": [
+          "垫高导轨的目的是为了平衡滑块所受的阻力",
+          "若选用宽度为 d/2 的遮光板，瞬时速率测量值会更准确",
+          "若滑块从不同位置静止释放，测得的遮光时间不变"
+        ],
+        "answer": 1,
+        "explain": "本实验垫高导轨是为了利用重力沿导轨分力提供恒定合外力，A 错；遮光板越窄，平均速度越接近通过光电门时的瞬时速率，B 正确；释放位置不同到达光电门的速度不同，遮光时间会变化，C 错。"
+      }
+    ]
+  },
+  {
+    "id": "Q8",
+    "source": "2026·广东广州期中（复习课件题组）",
+    "verified": true,
+    "stem": "两实验小组想验证动量守恒定律，第一组采用如图甲所示的“碰撞实验装置”；第二组设计了如图乙所示利用固定了两个光电门的气垫导轨验证两滑块弹开后的动量是否守恒。<svg viewBox=\"0 0 540 225\" width=\"540\" role=\"img\" aria-label=\"2026广州期中双组对照装置图甲与图乙\"><g transform=\"translate(10,4)\"><rect x=\"108\" y=\"36\" width=\"120\" height=\"7\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"148\" y=\"43\" width=\"8\" height=\"58\" fill=\"#fff\" stroke=\"#10233F\"/><path d=\"M92 14 L152 36 H228\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"2\"/><circle cx=\"110\" cy=\"15\" r=\"6\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><circle cx=\"228\" cy=\"30\" r=\"6\" fill=\"none\" stroke=\"#10233F\" stroke-dasharray=\"2 2\"/><line x1=\"228\" y1=\"36\" x2=\"228\" y2=\"98\" stroke=\"#10233F\"/><polygon points=\"228,100 225,94 231,94\" fill=\"#10233F\"/><path d=\"M230 30 Q268 35 288 100\" fill=\"none\" stroke=\"#10233F\" stroke-dasharray=\"4 3\"/><path d=\"M230 30 Q298 35 338 100\" fill=\"none\" stroke=\"#10233F\" stroke-dasharray=\"4 3\"/><path d=\"M230 30 Q342 35 398 100\" fill=\"none\" stroke=\"#10233F\" stroke-dasharray=\"4 3\"/><line x1=\"84\" y1=\"101\" x2=\"446\" y2=\"101\" stroke=\"#10233F\" stroke-width=\"1.8\"/><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"122\" y=\"14\" font-style=\"italic\">A</text><text x=\"228\" y=\"19\" font-style=\"italic\">B</text><text x=\"228\" y=\"114\" font-style=\"italic\">O</text><text x=\"288\" y=\"114\" font-style=\"italic\">M</text><text x=\"338\" y=\"114\" font-style=\"italic\">P</text><text x=\"398\" y=\"114\" font-style=\"italic\">N</text><text x=\"424\" y=\"66\" font-style=\"italic\">H</text><text x=\"265\" y=\"125\">甲</text></g><line x1=\"240\" y1=\"30\" x2=\"436\" y2=\"30\" stroke=\"#4A5B73\" stroke-dasharray=\"3 2\"/><line x1=\"424\" y1=\"30\" x2=\"424\" y2=\"101\" stroke=\"#4A5B73\"/></g><g transform=\"translate(18,136)\"><rect x=\"18\" y=\"52\" width=\"468\" height=\"10\" fill=\"#DCE4EC\" stroke=\"#10233F\"/><rect x=\"48\" y=\"62\" width=\"8\" height=\"14\" fill=\"#8E99A6\" stroke=\"#10233F\"/><rect x=\"448\" y=\"62\" width=\"8\" height=\"14\" fill=\"#8E99A6\" stroke=\"#10233F\"/><rect x=\"116\" y=\"10\" width=\"10\" height=\"42\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"378\" y=\"10\" width=\"10\" height=\"42\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"176\" y=\"34\" width=\"44\" height=\"18\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"194\" y=\"14\" width=\"8\" height=\"20\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><rect x=\"284\" y=\"34\" width=\"44\" height=\"18\" fill=\"#fff\" stroke=\"#10233F\"/><rect x=\"302\" y=\"14\" width=\"8\" height=\"20\" fill=\"#C9D1D9\" stroke=\"#10233F\"/><path d=\"M220 43 C226 36 232 50 238 43 C244 36 250 50 256 43 C262 36 268 50 274 43 L284 43\" fill=\"none\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"252\" y1=\"16\" x2=\"252\" y2=\"43\" stroke=\"#C7374B\" stroke-width=\"1.2\"/><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"121\" y=\"6\">光电门</text><text x=\"383\" y=\"6\">光电门</text><text x=\"198\" y=\"10\">遮光板</text><text x=\"306\" y=\"10\">遮光板</text><text x=\"252\" y=\"12\">弹簧和细线</text><text x=\"198\" y=\"47\">P</text><text x=\"306\" y=\"47\">Q</text><text x=\"252\" y=\"84\">乙</text></g></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "expr",
+        "prompt": "第一组测出小球 A、B 的质量记为 m<sub>A</sub>、m<sub>B</sub>，测得 O、M、P、N 各点间距如图丙所示，则验证两小球碰撞过程中动量守恒的最简表达式为 m<sub>A</sub>x₂ = ____（用 m<sub>B</sub>、x₁、x₂、x₃ 表示）。<svg viewBox=\"0 0 460 112\" width=\"460\" role=\"img\" aria-label=\"2026广州期中图丙落点间距与图丁螺旋测微器\"><g transform=\"translate(12,18)\"><rect x=\"0\" y=\"6\" width=\"292\" height=\"72\" fill=\"#FBFAF5\" stroke=\"#10233F\"/><circle cx=\"30\" cy=\"54\" r=\"2.5\" fill=\"#10233F\"/><circle cx=\"114\" cy=\"54\" r=\"2.5\" fill=\"#10233F\"/><circle cx=\"114\" cy=\"54\" r=\"15\" fill=\"none\" stroke=\"#1661FF\"/><circle cx=\"190\" cy=\"54\" r=\"2.5\" fill=\"#10233F\"/><circle cx=\"190\" cy=\"54\" r=\"15\" fill=\"none\" stroke=\"#1661FF\"/><circle cx=\"252\" cy=\"54\" r=\"2.5\" fill=\"#10233F\"/><circle cx=\"252\" cy=\"54\" r=\"15\" fill=\"none\" stroke=\"#1661FF\"/><line x1=\"30\" y1=\"24\" x2=\"30\" y2=\"44\" stroke=\"#10233F\"/><line x1=\"114\" y1=\"24\" x2=\"114\" y2=\"38\" stroke=\"#10233F\"/><line x1=\"190\" y1=\"24\" x2=\"190\" y2=\"38\" stroke=\"#10233F\"/><line x1=\"252\" y1=\"24\" x2=\"252\" y2=\"38\" stroke=\"#10233F\"/><line x1=\"30\" y1=\"30\" x2=\"252\" y2=\"30\" stroke=\"#10233F\"/><g font-size=\"12\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"72\" y=\"24\" font-style=\"italic\">x₁</text><text x=\"152\" y=\"24\" font-style=\"italic\">x₂</text><text x=\"221\" y=\"24\" font-style=\"italic\">x₃</text><text x=\"42\" y=\"66\" font-style=\"italic\">O</text><text x=\"134\" y=\"70\" font-style=\"italic\">M</text><text x=\"210\" y=\"70\" font-style=\"italic\">P</text><text x=\"272\" y=\"70\" font-style=\"italic\">N</text><text x=\"146\" y=\"92\">丙</text></g></g><g transform=\"translate(324,10)\"><rect x=\"10\" y=\"14\" width=\"60\" height=\"68\" fill=\"#F3F7FC\" stroke=\"#10233F\"/><polygon points=\"70,14 92,0 92,96 70,82\" fill=\"#E8EEF5\" stroke=\"#10233F\"/><line x1=\"10\" y1=\"48\" x2=\"70\" y2=\"48\" stroke=\"#10233F\" stroke-width=\"1.4\"/><g stroke=\"#10233F\" stroke-width=\"1\"><line x1=\"22\" y1=\"48\" x2=\"22\" y2=\"33\"/><line x1=\"29\" y1=\"48\" x2=\"29\" y2=\"36\"/><line x1=\"36\" y1=\"48\" x2=\"36\" y2=\"36\"/><line x1=\"43\" y1=\"48\" x2=\"43\" y2=\"36\"/><line x1=\"50\" y1=\"48\" x2=\"50\" y2=\"36\"/><line x1=\"57\" y1=\"48\" x2=\"57\" y2=\"33\"/><line x1=\"64\" y1=\"48\" x2=\"64\" y2=\"36\"/><line x1=\"25.5\" y1=\"48\" x2=\"25.5\" y2=\"60\"/><line x1=\"32.5\" y1=\"48\" x2=\"32.5\" y2=\"60\"/><line x1=\"39.5\" y1=\"48\" x2=\"39.5\" y2=\"60\"/><line x1=\"46.5\" y1=\"48\" x2=\"46.5\" y2=\"60\"/><line x1=\"53.5\" y1=\"48\" x2=\"53.5\" y2=\"60\"/><line x1=\"60.5\" y1=\"48\" x2=\"60.5\" y2=\"60\"/><line x1=\"67.5\" y1=\"48\" x2=\"67.5\" y2=\"60\"/><line x1=\"70\" y1=\"28\" x2=\"78\" y2=\"28\"/><line x1=\"70\" y1=\"33\" x2=\"75\" y2=\"33\"/><line x1=\"70\" y1=\"38\" x2=\"75\" y2=\"38\"/><line x1=\"70\" y1=\"43\" x2=\"75\" y2=\"43\"/><line x1=\"70\" y1=\"48\" x2=\"76\" y2=\"48\" stroke-width=\"1.3\"/><line x1=\"70\" y1=\"53\" x2=\"78\" y2=\"53\"/><line x1=\"70\" y1=\"58\" x2=\"75\" y2=\"58\"/><line x1=\"70\" y1=\"63\" x2=\"75\" y2=\"63\"/><line x1=\"70\" y1=\"68\" x2=\"75\" y2=\"68\"/><line x1=\"70\" y1=\"73\" x2=\"75\" y2=\"73\"/><line x1=\"70\" y1=\"78\" x2=\"78\" y2=\"78\"/></g><g font-size=\"11\" fill=\"#10233F\"><text x=\"22\" y=\"27\" text-anchor=\"middle\">0</text><text x=\"57\" y=\"27\" text-anchor=\"middle\">5</text><text x=\"81\" y=\"32\">40</text><text x=\"81\" y=\"57\">35</text><text x=\"81\" y=\"81\">30</text><text x=\"51\" y=\"104\" text-anchor=\"middle\">丁</text></g></g></svg>",
+        "lhs": "m<sub>A</sub>x₂ =",
+        "vars": { "mB": "m_B", "x1": "x₁", "x2": "x₂", "x3": "x₃" },
+        "extra": ["1", "2"],
+        "answer": "mB*(x1+x2+x3)",
+        "show": "m_B(x₁ + x₂ + x₃)",
+        "explain": "由图丙知 OP = x₁ + x₂，OM = x₁，ON = x₁ + x₂ + x₃。代入 m<sub>A</sub>·OP = m<sub>A</sub>·OM + m<sub>B</sub>·ON，化简消去 m<sub>A</sub>x₁ 得 m<sub>A</sub>x₂ = m<sub>B</sub>(x₁ + x₂ + x₃)。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "第二组用螺旋测微器测量遮光板宽度如图丁所示，则 d = ____ mm。",
+        "unit": "mm",
+        "answer": 6.860,
+        "tol": 0.002,
+        "sig": 4,
+        "show": "6.860",
+        "explain": "固定刻度整毫米露出 6 mm，下排 0.5 mm 半毫米刻线已露出（共 6.5 mm）；可动刻度 36.0 格对齐中心基准线，故 d = 6.5 mm + 36.0 × 0.01 mm = 6.860 mm。"
+      },
+      {
+        "label": "(3)",
+        "type": "expr",
+        "prompt": "第二组测得滑块 P、Q 质量为 m₁、m₂，左、右遮光板宽度为 d₁、d₂。烧断细线弹簧将两滑块弹开，通过光电门的时间分别为 t₁、t₂，则动量守恒满足 m₁{{frac|d₁|t₁}} = ____（等价于 m₁{{frac|d₁|t₁}} − m₂{{frac|d₂|t₂}} = 0）。",
+        "lhs": "m₁ d₁ / t₁ =",
+        "vars": { "m2": "m₂", "d2": "d₂", "t2": "t₂" },
+        "extra": ["1", "2"],
+        "answer": "m2*d2/t2",
+        "show": "m₂·d₂ ÷ t₂",
+        "explain": "系统初动量为 0，弹开后两滑块反向运动，动量守恒有 m₁v₁ − m₂v₂ = 0，代入 v₁ = d₁/t₁、v₂ = d₂/t₂ 得 m₁{{frac|d₁|t₁}} = m₂{{frac|d₂|t₂}}（或 m₁{{frac|d₁|t₁}} − m₂{{frac|d₂|t₂}} = 0）。"
+      }
+    ]
+  }
+]

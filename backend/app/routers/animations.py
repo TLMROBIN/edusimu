@@ -1,6 +1,7 @@
 import base64
 import io
 import json
+import logging
 import mimetypes
 from dataclasses import dataclass, field
 import os
@@ -9,6 +10,7 @@ import re
 import shutil
 import time
 import zipfile
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import List, Optional, Set
 from urllib import error as urllib_error
@@ -17,12 +19,15 @@ from urllib import request as urllib_request
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile, status
 from fastapi.responses import FileResponse
-from sqlalchemy import func
+from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from ..auth import get_current_active_user, require_role
 from ..database import get_db, settings
-from ..models import Animation, AnimationInteraction, Rating, Subject, TextbookNode, User, ViewHistory
+from ..models import (
+    Animation, AnimationInteraction, CoursewareQuizAttempt, DanmakuMessage, DanmakuSession, DanmakuUpvote,
+    Rating, Subject, TextbookNode, User, ViewHistory,
+)
 from ..physics_catalog import PHYSICS_CATALOG
 from ..schemas import (
     AiPromptSuggestion,
@@ -41,6 +46,7 @@ from ..schemas import (
 from ..subject_catalogs import BIOLOGY_CATALOG, CHEMISTRY_CATALOG, MATH_CATALOG
 
 router = APIRouter(prefix="/api/animations", tags=["动画管理"])
+logger = logging.getLogger(__name__)
 
 PRESET_CATALOGS = {
     "math": MATH_CATALOG,
@@ -75,6 +81,8 @@ COMMON_AI_CONSTRAINTS = (
     "请生成单个可直接运行的 HTML 文件，不依赖外部 CDN、外部图片、外部字体、外部脚本或任何外网请求。"
     " 页面必须适配平板横竖屏，包含 viewport，所有核心交互必须可触控完成。可以同时支持鼠标和触控，但不能仅依赖 hover、右键、滚轮、键盘快捷键或鼠标悬停。"
     " 页面应适合内网教学平板，按钮和热点区域要足够大，默认离线可运行，代码结构清晰，便于教师后续继续修改。"
+    " 如需开启平台作答统计，必须内嵌 id=edusimu-quiz-manifest 的 application/json 题目清单，version 固定为 1，questions 非空且每题包含唯一 id、title、type，可选 options、answer、maxScore；"
+    " 学生每次提交时向父窗口 postMessage 发送 type=EDUSIMU_QUIZ_SUBMIT、version=1、questionId、answer、isCorrect，可选 score 和 mistakeTag。课件自身不得依赖 fetch 或平台令牌。"
 )
 HTML_EXTERNAL_RESOURCE_RE = re.compile(
     r'(?P<prefix><(?P<tag>script|img|source|audio|video|link)\b[^>]*?\b(?P<attr>src|href)\s*=\s*["\'])'
@@ -493,7 +501,7 @@ def unique_messages(messages: List[str]) -> List[str]:
 
 
 def make_browser_relative_path(target_path: str, source_dir: str) -> str:
-    relative_path = os.path.relpath(target_path, source_dir).replace(os.sep, "/")
+    relative_path = os.path.relpath(Path(target_path).resolve(), Path(source_dir).resolve()).replace(os.sep, "/")
     if relative_path.startswith("../"):
         return relative_path
     if relative_path.startswith("./"):
@@ -733,24 +741,50 @@ def scan_workspace_for_validation_issues(workspace: CoursewareWorkspace) -> tupl
     return unique_messages(errors), unique_messages(warnings)
 
 
-def _unpack_isolated_html(html_text: str) -> str:
-    if "edusimu-isolated-tongjiang-v1" not in html_text:
-        return html_text
+ISOLATED_COURSEWARE_MARKER = "edusimu-isolated-tongjiang-v1"
+
+
+def read_isolated_config(html_text: str) -> Optional[dict]:
+    if ISOLATED_COURSEWARE_MARKER not in html_text:
+        return None
     match = re.search(
         r'<script[^>]*id=["\']edusimu-isolation["\'][^>]*>(.*?)</script>',
         html_text,
         re.IGNORECASE | re.DOTALL,
     )
     if not match:
-        return html_text
+        return None
     try:
         payload = json.loads(match.group(1))
-        encoded = payload.get("sourceBase64")
-        if encoded:
-            return base64.b64decode(encoded).decode("utf-8", errors="ignore")
-    except Exception:
-        pass
+    except ValueError:
+        return None
+    if (
+        isinstance(payload, dict) and payload.get("version") == 1
+        and payload.get("marker") == ISOLATED_COURSEWARE_MARKER
+        and isinstance(payload.get("sourceBase64"), str)
+    ):
+        return payload
+    return None
+
+
+def _unpack_isolated_html(html_text: str) -> str:
+    config = read_isolated_config(html_text)
+    if config:
+        try:
+            return base64.b64decode(config["sourceBase64"], validate=True).decode("utf-8", errors="ignore")
+        except ValueError:
+            pass
     return html_text
+
+
+def has_isolation_keyword(keywords: Optional[str]) -> bool:
+    return ISOLATED_COURSEWARE_MARKER in {word.strip() for word in re.split(r"[,，]", keywords or "")}
+
+
+def add_isolation_keyword(keywords: Optional[str]) -> str:
+    if has_isolation_keyword(keywords):
+        return keywords
+    return f"{keywords},{ISOLATED_COURSEWARE_MARKER}" if keywords else ISOLATED_COURSEWARE_MARKER
 
 
 def evaluate_tablet_performance(
@@ -765,7 +799,7 @@ def evaluate_tablet_performance(
     combined = "\n".join(unpacked_texts)
     lower = combined.lower()
 
-    is_tongjiang = any("edusimu-isolated-tongjiang-v1" in (text or "") for text in html_texts)
+    is_tongjiang = any(ISOLATED_COURSEWARE_MARKER in (text or "") for text in html_texts)
     uses_3d_webgl = (
         "three.min.js" in lower
         or "three.module.js" in lower
@@ -1274,12 +1308,221 @@ def remove_courseware_path(file_path: Optional[str]):
     os.remove(file_path)
 
 
+QUIZ_QUESTION_TYPES = {"choice", "multi", "numeric", "fill", "expr", "plot", "open"}
+JAVASCRIPT_TYPES = {"", "module", "application/javascript", "text/javascript", "application/ecmascript", "text/ecmascript"}
+QUIZ_SUBMIT_LITERALS = {"'EDUSIMU_QUIZ_SUBMIT'", '"EDUSIMU_QUIZ_SUBMIT"', "`EDUSIMU_QUIZ_SUBMIT`"}
+QUIZ_JS_TOKENS = re.compile(
+    r"""(?P<comment>//[^\r\n]*|/\*[\s\S]*?\*/)|"""
+    r"""'(?:\\[\s\S]|[^'\\])*'|"(?:\\[\s\S]|[^"\\])*"|\x60(?:\\[\s\S]|[^\x60\\])*\x60|"""
+    r"""[A-Za-z_$][\w$]*|\S"""
+)
+
+
+def is_quiz_message_object(tokens: List[str], start: int) -> bool:
+    if tokens[start:start + 1] != ["{"]:
+        return False
+    depth = 1
+    for index in range(start + 1, len(tokens)):
+        token = tokens[index]
+        if (
+            depth == 1
+            and tokens[index - 1] in ("{", ",")
+            and token in ("type", "'type'", '"type"')
+            and tokens[index + 1:index + 2] == [":"]
+            and index + 3 < len(tokens)
+            and tokens[index + 2] in QUIZ_SUBMIT_LITERALS
+            and tokens[index + 3] in (",", "}")
+        ):
+            return True
+        if token in ("{", "[", "("):
+            depth += 1
+        elif token in ("}", "]", ")"):
+            depth -= 1
+            if depth == 0:
+                break
+    return False
+
+
+def has_quiz_submit_call(script: str) -> bool:
+    if "EDUSIMU_QUIZ_SUBMIT" not in script or "postMessage" not in script:
+        return False
+    tokens = [match[0] for match in QUIZ_JS_TOKENS.finditer(script) if match.lastgroup != "comment"]
+    payload_names = {
+        tokens[index + 1]
+        for index, token in enumerate(tokens)
+        if token in ("const", "let", "var")
+        and tokens[index + 2:index + 3] == ["="]
+        and is_quiz_message_object(tokens, index + 3)
+    }
+    # Statically recognize the documented parent call with a literal or named payload.
+    return any(
+        tokens[index - 2:index] == ["parent", "."]
+        and tokens[index + 1:index + 2] == ["("]
+        and (
+            is_quiz_message_object(tokens, index + 2)
+            or (tokens[index + 2] in payload_names and tokens[index + 3] in (",", ")"))
+        )
+        for index, token in enumerate(tokens[:-3])
+        if index >= 2 and token == "postMessage"
+    )
+
+
+class QuizManifestHTMLParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.manifest_count = 0
+        self.manifest_type = None
+        self.has_submit_call = False
+        self._inside_manifest = False
+        self._inside_javascript = False
+        self._parts: List[str] = []
+
+    def handle_starttag(self, tag: str, attrs):
+        if tag != "script":
+            if not self.has_submit_call:
+                self.has_submit_call = any(
+                    has_quiz_submit_call(value) for name, value in attrs if name.startswith("on") and value
+                )
+            return
+        attributes = dict(attrs)
+        if attributes.get("id") != "edusimu-quiz-manifest":
+            mime_type = (attributes.get("type") or "").split(";", 1)[0].strip().lower()
+            self._inside_javascript = "src" not in attributes and mime_type in JAVASCRIPT_TYPES
+            return
+        self.manifest_count += 1
+        if self.manifest_count == 1:
+            self.manifest_type = attributes.get("type")
+            self._inside_manifest = True
+
+    def handle_endtag(self, tag: str):
+        if tag == "script":
+            self._inside_manifest = False
+            self._inside_javascript = False
+
+    def handle_data(self, data: str):
+        if self._inside_manifest:
+            self._parts.append(data)
+        elif self._inside_javascript and not self.has_submit_call:
+            self.has_submit_call = has_quiz_submit_call(data)
+
+    @property
+    def manifest_text(self) -> str:
+        return "".join(self._parts).strip()
+
+
+def normalize_quiz_manifest(raw: str) -> dict:
+    data = json.loads(raw)
+    if not isinstance(data, dict):
+        raise ValueError("题目清单根节点必须是 JSON 对象")
+    version = data.get("version")
+    if isinstance(version, bool) or not isinstance(version, int) or version != 1:
+        raise ValueError("version 必须为整数 1")
+    questions = data.get("questions")
+    if not isinstance(questions, list) or not questions:
+        raise ValueError("questions 必须是非空数组")
+    if len(questions) > 200:
+        raise ValueError("questions 最多允许 200 题")
+
+    normalized_questions = []
+    seen_ids = set()
+    for index, question in enumerate(questions, start=1):
+        if not isinstance(question, dict):
+            raise ValueError(f"第 {index} 题必须是 JSON 对象")
+        question_id = question.get("id")
+        title = question.get("title")
+        question_type = question.get("type")
+        if not isinstance(question_id, str) or not question_id.strip() or len(question_id) > 80:
+            raise ValueError(f"第 {index} 题 id 必须是 1-80 字符的字符串")
+        question_id = question_id.strip()
+        if question_id in seen_ids:
+            raise ValueError(f"题目 id 重复：{question_id}")
+        seen_ids.add(question_id)
+        if not isinstance(title, str) or not title.strip() or len(title) > 200:
+            raise ValueError(f"题目 {question_id} 的 title 必须是 1-200 字符的字符串")
+        if not isinstance(question_type, str) or question_type not in QUIZ_QUESTION_TYPES:
+            raise ValueError(f"题目 {question_id} 的 type 不受支持")
+        normalized = {
+            "id": question_id,
+            "title": title.strip(),
+            "type": question_type,
+            "maxScore": question.get("maxScore", 1),
+        }
+        max_score = normalized["maxScore"]
+        if isinstance(max_score, bool) or not isinstance(max_score, int) or max_score < 1:
+            raise ValueError(f"题目 {question_id} 的 maxScore 必须是大于等于 1 的整数")
+        if "options" in question:
+            options = question["options"]
+            if not isinstance(options, list) or any(not isinstance(option, str) for option in options):
+                raise ValueError(f"题目 {question_id} 的 options 必须是字符串数组")
+            normalized["options"] = options
+        if "answer" in question:
+            answer = question["answer"]
+            if not isinstance(answer, str) or len(answer) > 200:
+                raise ValueError(f"题目 {question_id} 的 answer 必须是不超过 200 字符的字符串")
+            normalized["answer"] = answer
+        normalized_questions.append(normalized)
+    return {"version": 1, "questions": normalized_questions}
+
+
+def parse_quiz_html(html_text: str) -> QuizManifestHTMLParser:
+    parser = QuizManifestHTMLParser()
+    parser.feed(html_text)
+    parser.close()
+    return parser
+
+
+def inspect_courseware_quiz(content: bytes) -> tuple[bool, Optional[str], List[str]]:
+    html_text = content.decode("utf-8", errors="ignore")
+    inner_html = _unpack_isolated_html(html_text)
+    parser = parse_quiz_html(inner_html)
+    if not parser.manifest_count:
+        return False, None, []
+    if parser.manifest_count > 1:
+        return False, None, ["题目规范不完整：检测到多个 edusimu-quiz-manifest，暂不开启作答记录。"]
+    if (parser.manifest_type or "").strip().lower() != "application/json":
+        return False, None, ["题目规范不完整：题目清单 script 的 type 必须为 application/json，暂不开启作答记录。"]
+    raw = parser.manifest_text
+    if len(raw.encode("utf-8")) > 64 * 1024:
+        return False, None, ["题目规范不完整：题目清单超过 64KB，暂不开启作答记录。"]
+    try:
+        manifest = normalize_quiz_manifest(raw)
+    except (ValueError, TypeError, json.JSONDecodeError) as exc:
+        return False, None, [f"题目规范不完整：{exc}，暂不开启作答记录。"]
+    if not parser.has_submit_call:
+        return False, None, ["题目规范不完整：缺少 EDUSIMU_QUIZ_SUBMIT 上报调用，暂不开启作答记录。"]
+    if inner_html != html_text and not parse_quiz_html(html_text).has_submit_call:
+        return False, None, ["题目规范不完整：隔离包装器缺少 EDUSIMU_QUIZ_SUBMIT 转发，暂不开启作答记录。"]
+    normalized = json.dumps(manifest, ensure_ascii=False, separators=(",", ":"))
+    return True, normalized, [f"已识别 {len(manifest['questions'])} 道标准题目，作答收集已启用。"]
+
+
+def load_quiz_questions(raw: Optional[str]) -> List[dict]:
+    if not raw:
+        return []
+    try:
+        data = json.loads(raw)
+        questions = data.get("questions", []) if isinstance(data, dict) else []
+        return questions if isinstance(questions, list) else []
+    except (ValueError, TypeError):
+        return []
+
+
+def read_courseware_quiz_metadata(entry_path: str, keywords: Optional[str]) -> tuple[bool, Optional[str], Optional[str]]:
+    content = Path(entry_path).read_bytes()
+    has_quiz, manifest, _ = inspect_courseware_quiz(content)
+    if read_isolated_config(content.decode("utf-8", errors="ignore")):
+        keywords = add_isolation_keyword(keywords)
+    return has_quiz, manifest, keywords
+
+
 def validate_courseware(content: bytes) -> tuple[str, str, List[str], List[str]]:
     errors: List[str] = []
     warnings: List[str] = []
     size = len(content)
     html_text = content.decode("utf-8", errors="ignore")
     lower_html = html_text.lower()
+    _, _, quiz_warnings = inspect_courseware_quiz(content)
+    warnings.extend(quiz_warnings)
 
     if size > RECOMMENDED_MAX_FILE_SIZE:
         errors.append("课件体积超过 15MB，不适合平板内网场景。")
@@ -1368,6 +1611,16 @@ def build_issue_prompts(errors: List[str], warnings: List[str]) -> List[AiPrompt
     ]
 
     issue_rules = [
+        (
+            "题目规范",
+            "修复课件题目规范 Prompt",
+            "请按《EduSimu 课件题目规范 v1》修复这个 HTML，保留原有教学内容并只返回完整 HTML。"
+            " 在 HTML 内加入 <script type=\"application/json\" id=\"edusimu-quiz-manifest\">，JSON 的 version 固定为 1，questions 为 1-200 题数组，总大小不超过 64KB。"
+            " 每题必须有唯一 id（<=80 字符）、title（<=200 字符）、type（choice/multi/numeric/fill/expr/plot/open），可选字符串数组 options、answer（<=200 字符）和整数 maxScore（>=1，默认1）。"
+            " 每次提交或判分时调用 window.parent.postMessage({type:'EDUSIMU_QUIZ_SUBMIT',version:1,questionId:'与题单一致',answer:'学生作答',isCorrect:false,score:0,mistakeTag:'可选错因'}, '*')。"
+            " answer 序列化后不得超过 1024 字节，mistakeTag 不超过 50 字符。课件仍需完全离线运行，不得 fetch 平台接口或读取登录令牌。"
+            f"{COMMON_AI_CONSTRAINTS}",
+        ),
         (
             "viewport",
             "补充平板 viewport Prompt",
@@ -1461,6 +1714,8 @@ def serialize_animation(animation: Animation, db: Session) -> AnimationResponse:
         "source_type": animation.source_type or "original",
         "may_lag": bool(getattr(animation, "may_lag", False)),
         "lag_reason": getattr(animation, "lag_reason", None),
+        "has_quiz": bool(getattr(animation, "has_quiz", False)),
+        "quiz_count": len(load_quiz_questions(getattr(animation, "quiz_manifest", None))),
         "file_url": build_file_url(animation.file_path),
         "creator_name": creator_name,
         "subject_name": subject_name,
@@ -1734,7 +1989,7 @@ async def get_animations(
         may_lag=may_lag,
     )
 
-    animations = query.order_by(Animation.created_at.desc()).offset(skip).limit(limit).all()
+    animations = query.order_by(Animation.created_at.desc(), Animation.id.desc()).offset(skip).limit(limit).all()
     return [serialize_animation(animation, db) for animation in animations]
 
 
@@ -1954,6 +2209,7 @@ async def create_animation(
         saved_size,
         source_type=normalized_source_type,
     )
+    has_quiz, quiz_manifest, keywords = read_courseware_quiz_metadata(file_path, keywords)
 
     animation = Animation(
         title=title,
@@ -1975,6 +2231,8 @@ async def create_animation(
         file_size=saved_size,
         may_lag=may_lag_flag,
         lag_reason=lag_reason_text,
+        has_quiz=has_quiz,
+        quiz_manifest=quiz_manifest,
         created_by=current_user.id,
     )
 
@@ -2066,6 +2324,9 @@ async def replace_animation_file(
     )
     animation.may_lag = may_lag_flag
     animation.lag_reason = lag_reason_text
+    animation.has_quiz, animation.quiz_manifest, animation.keywords = read_courseware_quiz_metadata(
+        new_file_path, keywords if keywords is not None else animation.keywords,
+    )
 
     if title is not None:
         animation.title = title
@@ -2073,9 +2334,6 @@ async def replace_animation_file(
         animation.description = description
     if grade_level is not None:
         animation.grade_level = grade_level
-    if keywords is not None:
-        animation.keywords = keywords
-
     if new_thumbnail_path:
         animation.thumbnail = new_thumbnail_path
 
@@ -2114,6 +2372,8 @@ async def update_animation(
 
     update_data = animation_data.model_dump(exclude_unset=True)
     review_notes = update_data.pop("review_notes", None)
+    if "keywords" in update_data and has_isolation_keyword(animation.keywords):
+        update_data["keywords"] = add_isolation_keyword(update_data["keywords"])
 
     if "subject_id" in update_data or "textbook_node_id" in update_data:
         subject_id = update_data.get("subject_id", animation.subject_id)
@@ -2157,10 +2417,18 @@ async def delete_animation(
     if current_user.role == "teacher" and animation.created_by != current_user.id:
         raise HTTPException(status_code=403, detail="无权删除此动画")
 
-    remove_courseware_path(animation.file_path)
-
+    file_path = animation.file_path
+    message_ids = select(DanmakuMessage.id).where(DanmakuMessage.animation_id == animation_id)
+    db.execute(delete(DanmakuUpvote).where(DanmakuUpvote.message_id.in_(message_ids)))
+    db.execute(delete(DanmakuMessage).where(DanmakuMessage.animation_id == animation_id))
+    db.execute(delete(DanmakuSession).where(DanmakuSession.animation_id == animation_id))
+    db.execute(delete(CoursewareQuizAttempt).where(CoursewareQuizAttempt.animation_id == animation_id))
     db.delete(animation)
     db.commit()
+    try:
+        remove_courseware_path(file_path)
+    except OSError:
+        logger.exception("Failed to remove file after deleting animation %s", animation_id)
     return {"message": "动画已删除"}
 
 

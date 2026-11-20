@@ -1,0 +1,113 @@
+/* M02 scene.css — 实验：探究弹簧弹力与形变量的关系（1016×563 横屏一屏紧凑适配） */
+.bench{max-width:1360px;margin:0 auto;padding:10px 14px 36px}
+.bench-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.bench-top .spacer{flex:1}
+.seg{display:flex;gap:4px;background:#fff;padding:3px;border-radius:999px;border:1px solid var(--line)}
+.seg .chip{border:0;min-height:36px}
+.bench-banner{background:#FFF8EC;border:1px solid #F3D3A1;border-radius:var(--rs);padding:7px 12px;margin-bottom:8px;font-size:14px}
+.bench-row{display:grid;grid-template-columns:1fr 352px;gap:12px;align-items:start}
+.bench-stage{position:relative;height:min(64vh,510px);min-height:340px;background:#EAF1F8;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.stage-tools{position:absolute;right:10px;top:10px;z-index:3;display:flex;gap:6px;align-items:center}
+.stage-tools .chip{min-height:32px;padding:0 10px;font-size:12px;background:rgba(255,255,255,0.92)}
+.bench-side{background:#fff;border-radius:var(--r);padding:11px 13px;max-height:min(64vh,510px);display:flex;flex-direction:column;overflow-y:auto;border:1px solid var(--line)}
+.side-ctl{flex:0 0 auto}
+.side-k{font-weight:700;font-size:13px;color:var(--cyan);margin:6px 0 3px;display:flex;justify-content:space-between;align-items:center}
+.side-row{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:4px 0}
+.side-l{font-size:13px;color:var(--ink2);min-width:46px}
+.side-v{min-width:46px;text-align:center;font-size:13.5px}
+.bench-side .chip{min-height:32px;padding:0 9px;font-size:12.5px}
+.side-acts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0 4px}
+.side-acts .btn{min-height:36px;padding:0 8px;font-size:13px}
+.side-acts .btn.full{grid-column:span 2}
+.side-tip{font-size:12.5px;color:var(--ink2);background:#F6F9FD;border-radius:var(--rs);padding:7px 9px;margin-top:4px}
+.m02-readout{background:#F6F9FD;border:1px solid var(--line);border-radius:var(--rs);padding:6px 10px;font-size:13px;margin:0 0 4px;line-height:1.5}
+.m02-readout b{color:var(--blue)}
+.m02-readout .warn-txt{color:var(--err);font-weight:700}
+.steps{padding-left:18px;margin:3px 0 0;flex:1 1 auto;min-height:70px;overflow-y:auto}
+.steps li{margin-bottom:5px;font-size:13px;padding:3px 6px;border-radius:8px;border-left:3px solid transparent}
+.steps li.ok .st-t{color:#17784F}
+.steps li.cur{background:#EEF4FF;border-left-color:var(--blue)}
+.steps li.cur .st-t{color:var(--blue)}
+.st-t{font-weight:700}
+.st-how{color:var(--ink2);font-size:12px}
+.st-why{color:var(--ink2);font-size:11px;margin-top:1px;line-height:1.35}
+.link.sm{font-size:12px;min-height:28px;padding:1px 0}
+.muted{color:var(--ink2);font-size:13px}
+
+/* 下方数据分析区（初始 hidden，保证首屏零纵向滚动） */
+.analysis{margin-top:12px;background:#fff;border-radius:var(--r);padding:14px 18px;border:1px solid var(--line)}
+.ana-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ana-h{margin:0;font-size:19px}
+.ana-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0}
+.ana-tags .tag{cursor:pointer;min-height:30px}
+.ana-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:14px;margin-top:8px;align-items:start}
+.ana-card{background:#F8FBFF;border:1px solid var(--line);border-radius:var(--rs);padding:10px 12px}
+.ana-card h3{font-size:15px;margin:0 0 6px}
+.tbl-wrap{overflow-x:auto;margin-top:6px}
+.ana-tbl{width:100%}
+.ana-tbl tr.hl td{background:#FFF4F5;color:var(--err);font-weight:700}
+.formula{font-size:14.5px;margin:6px 0;line-height:1.65}
+.warnline{color:var(--err);font-weight:600;margin-top:6px;background:#FFF4F5;border:1px solid #F2BFC8;border-radius:var(--rs);padding:8px 12px;font-size:13.5px}
+
+/* 刻度尺练读弹窗与原理小部件 */
+.cal-read-row{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.cal-inp{width:120px;min-height:40px;border:1.5px solid var(--line);border-radius:var(--rs);padding:4px 10px;font-size:17px;font-weight:700;background:#FBFCFE}
+.cal-fb{margin-top:8px;border-radius:var(--rs);padding:8px 12px;font-size:13.5px;background:#F6F9FD}
+.cal-fb.ok{background:#EEF9F4;border:1px solid #BCE6D2;color:#17784F}
+.cal-fb.bad{background:#FFF4F5;border:1px solid #F2BFC8;color:var(--err)}
+.learn-widget{margin-top:10px}
+.m02-w-stage{position:relative;height:186px;border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;margin:6px 0;background:#F8FBFF}
+.m02-w-stage.tall{height:212px}
+.cmp-note{font-size:13.5px;margin:8px 0;background:#F6F9FD;border-radius:var(--rs);padding:8px 12px}
+.cmp-table{width:100%}
+.cmp-table tr.hl td{background:#FFF4F5;color:var(--err);font-weight:700}
+.cmp-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.cmp-box{border-radius:var(--rs);padding:10px 12px;font-size:13.5px;background:#F6F9FD;border:1px solid var(--line)}
+.cmp-box.good{background:#EEF9F4;border-color:#BCE6D2}
+.cmp-box.bad{background:#FFF4F5;border-color:#F2BFC8}
+.cmp-box b{display:block;font-size:15.5px;margin-top:2px}
+
+/* 诊·误差 */
+.diag{max-width:1180px;margin:0 auto;padding:16px}
+.diag-h{font-size:19px;margin:14px 0 4px}
+.err-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.err-card{background:#fff;border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;border:1.5px solid transparent}
+.err-card.done{border-color:#BCE6D2}
+.err-name{font-weight:700}
+.err-note{font-size:13px;color:var(--ink2);flex:1}
+.err-card .btn{align-self:flex-start}
+.try-stage-wrap{position:relative;height:190px;border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;background:#F8FBFF}
+.rev-stage-wrap{position:relative;height:165px;border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;background:#F8FBFF;margin-top:6px}
+
+@media (max-width:900px),(orientation:portrait){
+  .bench-row{grid-template-columns:1fr}
+  .bench-stage{height:min(48vh,70vw);min-height:280px}
+  .bench-side{max-height:none;overflow:visible}
+  .steps{overflow:visible}
+  .ana-grid,.cmp-split{grid-template-columns:1fr}
+}
+
+/* 1016×563 横屏一屏紧凑适配 */
+@media (max-height:640px) and (orientation:landscape) and (min-width:901px){
+  .bench{padding:4px 10px 4px}
+  .bench-top{margin-bottom:4px;gap:5px}
+  .seg .chip,.bench-top .chip{min-height:30px;padding:0 9px;font-size:12px}
+  .bench-banner{padding:4px 10px;margin-bottom:4px;font-size:12.5px}
+  .bench-row{grid-template-columns:1fr 336px;gap:8px}
+  .bench-stage,.bench-side{height:calc(100vh - 104px);min-height:300px;max-height:none}
+  .bench.has-banner .bench-stage,.bench.has-banner .bench-side{height:calc(100vh - 140px);min-height:260px}
+  .bench-side{padding:6px 9px}
+  .m02-readout{padding:4px 8px;font-size:12px;margin-bottom:3px;line-height:1.4}
+  .bench-side .chip{min-height:26px;padding:0 7px;font-size:11.5px}
+  .side-l{min-width:40px;font-size:11.5px}
+  .side-v{min-width:38px;font-size:12px}
+  .side-row{margin:2px 0;gap:4px}
+  .side-k{margin:3px 0 2px;font-size:12px}
+  .side-acts{margin:4px 0 2px;gap:4px}
+  .side-acts .btn{min-height:30px;font-size:12px;padding:0 6px}
+  .side-tip{padding:4px 7px;font-size:11.5px}
+  .steps li{margin-bottom:3px;font-size:12px;padding:2px 5px}
+  .st-how{font-size:11px}
+  .st-why{font-size:10.5px}
+  .link.sm{min-height:24px;font-size:11.5px}
+}

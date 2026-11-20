@@ -1,0 +1,479 @@
+[
+  {
+    "title": "基础仪器与读数",
+    "pages": [
+      {
+        "page": "1 读数总原则：估读与有效数字",
+        "scroll": 701,
+        "client": 516,
+        "card": 549.53125,
+        "rawTokens": false
+      },
+      {
+        "page": "2 毫米刻度尺与弹簧测力计",
+        "scroll": 843,
+        "client": 516,
+        "card": 692.15625,
+        "rawTokens": false
+      },
+      {
+        "page": "3 游标卡尺（10 / 20 / 50 分度）",
+        "scroll": 990,
+        "client": 516,
+        "card": 838.75,
+        "rawTokens": false
+      },
+      {
+        "page": "4 螺旋测微器（千分尺与零误差）",
+        "scroll": 920,
+        "client": 516,
+        "card": 768.9375,
+        "rawTokens": false
+      },
+      {
+        "page": "5 机械停表与托盘天平",
+        "scroll": 895,
+        "client": 516,
+        "card": 743.34375,
+        "rawTokens": false
+      },
+      {
+        "page": "6 五大仪器读数规则速查",
+        "scroll": 840,
+        "client": 516,
+        "card": 688.953125,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "实验：探究小车速度随时间变化的规律",
+    "pages": [
+      {
+        "page": "1 实验目的与思路",
+        "scroll": 646,
+        "client": 516,
+        "card": 447.15625,
+        "rawTokens": false
+      },
+      {
+        "page": "2 两种打点计时器",
+        "scroll": 989,
+        "client": 516,
+        "card": 790.15625,
+        "rawTokens": false
+      },
+      {
+        "page": "3 纸带上的点告诉我们什么",
+        "scroll": 764,
+        "client": 516,
+        "card": 564.75,
+        "rawTokens": false
+      },
+      {
+        "page": "4 瞬时速度：中间时刻速度",
+        "scroll": 1132,
+        "client": 516,
+        "card": 932.8125,
+        "rawTokens": false
+      },
+      {
+        "page": "5 Δx = aT² 与逐差法",
+        "scroll": 1647,
+        "client": 516,
+        "card": 1447.671875,
+        "rawTokens": false
+      },
+      {
+        "page": "6 v-t 图像与剪纸带",
+        "scroll": 971,
+        "client": 516,
+        "card": 771.546875,
+        "rawTokens": false
+      },
+      {
+        "page": "7 光电门测速",
+        "scroll": 1091,
+        "client": 516,
+        "card": 891.7734375,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "实验：探究弹簧弹力与形变量的关系",
+    "pages": [
+      {
+        "page": "1 实验目的与胡克定律",
+        "scroll": 995,
+        "client": 516,
+        "card": 734.34375,
+        "rawTokens": false
+      },
+      {
+        "page": "2 为什么必须竖直悬挂测原长 l₀",
+        "scroll": 1024,
+        "client": 516,
+        "card": 763.5234375,
+        "rawTokens": false
+      },
+      {
+        "page": "3 毫米刻度尺规范读数",
+        "scroll": 1092,
+        "client": 516,
+        "card": 831.34375,
+        "rawTokens": false
+      },
+      {
+        "page": "4 F-x 与 F-l 图像法求劲度系数 k",
+        "scroll": 1016,
+        "client": 516,
+        "card": 754.75,
+        "rawTokens": false
+      },
+      {
+        "page": "5 弹性限度与图像末端弯曲",
+        "scroll": 998,
+        "client": 516,
+        "card": 737.28125,
+        "rawTokens": false
+      },
+      {
+        "page": "6 高考创新变式汇总",
+        "scroll": 1062,
+        "client": 516,
+        "card": 801.0234375,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "实验：探究加速度与力、质量的关系",
+    "pages": [
+      {
+        "page": "1 实验目的与控制变量法",
+        "scroll": 668,
+        "client": 516,
+        "card": 468.34375,
+        "rawTokens": false
+      },
+      {
+        "page": "2 补偿阻力（平衡摩擦力）",
+        "scroll": 1123,
+        "client": 516,
+        "card": 924.265625,
+        "rawTokens": false
+      },
+      {
+        "page": "3 细绳拉力与系统误差",
+        "scroll": 1065,
+        "client": 516,
+        "card": 865.6171875,
+        "rawTokens": false
+      },
+      {
+        "page": "4 测量加速度的两种方案",
+        "scroll": 791,
+        "client": 516,
+        "card": 591.34375,
+        "rawTokens": false
+      },
+      {
+        "page": "5 探究 a-F 图像与误差判读",
+        "scroll": 1028,
+        "client": 516,
+        "card": 828.6875,
+        "rawTokens": false
+      },
+      {
+        "page": "6 探究 a-M 关系：化曲为直",
+        "scroll": 1052,
+        "client": 516,
+        "card": 852.375,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "实验：探究平抛运动的特点",
+    "pages": [
+      {
+        "page": "1 实验目的与“化曲为直”思路",
+        "scroll": 972,
+        "client": 516,
+        "card": 710.75,
+        "rawTokens": false
+      },
+      {
+        "page": "2 探究竖直分运动：A/B 球同时落地",
+        "scroll": 972,
+        "client": 516,
+        "card": 710.75,
+        "rawTokens": false
+      },
+      {
+        "page": "3 斜槽描迹法装置与操作要求",
+        "scroll": 1076,
+        "client": 516,
+        "card": 815.53125,
+        "rawTokens": false
+      },
+      {
+        "page": "4 坐标原点：球心投影（y = R）",
+        "scroll": 945,
+        "client": 516,
+        "card": 684.5625,
+        "rawTokens": false
+      },
+      {
+        "page": "5 求平抛初速度 v₀ 的两套方案",
+        "scroll": 1273,
+        "client": 516,
+        "card": 1012.4375,
+        "rawTokens": false
+      },
+      {
+        "page": "6 频闪照相法与双轨对比拓展",
+        "scroll": 989,
+        "client": 516,
+        "card": 727.75,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "探究向心力大小与半径、角速度、质量的关系",
+    "pages": [
+      {
+        "page": "1 实验目的与控制变量法",
+        "scroll": 979,
+        "client": 516,
+        "card": 751.2109375,
+        "rawTokens": false
+      },
+      {
+        "page": "2 向心力演示器与皮带塔轮变速原理",
+        "scroll": 961,
+        "client": 516,
+        "card": 732.7890625,
+        "rawTokens": false
+      },
+      {
+        "page": "3 黑白等分标尺与“转换法”",
+        "scroll": 985,
+        "client": 516,
+        "card": 756.9765625,
+        "rawTokens": false
+      },
+      {
+        "page": "4 数字化方案：力传感器 + 光电门",
+        "scroll": 1045,
+        "client": 516,
+        "card": 816.5625,
+        "rawTokens": false
+      },
+      {
+        "page": "5 图像法“化曲为直”（F-ω 与 F-ω²）",
+        "scroll": 937,
+        "client": 516,
+        "card": 708.90625,
+        "rawTokens": false
+      },
+      {
+        "page": "6 高考创新变式：海南圆盘 · 北京纸带 · 圆锥摆",
+        "scroll": 1079,
+        "client": 516,
+        "card": 851.140625,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "实验：探究两个互成角度的力的合成规律",
+    "pages": [
+      {
+        "page": "1 实验目的与“等效替代法”",
+        "scroll": 884,
+        "client": 516,
+        "card": 684.75,
+        "rawTokens": false
+      },
+      {
+        "page": "2 理论值 F 与实际值 F' 的区分",
+        "scroll": 892,
+        "client": 516,
+        "card": 692.34375,
+        "rawTokens": false
+      },
+      {
+        "page": "3 弹簧测力计水平对拉校准与读数",
+        "scroll": 914,
+        "client": 516,
+        "card": 714.75,
+        "rawTokens": false
+      },
+      {
+        "page": "4 力的图示作图法规范",
+        "scroll": 842,
+        "client": 516,
+        "card": 642.75,
+        "rawTokens": false
+      },
+      {
+        "page": "5 关键操作要领与误差来源",
+        "scroll": 838,
+        "client": 516,
+        "card": 638.609375,
+        "rawTokens": false
+      },
+      {
+        "page": "6 三力动态平衡矢量三角形",
+        "scroll": 964,
+        "client": 516,
+        "card": 764.8515625,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "实验：验证机械能守恒定律",
+    "pages": [
+      {
+        "page": "1 实验目的与原理（为什么不测 m）",
+        "scroll": 904,
+        "client": 516,
+        "card": 704.5703125,
+        "rawTokens": false
+      },
+      {
+        "page": "2 竖直安装与重物选择",
+        "scroll": 916,
+        "client": 516,
+        "card": 716.9609375,
+        "rawTokens": false
+      },
+      {
+        "page": "3 选纸带与“2 mm”判据推导",
+        "scroll": 938,
+        "client": 516,
+        "card": 738.3046875,
+        "rawTokens": false
+      },
+      {
+        "page": "4 瞬时速度求法红线（禁 v=gt）",
+        "scroll": 1017,
+        "client": 516,
+        "card": 818.03125,
+        "rawTokens": false
+      },
+      {
+        "page": "5 图像法：½v²-h 与 v²-h 图像",
+        "scroll": 1126,
+        "client": 516,
+        "card": 926.3671875,
+        "rawTokens": false
+      },
+      {
+        "page": "6 逻辑性错误：不能用纸带 a 代替 g",
+        "scroll": 1013,
+        "client": 516,
+        "card": 814.296875,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "实验：验证动量守恒定律",
+    "pages": [
+      {
+        "page": "1 动量守恒的验证思路",
+        "scroll": 965,
+        "client": 516,
+        "card": 766.1484375,
+        "rawTokens": false
+      },
+      {
+        "page": "2 三套测速方案总览",
+        "scroll": 943,
+        "client": 516,
+        "card": 744.15625,
+        "rawTokens": false
+      },
+      {
+        "page": "3 为什么要求 m₁ > m₂ 与等大对心",
+        "scroll": 981,
+        "client": 516,
+        "card": 781.5546875,
+        "rawTokens": false
+      },
+      {
+        "page": "4 末端水平与“画最小圆找圆心”",
+        "scroll": 887,
+        "client": 516,
+        "card": 687.75,
+        "rawTokens": false
+      },
+      {
+        "page": "5 弹性碰撞的附加判据与动能比",
+        "scroll": 894,
+        "client": 516,
+        "card": 694.953125,
+        "rawTokens": false
+      },
+      {
+        "page": "6 气垫导轨调平与遮光片读数",
+        "scroll": 936,
+        "client": 516,
+        "card": 737.09375,
+        "rawTokens": false
+      }
+    ]
+  },
+  {
+    "title": "实验：用单摆测量重力加速度",
+    "pages": [
+      {
+        "page": "1 实验原理与简谐近似（摆角 < 5°）",
+        "scroll": 1068,
+        "client": 516,
+        "card": 855.2890625,
+        "rawTokens": false
+      },
+      {
+        "page": "2 摆长定义 L = l + d/2 与悬挂测量",
+        "scroll": 1029,
+        "client": 516,
+        "card": 816.5546875,
+        "rawTokens": false
+      },
+      {
+        "page": "3 为什么从最低点开始计时？",
+        "scroll": 863,
+        "client": 516,
+        "card": 649.90625,
+        "rawTokens": false
+      },
+      {
+        "page": "4 全振动计数规则（按下停表从 0 数起）",
+        "scroll": 835,
+        "client": 516,
+        "card": 621.953125,
+        "rawTokens": false
+      },
+      {
+        "page": "5 L − T² 图像法消除摆长恒定偏差",
+        "scroll": 986,
+        "client": 516,
+        "card": 773.375,
+        "rawTokens": false
+      },
+      {
+        "page": "6 拉力传感器 F − t 曲线与光电门法",
+        "scroll": 930,
+        "client": 516,
+        "card": 716.90625,
+        "rawTokens": false
+      }
+    ]
+  }
+]

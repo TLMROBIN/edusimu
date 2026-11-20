@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>平板性能检测</title>
+<style>
+body{margin:0;font:16px/1.7 "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;background:#F3F8FD;color:#10233F}
+main{max-width:900px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:4px 0 12px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}
+td{padding:8px 12px;border-bottom:1px solid #e3ecf6;vertical-align:top}td:first-child{width:34%;color:#5F7694}
+button{min-height:48px;padding:0 20px;font-size:16px;border:0;border-radius:14px;background:#1661FF;color:#fff;margin:12px 8px 12px 0}
+#stage{display:block;width:100%;height:260px;background:#fff;border:1px solid #cfdcea;border-radius:14px;touch-action:none}
+textarea{width:100%;height:150px;font:13px/1.5 monospace;border-radius:12px;border:1px solid #cfdcea;padding:8px;box-sizing:border-box}
+</style>
+</head>
+<body>
+<main>
+<h1>平板性能检测（离线可用）</h1>
+<p>用学生平板的浏览器打开本文件，点“开始测试”，测试中请用手指在白色区域来回拖动小球约 5 秒。结束后点“复制结果”发给老师。</p>
+<table id="info"></table>
+<button id="run">开始测试（约 8 秒）</button><button id="copy">复制结果</button>
+<canvas id="stage"></canvas>
+<p id="status">未开始</p>
+<textarea id="out" readonly></textarea>
+</main>
+<script>
+(function(){
+  var rows=[], res={};
+  function add(k,v){res[k]=v;rows.push('<tr><td>'+k+'</td><td>'+v+'</td></tr>');}
+  var ua=navigator.userAgent, m=ua.match(/Chrome\/([\d.]+)/);
+  add('浏览器标识',ua);
+  add('Chrome 内核版本',m?m[1]:'未识别');
+  add('屏幕 (CSS 像素)',screen.width+' × '+screen.height);
+  add('窗口 (CSS 像素)',innerWidth+' × '+innerHeight);
+  add('设备像素比 DPR',window.devicePixelRatio);
+  add('CPU 核心数',navigator.hardwareConcurrency||'未知');
+  add('内存 (GB, 估计)',navigator.deviceMemory||'未知');
+  add('触控点数',navigator.maxTouchPoints||0);
+  var feats=[];
+  try{feats.push('PointerEvent:'+(!!window.PointerEvent));}catch(e){}
+  feats.push('ResizeObserver:'+(!!window.ResizeObserver));
+  try{new Function('a?.b??1');feats.push('ES2020:true');}catch(e){feats.push('ES2020:false');}
+  try{localStorage.setItem('_t','1');localStorage.removeItem('_t');feats.push('localStorage:true');}catch(e){feats.push('localStorage:false');}
+  add('功能支持',feats.join('  '));
+  document.getElementById('info').innerHTML=rows.join('');
+
+  var cv=document.getElementById('stage'),ctx=cv.getContext('2d'),dpr=Math.min(2,window.devicePixelRatio||1);
+  function size(){cv.width=cv.clientWidth*dpr;cv.height=cv.clientHeight*dpr;}
+  size();addEventListener('resize',size);
+  var ball={x:80,y:130},drag=false;
+  cv.addEventListener('pointerdown',function(e){drag=true;cv.setPointerCapture(e.pointerId);mv(e);});
+  cv.addEventListener('pointermove',function(e){if(drag)mv(e);});
+  cv.addEventListener('pointerup',function(){drag=false;});
+  function mv(e){var r=cv.getBoundingClientRect();ball.x=e.clientX-r.left;ball.y=e.clientY-r.top;}
+
+  function draw(t){
+    var w=cv.width/dpr,h=cv.height/dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h);
+    // 模拟典型实验台负载：刻度尺 + 纸带点 + 渐变器材 + 曲线
+    ctx.strokeStyle='#10233F';ctx.lineWidth=1;ctx.beginPath();
+    for(var i=0;i<=w;i+=6){ctx.moveTo(i,h-20);ctx.lineTo(i,h-20-(i%60===0?14:(i%30===0?10:6)));}
+    ctx.stroke();
+    var g=ctx.createLinearGradient(0,40,0,70);g.addColorStop(0,'#E8D2AE');g.addColorStop(1,'#C9A574');
+    ctx.fillStyle=g;ctx.fillRect(20,40,w-40,30);
+    ctx.fillStyle='#10233F';
+    for(var k=0;k<400;k++){var x=20+(k*k*0.012+t*0.02)%(w-40);ctx.fillRect(x,h-60,2,2);}
+    ctx.strokeStyle='#12A9C4';ctx.lineWidth=2;ctx.beginPath();
+    for(var j=0;j<300;j++){var xx=j*w/300;ctx.lineTo(xx,150+40*Math.sin(j*0.05+t*0.004));}
+    ctx.stroke();
+    var rg=ctx.createRadialGradient(ball.x-6,ball.y-6,2,ball.x,ball.y,22);rg.addColorStop(0,'#fff');rg.addColorStop(1,'#8E99A6');
+    ctx.fillStyle=rg;ctx.beginPath();ctx.arc(ball.x,ball.y,22,0,6.283);ctx.fill();
+  }
+  draw(0);
+
+  document.getElementById('run').onclick=function(){
+    var frames=[],start=performance.now(),last=start,st=document.getElementById('status');
+    st.textContent='测试中…请拖动小球';
+    function loop(now){
+      frames.push(now-last);last=now;draw(now);
+      if(now-start<8000)requestAnimationFrame(loop);else done();
+    }
+    requestAnimationFrame(loop);
+    function done(){
+      var f=frames.slice(10).sort(function(a,b){return a-b;});
+      var avg=f.reduce(function(s,v){return s+v;},0)/f.length;
+      var p95=f[Math.floor(f.length*0.95)];
+      res['平均帧率 fps']=(1000/avg).toFixed(1);
+      res['95% 帧时间 ms']=p95.toFixed(1);
+      res['卡顿帧(>50ms)数']=f.filter(function(v){return v>50;}).length;
+      st.textContent='完成：平均 '+res['平均帧率 fps']+' fps，95% 帧时间 '+res['95% 帧时间 ms']+' ms';
+      document.getElementById('out').value=JSON.stringify(res,null,2);
+    }
+  };
+  document.getElementById('copy').onclick=function(){
+    var o=document.getElementById('out');if(!o.value)o.value=JSON.stringify(res,null,2);
+    o.select();try{document.execCommand('copy');}catch(e){}
+  };
+})();
+</script>
+</body>
+</html>

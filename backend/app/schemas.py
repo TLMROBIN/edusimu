@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictBool, field_validator
 
 class UserBase(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
@@ -85,6 +85,8 @@ class AnimationResponse(AnimationBase):
     file_size: Optional[int]
     may_lag: bool = False
     lag_reason: Optional[str] = None
+    has_quiz: bool = False
+    quiz_count: int = 0
     created_by: Optional[int]
     creator_name: Optional[str] = None
     subject_name: Optional[str] = None
@@ -104,6 +106,82 @@ class AnimationResponse(AnimationBase):
     
     class Config:
         from_attributes = True
+
+class CollectionCreate(BaseModel):
+    title: str = Field(..., min_length=1, max_length=200)
+    description: Optional[str] = None
+    animation_ids: List[int] = Field(default_factory=list, max_length=100)
+    is_banner: bool = False
+    banner_order: int = Field(0, ge=0, le=9999)
+
+    @field_validator("title")
+    @classmethod
+    def strip_title(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("合集名称不能为空")
+        return value
+
+    @field_validator("animation_ids")
+    @classmethod
+    def validate_animation_ids(cls, value: List[int]) -> List[int]:
+        if len(set(value)) != len(value):
+            raise ValueError("合集不能重复添加同一课件")
+        if any(animation_id <= 0 for animation_id in value):
+            raise ValueError("课件 ID 无效")
+        return value
+
+
+class CollectionUpdate(BaseModel):
+    title: Optional[str] = Field(None, min_length=1, max_length=200)
+    description: Optional[str] = None
+    animation_ids: Optional[List[int]] = Field(None, max_length=100)
+    is_banner: Optional[bool] = None
+    banner_order: Optional[int] = Field(None, ge=0, le=9999)
+
+    @field_validator("title", "animation_ids", "is_banner", "banner_order", mode="before")
+    @classmethod
+    def reject_explicit_null(cls, value):
+        if value is None:
+            raise ValueError("请省略无需修改的字段")
+        return value
+
+    @field_validator("title")
+    @classmethod
+    def strip_title(cls, value: Optional[str]) -> Optional[str]:
+        if value is None:
+            return value
+        value = value.strip()
+        if not value:
+            raise ValueError("合集名称不能为空")
+        return value
+
+    @field_validator("animation_ids")
+    @classmethod
+    def validate_animation_ids(cls, value: Optional[List[int]]) -> Optional[List[int]]:
+        if value is None:
+            return value
+        return CollectionCreate.validate_animation_ids(value)
+
+
+class CollectionSummary(BaseModel):
+    id: int
+    title: str
+    description: Optional[str] = None
+    cover_image: Optional[str] = None
+    is_banner: bool = False
+    banner_order: int = 0
+    animation_count: int = 0
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class CollectionDetail(CollectionSummary):
+    animations: List[AnimationResponse] = Field(default_factory=list)
+
 
 class FavoriteBase(BaseModel):
     animation_id: int
@@ -163,6 +241,99 @@ class InteractionResponse(InteractionCreate):
     
     class Config:
         from_attributes = True
+
+class CoursewareQuizAttemptCreate(BaseModel):
+    version: Literal[1] = 1
+    questionId: str = Field(..., min_length=1, max_length=80)
+    answer: str = Field(..., max_length=1024)
+    isCorrect: StrictBool
+    score: Optional[int] = Field(None, ge=0)
+    mistakeTag: Optional[str] = Field(None, max_length=50)
+
+    @field_validator("questionId")
+    @classmethod
+    def strip_question_id(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("题目 ID 不能为空")
+        return value
+
+    @field_validator("mistakeTag")
+    @classmethod
+    def strip_mistake_tag(cls, value: Optional[str]) -> Optional[str]:
+        return value.strip() if value else value
+
+
+class DanmakuSessionRequest(BaseModel):
+    class_name: str = Field(..., min_length=1, max_length=50)
+    action: Literal["open", "close"]
+
+    @field_validator("class_name")
+    @classmethod
+    def strip_class_name(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("班级不能为空")
+        return value
+
+
+class DanmakuMessageCreate(BaseModel):
+    class_name: str = Field(..., min_length=1, max_length=50)
+    content: str = Field(..., min_length=1, max_length=40)
+
+    @field_validator("class_name", "content")
+    @classmethod
+    def strip_required_text(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("内容不能为空")
+        return value
+
+
+class DanmakuMessagePatch(BaseModel):
+    is_pinned: Optional[bool] = None
+    is_deleted: Optional[bool] = None
+    teacher_reply: Optional[str] = Field(None, max_length=500)
+
+
+class DanmakuMessageResponse(BaseModel):
+    id: int
+    session_id: int
+    animation_id: int
+    class_name: str
+    user_id: Optional[int] = None
+    display_name: str
+    content: str
+    upvote_count: int
+    upvoted_by_me: bool = False
+    is_pinned: bool
+    is_deleted: bool = False
+    teacher_reply: Optional[str] = None
+    replied_at: Optional[datetime] = None
+    created_at: datetime
+
+
+class DanmakuStateResponse(BaseModel):
+    is_open: bool
+    session_id: Optional[int] = None
+    class_name: str
+    remaining_seconds: int = Field(0, ge=0, le=2400)
+    messages: List[DanmakuMessageResponse] = Field(default_factory=list)
+    upvoted_message_ids: List[int] = Field(default_factory=list)
+
+
+class DanmakuHistoryResponse(BaseModel):
+    items: List[DanmakuMessageResponse] = Field(default_factory=list)
+    total: int
+    page: int
+    page_size: int
+
+
+class DanmakuUpvoteResponse(BaseModel):
+    message_id: int
+    upvoted: bool
+    upvote_count: int
+
 
 class Token(BaseModel):
     access_token: str

@@ -1,0 +1,582 @@
+[
+  {
+    "id": "Q1",
+    "source": "2024·天津卷·第9(2)题",
+    "verified": true,
+    "stem": "某同学用图示装置探究加速度与力的关系。<svg viewBox=\"0 0 640 165\" width=\"640\" role=\"img\" aria-label=\"2024天津第9(2)题装置图\"><rect x=\"80\" y=\"88\" width=\"510\" height=\"10\" fill=\"#C9A97A\" stroke=\"#8B6B3E\"/><rect x=\"120\" y=\"98\" width=\"18\" height=\"58\" fill=\"#B48F5C\" stroke=\"#8B6B3E\"/><rect x=\"510\" y=\"98\" width=\"18\" height=\"58\" fill=\"#B48F5C\" stroke=\"#8B6B3E\"/><g transform=\"translate(84,80) rotate(-2)\"><rect x=\"0\" y=\"0\" width=\"470\" height=\"8\" fill=\"#D9B98C\" stroke=\"#9A7B4F\"/><circle cx=\"-6\" cy=\"0\" r=\"10\" fill=\"#C9D1D9\" stroke=\"#596574\"/><rect x=\"190\" y=\"-30\" width=\"68\" height=\"24\" rx=\"4\" fill=\"#5C8DEB\" stroke=\"#2E5FBF\"/><circle cx=\"206\" cy=\"-4\" r=\"5\" fill=\"#2B2B2B\"/><circle cx=\"242\" cy=\"-4\" r=\"5\" fill=\"#2B2B2B\"/><rect x=\"375\" y=\"-26\" width=\"44\" height=\"26\" rx=\"3\" fill=\"#4F6A8A\" stroke=\"#2F4560\"/><line x1=\"4\" y1=\"-10\" x2=\"190\" y2=\"-18\" stroke=\"#222\" stroke-width=\"1.4\"/><line x1=\"258\" y1=\"-14\" x2=\"448\" y2=\"-14\" stroke=\"#E6D6B0\" stroke-width=\"4\"/></g><rect x=\"528\" y=\"76\" width=\"24\" height=\"12\" fill=\"#8E99A6\" stroke=\"#596574\"/><line x1=\"72\" y1=\"80\" x2=\"72\" y2=\"134\" stroke=\"#222\" stroke-width=\"1.4\"/><rect x=\"59\" y=\"134\" width=\"26\" height=\"12\" rx=\"2\" fill=\"#8E99A6\" stroke=\"#596574\"/><g font-size=\"12\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"308\" y=\"36\">小车</text><text x=\"460\" y=\"36\">打点计时器</text><text x=\"390\" y=\"52\">纸带</text><text x=\"542\" y=\"114\">垫块</text><text x=\"72\" y=\"160\">槽码</text></g><line x1=\"308\" y1=\"40\" x2=\"308\" y2=\"48\" stroke=\"#4A5B73\"/><line x1=\"460\" y1=\"40\" x2=\"460\" y2=\"48\" stroke=\"#4A5B73\"/></svg>",
+    "parts": [
+      {
+        "label": "①",
+        "type": "choice",
+        "prompt": "为补偿打点计时器对小车的阻力及其他阻力，调节木板倾角，使小车在不挂槽码时运动，并打出纸带进行检验，下图中能表明补偿阻力恰当的是____。<svg viewBox=\"0 0 640 120\" width=\"640\" role=\"img\" aria-label=\"四条纸带点迹选项图\"><g transform=\"translate(14,8)\"><text x=\"0\" y=\"14\" font-size=\"13\" font-weight=\"700\" fill=\"#10233F\">A.</text><rect x=\"24\" y=\"4\" width=\"270\" height=\"28\" fill=\"#F6F1E3\" stroke=\"#9AA8B8\"/><g fill=\"#2B2B2B\"><circle cx=\"40\" cy=\"18\" r=\"2.8\"/><circle cx=\"56\" cy=\"18\" r=\"2.8\"/><circle cx=\"78\" cy=\"18\" r=\"2.8\"/><circle cx=\"108\" cy=\"18\" r=\"2.8\"/><circle cx=\"148\" cy=\"18\" r=\"2.8\"/><circle cx=\"200\" cy=\"18\" r=\"2.8\"/><circle cx=\"266\" cy=\"18\" r=\"2.8\"/></g></g><g transform=\"translate(334,8)\"><text x=\"0\" y=\"14\" font-size=\"13\" font-weight=\"700\" fill=\"#10233F\">B.</text><rect x=\"24\" y=\"4\" width=\"270\" height=\"28\" fill=\"#F6F1E3\" stroke=\"#9AA8B8\"/><g fill=\"#2B2B2B\"><circle cx=\"44\" cy=\"18\" r=\"2.8\"/><circle cx=\"76\" cy=\"18\" r=\"2.8\"/><circle cx=\"108\" cy=\"18\" r=\"2.8\"/><circle cx=\"140\" cy=\"18\" r=\"2.8\"/><circle cx=\"172\" cy=\"18\" r=\"2.8\"/><circle cx=\"204\" cy=\"18\" r=\"2.8\"/><circle cx=\"236\" cy=\"18\" r=\"2.8\"/><circle cx=\"268\" cy=\"18\" r=\"2.8\"/></g></g><g transform=\"translate(14,64)\"><text x=\"0\" y=\"14\" font-size=\"13\" font-weight=\"700\" fill=\"#10233F\">C.</text><rect x=\"24\" y=\"4\" width=\"270\" height=\"28\" fill=\"#F6F1E3\" stroke=\"#9AA8B8\"/><g fill=\"#2B2B2B\"><circle cx=\"42\" cy=\"18\" r=\"2.8\"/><circle cx=\"108\" cy=\"18\" r=\"2.8\"/><circle cx=\"160\" cy=\"18\" r=\"2.8\"/><circle cx=\"200\" cy=\"18\" r=\"2.8\"/><circle cx=\"230\" cy=\"18\" r=\"2.8\"/><circle cx=\"252\" cy=\"18\" r=\"2.8\"/><circle cx=\"268\" cy=\"18\" r=\"2.8\"/></g></g><g transform=\"translate(334,64)\"><text x=\"0\" y=\"14\" font-size=\"13\" font-weight=\"700\" fill=\"#10233F\">D.</text><rect x=\"24\" y=\"4\" width=\"270\" height=\"28\" fill=\"#F6F1E3\" stroke=\"#9AA8B8\"/><g fill=\"#2B2B2B\"><circle cx=\"42\" cy=\"18\" r=\"2.8\"/><circle cx=\"56\" cy=\"18\" r=\"2.8\"/><circle cx=\"86\" cy=\"18\" r=\"2.8\"/><circle cx=\"124\" cy=\"18\" r=\"2.8\"/><circle cx=\"184\" cy=\"18\" r=\"2.8\"/><circle cx=\"222\" cy=\"18\" r=\"2.8\"/><circle cx=\"248\" cy=\"18\" r=\"2.8\"/><circle cx=\"266\" cy=\"18\" r=\"2.8\"/></g></g></svg>",
+        "options": [
+          "点距从密到疏",
+          "点距均匀",
+          "点距从疏到密",
+          "点距先密后疏再密"
+        ],
+        "answer": 1,
+        "replay": "E1",
+        "explain": "补偿阻力恰当时，不挂槽码轻推小车，小车做匀速直线运动，打点计时器打出的纸带点距均匀，故选 B。"
+      },
+      {
+        "label": "②",
+        "type": "numeric",
+        "prompt": "某次实验得到一条纸带，部分计数点如下图所示（每相邻两个计数点间还有 4 个点，图中未画出），测得 s₁ = 6.20 cm，s₂ = 6.70 cm，s₃ = 7.21 cm，s₄ = 7.73 cm。已知打点计时器所接交流电源频率为 50 Hz，则小车的加速度 a =（要求充分利用测量数据，结果保留两位有效数字）<svg viewBox=\"0 0 600 92\" width=\"600\" role=\"img\" aria-label=\"2024天津纸带分段图\"><rect x=\"14\" y=\"20\" width=\"572\" height=\"28\" fill=\"#F6F1E3\" stroke=\"#9AA8B8\"/><g fill=\"#2B2B2B\"><circle cx=\"70\" cy=\"34\" r=\"3\"/><circle cx=\"160\" cy=\"34\" r=\"3\"/><circle cx=\"264\" cy=\"34\" r=\"3\"/><circle cx=\"384\" cy=\"34\" r=\"3\"/><circle cx=\"520\" cy=\"34\" r=\"3\"/></g><g font-size=\"13\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\"><text x=\"70\" y=\"14\">A</text><text x=\"160\" y=\"14\">B</text><text x=\"264\" y=\"14\">C</text><text x=\"384\" y=\"14\">D</text><text x=\"520\" y=\"14\">E</text></g><g stroke=\"#12A9C4\" stroke-dasharray=\"3 3\"><line x1=\"70\" y1=\"34\" x2=\"70\" y2=\"72\"/><line x1=\"160\" y1=\"34\" x2=\"160\" y2=\"72\"/><line x1=\"264\" y1=\"34\" x2=\"264\" y2=\"72\"/><line x1=\"384\" y1=\"34\" x2=\"384\" y2=\"72\"/><line x1=\"520\" y1=\"34\" x2=\"520\" y2=\"72\"/></g><g stroke=\"#10233F\" fill=\"none\"><path d=\"M72 64 H158\"/><path d=\"M162 64 H262\"/><path d=\"M266 64 H382\"/><path d=\"M386 64 H518\"/></g><g font-size=\"12\" text-anchor=\"middle\" fill=\"#1661FF\" font-weight=\"600\"><text x=\"115\" y=\"82\">s₁</text><text x=\"212\" y=\"82\">s₂</text><text x=\"324\" y=\"82\">s₃</text><text x=\"452\" y=\"82\">s₄</text></g></svg>",
+        "unit": "m/s²",
+        "answer": 0.51,
+        "tol": 0.005,
+        "sig": 2,
+        "show": "0.51",
+        "explain": "每相邻两个计数点间有 5 个打点间隔，T = 0.1 s。利用四段逐差法：a = {{frac|(s₃ + s₄) − (s₁ + s₂)|4T²}} = {{frac|(7.21 + 7.73 − 6.20 − 6.70) × 10⁻² m|4 × (0.1 s)²}} = 0.51 m/s²。"
+      },
+      {
+        "label": "③",
+        "type": "numeric",
+        "prompt": "该同学将一个可以直接测出绳子拉力的传感器安装在小车上，小车和传感器总质量为 210 g。按要求补偿阻力后，该同学共进行了四次实验，悬挂的槽码质量依次为 5 g、10 g、20 g、40 g。处理数据时，用两种方式得到小车（含传感器）受到的合力，一种将槽码所受重力当作合力，另一种将传感器示数当作合力，则这两种方式得到的合力差异最大时，槽码质量为",
+        "unit": "g",
+        "answer": 40,
+        "tol": 0.1,
+        "show": "40",
+        "replay": "E3",
+        "explain": "绳子实际拉力 F<sub>T</sub> = {{frac|Mmg|M + m}}，与槽码重力 mg 之差 ΔF = mg − F<sub>T</sub> = {{frac|m²g|M + m}}。随着槽码质量 m 增大，m 相对 M 越不可忽略，两种合力差异越大，故在 40 g 时差异最大。"
+      }
+    ]
+  },
+  {
+    "id": "Q2",
+    "source": "2024·浙江1月选考·第16-Ⅰ题",
+    "verified": true,
+    "score": 7,
+    "stem": "如图 1 所示是“探究加速度与力、质量的关系”的实验装置。<svg viewBox=\"0 0 640 132\" width=\"640\" role=\"img\" aria-label=\"2024浙江1月选考装置与纸带坐标图\"><rect x=\"20\" y=\"64\" width=\"240\" height=\"8\" fill=\"#C9A97A\" stroke=\"#8B6B3E\"/><g transform=\"translate(34,58) rotate(-2)\"><rect x=\"0\" y=\"0\" width=\"220\" height=\"6\" fill=\"#D9B98C\" stroke=\"#9A7B4F\"/><circle cx=\"-4\" cy=\"0\" r=\"7\" fill=\"#C9D1D9\" stroke=\"#596574\"/><rect x=\"84\" y=\"-22\" width=\"46\" height=\"18\" rx=\"3\" fill=\"#5C8DEB\"/><rect x=\"176\" y=\"-20\" width=\"30\" height=\"20\" fill=\"#4F6A8A\"/><line x1=\"0\" y1=\"-10\" x2=\"84\" y2=\"-13\" stroke=\"#222\"/><line x1=\"130\" y1=\"-11\" x2=\"226\" y2=\"-11\" stroke=\"#E6D6B0\" stroke-width=\"3\"/></g><line x1=\"25\" y1=\"58\" x2=\"25\" y2=\"104\" stroke=\"#222\"/><rect x=\"16\" y=\"104\" width=\"18\" height=\"10\" fill=\"#8E99A6\"/><text x=\"135\" y=\"124\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图1</text><g transform=\"translate(300,16)\"><rect x=\"10\" y=\"16\" width=\"310\" height=\"24\" fill=\"#F6F1E3\" stroke=\"#9AA8B8\"/><rect x=\"10\" y=\"40\" width=\"310\" height=\"24\" fill=\"#FBFCFE\" stroke=\"#9AA8B8\"/><g fill=\"#2B2B2B\"><circle cx=\"28\" cy=\"28\" r=\"2.5\"/><circle cx=\"48\" cy=\"28\" r=\"2.5\"/><circle cx=\"74\" cy=\"28\" r=\"2.5\"/><circle cx=\"106\" cy=\"28\" r=\"2.5\"/><circle cx=\"144\" cy=\"28\" r=\"2.5\"/><circle cx=\"188\" cy=\"28\" r=\"2.5\"/><circle cx=\"240\" cy=\"28\" r=\"2.5\"/></g><g font-size=\"11\" text-anchor=\"middle\" fill=\"#1661FF\" font-weight=\"600\"><text x=\"28\" y=\"12\">0</text><text x=\"48\" y=\"12\">x₁</text><text x=\"74\" y=\"12\">x₂</text><text x=\"106\" y=\"12\">x₃</text><text x=\"144\" y=\"12\">x₄</text><text x=\"188\" y=\"12\">x₅</text><text x=\"240\" y=\"12\">x₆</text></g><g stroke=\"#10233F\" stroke-width=\"0.9\"><line x1=\"28\" y1=\"40\" x2=\"28\" y2=\"52\"/><line x1=\"78\" y1=\"40\" x2=\"78\" y2=\"50\"/><line x1=\"128\" y1=\"40\" x2=\"128\" y2=\"52\"/><line x1=\"178\" y1=\"40\" x2=\"178\" y2=\"50\"/><line x1=\"228\" y1=\"40\" x2=\"228\" y2=\"52\"/><line x1=\"278\" y1=\"40\" x2=\"278\" y2=\"50\"/></g><text x=\"165\" y=\"84\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\">图2（相邻计数点间有4个点未画出）</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "choice",
+        "prompt": "该实验中同时研究三个物理量间关系是很困难的，因此我们采用的研究方法是____。",
+        "options": [
+          "放大法",
+          "控制变量法",
+          "补偿法"
+        ],
+        "answer": 1,
+        "explain": "先保持质量 M 不变探究 a 与 F 的关系，再保持 F 不变探究 a 与 M 的关系，这种方法叫做控制变量法（B）。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "该实验过程中操作正确的是____。",
+        "options": [
+          "补偿阻力时小车未连接纸带",
+          "先接通打点计时器电源，后释放小车",
+          "调节滑轮高度使细绳与水平桌面平行"
+        ],
+        "answer": 1,
+        "replay": "E4",
+        "explain": "补偿阻力时小车必须连接纸带（A 错）；应调节滑轮高度使细绳与长木板平行而非水平桌面（C 错）；应先接通电源再释放小车（B 对）。"
+      },
+      {
+        "label": "(3)①",
+        "type": "text-choice",
+        "prompt": "在小车质量____槽码质量时，可以认为细绳拉力近似等于槽码的重力。",
+        "options": [
+          "远大于",
+          "远小于"
+        ],
+        "answer": 0,
+        "replay": "E3",
+        "explain": "由 F<sub>T</sub> = {{frac|Mmg|M + m}} = {{frac|mg|1 + m/M}} 可知，只有小车质量 M 远大于槽码质量 m 时，拉力才近似等于槽码重力 mg。"
+      },
+      {
+        "label": "(3)②",
+        "type": "text-choice",
+        "prompt": "上述用槽码重力代替细绳拉力的做法引起的误差为____。",
+        "options": [
+          "偶然误差",
+          "系统误差"
+        ],
+        "answer": 1,
+        "explain": "由于实验原理（忽略槽码加速失重）造成的总是偏大的确定性误差，属于系统误差。"
+      },
+      {
+        "label": "(3)③",
+        "type": "choice",
+        "prompt": "为减小（消除）此系统误差，下列可行的方案是____。",
+        "options": [
+          "用气垫导轨代替普通导轨，滑块代替小车",
+          "在小车上加装遮光条，用光电计时系统代替打点计时器",
+          "在小车与细绳之间加装力传感器，测出小车所受拉力大小"
+        ],
+        "answer": 2,
+        "explain": "加装力传感器可直接测得细绳对小车的真实拉力 F<sub>T</sub>，不再用 mg 近似代替拉力，从而消除该系统误差，选 C。"
+      },
+      {
+        "label": "(4)①",
+        "type": "expr",
+        "prompt": "经正确操作后获得如图 2 所示的纸带，建立以计数点 0 为坐标原点的 x 轴，各计数点的位置坐标分别为 0、x₁、…、x₆（相邻计数点间还有 4 个点未画出）。已知打点计时器的打点周期为 T，则打计数点 5 时小车速度的表达式",
+        "lhs": "v =",
+        "vars": {
+          "x4": "x₄",
+          "x5": "x₅",
+          "x6": "x₆",
+          "T": "T"
+        },
+        "extra": ["1", "2", "5", "0"],
+        "answer": "(x6-x4)/(10*T)",
+        "show": "(x₆ − x₄) ÷ (10T)",
+        "explain": "相邻计数点时间间隔 t = 5T。计数点 5 是 4、6 两点的中间时刻，位移为 x₆ − x₄，用时 2t = 10T，故 v₅ = {{frac|x₆ − x₄|10T}}。"
+      },
+      {
+        "label": "(4)②",
+        "type": "choice",
+        "prompt": "（接上问）小车加速度的表达式是____。",
+        "options": [
+          "a = {{frac|x₆ − 2x₃|(15T)²}}",
+          "a = {{frac|x₆ − 2x₃|(3T)²}}",
+          "a = {{frac|x₅ + x₄ − (x₃ + x₂)|(10T)²}}"
+        ],
+        "answer": 0,
+        "explain": "前三段总位移为 x₃，后三段总位移为 x₆ − x₃，每三段用时 3t = 15T。由逐差法得 a = {{frac|(x₆ − x₃) − x₃|(15T)²}} = {{frac|x₆ − 2x₃|(15T)²}}，选 A。"
+      }
+    ]
+  },
+  {
+    "id": "Q3",
+    "source": "2024·甘肃卷·第11题",
+    "verified": true,
+    "stem": "用图 1 所示实验装置探究外力一定时加速度与质量的关系。<svg viewBox=\"0 0 640 154\" width=\"640\" role=\"img\" aria-label=\"2024甘肃第11题装置、纸带与图像\"><g transform=\"translate(8,8)\"><rect x=\"58\" y=\"76\" width=\"176\" height=\"8\" fill=\"#C9D1D9\" stroke=\"#596574\"/><rect x=\"84\" y=\"84\" width=\"14\" height=\"46\" fill=\"#C9D1D9\" stroke=\"#596574\"/><g transform=\"translate(34,70) rotate(-3)\"><rect x=\"0\" y=\"0\" width=\"194\" height=\"6\" fill=\"#E6B87A\" stroke=\"#8B6B3E\"/><circle cx=\"-4\" cy=\"0\" r=\"7\" fill=\"#fff\" stroke=\"#222\"/><rect x=\"102\" y=\"-20\" width=\"34\" height=\"16\" fill=\"#fff\" stroke=\"#222\"/><rect x=\"114\" y=\"-30\" width=\"10\" height=\"10\" fill=\"#8E99A6\" stroke=\"#222\"/><rect x=\"152\" y=\"-16\" width=\"20\" height=\"16\" fill=\"#E6B87A\" stroke=\"#8B6B3E\"/><line x1=\"0\" y1=\"-8\" x2=\"102\" y2=\"-12\" stroke=\"#222\"/><line x1=\"136\" y1=\"-10\" x2=\"198\" y2=\"-10\" stroke=\"#222\"/></g><rect x=\"214\" y=\"68\" width=\"14\" height=\"8\" fill=\"#10233F\"/><line x1=\"24\" y1=\"70\" x2=\"24\" y2=\"106\" stroke=\"#222\"/><rect x=\"14\" y=\"106\" width=\"20\" height=\"10\" fill=\"#A7B1BC\" stroke=\"#222\"/><g font-size=\"10.5\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"120\" y=\"20\">砝码</text><text x=\"166\" y=\"24\">打点计时器</text><text x=\"24\" y=\"130\">槽码</text><text x=\"222\" y=\"100\">垫块</text><text x=\"120\" y=\"140\" font-weight=\"700\">图1</text></g></g><g transform=\"translate(254,18)\"><rect x=\"6\" y=\"22\" width=\"184\" height=\"32\" fill=\"#F6F1E3\" stroke=\"#9AA8B8\"/><g fill=\"#2B2B2B\"><circle cx=\"14\" cy=\"38\" r=\"2\"/><circle cx=\"26\" cy=\"38\" r=\"2\"/><circle cx=\"40\" cy=\"38\" r=\"2\"/><circle cx=\"57\" cy=\"38\" r=\"2\"/><circle cx=\"77\" cy=\"38\" r=\"2\"/><circle cx=\"100\" cy=\"38\" r=\"2\"/><circle cx=\"126\" cy=\"38\" r=\"2\"/><circle cx=\"154\" cy=\"38\" r=\"2\"/><circle cx=\"184\" cy=\"38\" r=\"2\"/></g><g font-size=\"9.5\" fill=\"#1661FF\" text-anchor=\"middle\"><text x=\"20\" y=\"70\">S₁</text><text x=\"33\" y=\"70\">S₂</text><text x=\"48\" y=\"70\">S₃</text><text x=\"67\" y=\"70\">S₄</text><text x=\"88\" y=\"70\">S₅</text><text x=\"113\" y=\"70\">S₆</text><text x=\"140\" y=\"70\">S₇</text><text x=\"169\" y=\"70\">S₈</text></g><text x=\"98\" y=\"128\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\">图2</text></g><g transform=\"translate(462,8)\"><line x1=\"24\" y1=\"116\" x2=\"168\" y2=\"116\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"24\" y1=\"116\" x2=\"24\" y2=\"12\" stroke=\"#10233F\" stroke-width=\"1.4\"/><g stroke=\"#DCE5F0\" stroke-width=\"1\"><line x1=\"54\" y1=\"18\" x2=\"54\" y2=\"116\"/><line x1=\"84\" y1=\"18\" x2=\"84\" y2=\"116\"/><line x1=\"114\" y1=\"18\" x2=\"114\" y2=\"116\"/><line x1=\"144\" y1=\"18\" x2=\"144\" y2=\"116\"/><line x1=\"24\" y1=\"92\" x2=\"156\" y2=\"92\"/><line x1=\"24\" y1=\"68\" x2=\"156\" y2=\"68\"/><line x1=\"24\" y1=\"44\" x2=\"156\" y2=\"44\"/><line x1=\"24\" y1=\"20\" x2=\"156\" y2=\"20\"/></g><line x1=\"24\" y1=\"109\" x2=\"78\" y2=\"58\" stroke=\"#C7374B\" stroke-dasharray=\"3 3\" stroke-width=\"1.5\"/><line x1=\"78\" y1=\"58\" x2=\"124\" y2=\"16\" stroke=\"#C7374B\" stroke-width=\"1.8\"/><line x1=\"24\" y1=\"109\" x2=\"86\" y2=\"68\" stroke=\"#1661FF\" stroke-dasharray=\"3 3\" stroke-width=\"1.5\"/><line x1=\"86\" y1=\"68\" x2=\"156\" y2=\"22\" stroke=\"#1661FF\" stroke-width=\"1.8\"/><text x=\"68\" y=\"44\" font-size=\"11\" fill=\"#C7374B\" font-weight=\"700\">乙</text><text x=\"124\" y=\"62\" font-size=\"11\" fill=\"#1661FF\" font-weight=\"700\">甲</text><text x=\"30\" y=\"16\" font-size=\"10.5\" fill=\"#10233F\">1/a / (m·s⁻²)⁻¹</text><text x=\"164\" y=\"130\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#10233F\">M / kg</text><text x=\"96\" y=\"142\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\">图3</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "choice",
+        "prompt": "以下操作正确的是____。",
+        "options": [
+          "使小车质量远小于槽码质量",
+          "调整垫块位置以补偿阻力",
+          "补偿阻力时移去打点计时器和纸带",
+          "释放小车后立即打开打点计时器"
+        ],
+        "answer": 1,
+        "replay": "E1",
+        "explain": "应使槽码质量远小于小车质量（A 错）；补偿阻力时必须保留打点计时器和纸带（C 错）；应先通电后释放（D 错）；调整垫块位置以补偿阻力正确，选 B。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "保持槽码质量不变，改变小车上砝码的质量，得到一系列打点纸带。其中一条纸带的计数点如图 2 所示，相邻两点之间的距离分别为 S₁、S₂、…、S₈，时间间隔均为 T。下列加速度算式中，最优的是____。",
+        "options": [
+          "a = {{frac|1|7}}[{{frac|S₈ − S₇|T²}} + {{frac|S₇ − S₆|T²}} + … + {{frac|S₂ − S₁|T²}}]",
+          "a = {{frac|1|6}}[{{frac|S₈ − S₆|2T²}} + {{frac|S₇ − S₅|2T²}} + … + {{frac|S₃ − S₁|2T²}}]",
+          "a = {{frac|1|5}}[{{frac|S₈ − S₅|3T²}} + {{frac|S₇ − S₄|3T²}} + … + {{frac|S₄ − S₁|3T²}}]",
+          "a = {{frac|1|4}}[{{frac|S₈ − S₄|4T²}} + {{frac|S₇ − S₃|4T²}} + {{frac|S₆ − S₂|4T²}} + {{frac|S₅ − S₁|4T²}}]"
+        ],
+        "answer": 3,
+        "explain": "A、B、C 三式求和后中间项大量抵消，只用到首尾少数几个数据；D 式为 8 段逐差法，8 个数据恰好各自参与一次，偶然误差最小，选 D。"
+      },
+      {
+        "label": "(3)①",
+        "type": "text-choice",
+        "prompt": "以小车和砝码的总质量 M 为横坐标，加速度的倒数 1/a 为纵坐标，甲、乙两组同学分别得到的 1/a-M 图像如图 3 所示。由图可知，在所受外力一定的条件下，a 与 M 成____。",
+        "options": [
+          "正比",
+          "反比"
+        ],
+        "answer": 1,
+        "replay": "E6",
+        "explain": "1/a 与 M 近似呈线性关系（截距很小），在满足 m ≪ M 时 1/a ∝ M，即外力一定时 a 与 M 成反比。"
+      },
+      {
+        "label": "(3)②",
+        "type": "text-choice",
+        "prompt": "甲组所用的____质量比乙组的更大。",
+        "options": [
+          "小车",
+          "砝码",
+          "槽码"
+        ],
+        "answer": 2,
+        "explain": "由 a = {{frac|mg|M + m}} 取倒数得 {{frac|1|a}} = {{frac|1|mg}} M + {{frac|1|g}}。图线斜率 k = {{frac|1|mg}}，甲组斜率小于乙组，说明甲组所用的槽码质量 m 更大。"
+      }
+    ]
+  },
+  {
+    "id": "Q4",
+    "source": "2025·山东卷·第13题",
+    "verified": true,
+    "stem": "某小组采用如图甲所示的装置验证牛顿第二定律：将两光电门安装在长直轨道上，选择宽度为 d 的遮光片固定在小车上，调整轨道倾角，用跨过定滑轮的细线将小车与托盘及砝码相连。<svg viewBox=\"0 0 640 144\" width=\"640\" role=\"img\" aria-label=\"2025山东第13题装置与a-F图\"><g transform=\"translate(14,10)\"><rect x=\"10\" y=\"88\" width=\"290\" height=\"8\" fill=\"#D9B98C\" stroke=\"#8B6B3E\"/><circle cx=\"10\" cy=\"84\" r=\"8\" fill=\"#C9D1D9\" stroke=\"#596574\"/><line x1=\"2\" y1=\"84\" x2=\"2\" y2=\"112\" stroke=\"#222\"/><rect x=\"-4\" y=\"112\" width=\"12\" height=\"10\" fill=\"#8E99A6\"/><rect x=\"210\" y=\"62\" width=\"54\" height=\"24\" rx=\"3\" fill=\"#5C8DEB\"/><rect x=\"218\" y=\"46\" width=\"6\" height=\"16\" fill=\"#10233F\"/><rect x=\"168\" y=\"36\" width=\"8\" height=\"52\" fill=\"#3B4B60\"/><rect x=\"84\" y=\"36\" width=\"8\" height=\"52\" fill=\"#3B4B60\"/><line x1=\"10\" y1=\"76\" x2=\"210\" y2=\"74\" stroke=\"#222\"/><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"88\" y=\"28\">光电门2</text><text x=\"172\" y=\"28\">光电门1</text><text x=\"236\" y=\"38\">遮光片 d</text><text x=\"155\" y=\"128\" font-weight=\"700\">图甲</text></g></g><g transform=\"translate(360,8)\"><line x1=\"34\" y1=\"106\" x2=\"240\" y2=\"106\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"34\" y1=\"106\" x2=\"34\" y2=\"14\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"84\" y1=\"106\" x2=\"218\" y2=\"26\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"84\" y1=\"106\" x2=\"34\" y2=\"136\" stroke=\"#1661FF\" stroke-dasharray=\"4 3\" stroke-width=\"1.4\"/><text x=\"24\" y=\"18\" font-size=\"12\" fill=\"#10233F\">a</text><text x=\"236\" y=\"120\" font-size=\"12\" text-anchor=\"end\" fill=\"#10233F\">F</text><text x=\"24\" y=\"118\" font-size=\"11\" fill=\"#10233F\">O</text><text x=\"136\" y=\"128\" font-size=\"11.5\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\">图乙</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "选用 d = ____ cm 的遮光片，可以较准确地测量遮光片运动到光电门时小车的瞬时速度。",
+        "options": [
+          "5.00",
+          "1.00"
+        ],
+        "answer": 1,
+        "explain": "光电门用平均速度 v = d/Δt 代替瞬时速度，遮光片越窄、遮光时间越短，平均速度越接近瞬时速度，故选 1.00 cm。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "将小车自轨道右端由静止释放，从数字毫秒计分别读取遮光片经过光电门 1、光电门 2 时的速度 v₁ = 0.40 m/s、v₂ = 0.81 m/s，以及从遮光片开始遮住光电门 1 到开始遮住光电门 2 的时间 t = 1.00 s，计算小车的加速度 a =（保留 2 位有效数字）",
+        "unit": "m/s²",
+        "answer": 0.41,
+        "tol": 0.005,
+        "sig": 2,
+        "show": "0.41",
+        "explain": "由 a = {{frac|v₂ − v₁|t}} = {{frac|0.81 − 0.40|1.00}} m/s² = 0.41 m/s²。"
+      },
+      {
+        "label": "(3)",
+        "type": "text-choice",
+        "prompt": "将托盘及砝码的重力视为小车受到的合力 F，改变砝码质量，重复上述步骤，根据数据拟合出 a-F 图像如图乙所示。若要得到一条过原点的直线，实验中应____轨道的倾角。",
+        "options": [
+          "增大",
+          "减小"
+        ],
+        "answer": 0,
+        "replay": "E1",
+        "explain": "图乙在横轴（F 轴）上有正截距，说明未完全平衡摩擦力（补偿阻力不足），需要增大轨道右端的垫高倾角。"
+      },
+      {
+        "label": "(4)",
+        "type": "text-choice",
+        "prompt": "图乙中直线斜率的单位为____。",
+        "options": [
+          "kg",
+          "kg⁻¹"
+        ],
+        "answer": 1,
+        "explain": "由 a = {{frac|1|M}} F − {{frac|f|M}} 可知，a-F 图像的斜率表示小车总质量的倒数 {{frac|1|M}}，单位为 kg⁻¹。"
+      }
+    ]
+  },
+  {
+    "id": "Q5",
+    "source": "2025·陕晋宁青卷·第11题",
+    "verified": true,
+    "stem": "某同学利用打点计时器、小车、长木板、垫块和槽码探究“外力一定时加速度与质量的关系”，测得小车质量 <i>m</i> 与加速度 <i>a</i> 的部分实验数据如下表：<table class=\"dt\"><tr><th>m / kg</th><td>0.25</td><td>0.33</td><td>0.40</td><td>0.50</td><td>1.00</td></tr><tr><th>a / (m·s⁻²)</th><td>0.618</td><td>0.482</td><td>0.403</td><td>0.317</td><td>0.152</td></tr></table>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "实验前为补偿小车受到的阻力，应取下槽码、穿好纸带，将长木板____。",
+        "options": [
+          "水平放置在桌面上",
+          "一端垫高使轻推小车后匀速运动"
+        ],
+        "answer": 1,
+        "replay": "E1",
+        "explain": "补偿阻力须将长木板不带滑轮的一端垫高，不挂槽码、穿好纸带，轻推小车直至点迹均匀。"
+      },
+      {
+        "label": "(2)",
+        "type": "multi",
+        "prompt": "为了从上表数据直观验证 <i>a</i> 与 <i>m</i> 的定量关系，可作出的线性图像是____（多选）。",
+        "options": [
+          "a - 1/m 图像",
+          "a - m 图像",
+          "am - m 图像",
+          "a² - m 图像"
+        ],
+        "answer": [0, 2],
+        "replay": "E6",
+        "explain": "若 a ∝ 1/m，则 a-{{frac|1|m}} 图像为过原点的倾斜直线，且 a·m = F（恒量），故 am-m 图像也是一条平行于横轴的直线。选 A、C。"
+      },
+      {
+        "label": "(3)",
+        "type": "choice",
+        "prompt": "在随后探究“质量一定时加速度与力的关系”时，甲同学不断往槽码盘中增加桌面上的槽码；乙同学则事先把一批槽码放在小车上，每次从车上取槽码移到槽码盘中。为减小系统误差，更合理的方案是____。",
+        "options": [
+          "甲同学的方案，因为小车质量一直保持不变",
+          "乙同学的方案，因为小车与全部槽码构成的系统总质量不变，可直接消去 m ≪ M 引起的系统误差"
+        ],
+        "answer": 1,
+        "replay": "E3",
+        "explain": "乙同学把车上槽码移到盘中，研究小车与全部槽码整体时系统总质量 (M + m<sub>总</sub>) 保持恒定，合外力恰好等于盘中槽码重力，从而消除了 m 不能远小于 M 带来的系统误差，选乙。"
+      }
+    ]
+  },
+  {
+    "id": "Q6",
+    "source": "2026·河南卷·第11题",
+    "verified": true,
+    "stem": "某实验小组利用图 1 所示装置验证牛顿第二定律，器材有：气垫导轨、滑块、光电门、数字计时器、遮光条、游标卡尺、垫块等。已知气垫导轨两支脚间距为 <i>L</i>，一端垫块垫高为 <i>h</i>，两光电门间距为 <i>s</i>。<svg viewBox=\"0 0 640 165\" width=\"640\" role=\"img\" aria-label=\"2026河南第11题气垫导轨与20分度游标卡尺图\"><g transform=\"translate(10,12)\"><line x1=\"10\" y1=\"120\" x2=\"260\" y2=\"120\" stroke=\"#8B6B3E\" stroke-width=\"3\"/><g transform=\"translate(22,108) rotate(-7)\"><rect x=\"0\" y=\"0\" width=\"230\" height=\"10\" fill=\"#C9D1D9\" stroke=\"#596574\"/><rect x=\"148\" y=\"-20\" width=\"34\" height=\"18\" rx=\"2\" fill=\"#5C8DEB\" stroke=\"#2E5FBF\"/><rect x=\"162\" y=\"-32\" width=\"5\" height=\"12\" fill=\"#10233F\"/><rect x=\"114\" y=\"-38\" width=\"7\" height=\"38\" fill=\"#3B4B60\"/><rect x=\"48\" y=\"-38\" width=\"7\" height=\"38\" fill=\"#3B4B60\"/></g><rect x=\"216\" y=\"96\" width=\"26\" height=\"24\" fill=\"#8E99A6\" stroke=\"#596574\"/><text x=\"250\" y=\"112\" font-size=\"11\" fill=\"#10233F\">h</text><text x=\"135\" y=\"136\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">两支脚间距 L</text><text x=\"92\" y=\"52\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">s</text><text x=\"135\" y=\"150\" font-size=\"11.5\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\">图1</text></g><g transform=\"translate(274,18)\"><rect x=\"4\" y=\"10\" width=\"356\" height=\"46\" fill=\"#F3F7FC\" stroke=\"#9AA8B8\"/><g stroke=\"#10233F\"><line x1=\"16\" y1=\"56\" x2=\"16\" y2=\"34\" stroke-width=\"1.4\"/><line x1=\"27\" y1=\"56\" x2=\"27\" y2=\"46\"/><line x1=\"38\" y1=\"56\" x2=\"38\" y2=\"46\"/><line x1=\"49\" y1=\"56\" x2=\"49\" y2=\"46\"/><line x1=\"60\" y1=\"56\" x2=\"60\" y2=\"46\"/><line x1=\"71\" y1=\"56\" x2=\"71\" y2=\"41\" stroke-width=\"1.2\"/><line x1=\"82\" y1=\"56\" x2=\"82\" y2=\"46\"/><line x1=\"93\" y1=\"56\" x2=\"93\" y2=\"46\"/><line x1=\"104\" y1=\"56\" x2=\"104\" y2=\"46\"/><line x1=\"115\" y1=\"56\" x2=\"115\" y2=\"46\"/><line x1=\"126\" y1=\"56\" x2=\"126\" y2=\"34\" stroke-width=\"1.4\"/><line x1=\"137\" y1=\"56\" x2=\"137\" y2=\"46\"/><line x1=\"148\" y1=\"56\" x2=\"148\" y2=\"46\"/><line x1=\"159\" y1=\"56\" x2=\"159\" y2=\"46\"/><line x1=\"170\" y1=\"56\" x2=\"170\" y2=\"46\"/><line x1=\"181\" y1=\"56\" x2=\"181\" y2=\"41\" stroke-width=\"1.2\"/><line x1=\"192\" y1=\"56\" x2=\"192\" y2=\"46\"/><line x1=\"203\" y1=\"56\" x2=\"203\" y2=\"46\"/><line x1=\"214\" y1=\"56\" x2=\"214\" y2=\"46\"/><line x1=\"225\" y1=\"56\" x2=\"225\" y2=\"46\"/><line x1=\"236\" y1=\"56\" x2=\"236\" y2=\"34\" stroke-width=\"1.4\"/><line x1=\"247\" y1=\"56\" x2=\"247\" y2=\"46\"/><line x1=\"258\" y1=\"56\" x2=\"258\" y2=\"46\"/><line x1=\"269\" y1=\"56\" x2=\"269\" y2=\"46\"/><line x1=\"280\" y1=\"56\" x2=\"280\" y2=\"46\"/><line x1=\"291\" y1=\"56\" x2=\"291\" y2=\"41\" stroke-width=\"1.2\"/><line x1=\"302\" y1=\"56\" x2=\"302\" y2=\"46\"/><line x1=\"313\" y1=\"56\" x2=\"313\" y2=\"46\"/><line x1=\"324\" y1=\"56\" x2=\"324\" y2=\"46\"/><line x1=\"335\" y1=\"56\" x2=\"335\" y2=\"46\"/><line x1=\"346\" y1=\"56\" x2=\"346\" y2=\"34\" stroke-width=\"1.4\"/></g><g font-size=\"11.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"16\" y=\"30\">0</text><text x=\"126\" y=\"30\">1</text><text x=\"236\" y=\"30\">2</text><text x=\"346\" y=\"30\">3</text></g><text x=\"355\" y=\"52\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#4A5B73\">cm</text><rect x=\"52\" y=\"56\" width=\"308\" height=\"46\" fill=\"#E8EEF5\" stroke=\"#596574\"/><g stroke=\"#10233F\"><line x1=\"72.10\" y1=\"56\" x2=\"72.10\" y2=\"77\" stroke-width=\"1.4\"/><line x1=\"82.55\" y1=\"56\" x2=\"82.55\" y2=\"67\"/><line x1=\"93.00\" y1=\"56\" x2=\"93.00\" y2=\"67\"/><line x1=\"103.45\" y1=\"56\" x2=\"103.45\" y2=\"67\"/><line x1=\"113.90\" y1=\"56\" x2=\"113.90\" y2=\"67\"/><line x1=\"124.35\" y1=\"56\" x2=\"124.35\" y2=\"77\"/><line x1=\"134.80\" y1=\"56\" x2=\"134.80\" y2=\"67\"/><line x1=\"145.25\" y1=\"56\" x2=\"145.25\" y2=\"67\"/><line x1=\"155.70\" y1=\"56\" x2=\"155.70\" y2=\"67\"/><line x1=\"166.15\" y1=\"56\" x2=\"166.15\" y2=\"67\"/><line x1=\"176.60\" y1=\"56\" x2=\"176.60\" y2=\"77\"/><line x1=\"187.05\" y1=\"56\" x2=\"187.05\" y2=\"67\"/><line x1=\"197.50\" y1=\"56\" x2=\"197.50\" y2=\"67\"/><line x1=\"207.95\" y1=\"56\" x2=\"207.95\" y2=\"67\"/><line x1=\"218.40\" y1=\"56\" x2=\"218.40\" y2=\"67\"/><line x1=\"228.85\" y1=\"56\" x2=\"228.85\" y2=\"77\"/><line x1=\"239.30\" y1=\"56\" x2=\"239.30\" y2=\"67\"/><line x1=\"249.75\" y1=\"56\" x2=\"249.75\" y2=\"67\"/><line x1=\"260.20\" y1=\"56\" x2=\"260.20\" y2=\"67\"/><line x1=\"270.65\" y1=\"56\" x2=\"270.65\" y2=\"67\"/><line x1=\"281.10\" y1=\"56\" x2=\"281.10\" y2=\"77\"/></g><g font-size=\"10.5\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"72.10\" y=\"91\" font-weight=\"700\">0</text><text x=\"124.35\" y=\"91\">5</text><text x=\"176.60\" y=\"91\">10</text><text x=\"228.85\" y=\"91\">15</text><text x=\"281.10\" y=\"91\">20</text></g><text x=\"354\" y=\"115\" font-size=\"10\" text-anchor=\"end\" fill=\"#4A5B73\">(20分度)</text><text x=\"182\" y=\"135\" font-size=\"11.5\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\">图2</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "用 20 分度游标卡尺测量遮光条的宽度 Δx，示数如图 2 所示，则 Δx =",
+        "unit": "mm",
+        "answer": 5.1,
+        "tol": 0.01,
+        "sig": 3,
+        "show": "5.10",
+        "explain": "主尺读数 5 mm，20 分度游标尺第 2 条刻线与主尺对齐（精确度 0.05 mm，不估读），故 Δx = 5 + 2 × 0.05 = 5.10 mm。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "释放滑块，数字计时器记录滑块通过光电门 1 的遮光时间为 Δt₁ = 10.20 ms，则滑块通过光电门 1 的速度大小 v₁ =（保留 2 位有效数字）",
+        "unit": "m/s",
+        "answer": 0.5,
+        "tol": 0.005,
+        "sig": 2,
+        "show": "0.50",
+        "explain": "v₁ = {{frac|Δx|Δt₁}} = {{frac|5.10 × 10⁻³ m|10.20 × 10⁻³ s}} = 0.50 m/s。"
+      },
+      {
+        "label": "(3)①",
+        "type": "expr",
+        "prompt": "测得滑块通过光电门 2 的速度为 v₂，两光电门间距为 s，则滑块下滑的加速度",
+        "lhs": "a =",
+        "vars": {
+          "v1": "v₁",
+          "v2": "v₂",
+          "s": "s"
+        },
+        "extra": ["1", "2"],
+        "answer": "(v2^2-v1^2)/(2*s)",
+        "show": "(v₂² − v₁²) ÷ (2s)",
+        "explain": "由匀变速直线运动速度—位移关系 v₂² − v₁² = 2as，得 a = {{frac|v₂² − v₁²|2s}}。"
+      },
+      {
+        "label": "(3)②",
+        "type": "expr",
+        "prompt": "忽略气垫导轨阻力，理论上滑块下滑加速度 a 的表达式应与____相等（用 g、h、L 表示）。",
+        "lhs": "a =",
+        "vars": {
+          "g": "g",
+          "h": "h",
+          "L": "L"
+        },
+        "extra": [],
+        "answer": "g*h/L",
+        "show": "gh ÷ L",
+        "explain": "由几何关系得斜面倾角正弦 sinθ = {{frac|h|L}}，合外力为 mg sinθ，故理论加速度 a = g sinθ = {{frac|gh|L}}。"
+      }
+    ]
+  },
+  {
+    "id": "Q7",
+    "source": "2026·湖北卷·第12题",
+    "verified": true,
+    "stem": "某同学设计如下实验验证牛顿第二定律：直导轨上固定两个光电门 A、B（间距为 <i>s</i>），小车和遮光条总质量为 <i>m</i>（遮光条宽为 <i>d</i>）。连接小车两端的细绳跨过左右定滑轮，初始时两端各挂 10 个质量均为 <i>m₀</i> 的钩码，重力加速度为 <i>g</i>。<svg viewBox=\"0 0 600 140\" width=\"600\" role=\"img\" aria-label=\"2026湖北第12题实验装置图\"><line x1=\"40\" y1=\"126\" x2=\"560\" y2=\"126\" stroke=\"#8B6B3E\" stroke-width=\"2\"/><rect x=\"114\" y=\"63\" width=\"24\" height=\"63\" fill=\"#B8935D\" stroke=\"#8B6B3E\"/><rect x=\"456\" y=\"75\" width=\"24\" height=\"51\" fill=\"#B8935D\" stroke=\"#8B6B3E\"/><g transform=\"translate(90,54) rotate(2)\"><rect x=\"0\" y=\"0\" width=\"420\" height=\"8\" fill=\"#D9B98C\" stroke=\"#8B6B3E\"/><circle cx=\"-4\" cy=\"0\" r=\"7\" fill=\"#C9D1D9\" stroke=\"#596574\"/><circle cx=\"424\" cy=\"0\" r=\"7\" fill=\"#C9D1D9\" stroke=\"#596574\"/><rect x=\"180\" y=\"-22\" width=\"54\" height=\"18\" rx=\"3\" fill=\"#5C8DEB\"/><rect x=\"204\" y=\"-34\" width=\"5\" height=\"12\" fill=\"#10233F\"/><rect x=\"124\" y=\"-40\" width=\"7\" height=\"40\" fill=\"#3B4B60\"/><rect x=\"304\" y=\"-40\" width=\"7\" height=\"40\" fill=\"#3B4B60\"/><line x1=\"-4\" y1=\"-7\" x2=\"180\" y2=\"-12\" stroke=\"#222\"/><line x1=\"234\" y1=\"-12\" x2=\"424\" y2=\"-7\" stroke=\"#222\"/><text x=\"128\" y=\"-44\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">A(t₁)</text><text x=\"308\" y=\"-44\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">B(t₂)</text><text x=\"218\" y=\"-48\" font-size=\"11\" text-anchor=\"middle\" fill=\"#1661FF\">间距 s</text></g><line x1=\"79\" y1=\"54\" x2=\"79\" y2=\"86\" stroke=\"#222\"/><rect x=\"67\" y=\"86\" width=\"24\" height=\"14\" fill=\"#8E99A6\" stroke=\"#596574\"/><text x=\"79\" y=\"114\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">10−n 个</text><line x1=\"521\" y1=\"69\" x2=\"521\" y2=\"94\" stroke=\"#222\"/><rect x=\"509\" y=\"94\" width=\"24\" height=\"16\" fill=\"#8E99A6\" stroke=\"#596574\"/><text x=\"521\" y=\"122\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">10+n 个</text></svg><br>主要步骤：ⅰ. 测出 <i>m</i>、<i>s</i>、<i>d</i>；ⅱ. 调节导轨倾斜程度，使轻推小车沿导轨向右运动时通过两光电门的遮光时间近似相等；ⅲ. 从左侧细绳取下 <i>n</i> 个钩码挂到右侧细绳，由静止释放小车，测得通过 A、B 的遮光时间分别为 <i>t</i>₁、<i>t</i>₂。",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "实验步骤 ⅱ 的主要目的是____。",
+        "options": [
+          "减小遮光片宽度引起的误差",
+          "平衡摩擦力",
+          "使钩码质量远小于小车质量"
+        ],
+        "answer": 1,
+        "replay": "E1",
+        "explain": "不改变钩码分布（合外力差值为零），调斜导轨使两光电门遮光时间相等，即让小车匀速运动以平衡摩擦力。"
+      },
+      {
+        "label": "(2)",
+        "type": "expr",
+        "prompt": "从左侧取下 n 个钩码挂到右侧后，理论上系统加速度大小 a =",
+        "lhs": "a =",
+        "vars": {
+          "n": "n",
+          "m0": "m₀",
+          "m": "m",
+          "g": "g"
+        },
+        "extra": ["2", "0"],
+        "answer": "2*n*m0*g/(m+20*m0)",
+        "show": "2nm₀g ÷ (m + 20m₀)",
+        "explain": "左侧少 n 个、右侧多 n 个，两盘重力差（即系统合外力）为 (10 + n)m₀g − (10 − n)m₀g = 2nm₀g；系统总质量恒为 m + 20m₀，故 a = {{frac|2nm₀g|m + 20m₀}}。"
+      },
+      {
+        "label": "(3)",
+        "type": "expr",
+        "prompt": "由遮光条宽度 d、两光电门间距 s 及遮光时间 t₁、t₂，实验测得的加速度表达式",
+        "lhs": "a =",
+        "vars": {
+          "d": "d",
+          "s": "s",
+          "t1": "t₁",
+          "t2": "t₂"
+        },
+        "extra": ["1", "2"],
+        "answer": "d^2/(2*s)*(1/t2^2-1/t1^2)",
+        "show": "d²(1/t₂² − 1/t₁²) ÷ (2s)",
+        "explain": "v₁ = {{frac|d|t₁}}，v₂ = {{frac|d|t₂}}，由 v₂² − v₁² = 2as 得 a = {{frac|d²|2s}}({{frac|1|t₂²}} − {{frac|1|t₁²}})。"
+      },
+      {
+        "label": "(4)",
+        "type": "text-choice",
+        "prompt": "以 n 为横坐标、a 为纵坐标绘制 a-n 图像，若得到过原点的直线，说明在总质量一定时，物体的加速度与所受合外力成____。",
+        "options": [
+          "正比",
+          "反比"
+        ],
+        "answer": 0,
+        "explain": "系统总质量 m + 20m₀ 不变，合外力 2nm₀g ∝ n，a-n 为过原点直线说明加速度与合外力成正比。"
+      },
+      {
+        "label": "(5)",
+        "type": "choice",
+        "prompt": "若实验得到的 a-n 图像不过原点，可能的原因是____。",
+        "options": [
+          "小车没有贴近光电门静止释放",
+          "步骤 ⅱ 中导轨倾斜程度调节不当",
+          "钩码质量未远小于小车质量"
+        ],
+        "answer": 1,
+        "replay": "E2",
+        "explain": "本实验采用整体法（系统总质量恒为 m + 20m₀），不要求钩码质量远小于小车质量（C 错）；图像不过原点说明摩擦力平衡不足或过度，即步骤 ⅱ 中导轨倾斜程度调节不当（B 对）。"
+      }
+    ]
+  },
+  {
+    "id": "Q8",
+    "source": "2025·山东青岛模拟",
+    "verified": true,
+    "stem": "小明利用如图甲所示的实验装置探究加速度与力的关系：滑块放在水平桌面上的长木板上，砂桶通过滑轮与细线拉滑块，细线上接有微型力传感器可直接读出拉力大小 <i>F</i>。保持滑块质量不变，改变砂量测出多组 <i>F</i> 与对应纸带的加速度 <i>a</i>，得到如图乙所示的 <i>F-a</i> 图像。<svg viewBox=\"0 0 640 176\" width=\"640\" role=\"img\" aria-label=\"2025山东青岛模拟图甲乙丙\"><g transform=\"translate(12,10)\"><rect x=\"10\" y=\"64\" width=\"170\" height=\"8\" fill=\"#E2E8F0\" stroke=\"#596574\"/><rect x=\"40\" y=\"56\" width=\"170\" height=\"8\" fill=\"#B8C4D0\" stroke=\"#596574\"/><rect x=\"34\" y=\"72\" width=\"10\" height=\"44\" fill=\"#E2E8F0\" stroke=\"#596574\"/><rect x=\"148\" y=\"72\" width=\"10\" height=\"44\" fill=\"#E2E8F0\" stroke=\"#596574\"/><rect x=\"44\" y=\"40\" width=\"16\" height=\"16\" fill=\"#4F6A8A\" stroke=\"#10233F\"/><text x=\"52\" y=\"26\" font-size=\"9.5\" text-anchor=\"middle\" fill=\"#10233F\">打点计时器</text><rect x=\"76\" y=\"36\" width=\"42\" height=\"20\" fill=\"#fff\" stroke=\"#10233F\"/><text x=\"97\" y=\"26\" font-size=\"11\" text-anchor=\"middle\" fill=\"#10233F\">滑块</text><circle cx=\"214\" cy=\"54\" r=\"5\" fill=\"#fff\" stroke=\"#10233F\"/><line x1=\"118\" y1=\"48\" x2=\"214\" y2=\"48\" stroke=\"#10233F\"/><line x1=\"219\" y1=\"54\" x2=\"219\" y2=\"92\" stroke=\"#10233F\"/><line x1=\"212\" y1=\"14\" x2=\"244\" y2=\"14\" stroke=\"#596574\" stroke-width=\"2\"/><line x1=\"229\" y1=\"14\" x2=\"229\" y2=\"92\" stroke=\"#10233F\"/><circle cx=\"224\" cy=\"92\" r=\"5\" fill=\"#fff\" stroke=\"#10233F\"/><line x1=\"224\" y1=\"97\" x2=\"224\" y2=\"106\" stroke=\"#10233F\"/><polygon points=\"216,106 232,106 230,124 218,124\" fill=\"#CBD5E1\" stroke=\"#10233F\"/><rect x=\"225\" y=\"36\" width=\"8\" height=\"18\" fill=\"#fff\" stroke=\"#10233F\"/><text x=\"240\" y=\"34\" font-size=\"10.5\" fill=\"#10233F\">力传感器</text><line x1=\"16\" y1=\"47\" x2=\"76\" y2=\"47\" stroke=\"#8B6B3E\" stroke-width=\"1.5\"/><text x=\"12\" y=\"36\" font-size=\"10\" fill=\"#10233F\">纸带</text><text x=\"120\" y=\"150\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\">甲</text></g><g transform=\"translate(290,10)\"><line x1=\"34\" y1=\"114\" x2=\"176\" y2=\"114\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"34\" y1=\"114\" x2=\"34\" y2=\"8\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"34\" y1=\"74\" x2=\"156\" y2=\"14\" stroke=\"#10233F\" stroke-dasharray=\"4 3\"/><line x1=\"74\" y1=\"54\" x2=\"156\" y2=\"14\" stroke=\"#1661FF\" stroke-width=\"2\"/><g stroke=\"#4A5B73\" stroke-dasharray=\"3 3\" stroke-width=\"1\"><line x1=\"74\" y1=\"54\" x2=\"74\" y2=\"114\"/><line x1=\"74\" y1=\"54\" x2=\"34\" y2=\"54\"/><line x1=\"115\" y1=\"34\" x2=\"115\" y2=\"114\"/><line x1=\"115\" y1=\"34\" x2=\"34\" y2=\"34\"/><line x1=\"156\" y1=\"14\" x2=\"156\" y2=\"114\"/><line x1=\"156\" y1=\"14\" x2=\"34\" y2=\"14\"/></g><g fill=\"#10233F\"><circle cx=\"74\" cy=\"54\" r=\"2.8\"/><circle cx=\"115\" cy=\"34\" r=\"2.8\"/><circle cx=\"156\" cy=\"14\" r=\"2.8\"/></g><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"end\"><text x=\"28\" y=\"98\">1</text><text x=\"28\" y=\"78\">2</text><text x=\"28\" y=\"58\">3</text><text x=\"28\" y=\"38\">4</text><text x=\"28\" y=\"18\">5</text></g><g font-size=\"11\" fill=\"#10233F\" text-anchor=\"middle\"><text x=\"34\" y=\"128\">0</text><text x=\"74\" y=\"128\">1</text><text x=\"115\" y=\"128\">2</text><text x=\"156\" y=\"128\">3</text><text x=\"192\" y=\"128\">a/(m·s⁻²)</text></g><text x=\"42\" y=\"12\" font-size=\"11\" fill=\"#10233F\">F/N</text><text x=\"108\" y=\"150\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\">乙</text></g><g transform=\"translate(486,36)\"><rect x=\"8\" y=\"16\" width=\"136\" height=\"38\" fill=\"#F6F1E3\" stroke=\"#9AA8B8\"/><g fill=\"#2B2B2B\"><circle cx=\"16\" cy=\"36\" r=\"2\"/><circle cx=\"28\" cy=\"36\" r=\"2\"/><circle cx=\"42\" cy=\"36\" r=\"2\"/><circle cx=\"59\" cy=\"36\" r=\"2\"/><circle cx=\"79\" cy=\"36\" r=\"2\"/><circle cx=\"104\" cy=\"36\" r=\"2\"/><circle cx=\"134\" cy=\"36\" r=\"2\"/></g><g font-size=\"9.5\" text-anchor=\"middle\" fill=\"#10233F\"><text x=\"16\" y=\"50\">1</text><text x=\"28\" y=\"50\">2</text><text x=\"42\" y=\"50\">3</text><text x=\"59\" y=\"50\">4</text><text x=\"79\" y=\"50\">5</text><text x=\"104\" y=\"50\">6</text><text x=\"134\" y=\"50\">7</text></g><g font-size=\"9.5\" text-anchor=\"middle\" fill=\"#1661FF\"><text x=\"22\" y=\"28\">x₁</text><text x=\"35\" y=\"28\">x₂</text><text x=\"50\" y=\"28\">x₃</text><text x=\"69\" y=\"28\">x₄</text><text x=\"91\" y=\"28\">x₅</text><text x=\"119\" y=\"28\">x₆</text></g><text x=\"76\" y=\"76\" font-size=\"12\" text-anchor=\"middle\" fill=\"#10233F\" font-weight=\"700\">丙</text></g></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "choice",
+        "prompt": "关于该实验，下列说法正确的是____。",
+        "options": [
+          "调整长木板右端的定滑轮，使得细线与长木板平行",
+          "在不挂砂桶的前提下，将带滑轮的长木板右端垫高，以平衡阻力",
+          "滑块靠近打点计时器，先释放滑块，再接通电源",
+          "为减小误差，实验中要保证砂和砂桶的总质量 m₀ 远小于滑块的质量 M"
+        ],
+        "answer": 0,
+        "replay": "E3",
+        "explain": "细线需与长木板平行（A 对）；平衡阻力应垫高没有滑轮的左端（B 错）；应先接通电源再释放滑块（C 错）；因用力传感器直接测拉力 F，无需 m₀ ≪ M（D 错）。"
+      },
+      {
+        "label": "(2)",
+        "type": "expr",
+        "prompt": "实验中打出的一条纸带如图丙所示，打点计时器打点的周期为 T，在纸带上依次标上 1、2、3、4、5、6、7 等计数点，相邻两个计数点之间还有四个点没有画出来，测得 x₁、x₂、x₃、x₄、x₅、x₆。打该纸带时滑块的加速度计算式为",
+        "lhs": "a =",
+        "vars": {
+          "x1": "x₁",
+          "x2": "x₂",
+          "x3": "x₃",
+          "x4": "x₄",
+          "x5": "x₅",
+          "x6": "x₆",
+          "T": "T"
+        },
+        "extra": ["1", "2", "5", "9"],
+        "answer": "((x4+x5+x6)-(x1+x2+x3))/(225*T^2)",
+        "show": "[(x₄ + x₅ + x₆) − (x₁ + x₂ + x₃)] ÷ (225T²)",
+        "explain": "相邻计数点间隔 T₀ = 5T，由逐差法 a = {{frac|(x₄ + x₅ + x₆) − (x₁ + x₂ + x₃)|9T₀²}} = {{frac|(x₄ + x₅ + x₆) − (x₁ + x₂ + x₃)|225T²}}。"
+      },
+      {
+        "label": "(3)①",
+        "type": "text-choice",
+        "prompt": "图乙中直线的延长线没有经过原点的原因是____。",
+        "options": [
+          "未完全平衡阻力",
+          "平衡阻力过度",
+          "砂桶质量过大"
+        ],
+        "answer": 0,
+        "replay": "E1",
+        "explain": "由图乙可知，当 F = 2 N 时 a = 0，说明施加拉力后先克服阻力滑块才运动，即未完全平衡阻力。"
+      },
+      {
+        "label": "(3)②",
+        "type": "numeric",
+        "prompt": "由图乙可知滑块的质量 m =（结果保留两位有效数字）",
+        "unit": "kg",
+        "answer": 1.0,
+        "tol": 0.05,
+        "sig": 2,
+        "show": "1.0",
+        "explain": "由牛顿第二定律 F − f = ma 得 F = ma + f，F-a 图线斜率等于滑块质量 m = {{frac|5 − 2|3}} kg = 1.0 kg。"
+      }
+    ]
+  },
+  {
+    "id": "Q9",
+    "source": "2024·全国甲卷·第22题（迁移压轴）",
+    "verified": true,
+    "stem": "（迁移压轴）学生小组为了探究超重和失重现象，将弹簧测力计挂在电梯内，测力计下端挂一物体（与“槽码加速下落失重时拉力小于重力”物理本质相同）。已知当地重力加速度大小取 <i>g</i> = 9.8 m/s²。<svg viewBox=\"0 0 360 148\" width=\"360\" role=\"img\" aria-label=\"2024全国甲卷第22题弹簧测力计示数图\"><rect x=\"20\" y=\"12\" width=\"110\" height=\"124\" rx=\"6\" fill=\"#F6F9FD\" stroke=\"#596574\" stroke-width=\"1.4\"/><line x1=\"75\" y1=\"12\" x2=\"75\" y2=\"28\" stroke=\"#222\" stroke-width=\"1.5\"/><rect x=\"62\" y=\"28\" width=\"26\" height=\"52\" rx=\"4\" fill=\"#E4EBF2\" stroke=\"#596574\"/><line x1=\"75\" y1=\"80\" x2=\"75\" y2=\"96\" stroke=\"#222\" stroke-width=\"1.5\"/><rect x=\"61\" y=\"96\" width=\"28\" height=\"24\" rx=\"3\" fill=\"#8E99A6\" stroke=\"#596574\"/><text x=\"75\" y=\"112\" font-size=\"11\" text-anchor=\"middle\" fill=\"#fff\" font-weight=\"700\">物</text><rect x=\"184\" y=\"10\" width=\"120\" height=\"128\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"236\" y1=\"20\" x2=\"236\" y2=\"130\" stroke=\"#10233F\" stroke-width=\"1.2\"/><g stroke=\"#10233F\" stroke-width=\"1.1\"><line x1=\"236\" y1=\"34\" x2=\"258\" y2=\"34\"/><line x1=\"236\" y1=\"43\" x2=\"248\" y2=\"43\"/><line x1=\"236\" y1=\"52\" x2=\"258\" y2=\"52\"/><line x1=\"236\" y1=\"61\" x2=\"248\" y2=\"61\"/><line x1=\"236\" y1=\"70\" x2=\"258\" y2=\"70\"/><line x1=\"236\" y1=\"79\" x2=\"248\" y2=\"79\"/><line x1=\"236\" y1=\"88\" x2=\"258\" y2=\"88\"/><line x1=\"236\" y1=\"97\" x2=\"248\" y2=\"97\"/><line x1=\"236\" y1=\"106\" x2=\"258\" y2=\"106\"/><line x1=\"236\" y1=\"115\" x2=\"248\" y2=\"115\"/><line x1=\"236\" y1=\"124\" x2=\"258\" y2=\"124\"/></g><g font-size=\"11.5\" fill=\"#10233F\" font-weight=\"700\"><text x=\"264\" y=\"38\">3</text><text x=\"264\" y=\"56\">4</text><text x=\"264\" y=\"74\">5</text><text x=\"264\" y=\"92\">6</text><text x=\"264\" y=\"110\">7</text><text x=\"264\" y=\"128\">8 N</text></g><line x1=\"202\" y1=\"70\" x2=\"242\" y2=\"70\" stroke=\"#C7374B\" stroke-width=\"2.4\"/><polygon points=\"242,70 234,66 234,74\" fill=\"#C7374B\"/><line x1=\"88\" y1=\"54\" x2=\"184\" y2=\"70\" stroke=\"#12A9C4\" stroke-dasharray=\"4 3\"/></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "电梯静止时测力计示数如图所示，读数为（保留 1 位小数）",
+        "unit": "N",
+        "answer": 5.0,
+        "tol": 0.1,
+        "sig": 2,
+        "show": "5.0",
+        "explain": "测力计最小分度为 0.5 N，指针正指在 5 刻度线处，读数为 5.0 N，故物体重力 G = 5.0 N。"
+      },
+      {
+        "label": "(2)①",
+        "type": "text-choice",
+        "prompt": "电梯上行时，一段时间内测力计的示数为 4.5 N，则此段时间内物体处于____状态。",
+        "options": [
+          "超重",
+          "失重"
+        ],
+        "answer": 1,
+        "replay": "E3",
+        "explain": "测力计示数 4.5 N 小于物体重力 5.0 N，加速度方向竖直向下（电梯减速上升），物体处于失重状态。与 M03 中悬挂槽码向下加速时绳拉力 F<sub>T</sub> = m(g − a) &lt; mg 原理完全一致。"
+      },
+      {
+        "label": "(2)②",
+        "type": "numeric",
+        "prompt": "该段时间内电梯加速度大小为（保留 1 位小数）",
+        "unit": "m/s²",
+        "answer": 1.0,
+        "tol": 0.05,
+        "sig": 2,
+        "show": "1.0",
+        "explain": "由牛顿第二定律 G − F′ = ma，其中 m = {{frac|G|g}} = {{frac|5.0|9.8}} kg，解得 a = {{frac|5.0 − 4.5|5.0}} × 9.8 m/s² = 0.98 m/s² ≈ 1.0 m/s²。"
+      }
+    ]
+  },
+  {
+    "id": "Q10",
+    "source": "原创（基于 M03 物理模型）",
+    "verified": true,
+    "score": 6,
+    "stem": "某小组利用力传感器保持细绳对小车的拉力 <i>F</i> = 0.40 N 恒定，改变小车和砝码的总质量 <i>M</i>，测得各组加速度 <i>a</i> 如表所示：<table class=\"dt\"><tr><th>M / kg</th><td>0.20</td><td>0.25</td><td>0.40</td><td>0.50</td><td>0.80</td></tr><tr><th>1/M / kg⁻¹</th><td>5.00</td><td>4.00</td><td>2.50</td><td>2.00</td><td>1.25</td></tr><tr><th>a / (m·s⁻²)</th><td>2.00</td><td>1.60</td><td>1.00</td><td>0.80</td><td>0.50</td></tr></table>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "plot",
+        "prompt": "请在坐标纸上描出五组 (1/M, a) 数据点，并拖动青色手柄作出拟合直线（化曲为直）来验证 a ∝ 1/M。",
+        "x": [0, 6],
+        "y": [0, 2.4],
+        "xLabel": "1/M / kg⁻¹",
+        "yLabel": "a / (m·s⁻²)",
+        "snap": [0.25, 0.1],
+        "ptTol": [0.26, 0.11],
+        "points": [[5.0, 2.0], [4.0, 1.6], [2.5, 1.0], [2.0, 0.8], [1.25, 0.5]],
+        "slope": 0.4,
+        "tol": 0.04,
+        "lineInit": [[0, 0], [5, 1.5]],
+        "explain": "五点严格落在一条过原点的倾斜直线上，直线斜率 k = {{frac|2.00 − 0|5.00 − 0}} N = 0.40 N，与恒定拉力 F 一致，证明 F 一定时 a 与 M 成反比。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "由所作 a-1/M 图像的斜率可得，小车受到的恒定拉力 F =（保留两位有效数字）",
+        "unit": "N",
+        "answer": 0.4,
+        "tol": 0.02,
+        "sig": 2,
+        "show": "0.40",
+        "replay": "E6",
+        "explain": "由 a = F·{{frac|1|M}} 可知，a-{{frac|1|M}} 图像的斜率等于小车所受合外力 F = 0.40 N。"
+      }
+    ]
+  }
+]

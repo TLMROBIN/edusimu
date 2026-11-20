@@ -1,0 +1,336 @@
+[
+  {
+    "id": "G1",
+    "source": "2025·四川卷·第11题",
+    "score": 6,
+    "verified": true,
+    "stem": "某同学利用如图所示装置“探究弹簧弹力与形变量的关系”。用两根细绳将轻弹簧悬挂在铁架台横杆上：<br>(1) 先将弹簧水平放置，左端对齐刻度尺 0.00 cm 刻线，右端指针放大图如图甲所示；<br>(2) 再将弹簧竖直悬挂并挂上空水桶，之后每次往桶中缓慢加入 50 mL 水（共加 6 次），记录弹簧相对未挂水桶时竖直悬挂位置的伸长量 <i>x</i> 与加入水的体积 <i>V</i>，作出的 <i>x</i>-<i>V</i> 图像如图乙所示（斜率为 200 m⁻²，纵轴截距为 0.56 cm = 0.0056 m）。已知水的密度 <i>ρ</i> = 1.0×10³ kg/m³，重力加速度 <i>g</i> = 9.8 m/s²。<br>图甲：<svg viewBox=\"0 0 460 112\" width=\"460\" role=\"img\" aria-label=\"毫米刻度尺测弹簧原长13.14cm放大图\"><rect x=\"8\" y=\"8\" width=\"444\" height=\"96\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><text x=\"18\" y=\"24\" font-size=\"11.5\" font-weight=\"600\" fill=\"#4A5B73\">弹簧左端对齐 0.00 cm（右端 12.0~14.0 cm 局部放大）</text><rect x=\"18\" y=\"34\" width=\"228.60\" height=\"22\" rx=\"3\" fill=\"#DCE4EC\" stroke=\"#6E7B8A\"/><line x1=\"246.60\" y1=\"28\" x2=\"246.60\" y2=\"78\" stroke=\"#C7374B\" stroke-width=\"1.8\" stroke-dasharray=\"3 2\"/><polygon points=\"246.60,58 242.10,48 251.10,48\" fill=\"#C7374B\"/><rect x=\"20\" y=\"60\" width=\"418\" height=\"38\" fill=\"#F3F7FC\" stroke=\"#9AA8B8\"/><line x1=\"30\" y1=\"60\" x2=\"30\" y2=\"78\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"30\" y=\"92\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">12</text><line x1=\"49\" y1=\"60\" x2=\"49\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"68\" y1=\"60\" x2=\"68\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"87\" y1=\"60\" x2=\"87\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"106\" y1=\"60\" x2=\"106\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"125\" y1=\"60\" x2=\"125\" y2=\"73\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"144\" y1=\"60\" x2=\"144\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"163\" y1=\"60\" x2=\"163\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"182\" y1=\"60\" x2=\"182\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"201\" y1=\"60\" x2=\"201\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"220\" y1=\"60\" x2=\"220\" y2=\"78\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"220\" y=\"92\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">13</text><line x1=\"239\" y1=\"60\" x2=\"239\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"258\" y1=\"60\" x2=\"258\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"277\" y1=\"60\" x2=\"277\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"296\" y1=\"60\" x2=\"296\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"315\" y1=\"60\" x2=\"315\" y2=\"73\" stroke=\"#10233F\" stroke-width=\"1.2\"/><line x1=\"334\" y1=\"60\" x2=\"334\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"353\" y1=\"60\" x2=\"353\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"372\" y1=\"60\" x2=\"372\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"391\" y1=\"60\" x2=\"391\" y2=\"68\" stroke=\"#10233F\"/><line x1=\"410\" y1=\"60\" x2=\"410\" y2=\"78\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"410\" y=\"92\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">14</text><text x=\"432\" y=\"92\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">cm</text></svg><br>图乙：<svg viewBox=\"0 0 580 205\" width=\"580\" role=\"img\" aria-label=\"水桶加水法装置与x-V图像\"><rect x=\"8\" y=\"8\" width=\"164\" height=\"189\" rx=\"8\" fill=\"#F8FBFF\" stroke=\"#B9C8DA\"/><rect x=\"24\" y=\"174\" width=\"82\" height=\"10\" rx=\"2\" fill=\"#6E7B8A\"/><rect x=\"42\" y=\"22\" width=\"7\" height=\"152\" fill=\"#8E99A6\"/><rect x=\"42\" y=\"22\" width=\"96\" height=\"7\" fill=\"#8E99A6\"/><path d=\"M98,29 L98,40 L90,44 L106,50 L90,56 L106,62 L90,68 L106,74 L98,78 L98,90\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"98\" y1=\"90\" x2=\"82\" y2=\"114\" stroke=\"#4A5B73\" stroke-width=\"1.3\"/><line x1=\"98\" y1=\"90\" x2=\"114\" y2=\"114\" stroke=\"#4A5B73\" stroke-width=\"1.3\"/><polygon points=\"80,114 116,114 111,152 85,152\" fill=\"#CFE3FA\" stroke=\"#1661FF\" stroke-width=\"1.5\"/><text x=\"98\" y=\"138\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">水桶</text><rect x=\"184\" y=\"8\" width=\"388\" height=\"189\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><line x1=\"235\" y1=\"172\" x2=\"504\" y2=\"172\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"235\" y1=\"172\" x2=\"235\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"235\" y1=\"152\" x2=\"500\" y2=\"152\" stroke=\"#E3EAF3\"/><line x1=\"235\" y1=\"132\" x2=\"500\" y2=\"132\" stroke=\"#E3EAF3\"/><line x1=\"235\" y1=\"112\" x2=\"500\" y2=\"112\" stroke=\"#E3EAF3\"/><line x1=\"235\" y1=\"92\" x2=\"500\" y2=\"92\" stroke=\"#E3EAF3\"/><line x1=\"235\" y1=\"72\" x2=\"500\" y2=\"72\" stroke=\"#E3EAF3\"/><line x1=\"235\" y1=\"52\" x2=\"500\" y2=\"52\" stroke=\"#E3EAF3\"/><line x1=\"235\" y1=\"32\" x2=\"500\" y2=\"32\" stroke=\"#E3EAF3\"/><line x1=\"321.7\" y1=\"172\" x2=\"321.7\" y2=\"32\" stroke=\"#E3EAF3\"/><line x1=\"408.3\" y1=\"172\" x2=\"408.3\" y2=\"32\" stroke=\"#E3EAF3\"/><line x1=\"495\" y1=\"172\" x2=\"495\" y2=\"32\" stroke=\"#E3EAF3\"/><text x=\"229\" y=\"175\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">0</text><text x=\"229\" y=\"135\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">2.0</text><text x=\"229\" y=\"95\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">4.0</text><text x=\"229\" y=\"55\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">6.0</text><text x=\"321.7\" y=\"186\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">1.0</text><text x=\"408.3\" y=\"186\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">2.0</text><text x=\"495\" y=\"186\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">3.0</text><text x=\"506\" y=\"176\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">V/(10⁻⁴ m³)</text><text x=\"242\" y=\"25\" font-size=\"11.5\" font-weight=\"700\" fill=\"#10233F\">x / cm</text><line x1=\"235\" y1=\"160.8\" x2=\"495\" y2=\"40.8\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><circle cx=\"235\" cy=\"160.8\" r=\"3.5\" fill=\"#C7374B\"/><circle cx=\"278.3\" cy=\"140.8\" r=\"3.2\" fill=\"#1661FF\"/><circle cx=\"321.7\" cy=\"120.8\" r=\"3.2\" fill=\"#1661FF\"/><circle cx=\"365\" cy=\"100.8\" r=\"3.2\" fill=\"#1661FF\"/><circle cx=\"408.3\" cy=\"80.8\" r=\"3.2\" fill=\"#1661FF\"/><circle cx=\"451.7\" cy=\"60.8\" r=\"3.2\" fill=\"#1661FF\"/><circle cx=\"495\" cy=\"40.8\" r=\"3.5\" fill=\"#C7374B\"/><text x=\"244\" y=\"166\" font-size=\"11\" font-weight=\"700\" fill=\"#C7374B\">(0, 0.56)</text><text x=\"490\" y=\"35\" font-size=\"11\" font-weight=\"700\" text-anchor=\"end\" fill=\"#C7374B\">(3.0, 6.56)</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "图甲中弹簧的原长 <i>l</i>₀ =",
+        "unit": "cm",
+        "answer": 13.14,
+        "tol": 0.02,
+        "sig": 4,
+        "show": "13.14",
+        "replay": "E4",
+        "explain": "毫米刻度尺最小分度 1 mm，须估读到 0.1 mm（0.01 cm）。指针位于 13.1 cm 与 13.2 cm 之间约 0.4 格处，读数为 13.14 cm。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "由 <i>x</i>-<i>V</i> 图像斜率可求得弹簧的劲度系数 <i>k</i> =",
+        "unit": "N/m",
+        "answer": 49,
+        "tol": 1,
+        "sig": 2,
+        "show": "49",
+        "explain": "由 kx = (m<sub>桶</sub> + ρV)g 得 x = {{frac|ρg|k}}V + {{frac|m<sub>桶</sub> g|k}}。斜率 k<sub>图</sub> = {{frac|(6.56−0.56)×10⁻²|3.0×10⁻⁴}} = 200 m⁻²，故 k = {{frac|ρg|k<sub>图</sub>}} = {{frac|1.0×10³ × 9.8|200}} = 49 N/m。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "空水桶的质量 <i>m</i><sub>桶</sub> =",
+        "unit": "kg",
+        "answer": 0.028,
+        "tol": 0.002,
+        "sig": 2,
+        "show": "0.028",
+        "explain": "纵截距 b = {{frac|m<sub>桶</sub> g|k}} = 0.0056 m，所以 m<sub>桶</sub> = {{frac|b k|g}} = {{frac|0.0056 × 49|9.8}} = 0.028 kg。"
+      }
+    ]
+  },
+  {
+    "id": "G2",
+    "source": "2025·重庆卷·第11题（节选）",
+    "verified": true,
+    "stem": "某同学利用压力传感器和螺旋测微器研究竖直压缩弹簧的弹力与长度关系：读出传感器的压力示数 <i>F</i> 和螺旋测微器测出的弹簧压缩量或对应长度 <i>l</i>。某次用螺旋测微器测量时示数如图甲所示，作出弹簧弹力 <i>F</i> 随其长度 <i>l</i> 变化的图像如图乙所示。<br>图甲：<svg viewBox=\"0 0 440 132\" width=\"440\" role=\"img\" aria-label=\"螺旋测微器读数7.415mm\"><rect x=\"6\" y=\"6\" width=\"428\" height=\"120\" rx=\"8\" fill=\"#FBFCFE\" stroke=\"#B9C8DA\"/><rect x=\"14\" y=\"34\" width=\"214.79\" height=\"64\" fill=\"#EEF2F6\" stroke=\"#8E99A6\"/><line x1=\"30.00\" y1=\"66\" x2=\"228.79\" y2=\"66\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"36.00\" y1=\"66\" x2=\"36.00\" y2=\"48\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"36.00\" y=\"45\" font-size=\"11.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">0</text><line x1=\"49.00\" y1=\"66\" x2=\"49.00\" y2=\"79\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"62.00\" y1=\"66\" x2=\"62.00\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"75.00\" y1=\"66\" x2=\"75.00\" y2=\"79\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"88.00\" y1=\"66\" x2=\"88.00\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"101.00\" y1=\"66\" x2=\"101.00\" y2=\"79\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"114.00\" y1=\"66\" x2=\"114.00\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"127.00\" y1=\"66\" x2=\"127.00\" y2=\"79\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"140.00\" y1=\"66\" x2=\"140.00\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"153.00\" y1=\"66\" x2=\"153.00\" y2=\"79\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"166.00\" y1=\"66\" x2=\"166.00\" y2=\"48\" stroke=\"#10233F\" stroke-width=\"1.5\"/><text x=\"166.00\" y=\"45\" font-size=\"11.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">5</text><line x1=\"179.00\" y1=\"66\" x2=\"179.00\" y2=\"79\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"192.00\" y1=\"66\" x2=\"192.00\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"205.00\" y1=\"66\" x2=\"205.00\" y2=\"79\" stroke=\"#10233F\" stroke-width=\"1.1\"/><line x1=\"218.00\" y1=\"66\" x2=\"218.00\" y2=\"54\" stroke=\"#10233F\" stroke-width=\"1.1\"/><polygon points=\"228.79,34 260.79,20 260.79,112 228.79,98\" fill=\"#E4EBF2\" stroke=\"#596574\"/><rect x=\"260.79\" y=\"20\" width=\"161.21\" height=\"92\" fill=\"#D5DEE8\" stroke=\"#596574\"/><line x1=\"230.79\" y1=\"100.10\" x2=\"239.79\" y2=\"100.10\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"93.90\" x2=\"239.79\" y2=\"93.90\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"87.70\" x2=\"239.79\" y2=\"87.70\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"81.50\" x2=\"239.79\" y2=\"81.50\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"75.30\" x2=\"248.79\" y2=\"75.30\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"251.79\" y=\"79.30\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">40</text><line x1=\"230.79\" y1=\"69.10\" x2=\"239.79\" y2=\"69.10\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"62.90\" x2=\"239.79\" y2=\"62.90\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"56.70\" x2=\"239.79\" y2=\"56.70\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"50.50\" x2=\"239.79\" y2=\"50.50\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"44.30\" x2=\"248.79\" y2=\"44.30\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"251.79\" y=\"48.30\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">45</text><line x1=\"230.79\" y1=\"38.10\" x2=\"239.79\" y2=\"38.10\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"230.79\" y1=\"31.90\" x2=\"239.79\" y2=\"31.90\" stroke=\"#10233F\" stroke-width=\"1\"/></svg><br>图乙：<svg viewBox=\"0 0 472 212\" width=\"472\" role=\"img\" aria-label=\"压缩弹簧F-l图像\"><rect x=\"6\" y=\"6\" width=\"460\" height=\"200\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><line x1=\"58\" y1=\"178\" x2=\"418\" y2=\"178\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"58\" y1=\"178\" x2=\"58\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"58\" y1=\"141\" x2=\"408\" y2=\"141\" stroke=\"#E3EAF3\"/><line x1=\"58\" y1=\"104\" x2=\"408\" y2=\"104\" stroke=\"#E3EAF3\"/><line x1=\"58\" y1=\"67\" x2=\"408\" y2=\"67\" stroke=\"#E3EAF3\"/><line x1=\"58\" y1=\"30\" x2=\"408\" y2=\"30\" stroke=\"#E3EAF3\"/><line x1=\"145.5\" y1=\"178\" x2=\"145.5\" y2=\"30\" stroke=\"#E3EAF3\"/><line x1=\"233\" y1=\"178\" x2=\"233\" y2=\"30\" stroke=\"#E3EAF3\"/><line x1=\"320.5\" y1=\"178\" x2=\"320.5\" y2=\"30\" stroke=\"#E3EAF3\"/><line x1=\"408\" y1=\"178\" x2=\"408\" y2=\"30\" stroke=\"#E3EAF3\"/><text x=\"52\" y=\"181\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">0</text><text x=\"52\" y=\"145\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">0.50</text><text x=\"52\" y=\"108\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">1.00</text><text x=\"52\" y=\"71\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">1.50</text><text x=\"52\" y=\"34\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">2.00</text><text x=\"145.5\" y=\"193\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">5.0</text><text x=\"233\" y=\"193\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">10.0</text><text x=\"320.5\" y=\"193\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">15.0</text><text x=\"408\" y=\"193\" font-size=\"11\" text-anchor=\"middle\" fill=\"#4A5B73\">20.0</text><text x=\"420\" y=\"182\" font-size=\"11.5\" font-weight=\"700\" fill=\"#10233F\">l / mm</text><text x=\"65\" y=\"25\" font-size=\"12\" font-weight=\"700\" fill=\"#10233F\">F / N</text><line x1=\"191\" y1=\"41.84\" x2=\"366\" y2=\"178\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><line x1=\"191\" y1=\"41.84\" x2=\"191\" y2=\"178\" stroke=\"#C7374B\" stroke-dasharray=\"3 3\"/><line x1=\"58\" y1=\"41.84\" x2=\"191\" y2=\"41.84\" stroke=\"#C7374B\" stroke-dasharray=\"3 3\"/><circle cx=\"191\" cy=\"41.84\" r=\"3.6\" fill=\"#C7374B\"/><circle cx=\"234.75\" cy=\"75.88\" r=\"3.2\" fill=\"#1661FF\"/><circle cx=\"278.5\" cy=\"109.92\" r=\"3.2\" fill=\"#1661FF\"/><circle cx=\"322.25\" cy=\"143.96\" r=\"3.2\" fill=\"#1661FF\"/><circle cx=\"366\" cy=\"178\" r=\"3.6\" fill=\"#C7374B\"/><text x=\"196\" y=\"38\" font-size=\"11\" font-weight=\"700\" fill=\"#C7374B\">(7.6, 1.84)</text><text x=\"366\" y=\"169\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#C7374B\">17.6</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "图甲中螺旋测微器的读数为",
+        "unit": "mm",
+        "answer": 7.415,
+        "tol": 0.002,
+        "sig": 4,
+        "show": "7.415",
+        "explain": "可动刻度指在 41.5 格（未转过 0 线），7.5 mm 半毫米刻线未露出，故固定刻度读 7.0 mm，总读数 = 7.0 + 41.5 × 0.01 = 7.415 mm。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "由图乙 <i>F</i>-<i>l</i> 图像求得弹簧的劲度系数 <i>k</i> =",
+        "unit": "N/m",
+        "answer": 184,
+        "tol": 2,
+        "sig": 3,
+        "show": "184",
+        "explain": "弹簧受压时 F = k(l₀ − l)，直线斜率绝对值即 k = {{frac|1.84 − 0|(17.6 − 7.6)×10⁻³}} = 184 N/m。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "该弹簧的原长 <i>l</i>₀ =",
+        "unit": "mm",
+        "answer": 17.6,
+        "tol": 0.2,
+        "sig": 3,
+        "show": "17.6",
+        "explain": "当弹力 F = 0 时，弹簧长度即自然原长，图线与横轴交点坐标为 l₀ = 17.6 mm。"
+      }
+    ]
+  },
+  {
+    "id": "G3",
+    "source": "2025·全国卷·第22题",
+    "score": 6,
+    "verified": true,
+    "stem": "某同学利用橡皮筋、钩码、毫米刻度尺与弹簧测力计测定橡皮筋的劲度系数与未知物重（<i>g</i> 取 9.80 m/s²）：<br>(1) 将橡皮筋竖直悬挂，先挂上 200 g 钩码使橡皮筋拉直并标记底端位置为 0.00 cm 基准；再分别挂上总质量为 300 g、400 g、500 g 的钩码，用刻度尺测出底端相对于基准的伸长距离：其中挂 300 g 钩码时的位置如图甲所示，400 g 时为 3.78 cm，500 g 时为 5.66 cm。<br>(2) 挂上一质量未知的钩码，再用弹簧测力计水平向右拉动下端结点，静止时橡皮筋与竖直方向的倾角正切值 tan<i>θ</i> = 0.340（水平与竖直分量比 3.4 : 10.0），弹簧测力计示数放大图如图乙所示。<br>图甲：<svg viewBox=\"0 0 496 108\" width=\"496\" role=\"img\" aria-label=\"毫米刻度尺读数1.90cm\"><rect x=\"24.00\" y=\"18\" width=\"273.60\" height=\"32\" fill=\"#E8CA9C\" stroke=\"#9F7C49\"/><rect x=\"14\" y=\"50\" width=\"474\" height=\"44\" rx=\"4\" fill=\"#FBFCFE\" stroke=\"#9AA8B8\"/><line x1=\"24.00\" y1=\"50\" x2=\"24.00\" y2=\"66\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"24.00\" y=\"82\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">0</text><line x1=\"38.40\" y1=\"50\" x2=\"38.40\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"52.80\" y1=\"50\" x2=\"52.80\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"67.20\" y1=\"50\" x2=\"67.20\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"81.60\" y1=\"50\" x2=\"81.60\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"96.00\" y1=\"50\" x2=\"96.00\" y2=\"61\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"110.40\" y1=\"50\" x2=\"110.40\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"124.80\" y1=\"50\" x2=\"124.80\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"139.20\" y1=\"50\" x2=\"139.20\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"153.60\" y1=\"50\" x2=\"153.60\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"168.00\" y1=\"50\" x2=\"168.00\" y2=\"66\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"168.00\" y=\"82\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">1</text><line x1=\"182.40\" y1=\"50\" x2=\"182.40\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"196.80\" y1=\"50\" x2=\"196.80\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"211.20\" y1=\"50\" x2=\"211.20\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"225.60\" y1=\"50\" x2=\"225.60\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"240.00\" y1=\"50\" x2=\"240.00\" y2=\"61\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"254.40\" y1=\"50\" x2=\"254.40\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"268.80\" y1=\"50\" x2=\"268.80\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"283.20\" y1=\"50\" x2=\"283.20\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"297.60\" y1=\"50\" x2=\"297.60\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"312.00\" y1=\"50\" x2=\"312.00\" y2=\"66\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"312.00\" y=\"82\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">2</text><line x1=\"326.40\" y1=\"50\" x2=\"326.40\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"340.80\" y1=\"50\" x2=\"340.80\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"355.20\" y1=\"50\" x2=\"355.20\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"369.60\" y1=\"50\" x2=\"369.60\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"384.00\" y1=\"50\" x2=\"384.00\" y2=\"61\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"398.40\" y1=\"50\" x2=\"398.40\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"412.80\" y1=\"50\" x2=\"412.80\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"427.20\" y1=\"50\" x2=\"427.20\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"441.60\" y1=\"50\" x2=\"441.60\" y2=\"57\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"456.00\" y1=\"50\" x2=\"456.00\" y2=\"66\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"456.00\" y=\"82\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">3</text><text x=\"480\" y=\"82\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">cm</text><line x1=\"297.60\" y1=\"14\" x2=\"297.60\" y2=\"72\" stroke=\"#C7374B\" stroke-dasharray=\"3 2\" stroke-width=\"1.3\"/></svg><br>图乙：<svg viewBox=\"0 0 540 156\" width=\"540\" role=\"img\" aria-label=\"弹簧测力计读数1.00N与水平拉橡皮筋平衡示意图\"><rect x=\"6\" y=\"6\" width=\"288\" height=\"144\" rx=\"10\" fill=\"#FBFCFE\" stroke=\"#9AA8B8\"/><rect x=\"108\" y=\"14\" width=\"84\" height=\"124\" fill=\"#F3F7FC\" stroke=\"#CBD5E1\"/><line x1=\"120\" y1=\"22.00\" x2=\"140\" y2=\"22.00\" stroke=\"#10233F\" stroke-width=\"1\"/><text x=\"160\" y=\"26.00\" font-size=\"12\" font-weight=\"500\" fill=\"#10233F\">0.5</text><line x1=\"120\" y1=\"29.33\" x2=\"132\" y2=\"29.33\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"36.67\" x2=\"132\" y2=\"36.67\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"44.00\" x2=\"132\" y2=\"44.00\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"51.33\" x2=\"132\" y2=\"51.33\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"58.67\" x2=\"148\" y2=\"58.67\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"160\" y=\"62.67\" font-size=\"12\" font-weight=\"700\" fill=\"#10233F\">1.0</text><line x1=\"120\" y1=\"66.00\" x2=\"132\" y2=\"66.00\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"73.33\" x2=\"132\" y2=\"73.33\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"80.67\" x2=\"132\" y2=\"80.67\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"88.00\" x2=\"132\" y2=\"88.00\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"95.33\" x2=\"140\" y2=\"95.33\" stroke=\"#10233F\" stroke-width=\"1\"/><text x=\"160\" y=\"99.33\" font-size=\"12\" font-weight=\"500\" fill=\"#10233F\">1.5</text><line x1=\"120\" y1=\"102.67\" x2=\"132\" y2=\"102.67\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"110.00\" x2=\"132\" y2=\"110.00\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"117.33\" x2=\"132\" y2=\"117.33\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"124.67\" x2=\"132\" y2=\"124.67\" stroke=\"#10233F\" stroke-width=\"1\"/><line x1=\"120\" y1=\"132.00\" x2=\"148\" y2=\"132.00\" stroke=\"#10233F\" stroke-width=\"1.6\"/><text x=\"160\" y=\"136.00\" font-size=\"12\" font-weight=\"700\" fill=\"#10233F\">2.0</text><line x1=\"94\" y1=\"58.67\" x2=\"152\" y2=\"58.67\" stroke=\"#C7374B\" stroke-width=\"2.4\"/><polygon points=\"94,53.67 106,58.67 94,63.67\" fill=\"#C7374B\"/><text x=\"240\" y=\"78\" font-size=\"12.5\" font-weight=\"700\" fill=\"#4A5B73\">单位：N</text><rect x=\"306\" y=\"6\" width=\"226\" height=\"144\" rx=\"10\" fill=\"#F8FBFF\" stroke=\"#9AA8B8\"/><line x1=\"346\" y1=\"20\" x2=\"424\" y2=\"20\" stroke=\"#596574\" stroke-width=\"3\"/><line x1=\"380\" y1=\"20\" x2=\"380\" y2=\"108\" stroke=\"#94A3B8\" stroke-dasharray=\"4 3\"/><line x1=\"380\" y1=\"20\" x2=\"410\" y2=\"108\" stroke=\"#7A5C3E\" stroke-width=\"3\"/><line x1=\"410\" y1=\"108\" x2=\"486\" y2=\"108\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><polygon points=\"488,108 478,103 478,113\" fill=\"#1661FF\"/><line x1=\"410\" y1=\"108\" x2=\"410\" y2=\"124\" stroke=\"#10233F\" stroke-width=\"1.6\"/><rect x=\"398\" y=\"124\" width=\"24\" height=\"18\" rx=\"2\" fill=\"#8E99A6\" stroke=\"#4A5B73\"/><text x=\"410\" y=\"137\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#fff\">m</text><text x=\"385\" y=\"76\" font-size=\"12\" font-weight=\"700\" fill=\"#10233F\">θ</text><text x=\"452\" y=\"99\" font-size=\"12\" font-weight=\"700\" fill=\"#1661FF\">F（水平）</text><text x=\"434\" y=\"134\" font-size=\"11\" fill=\"#4A5B73\">tanθ=0.340</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "图甲刻度尺读数为",
+        "unit": "cm",
+        "answer": 1.9,
+        "tol": 0.02,
+        "sig": 3,
+        "show": "1.90",
+        "replay": "E4",
+        "explain": "指针恰好对齐 1.9 cm 刻线，毫米刻度尺须估读到 0.01 cm，故保留两位小数写为 1.90 cm。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "对比 200 g 到 500 g 的测量数据，该橡皮筋的伸长量（相对于 200 g 基准）与____成正比。",
+        "options": ["所挂钩码的总重力", "质量的增加量", "钩码质量的平方", "橡皮筋的总长度"],
+        "answer": 1,
+        "explain": "以 200 g 时为基准，每增加 100 g（质量增加量 Δm = 100 g），橡皮筋多伸长约 1.89 cm，可见伸长量与质量的增加量成正比。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "由 200 g~500 g 数据求得该橡皮筋的劲度系数 <i>k</i> ≈（结果保留 2 位有效数字）",
+        "unit": "N/m",
+        "answer": 52,
+        "tol": 1,
+        "sig": 2,
+        "show": "52",
+        "explain": "质量增加量 Δm = 0.500 − 0.200 = 0.300 kg，对应弹力增量 ΔF = 0.300 × 9.80 = 2.94 N，伸长量 Δx = 5.66 cm = 0.0566 m，故 k = {{frac|2.94|0.0566}} ≈ 52 N/m。"
+      },
+      {
+        "label": "(4)",
+        "type": "numeric",
+        "prompt": "图乙弹簧测力计（最小分度 0.1 N）的示数 <i>F</i> =",
+        "unit": "N",
+        "answer": 1,
+        "tol": 0.02,
+        "sig": 3,
+        "show": "1.00",
+        "explain": "弹簧测力计最小分度 0.1 N，须估读到 0.01 N，指针正对 1.0 N 刻线，读数为 1.00 N。"
+      },
+      {
+        "label": "(5)",
+        "type": "numeric",
+        "prompt": "此时所挂未知钩码的质量 <i>m</i> =",
+        "unit": "g",
+        "answer": 300,
+        "tol": 10,
+        "show": "300",
+        "explain": "由共点力平衡 tanθ = {{frac|F|mg}} 得 mg = {{frac|1.00|0.340}} = 2.94 N，故 m = {{frac|2.94|9.80}} = 0.300 kg = 300 g。"
+      }
+    ]
+  },
+  {
+    "id": "G4",
+    "source": "2026·广东卷·第12(1)题（节选）",
+    "verified": true,
+    "stem": "某实验小组为标定棉花回潮率测控装置中的轻质弹簧劲度系数，将弹簧竖直悬挂并逐次挂上已知质量的砝码，测出对应伸长量 <i>x</i> 后作出了 <i>F</i>-<i>x</i> 关系图像（如图）。<svg viewBox=\"0 0 420 140\" width=\"420\" role=\"img\" aria-label=\"弹簧挂砝码与F-x图像示意图\"><rect x=\"8\" y=\"8\" width=\"172\" height=\"124\" rx=\"8\" fill=\"#F8FBFF\" stroke=\"#B9C8DA\"/><line x1=\"34\" y1=\"20\" x2=\"120\" y2=\"20\" stroke=\"#596574\" stroke-width=\"3\"/><path d=\"M74,20 L74,30 L66,34 L82,40 L66,46 L82,52 L66,58 L82,64 L74,68 L74,78\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2\"/><line x1=\"74\" y1=\"58\" x2=\"108\" y2=\"58\" stroke=\"#C7374B\" stroke-width=\"2\"/><rect x=\"62\" y=\"78\" width=\"24\" height=\"16\" rx=\"2\" fill=\"#8E99A6\"/><line x1=\"114\" y1=\"18\" x2=\"114\" y2=\"118\" stroke=\"#10233F\" stroke-width=\"1.4\"/><text x=\"122\" y=\"64\" font-size=\"11\" fill=\"#4A5B73\">刻度尺</text><rect x=\"194\" y=\"8\" width=\"218\" height=\"124\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><line x1=\"228\" y1=\"112\" x2=\"396\" y2=\"112\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"228\" y1=\"112\" x2=\"228\" y2=\"22\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"228\" y1=\"112\" x2=\"378\" y2=\"32\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><circle cx=\"258\" cy=\"96\" r=\"3\" fill=\"#1661FF\"/><circle cx=\"288\" cy=\"80\" r=\"3\" fill=\"#1661FF\"/><circle cx=\"318\" cy=\"64\" r=\"3\" fill=\"#1661FF\"/><circle cx=\"348\" cy=\"48\" r=\"3\" fill=\"#1661FF\"/><text x=\"396\" y=\"124\" font-size=\"11\" text-anchor=\"end\" fill=\"#10233F\">x</text><text x=\"235\" y=\"28\" font-size=\"11\" fill=\"#10233F\">F</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "text-choice",
+        "prompt": "每次挂上砝码后，应待砝码处于____后再读取指针在刻度尺上的位置。",
+        "options": ["刚松手瞬间", "静止", "振幅最大处", "任意运动时刻"],
+        "answer": 1,
+        "replay": "E3",
+        "explain": "只有待砝码完全静止处于平衡状态时，弹簧弹力才严格等于砝码重力 F = mg，否则振动中的瞬时加速度会造成较大误差。"
+      },
+      {
+        "label": "(2)",
+        "type": "choice",
+        "prompt": "作出的 <i>F</i>-<i>x</i> 图像是一条过原点的倾斜直线，该图线的斜率表示？",
+        "options": ["弹簧的原长 <i>l</i>₀", "弹簧的劲度系数 <i>k</i>", "劲度系数的倒数 1/<i>k</i>", "砝码的总质量"],
+        "answer": 1,
+        "explain": "由胡克定律 F = kx 可知，F-x 图像的斜率等于弹簧的劲度系数 k。"
+      }
+    ]
+  },
+  {
+    "id": "G5",
+    "source": "2026·重庆卷·第11题（节选·压轴迁移）",
+    "verified": true,
+    "stem": "气弹簧在汽车尾门中应用广泛。某同学探究气弹簧压缩过程中的力学特性：将气弹簧竖直固定，上端放置压力传感器测量压力 <i>F</i>，在行程杆上标记参考点并测量压缩位移 <i>x</i>，作出 <i>F</i>-<i>x</i> 图像如图所示（图线从 <i>x</i> = 0、<i>F</i> = 123 N 线性上升至 <i>x</i> = 3.00 cm、<i>F</i> = 134 N）。<svg viewBox=\"0 0 460 198\" width=\"460\" role=\"img\" aria-label=\"气弹簧F-x图像与面积求功\"><rect x=\"8\" y=\"8\" width=\"136\" height=\"182\" rx=\"8\" fill=\"#F8FBFF\" stroke=\"#B9C8DA\"/><rect x=\"36\" y=\"162\" width=\"80\" height=\"12\" rx=\"2\" fill=\"#596574\"/><rect x=\"62\" y=\"96\" width=\"28\" height=\"66\" rx=\"3\" fill=\"#8E99A6\" stroke=\"#4A5B73\"/><rect x=\"70\" y=\"52\" width=\"12\" height=\"44\" fill=\"#DCE4EC\" stroke=\"#596574\"/><rect x=\"50\" y=\"34\" width=\"52\" height=\"18\" rx=\"3\" fill=\"#1661FF\"/><text x=\"76\" y=\"47\" font-size=\"10.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#fff\">传感器</text><text x=\"76\" y=\"132\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#fff\">气弹簧</text><rect x=\"156\" y=\"8\" width=\"296\" height=\"182\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><polygon points=\"212,166 212,62 392,50 392,166\" fill=\"rgba(22,97,255,0.12)\"/><line x1=\"212\" y1=\"166\" x2=\"436\" y2=\"166\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"212\" y1=\"166\" x2=\"212\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"212\" y1=\"62\" x2=\"392\" y2=\"50\" stroke=\"#1661FF\" stroke-width=\"2.4\"/><line x1=\"392\" y1=\"50\" x2=\"392\" y2=\"166\" stroke=\"#C7374B\" stroke-dasharray=\"3 3\"/><circle cx=\"212\" cy=\"62\" r=\"3.5\" fill=\"#C7374B\"/><circle cx=\"392\" cy=\"50\" r=\"3.5\" fill=\"#C7374B\"/><text x=\"206\" y=\"170\" font-size=\"11\" text-anchor=\"end\" fill=\"#4A5B73\">0</text><text x=\"206\" y=\"66\" font-size=\"11\" font-weight=\"700\" text-anchor=\"end\" fill=\"#10233F\">123</text><text x=\"206\" y=\"48\" font-size=\"11\" font-weight=\"700\" text-anchor=\"end\" fill=\"#C7374B\">134</text><text x=\"392\" y=\"180\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#10233F\">3.00</text><text x=\"442\" y=\"182\" font-size=\"11\" font-weight=\"700\" text-anchor=\"end\" fill=\"#10233F\">x/cm</text><text x=\"218\" y=\"25\" font-size=\"11.5\" font-weight=\"700\" fill=\"#10233F\">F/N</text><text x=\"302\" y=\"122\" font-size=\"11.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1661FF\">面积 = W</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "choice",
+        "prompt": "为测量行程杆移动的压缩位移 <i>x</i>，还需选用的测量器材是？",
+        "options": ["机械停表", "托盘天平", "毫米刻度尺", "打点计时器"],
+        "answer": 2,
+        "explain": "测量压缩位移长度 x（厘米级），需选用毫米刻度尺。"
+      },
+      {
+        "label": "(2)",
+        "type": "numeric",
+        "prompt": "由 <i>F</i>-<i>x</i> 图像求得该气弹簧的等效劲度系数 <i>k</i> =",
+        "unit": "N/m",
+        "answer": 367,
+        "tol": 5,
+        "sig": 3,
+        "show": "367",
+        "explain": "等效劲度系数等于直线斜率：k = {{frac|ΔF|Δx}} = {{frac|134 − 123|0.0300}} ≈ 367 N/m。"
+      },
+      {
+        "label": "(3)",
+        "type": "numeric",
+        "prompt": "在压缩 3.00 cm 的过程中，利用 <i>F</i>-<i>x</i> 图像与坐标轴围成的面积求得克服气弹簧弹力做功的大小 <i>W</i> =",
+        "unit": "J",
+        "answer": 3.86,
+        "tol": 0.05,
+        "sig": 3,
+        "show": "3.86",
+        "explain": "梯形面积 W = {{frac|1|2}}(F₀ + F₁)x = {{frac|1|2}}×(123 + 134)×0.0300 = 3.855 ≈ 3.86 J。"
+      }
+    ]
+  },
+  {
+    "id": "G6",
+    "source": "2025·黑吉辽蒙卷·第12题（节选·压轴迁移）",
+    "verified": true,
+    "stem": "某研究小组用如图所示装置测量小芒果的质量 <i>m</i>₀：将不可伸长的轻绳 1 与橡皮筋系于结点 O，使绳 1 与竖直方向成 30° 角，且始终保持橡皮筋与绳 1 <b>相互垂直</b>。先用已知质量的标准砝码标定出橡皮筋伸长量 <i>x</i> 与所挂质量 <i>m</i> 的关系图线（如图右所示）；再换挂芒果，测得橡皮筋伸长量 <i>x</i> = 5.30 cm。<svg viewBox=\"0 0 568 206\" width=\"568\" role=\"img\" aria-label=\"垂直橡皮筋测芒果质量装置与x-m校准图\"><rect x=\"8\" y=\"8\" width=\"198\" height=\"190\" rx=\"8\" fill=\"#F8FBFF\" stroke=\"#B9C8DA\"/><line x1=\"24\" y1=\"24\" x2=\"190\" y2=\"24\" stroke=\"#596574\" stroke-width=\"3\"/><line x1=\"110\" y1=\"24\" x2=\"110\" y2=\"130\" stroke=\"#94A3B8\" stroke-dasharray=\"4 3\"/><line x1=\"62\" y1=\"24\" x2=\"110\" y2=\"107\" stroke=\"#10233F\" stroke-width=\"2\"/><line x1=\"110\" y1=\"107\" x2=\"174\" y2=\"70\" stroke=\"#7A5C3E\" stroke-width=\"3\"/><polyline points=\"104,96 115,90 121,101\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"1.4\"/><line x1=\"110\" y1=\"107\" x2=\"110\" y2=\"142\" stroke=\"#10233F\" stroke-width=\"1.6\"/><circle cx=\"110\" cy=\"156\" r=\"15\" fill=\"#E69B2D\" stroke=\"#9A5A00\"/><text x=\"110\" y=\"160\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#fff\">m₀</text><text x=\"80\" y=\"76\" font-size=\"11\" font-weight=\"700\" text-anchor=\"end\" fill=\"#10233F\">绳1</text><text x=\"92\" y=\"52\" font-size=\"11\" fill=\"#4A5B73\">30°</text><text x=\"148\" y=\"104\" font-size=\"11\" font-weight=\"700\" fill=\"#7A5C3E\">橡皮筋</text><rect x=\"218\" y=\"8\" width=\"342\" height=\"190\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><line x1=\"264\" y1=\"172\" x2=\"514\" y2=\"172\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"264\" y1=\"172\" x2=\"264\" y2=\"22\" stroke=\"#10233F\" stroke-width=\"1.5\"/><line x1=\"264\" y1=\"144\" x2=\"504\" y2=\"144\" stroke=\"#E3EAF3\"/><line x1=\"264\" y1=\"116\" x2=\"504\" y2=\"116\" stroke=\"#E3EAF3\"/><line x1=\"264\" y1=\"88\" x2=\"504\" y2=\"88\" stroke=\"#E3EAF3\"/><line x1=\"264\" y1=\"60\" x2=\"504\" y2=\"60\" stroke=\"#E3EAF3\"/><line x1=\"264\" y1=\"32\" x2=\"504\" y2=\"32\" stroke=\"#E3EAF3\"/><line x1=\"324\" y1=\"172\" x2=\"324\" y2=\"32\" stroke=\"#E3EAF3\"/><line x1=\"384\" y1=\"172\" x2=\"384\" y2=\"32\" stroke=\"#E3EAF3\"/><line x1=\"444\" y1=\"172\" x2=\"444\" y2=\"32\" stroke=\"#E3EAF3\"/><line x1=\"504\" y1=\"172\" x2=\"504\" y2=\"32\" stroke=\"#E3EAF3\"/><line x1=\"264\" y1=\"172\" x2=\"504\" y2=\"32\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><line x1=\"264\" y1=\"97.8\" x2=\"391.2\" y2=\"97.8\" stroke=\"#C7374B\" stroke-dasharray=\"3 3\" stroke-width=\"1.4\"/><line x1=\"391.2\" y1=\"97.8\" x2=\"391.2\" y2=\"172\" stroke=\"#C7374B\" stroke-dasharray=\"3 3\" stroke-width=\"1.4\"/><circle cx=\"391.2\" cy=\"97.8\" r=\"3.6\" fill=\"#C7374B\"/><text x=\"258\" y=\"175\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#4A5B73\">0</text><text x=\"258\" y=\"148\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#4A5B73\">2.0</text><text x=\"258\" y=\"120\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#4A5B73\">4.0</text><text x=\"258\" y=\"92\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#4A5B73\">6.0</text><text x=\"258\" y=\"64\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#4A5B73\">8.0</text><text x=\"258\" y=\"36\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#4A5B73\">10.0</text><text x=\"324\" y=\"186\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#4A5B73\">50</text><text x=\"384\" y=\"186\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#4A5B73\">100</text><text x=\"444\" y=\"186\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#4A5B73\">150</text><text x=\"504\" y=\"186\" font-size=\"10.5\" text-anchor=\"middle\" fill=\"#4A5B73\">200</text><text x=\"518\" y=\"176\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">m/g</text><text x=\"270\" y=\"25\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">x/cm</text><text x=\"272\" y=\"93\" font-size=\"10.5\" font-weight=\"700\" fill=\"#C7374B\">5.30</text><text x=\"396\" y=\"166\" font-size=\"10.5\" font-weight=\"700\" fill=\"#C7374B\">106</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "numeric",
+        "prompt": "由 <i>x</i>-<i>m</i> 校准图线查得小芒果的质量 <i>m</i>₀ =",
+        "unit": "g",
+        "answer": 106,
+        "tol": 2,
+        "sig": 3,
+        "show": "106",
+        "explain": "校准直线的斜率为 {{frac|10.0 cm|200 g}} = 0.050 cm/g，当伸长量 x = 5.30 cm 时，对应质量 m₀ = {{frac|5.30|0.050}} = 106 g。"
+      },
+      {
+        "label": "(2)",
+        "type": "text-choice",
+        "prompt": "若实验中不小心使橡皮筋没有垂直于绳 1（绳 1 与竖直方向夹角仍为 30°），则由同一校准图线查出的质量读数将____。",
+        "options": ["偏大", "偏小", "不变"],
+        "answer": 0,
+        "explain": "由共点力三角形定则，重物重力 mg 与绳 1 方向固定时，当橡皮筋垂直于绳 1 时弹力最小（F = mg sin30°）。若不垂直，所需弹力必然变大，橡皮筋伸长量 x 变大，故按原校准图线查出的质量读数偏大。"
+      },
+      {
+        "label": "(3)",
+        "type": "text-choice",
+        "prompt": "若橡皮筋的最大安全拉力一定，为增大该装置能测量的最大质量（量程），应____绳 1 与竖直方向的夹角。",
+        "options": ["增大", "减小"],
+        "answer": 1,
+        "explain": "因平衡时 F = m g sinθ，可得最大可测质量 m<sub>max</sub> = {{frac|F<sub>max</sub>|g sinθ}}。要增大量程 m<sub>max</sub>，须减小 sinθ，即减小绳 1 与竖直方向的夹角 θ。"
+      }
+    ]
+  },
+  {
+    "id": "G7",
+    "source": "改编自 2026·河北卷·第12(2)题",
+    "verified": true,
+    "stem": "某同学研究电控气动门缓冲弹簧的弹力 <i>F</i> 与压缩形变量 <i>x</i> 的关系，测得 6 组实验数据如下表：<table class=\"dt\"><tr><th>形变量 x / mm</th><td>5</td><td>10</td><td>15</td><td>20</td><td>25</td><td>30</td></tr><tr><th>弹力 F / N</th><td>1.10</td><td>2.20</td><td>3.30</td><td>4.40</td><td>5.50</td><td>6.60</td></tr></table>请在下面坐标纸上描出全部 6 个数据点，并拖动蓝色直线手柄作出 <i>F</i>-<i>x</i> 拟合直线。",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "plot",
+        "prompt": "在坐标纸上描点作 <i>F</i>-<i>x</i> 直线（验证线性并拟合出正确斜率）",
+        "xLabel": "x / mm",
+        "yLabel": "F / N",
+        "x": [0, 35],
+        "y": [0, 7],
+        "points": [[5, 1.10], [10, 2.20], [15, 3.30], [20, 4.40], [25, 5.50], [30, 6.60]],
+        "snap": [1, 0.1],
+        "ptTol": [1, 0.2],
+        "slope": 0.22,
+        "tol": 0.02,
+        "lineInit": [[0, 0.5], [25, 4.0]],
+        "replay": "E6",
+        "explain": "依次在 (5, 1.10)、(10, 2.20)、(15, 3.30)、(20, 4.40)、(25, 5.50)、(30, 6.60) 描点，6 个点严格落在过原点的直线上，斜率 k = {{frac|6.60|30}} = 0.22 N/mm（即 220 N/m）。"
+      }
+    ]
+  },
+  {
+    "id": "Y1",
+    "source": "原创",
+    "verified": true,
+    "stem": "在“探究弹簧弹力与形变量的关系”实验中，某同学记录了弹簧原长测定及超限弯曲的实验现象，如图所示。<svg viewBox=\"0 0 460 164\" width=\"460\" role=\"img\" aria-label=\"水平测原长截距与超弹性限度弯曲示意图\"><rect x=\"8\" y=\"8\" width=\"216\" height=\"148\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><text x=\"18\" y=\"23\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">图甲：自重对比</text><line x1=\"40\" y1=\"134\" x2=\"212\" y2=\"134\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"40\" y1=\"134\" x2=\"40\" y2=\"32\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"40\" y1=\"134\" x2=\"165\" y2=\"40\" stroke=\"#25A870\" stroke-width=\"2\"/><line x1=\"66\" y1=\"134\" x2=\"191\" y2=\"40\" stroke=\"#C7374B\" stroke-width=\"2\" stroke-dasharray=\"4 3\"/><text x=\"128\" y=\"52\" font-size=\"10.5\" font-weight=\"700\" fill=\"#17784F\">竖直测 l₀</text><text x=\"152\" y=\"96\" font-size=\"10.5\" font-weight=\"700\" fill=\"#C7374B\">水平测 l₀</text><text x=\"72\" y=\"147\" font-size=\"10.5\" font-weight=\"700\" fill=\"#C7374B\">x₀</text><text x=\"216\" y=\"148\" font-size=\"10.5\" text-anchor=\"end\">x</text><text x=\"34\" y=\"42\" font-size=\"10.5\" text-anchor=\"end\">F</text><rect x=\"236\" y=\"8\" width=\"216\" height=\"148\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><text x=\"246\" y=\"23\" font-size=\"11\" font-weight=\"700\" fill=\"#10233F\">图乙：超弹性限度</text><line x1=\"268\" y1=\"134\" x2=\"440\" y2=\"134\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"268\" y1=\"134\" x2=\"268\" y2=\"32\" stroke=\"#10233F\" stroke-width=\"1.4\"/><path d=\"M268,134 L348,66 Q388,46 432,44\" fill=\"none\" stroke=\"#C7374B\" stroke-width=\"2.2\"/><line x1=\"348\" y1=\"66\" x2=\"390\" y2=\"30\" stroke=\"#94A3B8\" stroke-dasharray=\"3 3\"/><text x=\"440\" y=\"148\" font-size=\"10.5\" text-anchor=\"end\">x</text><text x=\"262\" y=\"42\" font-size=\"10.5\" text-anchor=\"end\">F</text><text x=\"362\" y=\"84\" font-size=\"10.5\" font-weight=\"700\" fill=\"#C7374B\">向 x 轴弯曲</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "choice",
+        "prompt": "使用自身重力不可忽略的弹簧时，若先将弹簧水平放平测出原长 <i>l</i>₀，再竖直悬挂挂钩码测总长 <i>l</i> 并以 <i>x</i> = <i>l</i> − <i>l</i>₀ 作 <i>F</i>-<i>x</i> 图像（图甲红线），与规范操作相比？",
+        "options": [
+          "图像仍过原点，测得劲度系数 <i>k</i> 偏大",
+          "图像在 <i>x</i> 轴正半轴有截距 <i>x</i>₀，斜率仍等于真实 <i>k</i>",
+          "图像在 <i>F</i> 轴正半轴有截距，测得 <i>k</i> 偏小",
+          "图像在 <i>x</i> 轴负半轴有截距，测得 <i>k</i> 偏小"
+        ],
+        "answer": 1,
+        "replay": "E2",
+        "explain": "水平原长比竖直悬挂自然原长短了 Δl<sub>自重</sub> = m<sub>弹</sub> g/(2k)，所以 F = 0 时 x = Δl<sub>自重</sub> > 0，图像在 x 轴正半轴出现截距，但斜率 k 不受影响。"
+      },
+      {
+        "label": "(2)",
+        "type": "multi",
+        "prompt": "关于本实验的图像处理与误差分析，下列说法正确的有（多选）：",
+        "options": [
+          "直接作 <i>F</i>-<i>l</i> 图像时，图线与 <i>l</i> 轴的交点横坐标即等于弹簧竖直悬挂时的自然原长",
+          "毫米刻度尺未竖直放置而倾斜 <i>θ</i> 角，会使测得的劲度系数 <i>k</i> 偏小",
+          "当所挂钩码超出弹性限度时，<i>F</i>-<i>x</i> 图像（横轴 <i>x</i>）末端将向 <i>F</i> 轴方向弯曲",
+          "坐标纸描点后应舍去偏差过大的坏点，画平滑直线让其余点均匀分布在两侧"
+        ],
+        "answer": [0, 1, 3],
+        "replay": "E5",
+        "explain": "A 正确（F = k(l−l₀) 令 F=0 得 l=l₀）；B 正确（x<sub>测</sub> = x/cosθ 偏大，故 k<sub>测</sub> = k cosθ 偏小）；C 错误（超限后斜率减小，F-x 图像向 x 轴弯曲）；D 正确。"
+      }
+    ]
+  },
+  {
+    "id": "Y2",
+    "source": "原创",
+    "verified": true,
+    "stem": "请拼写以下两种情景中的劲度系数表达式：<br>(1) 作出弹簧弹力 <i>F</i> 与总长度 <i>l</i> 的 <i>F</i>-<i>l</i> 直线，在直线上取相距较远的两点 (<i>l</i>₁, <i>F</i>₁) 和 (<i>l</i>₂, <i>F</i>₂)（其中 <i>l</i>₂ > <i>l</i>₁）；<br>(2) 将劲度系数分别为 <i>k</i>₁、<i>k</i>₂ 的两根轻质弹簧串联悬挂，受到相同拉力 <i>F</i> 时总伸长量等于两弹簧伸长量之和。<svg viewBox=\"0 0 460 156\" width=\"460\" role=\"img\" aria-label=\"F-l两点求斜率与双弹簧串联示意图\"><rect x=\"8\" y=\"8\" width=\"246\" height=\"140\" rx=\"8\" fill=\"#fff\" stroke=\"#B9C8DA\"/><line x1=\"44\" y1=\"128\" x2=\"238\" y2=\"128\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"44\" y1=\"128\" x2=\"44\" y2=\"24\" stroke=\"#10233F\" stroke-width=\"1.4\"/><line x1=\"78\" y1=\"128\" x2=\"216\" y2=\"34\" stroke=\"#1661FF\" stroke-width=\"2.2\"/><circle cx=\"116\" cy=\"102\" r=\"3.5\" fill=\"#C7374B\"/><circle cx=\"190\" cy=\"52\" r=\"3.5\" fill=\"#C7374B\"/><line x1=\"116\" y1=\"102\" x2=\"190\" y2=\"102\" stroke=\"#94A3B8\" stroke-dasharray=\"3 2\"/><line x1=\"190\" y1=\"52\" x2=\"190\" y2=\"102\" stroke=\"#94A3B8\" stroke-dasharray=\"3 2\"/><text x=\"114\" y=\"94\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#C7374B\">(l₁,F₁)</text><text x=\"186\" y=\"46\" font-size=\"10.5\" text-anchor=\"end\" fill=\"#C7374B\">(l₂,F₂)</text><text x=\"240\" y=\"142\" font-size=\"10.5\" text-anchor=\"end\">l</text><text x=\"50\" y=\"28\" font-size=\"10.5\">F</text><rect x=\"266\" y=\"8\" width=\"186\" height=\"140\" rx=\"8\" fill=\"#F8FBFF\" stroke=\"#B9C8DA\"/><line x1=\"320\" y1=\"20\" x2=\"396\" y2=\"20\" stroke=\"#596574\" stroke-width=\"3\"/><path d=\"M358,20 L358,28 L350,32 L366,38 L350,44 L366,50 L358,54 L358,64\" fill=\"none\" stroke=\"#1661FF\" stroke-width=\"2\"/><path d=\"M358,64 L358,72 L350,76 L366,82 L350,88 L366,94 L358,98 L358,108\" fill=\"none\" stroke=\"#25A870\" stroke-width=\"2\"/><rect x=\"344\" y=\"108\" width=\"28\" height=\"20\" rx=\"2\" fill=\"#8E99A6\"/><text x=\"358\" y=\"122\" font-size=\"10.5\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#fff\">F</text><text x=\"374\" y=\"44\" font-size=\"11\" font-weight=\"700\" fill=\"#1661FF\">k₁</text><text x=\"374\" y=\"88\" font-size=\"11\" font-weight=\"700\" fill=\"#17784F\">k₂</text></svg>",
+    "parts": [
+      {
+        "label": "(1)",
+        "type": "expr",
+        "prompt": "用直线上两点的坐标写出弹簧劲度系数表达式：",
+        "lhs": "<i>k</i> =",
+        "vars": { "F1": "F₁", "F2": "F₂", "l1": "l₁", "l2": "l₂" },
+        "extra": ["1", "2"],
+        "answer": "(F2-F1)/(l2-l1)",
+        "show": "(F2 - F1) / (l2 - l1)",
+        "explain": "由 F₁ = k(l₁ − l₀) 与 F₂ = k(l₂ − l₀) 两式相减消去未知原长 l₀，即得 k = {{frac|F₂ − F₁|l₂ − l₁}}。"
+      },
+      {
+        "label": "(2)",
+        "type": "expr",
+        "prompt": "写出两弹簧串联后的等效劲度系数表达式：",
+        "lhs": "<i>k</i><sub>串</sub> =",
+        "vars": { "k1": "k₁", "k2": "k₂" },
+        "extra": ["1", "2"],
+        "answer": "k1*k2/(k1+k2)",
+        "show": "k1 * k2 / (k1 + k2)",
+        "explain": "串联时两弹簧弹力均为 F，总伸长 x = x₁ + x₂ = {{frac|F|k₁}} + {{frac|F|k₂}} = {{frac|F|k<sub>串</sub>}}，整理得 {{frac|1|k<sub>串</sub>}} = {{frac|1|k₁}} + {{frac|1|k₂}}，即 k<sub>串</sub> = {{frac|k₁ k₂|k₁ + k₂}}。"
+      }
+    ]
+  }
+]

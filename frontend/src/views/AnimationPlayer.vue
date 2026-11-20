@@ -11,6 +11,34 @@
           </div>
         </div>
         <div class="page-header-actions">
+          <template v-if="isTeacher">
+            <el-select
+              v-model="selectedClass"
+              size="small"
+              placeholder="选择班级"
+              :teleported="false"
+              class="classroom-class-select"
+              @change="restartDanmakuPolling"
+            >
+              <el-option v-for="name in availableClasses" :key="name" :label="name" :value="name" />
+            </el-select>
+            <el-button
+              size="small"
+              :type="realtimeOpen ? 'danger' : 'primary'"
+              :loading="sessionActionLoading"
+              :disabled="!selectedClass"
+              @click="toggleDanmakuSession"
+            >{{ realtimeOpen ? `弹幕开启中 ${remainingLabel} · 关闭` : '开启本班弹幕 (40min)' }}</el-button>
+          </template>
+          <el-button v-if="realtimeOpen" size="small" :aria-pressed="danmakuVisible" @click="danmakuVisible = !danmakuVisible">
+            弹幕{{ danmakuVisible ? '：开' : '：关' }}
+          </el-button>
+          <el-button v-if="realtimeOpen" size="small" @click="questionDrawerVisible = true">
+            课堂提问<template v-if="!isTeacher"> · {{ remainingLabel }}</template>
+          </el-button>
+          <el-button v-if="isTeacher && animation?.has_quiz" size="small" @click="quizStatsDrawerVisible = true">
+            作答统计
+          </el-button>
           <el-button @click="togglePresentationMode">
             {{ isPresentationMode ? '退出沉浸模式' : '沉浸播放' }}
           </el-button>
@@ -36,6 +64,81 @@
       >
         退出沉浸模式
       </el-button>
+      <div
+        v-if="isPresentationMode && fullscreenControlsVisible"
+        class="presentation-classroom-controls"
+      >
+        <template v-if="isTeacher">
+          <el-select
+            v-model="selectedClass"
+            size="small"
+            placeholder="选择班级"
+            :teleported="false"
+            class="classroom-class-select"
+            @change="restartDanmakuPolling"
+          >
+            <el-option v-for="name in availableClasses" :key="name" :label="name" :value="name" />
+          </el-select>
+          <el-button
+            size="small"
+            :type="realtimeOpen ? 'danger' : 'primary'"
+            :loading="sessionActionLoading"
+            :disabled="!selectedClass"
+            @click="toggleDanmakuSession"
+          >{{ realtimeOpen ? `${remainingLabel} · 关闭弹幕` : '开启弹幕 (40min)' }}</el-button>
+        </template>
+        <el-button v-if="realtimeOpen" size="small" :aria-pressed="danmakuVisible" @click="danmakuVisible = !danmakuVisible">
+          弹幕{{ danmakuVisible ? '：开' : '：关' }}
+        </el-button>
+        <el-button v-if="realtimeOpen" size="small" type="primary" @click="questionDrawerVisible = true">
+          课堂提问
+        </el-button>
+        <el-button v-if="isTeacher && animation?.has_quiz" size="small" @click="quizStatsDrawerVisible = true">
+          作答统计
+        </el-button>
+        <el-button size="small" @click="questionDrawerVisible = true">历史提问 ({{ historyTotal }})</el-button>
+      </div>
+      <ClassroomDanmakuOverlay
+        v-if="realtimeOpen"
+        :key="danmakuState.session_id"
+        :enabled="danmakuVisible"
+        :messages="danmakuMessages"
+      />
+      <el-drawer
+        v-model="questionDrawerVisible"
+        title="课堂提问与历史提问墙"
+        size="420px"
+        :append-to-body="false"
+        class="classroom-drawer"
+      >
+        <ClassroomQuestionPanel
+          :animation-id="animationId"
+          :class-name="selectedClass"
+          :classes="availableClasses"
+          :is-teacher="isTeacher"
+          :realtime-open="realtimeOpen"
+          :realtime-messages="danmakuMessages"
+          :remaining-seconds="remainingSeconds"
+          :refresh-key="classroomRefreshKey"
+          @sent="handleRealtimeSent"
+          @upvote-changed="handleUpvoteChanged"
+          @message-moderated="handleMessageModerated"
+          @total-change="historyTotal = $event"
+        />
+      </el-drawer>
+      <el-drawer
+        v-model="quizStatsDrawerVisible"
+        title="课堂数据 · 作答统计"
+        size="760px"
+        :append-to-body="false"
+        class="quiz-stats-drawer"
+      >
+        <CoursewareQuizStatsPanel
+          v-if="quizStatsDrawerVisible"
+          :animation-id="animationId"
+          :class-name="selectedClass"
+        />
+      </el-drawer>
       <el-row :gutter="20">
         <el-col :xs="24" :sm="24" :lg="isPresentationMode ? 24 : 18">
           <el-card class="player-card" :body-style="{ padding: isPresentationMode ? '0' : '20px' }">
@@ -70,6 +173,24 @@
             <p><strong>观看次数：</strong>{{ animation?.view_count }}</p>
             <p><strong>评分：</strong>{{ animation?.avg_rating || '暂无评分' }}</p>
           </el-card>
+
+          <el-card class="question-wall-card">
+            <template #header>
+              <span>课件历史弹幕区 / 提问墙</span>
+            </template>
+            <ClassroomQuestionPanel
+              compact
+              :animation-id="animationId"
+              :class-name="selectedClass"
+              :classes="availableClasses"
+              :is-teacher="isTeacher"
+              :realtime-open="false"
+              :refresh-key="classroomRefreshKey"
+              @upvote-changed="handleUpvoteChanged"
+              @message-moderated="handleMessageModerated"
+              @total-change="historyTotal = $event"
+            />
+          </el-card>
           
           <el-card>
             <template #header>
@@ -102,6 +223,9 @@ import { ElMessage } from 'element-plus'
 import { resolveApiBase, resolveAssetUrl } from '../utils/apiBase'
 import { useUserStore } from '../stores/user'
 import { hasIsolatedCoursewareMarker, readCoursewareMessage } from '../utils/coursewareBridge'
+import ClassroomDanmakuOverlay from '../components/ClassroomDanmakuOverlay.vue'
+import ClassroomQuestionPanel from '../components/ClassroomQuestionPanel.vue'
+import CoursewareQuizStatsPanel from '../components/CoursewareQuizStatsPanel.vue'
 
 const route = useRoute()
 const animation = ref(null)
@@ -119,6 +243,8 @@ const isFullscreen = ref(false)
 const immersiveMode = ref(false)
 const fullscreenControlsVisible = ref(true)
 let recordViewTimer = null
+let viewRecordPromise = null
+let quizReportQueue = Promise.resolve()
 let fullscreenControlsTimer = null
 
 const isPresentationMode = computed(() => isFullscreen.value || immersiveMode.value)
@@ -213,10 +339,206 @@ const onFrameLoad = () => {
 }
 
 const userStore = useUserStore()
+const currentUser = computed(() => userStore.user)
+const isTeacher = computed(() => ['teacher', 'admin'].includes(currentUser.value?.role))
+const animationId = computed(() => parseInt(route.params.id))
+const availableClasses = ref([])
+const selectedClass = ref('')
+const danmakuState = ref({ is_open: false, session_id: null })
+const danmakuMessages = ref([])
+const danmakuVisible = ref(true)
+const remainingSeconds = ref(0)
+const historyTotal = ref(0)
+const classroomRefreshKey = ref(0)
+const questionDrawerVisible = ref(false)
+const quizStatsDrawerVisible = ref(false)
+const sessionActionLoading = ref(false)
+const realtimeOpen = computed(() => danmakuState.value.is_open && remainingSeconds.value > 0)
+const remainingLabel = computed(() => {
+  const seconds = Math.max(0, remainingSeconds.value)
+  return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
+})
+
+let danmakuPollTimer = null
+let danmakuCountdownTimer = null
+let danmakuAfterId = 0
+let danmakuRequestActive = false
+let classroomRevision = 0
+let initializedUserId = null
+
+const clearDanmakuTimers = () => {
+  if (danmakuPollTimer) {
+    clearTimeout(danmakuPollTimer)
+    danmakuPollTimer = null
+  }
+  if (danmakuCountdownTimer) {
+    clearInterval(danmakuCountdownTimer)
+    danmakuCountdownTimer = null
+  }
+}
+
+const scheduleDanmakuPoll = delay => {
+  if (danmakuPollTimer) clearTimeout(danmakuPollTimer)
+  danmakuPollTimer = null
+  if (!selectedClass.value || document.hidden) return
+  danmakuPollTimer = window.setTimeout(fetchDanmakuState, delay)
+}
+
+const startDanmakuCountdown = () => {
+  if (danmakuCountdownTimer) clearInterval(danmakuCountdownTimer)
+  danmakuCountdownTimer = null
+  if (!realtimeOpen.value || document.hidden) return
+  danmakuCountdownTimer = window.setInterval(() => {
+    remainingSeconds.value = Math.max(0, remainingSeconds.value - 1)
+    if (remainingSeconds.value > 0) return
+    danmakuState.value = { is_open: false, session_id: null }
+    danmakuMessages.value = []
+    danmakuAfterId = 0
+    fetchDanmakuState()
+  }, 1000)
+}
+
+const applyDanmakuState = data => {
+  const sessionChanged = danmakuState.value.session_id !== data.session_id
+  if (!data.is_open || sessionChanged) {
+    danmakuMessages.value = []
+    danmakuAfterId = 0
+  }
+  if (data.is_open) {
+    const merged = new Map(danmakuMessages.value.map(message => [message.id, message]))
+    for (const message of data.messages || []) {
+      merged.set(message.id, message)
+      danmakuAfterId = Math.max(danmakuAfterId, message.id)
+    }
+    const upvotedIds = new Set(data.upvoted_message_ids || [])
+    danmakuMessages.value = Array.from(merged.values())
+      .map(message => ({ ...message, upvoted_by_me: upvotedIds.has(message.id) }))
+      .sort((a, b) => a.id - b.id)
+  }
+  danmakuState.value = {
+    is_open: Boolean(data.is_open),
+    session_id: data.is_open ? data.session_id : null
+  }
+  remainingSeconds.value = data.is_open ? data.remaining_seconds : 0
+  startDanmakuCountdown()
+}
+
+const fetchDanmakuState = async () => {
+  if (!selectedClass.value || document.hidden) return
+  if (danmakuRequestActive) {
+    scheduleDanmakuPoll(1000)
+    return
+  }
+  if (danmakuPollTimer) {
+    clearTimeout(danmakuPollTimer)
+    danmakuPollTimer = null
+  }
+  const revision = classroomRevision
+  danmakuRequestActive = true
+  try {
+    const response = await axios.get(`/api/classroom/animations/${animationId.value}/danmaku/state`, {
+      params: { class_name: selectedClass.value, after_id: danmakuAfterId }
+    })
+    if (revision === classroomRevision) applyDanmakuState(response.data)
+  } catch (error) {
+    // Background polling stays silent; the next attempt recovers automatically.
+  } finally {
+    danmakuRequestActive = false
+    if (revision === classroomRevision) {
+      scheduleDanmakuPoll(realtimeOpen.value ? 3500 : 15000)
+    }
+  }
+}
+
+const restartDanmakuPolling = () => {
+  classroomRevision++
+  clearDanmakuTimers()
+  danmakuState.value = { is_open: false, session_id: null }
+  danmakuMessages.value = []
+  remainingSeconds.value = 0
+  danmakuAfterId = 0
+  fetchDanmakuState()
+}
+
+const toggleDanmakuSession = async () => {
+  if (!selectedClass.value || sessionActionLoading.value) return
+  const revision = ++classroomRevision
+  sessionActionLoading.value = true
+  try {
+    const response = await axios.post(`/api/classroom/animations/${animationId.value}/danmaku/session`, {
+      class_name: selectedClass.value,
+      action: realtimeOpen.value ? 'close' : 'open'
+    })
+    if (revision === classroomRevision) applyDanmakuState(response.data)
+  } catch (error) {
+    ElMessage.warning(error.response?.data?.detail || '弹幕会话操作失败')
+  } finally {
+    sessionActionLoading.value = false
+    if (revision === classroomRevision) scheduleDanmakuPoll(realtimeOpen.value ? 3500 : 15000)
+  }
+}
+
+const handleRealtimeSent = message => {
+  // A local send can have a higher ID than unseen messages from classmates.
+  if (message.session_id === danmakuState.value.session_id && !danmakuMessages.value.some(item => item.id === message.id)) {
+    danmakuMessages.value = [...danmakuMessages.value, message].sort((a, b) => a.id - b.id)
+  }
+  classroomRefreshKey.value++
+}
+
+const handleUpvoteChanged = change => {
+  danmakuMessages.value = danmakuMessages.value.map(message =>
+    message.id === change.id ? { ...message, ...change } : message
+  )
+  classroomRefreshKey.value++
+}
+
+const handleMessageModerated = message => {
+  if (message.is_deleted) {
+    danmakuMessages.value = danmakuMessages.value.filter(item => item.id !== message.id)
+    classroomRefreshKey.value++
+    return
+  }
+  handleUpvoteChanged(message)
+}
+
+const handleClassroomVisibility = () => {
+  if (document.hidden) {
+    clearDanmakuTimers()
+    return
+  }
+  fetchDanmakuState()
+}
+
+const initializeClassroom = async user => {
+  if (!user || initializedUserId === user.id) return
+  initializedUserId = user.id
+  const ownClasses = String(user.class_name || '')
+    .split(/[,，、;；\s]+/)
+    .map(name => name.trim())
+    .filter(Boolean)
+  if (!isTeacher.value) {
+    availableClasses.value = ownClasses
+    selectedClass.value = ownClasses[0] || ''
+    restartDanmakuPolling()
+    return
+  }
+  availableClasses.value = ownClasses
+  try {
+    const response = await axios.get('/api/classroom/classes')
+    availableClasses.value = response.data
+  } catch (error) {
+    ElMessage.warning('班级列表加载失败，已使用当前账号班级')
+  }
+  selectedClass.value = ownClasses.find(name => availableClasses.value.includes(name)) || availableClasses.value[0] || ''
+  restartDanmakuPolling()
+}
+
+watch(currentUser, initializeClassroom, { immediate: true })
 
 // 身份桥：同源课件发 EDUSIMU_HELLO，播放器回 EDUSIMU_CONTEXT（含 token，仅回给本页 iframe）。
 const sendCoursewareContext = () => {
-  // Isolated third-party lessons have a progress-only bridge in their own package.
+  // Isolated third-party lessons use a data-only bridge and never receive this context.
   if (isIsolatedCourseware.value) return
   const frameWindow = animationFrame.value?.contentWindow
   const token = localStorage.getItem('token')
@@ -245,11 +567,35 @@ const sendCoursewareContext = () => {
   }, window.location.origin)
 }
 
+const queueQuizAttempt = message => {
+  quizReportQueue = quizReportQueue.then(async () => {
+    if (!animation.value?.has_quiz) return
+    if (!currentUser.value) await userStore.fetchUser()
+    if (currentUser.value?.role !== 'student') return
+    if (!startTime.value) startTime.value = Date.now()
+    await ensureViewRecorded()
+    await axios.post(`/api/classroom/animations/${animationId.value}/quiz-attempts`, {
+      version: 1,
+      questionId: message.questionId,
+      answer: message.answer,
+      isCorrect: message.isCorrect,
+      score: message.score,
+      mistakeTag: message.mistakeTag
+    })
+  }).catch(error => {
+    console.error('记录课件作答失败:', error)
+  })
+}
+
 const handleInteraction = (event) => {
   const message = readCoursewareMessage(event, animationFrame.value?.contentWindow, window.location.origin, isIsolatedCourseware.value)
   if (!message) return
   if (message.type === 'hello') {
     sendCoursewareContext()
+    return
+  }
+  if (message.type === 'quiz-submit') {
+    queueQuizAttempt(message)
     return
   }
   if (message.type === 'interaction') {
@@ -273,19 +619,25 @@ const getViewPayload = () => {
   }
 }
 
-const ensureViewRecorded = async () => {
-  if (viewRecorded.value || !startTime.value) return
+const ensureViewRecorded = () => {
+  if (viewRecorded.value || !startTime.value) return Promise.resolve()
+  if (viewRecordPromise) return viewRecordPromise
 
-  try {
-    const response = await axios.post(`/api/animations/${route.params.id}/view`, getViewPayload())
-    viewHistoryId.value = response.data.id
-    viewRecorded.value = true
-    if (animation.value) {
-      animation.value.view_count += 1
+  viewRecordPromise = (async () => {
+    try {
+      const response = await axios.post(`/api/animations/${route.params.id}/view`, getViewPayload())
+      viewHistoryId.value = response.data.id
+      viewRecorded.value = true
+      if (animation.value) {
+        animation.value.view_count += 1
+      }
+    } catch (error) {
+      console.error('记录观看失败:', error)
+    } finally {
+      viewRecordPromise = null
     }
-  } catch (error) {
-    console.error('记录观看失败:', error)
-  }
+  })()
+  return viewRecordPromise
 }
 
 const flushViewRecord = async (useKeepalive = false) => {
@@ -398,6 +750,7 @@ onMounted(() => {
   window.visualViewport?.addEventListener('resize', schedulePresentationResize)
   window.addEventListener('touchstart', showFullscreenControls, { passive: true })
   window.addEventListener('mousemove', showFullscreenControls)
+  document.addEventListener('visibilitychange', handleClassroomVisibility)
 })
 
 onBeforeUnmount(() => {
@@ -415,6 +768,9 @@ onBeforeUnmount(() => {
   if (viewportFrame !== null) cancelAnimationFrame(viewportFrame)
   window.removeEventListener('touchstart', showFullscreenControls)
   window.removeEventListener('mousemove', showFullscreenControls)
+  document.removeEventListener('visibilitychange', handleClassroomVisibility)
+  clearDanmakuTimers()
+  classroomRevision++
   if (fullscreenControlsTimer) {
     clearTimeout(fullscreenControlsTimer)
   }
@@ -426,7 +782,42 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .player-shell {
+  position: relative;
   width: 100%;
+}
+
+.page-header-actions {
+  flex-wrap: wrap;
+}
+
+.classroom-class-select {
+  width: 128px;
+}
+
+.question-wall-card {
+  margin-bottom: 20px;
+}
+
+.presentation-classroom-controls {
+  position: fixed;
+  top: 12px;
+  right: 24px;
+  z-index: 2010;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(20, 35, 55, 0.82);
+}
+
+.presentation-classroom-controls .el-button {
+  margin-left: 0;
+}
+
+:deep(.classroom-drawer),
+:deep(.quiz-stats-drawer) {
+  max-width: 94vw;
 }
 
 .presentation-main {

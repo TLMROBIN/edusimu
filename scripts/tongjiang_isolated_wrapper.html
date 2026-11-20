@@ -24,16 +24,36 @@
   };
   let progress = null;
   try { const saved = localStorage.getItem(progressKey); if (validProgress(saved)) progress = saved; } catch {}
-  // Only this lesson's progress crosses the opaque-origin boundary. No auth or API bridge.
+  function relayQuiz(data) {
+    if (parent === window || location.origin === 'null' || data.version !== 1) return;
+    const { questionId, isCorrect, score, mistakeTag } = data;
+    if (typeof questionId !== 'string' || !questionId.trim() || questionId.length > 80 || typeof isCorrect !== 'boolean') return;
+    if (score !== undefined && (!Number.isInteger(score) || score < 0)) return;
+    if (mistakeTag != null && (typeof mistakeTag !== 'string' || mistakeTag.length > 50)) return;
+    let answer;
+    try {
+      answer = typeof data.answer === 'string' ? data.answer : JSON.stringify(data.answer);
+      if (typeof answer !== 'string' || new TextEncoder().encode(answer).length > 1024) return;
+    } catch { return; }
+    parent.postMessage({
+      type: 'EDUSIMU_QUIZ_SUBMIT', version: 1, questionId: questionId.trim(), answer, isCorrect, score, mistakeTag
+    }, location.origin);
+  }
+  // The inner frame can publish lesson progress and quiz data only.
   window.addEventListener('message', event => {
     if (event.source !== frame.contentWindow || event.origin !== 'null') return;
     const data = event.data;
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return;
+    if (data.type === 'EDUSIMU_QUIZ_SUBMIT') {
+      relayQuiz(data);
+      return;
+    }
     if (data?.type === 'TONGJIANG_HOME_V1') {
       if (navigator.userActivation && !navigator.userActivation.isActive) return;
       top.location.assign(new URL('/edusimu/home', location.origin).href);
       return;
     }
-    if (!data || Array.isArray(data) || data.type !== 'TONGJIANG_PROGRESS_V1' || data.key !== lessonKey || !validProgress(data.value)) return;
+    if (data.type !== 'TONGJIANG_PROGRESS_V1' || data.key !== lessonKey || !validProgress(data.value)) return;
     try {
       if (data.value === null) localStorage.removeItem(progressKey);
       else localStorage.setItem(progressKey, data.value);
