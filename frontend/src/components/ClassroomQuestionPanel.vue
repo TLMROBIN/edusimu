@@ -70,7 +70,7 @@
         class="history-class-select"
         @change="resetPage"
       >
-        <el-option v-for="name in classes" :key="name" :label="name" :value="name" />
+        <el-option v-for="name in classes" :key="name" :label="getClassroomClassLabel(name, classes)" :value="name" />
       </el-select>
 
       <div v-loading="loading" class="history-list">
@@ -136,6 +136,7 @@
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { getClassroomClassLabel } from '../utils/classroomClassLabel'
 
 const props = defineProps({
   animationId: { type: Number, required: true },

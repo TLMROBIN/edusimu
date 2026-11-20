@@ -15,12 +15,13 @@
             <el-select
               v-model="selectedClass"
               size="small"
-              placeholder="选择班级"
-              :teleported="false"
+              placeholder="选择互动班级"
+              aria-label="互动班级"
               class="classroom-class-select"
               @change="restartDanmakuPolling"
             >
-              <el-option v-for="name in availableClasses" :key="name" :label="name" :value="name" />
+              <template #prefix>互动班级</template>
+              <el-option v-for="name in availableClasses" :key="name" :label="getClassroomClassLabel(name, availableClasses)" :value="name" />
             </el-select>
             <el-button
               size="small"
@@ -72,12 +73,15 @@
           <el-select
             v-model="selectedClass"
             size="small"
-            placeholder="选择班级"
+            placeholder="选择互动班级"
+            aria-label="互动班级"
             :teleported="false"
             class="classroom-class-select"
+            @visible-change="handlePresentationClassMenu"
             @change="restartDanmakuPolling"
           >
-            <el-option v-for="name in availableClasses" :key="name" :label="name" :value="name" />
+            <template #prefix>互动班级</template>
+            <el-option v-for="name in availableClasses" :key="name" :label="getClassroomClassLabel(name, availableClasses)" :value="name" />
           </el-select>
           <el-button
             size="small"
@@ -137,6 +141,7 @@
           v-if="quizStatsDrawerVisible"
           :animation-id="animationId"
           :class-name="selectedClass"
+          :class-label="getClassroomClassLabel(selectedClass, availableClasses)"
         />
       </el-drawer>
       <el-row :gutter="20">
@@ -222,6 +227,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { resolveApiBase, resolveAssetUrl } from '../utils/apiBase'
 import { useUserStore } from '../stores/user'
+import { getClassroomClassLabel } from '../utils/classroomClassLabel'
 import { hasIsolatedCoursewareMarker, readCoursewareMessage } from '../utils/coursewareBridge'
 import ClassroomDanmakuOverlay from '../components/ClassroomDanmakuOverlay.vue'
 import ClassroomQuestionPanel from '../components/ClassroomQuestionPanel.vue'
@@ -242,6 +248,7 @@ const viewRecorded = ref(false)
 const isFullscreen = ref(false)
 const immersiveMode = ref(false)
 const fullscreenControlsVisible = ref(true)
+const presentationClassMenuOpen = ref(false)
 let recordViewTimer = null
 let viewRecordPromise = null
 let quizReportQueue = Promise.resolve()
@@ -725,12 +732,19 @@ const showFullscreenControls = () => {
   if (fullscreenControlsTimer) {
     clearTimeout(fullscreenControlsTimer)
   }
+  if (presentationClassMenuOpen.value) return
   fullscreenControlsTimer = window.setTimeout(() => {
     fullscreenControlsVisible.value = false
   }, 2500)
 }
 
+const handlePresentationClassMenu = open => {
+  presentationClassMenuOpen.value = open
+  showFullscreenControls()
+}
+
 watch(isPresentationMode, (active) => {
+  if (!active) presentationClassMenuOpen.value = false
   document.body.style.overflow = active ? 'hidden' : ''
   document.documentElement.style.overflow = active ? 'hidden' : ''
   if (active) {
@@ -791,7 +805,7 @@ onBeforeUnmount(() => {
 }
 
 .classroom-class-select {
-  width: 128px;
+  width: 220px;
 }
 
 .question-wall-card {
@@ -802,8 +816,10 @@ onBeforeUnmount(() => {
   position: fixed;
   top: 12px;
   right: 24px;
+  max-width: calc(100% - 48px);
   z-index: 2010;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   padding: 8px;

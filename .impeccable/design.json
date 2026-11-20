@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-16T22:19:14Z",
+  "generatedAt": "2026-11-20T03:28:02Z",
   "title": "Design System: edusimu",
   "extensions": {
     "colorMeta": {
@@ -122,7 +122,7 @@
       "refersTo": "button-primary",
       "description": "每个任务区域的唯一主要行动，适合课堂平板触控。",
       "html": "<button class=\"ds-btn-primary\">打开课件</button>",
-      "css": ".ds-btn-primary { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 14px; background: linear-gradient(135deg, var(--app-primary, #1661FF), var(--app-primary-soft, #12A9C4)); color: #F5FBFF; font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; letter-spacing: .02em; cursor: pointer; transition: transform 150ms ease, filter 150ms ease; } .ds-btn-primary:hover { filter: brightness(1.04); transform: translateY(-1px); } .ds-btn-primary:active { transform: translateY(0); } .ds-btn-primary:focus-visible { outline: 3px solid rgba(22,97,255,.28); outline-offset: 2px; } .ds-btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; } @media (prefers-reduced-motion: reduce) { .ds-btn-primary { transition: none; } }"
+      "css": ".ds-btn-primary { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 14px; background: linear-gradient(135deg, var(--app-primary, #1661FF), var(--app-primary-soft, #12A9C4)); color: #F5FBFF; font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; letter-spacing: .02em; cursor: pointer; transition: transform 150ms ease, filter 150ms ease; } .ds-btn-primary:hover { filter: brightness(1.04); transform: translateY(-1px); } .ds-btn-primary:active { transform: translateY(0); } .ds-btn-primary:focus-visible { outline: 3px solid #1661FF; outline-offset: 2px; } .ds-btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; } @media (prefers-reduced-motion: reduce) { .ds-btn-primary { transition: none; } }"
     },
     {
       "name": "Secondary Button",
@@ -130,7 +130,7 @@
       "refersTo": "button-secondary",
       "description": "返回、重置与次要操作；结构清晰，不使用常驻宽阴影。",
       "html": "<button class=\"ds-btn-secondary\">重置筛选</button>",
-      "css": ".ds-btn-secondary { min-height: 44px; padding: 10px 16px; border: 1px solid rgba(84,125,173,.22); border-radius: 14px; background: rgba(255,255,255,.92); color: var(--app-text, #10233F); font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; cursor: pointer; transition: background 150ms ease, border-color 150ms ease; } .ds-btn-secondary:hover { background: #F3F8FD; border-color: rgba(43,168,196,.35); } .ds-btn-secondary:active { background: #E6F0FB; } .ds-btn-secondary:focus-visible { outline: 3px solid rgba(22,97,255,.20); outline-offset: 2px; } .ds-btn-secondary:disabled { opacity: .55; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-secondary { transition: none; } }"
+      "css": ".ds-btn-secondary { min-height: 44px; padding: 10px 16px; border: 1px solid rgba(84,125,173,.22); border-radius: 14px; background: rgba(255,255,255,.92); color: var(--app-text, #10233F); font: 600 13px/1.6 'PingFang SC', 'Microsoft YaHei', sans-serif; cursor: pointer; transition: background 150ms ease, border-color 150ms ease; } .ds-btn-secondary:hover { background: #F3F8FD; border-color: rgba(43,168,196,.35); } .ds-btn-secondary:active { background: #E6F0FB; } .ds-btn-secondary:focus-visible { outline: 3px solid #1661FF; outline-offset: 2px; } .ds-btn-secondary:disabled { opacity: .55; cursor: not-allowed; } @media (prefers-reduced-motion: reduce) { .ds-btn-secondary { transition: none; } }"
     },
     {
       "name": "Danger Button",

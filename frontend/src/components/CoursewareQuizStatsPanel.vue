@@ -2,7 +2,7 @@
   <div class="quiz-stats-panel">
     <div class="stats-toolbar">
       <div>
-        <strong>{{ stats?.class_name || className || '未选择班级' }}</strong>
+        <strong>{{ classLabel || className || '未选择班级' }}</strong>
         <span v-if="stats"> · {{ stats.student_count }} 名学生 · {{ stats.question_count }} 道题</span>
       </div>
       <div>
@@ -113,6 +113,7 @@ import { ElMessage } from 'element-plus'
 const props = defineProps({
   animationId: { type: Number, required: true },
   className: { type: String, default: '' },
+  classLabel: { type: String, default: '' },
   allowExport: { type: Boolean, default: false }
 })
 
