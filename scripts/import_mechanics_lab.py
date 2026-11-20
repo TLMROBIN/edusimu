@@ -46,7 +46,20 @@ CATALOG = [
 LIVE_BASE = "http://127.0.0.1:3003/edusimu"
 
 
-def verify_release(collection_id, animation_ids, creator, question_count):
+def thumbnail_url(code):
+    return f"/mech-lab-2027/thumbnails/{code}.jpg"
+
+
+def verify_thumbnail_assets():
+    for index in range(len(CATALOG)):
+        url = thumbnail_url(f"M{index:02d}")
+        source = PUBLIC_DIR / "thumbnails" / Path(url).name
+        with urlopen(f"{LIVE_BASE}{url}", timeout=10) as response:
+            if response.headers.get_content_type() != "image/jpeg" or response.read() != source.read_bytes():
+                raise RuntimeError(f"生产缩略图与发布文件不一致：{url}")
+
+
+def verify_release(collection_id, thumbnails_by_id, creator, question_count):
     token = create_access_token({"sub": creator.username, "role": creator.role}, timedelta(minutes=2))
     headers = {"Authorization": f"Bearer {token}"}
     with urlopen(Request(f"{LIVE_BASE}/api/collections/?banner_only=true", headers=headers), timeout=10) as response:
@@ -56,13 +69,44 @@ def verify_release(collection_id, animation_ids, creator, question_count):
         raise RuntimeError("线上首页推荐接口未返回力学实验合集封面")
     with urlopen(Request(f"{LIVE_BASE}/api/collections/{collection_id}", headers=headers), timeout=10) as response:
         detail = json.load(response)
-    released = detail["animations"][:len(animation_ids)]
-    if [item["id"] for item in released] != animation_ids or sum(item["quiz_count"] for item in released) != question_count:
-        raise RuntimeError("线上合集课件顺序或题项数量不一致")
+    released = [item for item in detail["animations"] if item["id"] in thumbnails_by_id]
+    if {item["id"]: item["thumbnail"] for item in released} != thumbnails_by_id:
+        raise RuntimeError("线上合集缩略图与课件对应关系不一致")
+    if sum(item["quiz_count"] for item in released) != question_count:
+        raise RuntimeError("线上合集题项数量不一致")
     with urlopen(f"{LIVE_BASE}{COVER}", timeout=10) as response:
         if response.read() != (PUBLIC_DIR / Path(COVER).name).read_bytes():
             raise RuntimeError("线上 Banner 与发布素材不一致")
-    print(f"线上首页、合集和封面已核对：{len(released)} 个课件，{question_count} 个题项")
+    print(f"线上首页、合集封面和专属缩略图已核对：{len(released)} 个课件，{question_count} 个题项")
+
+
+def backup_catalog():
+    backup_root = Path("/var/www/edusimu/backups")
+    backup_root.mkdir(parents=True, exist_ok=True)
+    backup = Path(mkdtemp(prefix="mechanics-lab-", dir=backup_root)) / "edusimu-postgresql.dump"
+    backup_database(backup)
+    print(f"数据库备份 {backup}")
+
+
+def apply_thumbnails(db, collection, creator):
+    if collection is None:
+        raise RuntimeError("未找到已发布的力学实验合集")
+    verify_thumbnail_assets()
+    series = {}
+    published = [item.animation for item in collection.items if item.animation.is_published]
+    for index in range(len(CATALOG)):
+        code = f"M{index:02d}"
+        matches = [row for row in published if f"{MARKER} {code}" in (row.review_notes or "")]
+        if len(matches) != 1:
+            raise RuntimeError(f"合集内 {code} 的发布记录数量异常：{len(matches)}")
+        series[code] = matches[0]
+    if any(row.thumbnail != thumbnail_url(code) for code, row in series.items()):
+        backup_catalog()
+        for code, row in series.items():
+            row.thumbnail = thumbnail_url(code)
+        db.commit()
+    verify_release(collection.id, {row.id: thumbnail_url(code) for code, row in series.items()}, creator,
+                   sum(len(load_quiz_questions(row.quiz_manifest)) for row in series.values()))
 
 
 def read_items(db, subject_id):
@@ -107,17 +151,17 @@ def run(action):
         subject = db.query(Subject).filter_by(name="physics").one()
         creator = db.query(User).filter_by(username=settings.admin_username, role="admin").one()
         collection = db.query(AnimationCollection).filter_by(title=TITLE).one_or_none()
+        if action == "apply-thumbnails":
+            apply_thumbnails(db, collection, creator)
+            return
         items = list(read_items(db, subject.id))
         print("预检", [(code, row.id if row else None, len(load_quiz_questions(manifest)))
                      for code, _, _, _, manifest, _, row, _ in items])
         if action == "inspect":
             return
 
-        backup_root = Path("/var/www/edusimu/backups")
-        backup_root.mkdir(parents=True, exist_ok=True)
-        backup = Path(mkdtemp(prefix="mechanics-lab-", dir=backup_root)) / "edusimu-postgresql.dump"
-        backup_database(backup)
-        print(f"数据库备份 {backup}")
+        verify_thumbnail_assets()
+        backup_catalog()
 
         try:
             book = get_or_create_node(db, subject.id, None, "拓展资源", "book")
@@ -146,6 +190,7 @@ def run(action):
                     row.validation_warnings = json.dumps(warnings, ensure_ascii=False)
                     row.may_lag, row.lag_reason = evaluate_animation_file_performance(path, size, source_type="original")
                 row.textbook_node_id = (section or basics).id
+                row.thumbnail = thumbnail_url(code)
                 row.is_published = True
                 row.review_status = "approved"
                 row.has_quiz = True
@@ -185,11 +230,11 @@ def run(action):
         }, ensure_ascii=False))
         for path in old_files:
             remove_courseware_path(path)
-        verify_release(collection.id, [row.id for row in animations], creator,
+        verify_release(collection.id, {row.id: row.thumbnail for row in animations}, creator,
                        sum(len(load_quiz_questions(row.quiz_manifest)) for row in animations))
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("inspect", "apply"))
+    parser.add_argument("action", choices=("inspect", "apply", "apply-thumbnails"))
     run(parser.parse_args().action)

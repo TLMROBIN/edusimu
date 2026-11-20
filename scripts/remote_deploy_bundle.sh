@@ -39,13 +39,22 @@ TABLET_DIAGNOSTIC_IMPORT_MARKER="${PROJECT_ROOT}/.import-tablet-diagnostic-cours
 TABLET_DIAGNOSTIC_UNPUBLISH_MARKER="${PROJECT_ROOT}/.unpublish-tablet-diagnostic-courseware"
 TABLET_MAINTENANCE_MARKER="${PROJECT_ROOT}/.tablet-maintenance-action"
 MECHANICS_LAB_MARKER="${PROJECT_ROOT}/.import-mechanics-lab"
+MECHANICS_LAB_THUMBNAILS_MARKER="${PROJECT_ROOT}/.update-mechanics-lab-thumbnails"
 
-if [[ -f "${MECHANICS_LAB_MARKER}" ]]; then
-  rm -f "${MECHANICS_LAB_MARKER}"
+if [[ -f "${MECHANICS_LAB_MARKER}" || -f "${MECHANICS_LAB_THUMBNAILS_MARKER}" ]]; then
+  MECHANICS_LAB_ACTION="apply"
+  if [[ -f "${MECHANICS_LAB_THUMBNAILS_MARKER}" ]]; then
+    MECHANICS_LAB_ACTION="apply-thumbnails"
+    THUMBNAIL_DEST="/var/www/edusimu/frontend/dist/mech-lab-2027/thumbnails"
+    install -d -o www-data -g www-data -m 0755 "${THUMBNAIL_DEST}"
+    install -o www-data -g www-data -m 0644 -t "${THUMBNAIL_DEST}" \
+      "${PROJECT_ROOT}"/frontend/public/mech-lab-2027/thumbnails/M0{0..9}.jpg
+  fi
+  rm -f "${MECHANICS_LAB_MARKER}" "${MECHANICS_LAB_THUMBNAILS_MARKER}"
   cd "${PROJECT_ROOT}"
   EDUSIMU_BACKEND_DIR="/var/www/edusimu/backend" \
     /var/www/edusimu/backend/venv/bin/python \
-    "${PROJECT_ROOT}/scripts/import_mechanics_lab.py" apply
+    "${PROJECT_ROOT}/scripts/import_mechanics_lab.py" "${MECHANICS_LAB_ACTION}"
   exit $?
 fi
 
