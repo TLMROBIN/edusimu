@@ -701,6 +701,7 @@
       opts = opts || {};
       var self = this, el = bn.analysis; this.bn = bn; this.tape = tape; el.hidden = false; ML.clear(el);
       var stAuto = firstMotionIndex(tape.run);
+      this.firstClear = stAuto;
       this.st = { O: stAuto, nonzero: false, showMass: false, speedMethod: 'mid', useTapeA: false, graphMode: 'halfv2' };
       var tapesBar = h('div.ana-tapes', h('b', '我的纸带：'), bn.tapes.map(function (t) {
         return h('button.chip' + (t === tape ? '.on' : ''), { type: 'button', onclick: function () { self.show(t, bn); } }, '纸带 ' + t.no + '（' + BOB_INFO[t.bob || 'iron'].name + '）');
@@ -712,25 +713,31 @@
       el.appendChild(this.twoMmBox);
       this.hint = h('div.ana-hint');
       el.appendChild(this.hint);
+      this.originStatus = h('span', { 'aria-live': 'polite' });
+      this.prevPoint = h('button.chip', { type: 'button', onclick: function () { self.pickO(self.st.O - 1); } }, '上一点');
+      this.nextPoint = h('button.chip', { type: 'button', onclick: function () { self.pickO(self.st.O + 1); } }, '下一点');
+      this.pointPicker = h('div.ana-point-picker', this.originStatus, this.prevPoint, this.nextPoint);
+      el.appendChild(this.pointPicker);
       var stripWrap = h('div.ana-strip');
       el.appendChild(stripWrap);
       this.strip = new TV.TapeStrip(stripWrap, { height: 118, onTap: function (i) { self.pickO(i); },
         magLabel: function (x, s) {
-          var dots = tape.run.dots; if (!dots.length) return '';
-          var best = -1, bd = 28;
-          for (var i = 0; i < dots.length; i++) { var d = Math.abs(s.X(dots[i]) - x); if (d < bd) { bd = d; best = i; } }
+          var dots = tape.run.dots, best = s.hit(x);
           if (best < 0) return '移到点迹处看间距';
-          if (best + 1 < dots.length) return '点 #' + best + ' · 下一段 ' + mmStr(dots[best + 1] - dots[best]) + ' mm';
+          if (best + 1 < dots.length) return '点 #' + best + ' · 下一段 ' + mmStr(Math.abs(dots[best + 1] - dots[best])) + ' mm';
           return '点 #' + best + '（末点）';
         } });
       this.controls = h('div.ana-ctl'); el.appendChild(this.controls);
       this.out = h('div.ana-out'); el.appendChild(this.out);
       this.update();
-      setTimeout(function () { self.strip.zoomTo(3200, tape.run.dots.length ? tape.run.dots[Math.min(tape.run.dots.length - 1, stAuto + 6)] : 0); }, 30);
+      this.strip.stage.resize();
+      this.strip.zoomTo(3200, tape.run.dots.length ? tape.run.dots[Math.min(tape.run.dots.length - 1, stAuto + 6)] : 0);
       if (!opts.noScroll) el.scrollIntoView({ behavior: ML.perf.low ? 'auto' : 'smooth', block: 'start' });
     },
     pickO: function (i) {
-      var dots = this.tape.run.dots; if (!dots.length) return;
+      var dots = this.tape.run.dots; if (i < 0 || i >= dots.length) return;
+      var x = this.strip.X(dots[i]);
+      if (x < 8 || x > this.strip.stage.w - 8) this.strip.zoomTo(this.strip.scale, dots[i]);
       this.st.O = i; this.update();
     },
     update: function () {
@@ -750,29 +757,36 @@
       this.res = res;
       if (!dots.length || !this.tape.threaded) {
         this.twoMmBox.hidden = true;
+        this.pointPicker.hidden = true;
         this.hint.textContent = '这条纸带没有点迹（未穿纸带或电源选错），请回到实验台重新实验。';
         this.strip.set({ dots: [], timer: this.tape.timer, blankText: '（纸带上没有可用的点）', count: null, ruler: false });
         ML.clear(this.controls); ML.clear(this.out); return;
       }
+      this.pointPicker.hidden = false;
       this.twoMmBox.hidden = false;
-      var d12Mm = (st.O + 1 < dots.length ? (dots[st.O + 1] - dots[st.O]) * 1000 : 0);
+      var hasNext = st.O + 1 < dots.length;
+      var d12Mm = hasNext ? Math.abs(dots[st.O + 1] - dots[st.O]) * 1000 : 0;
       var ok2mm = d12Mm >= 1.50 && d12Mm <= 2.60;
       this.twoMmBox.className = 'twomm-badge ' + (ok2mm ? 'ok' : 'bad');
       ML.clear(this.twoMmBox);
-      this.twoMmBox.appendChild(h('span', { html: '<b>第 1、2 点（起点后首段）间距 Δs₁₂ = ' + d12Mm.toFixed(2) + ' mm</b>　' +
+      this.twoMmBox.appendChild(h('span', { html: !hasNext ? '已选末点，后面没有点可用于测量首段间距。' :
+        '<b>起点与下一点的间距 Δs₁₂ = ' + d12Mm.toFixed(2) + ' mm</b>　' +
         (ok2mm ? '✓ 接近理论值 h₁ = ½gT² = 1.96 mm ≈ 2 mm，可视为初速度为零的起点。'
           : d12Mm > 2.60 ? '⚠ 明显大于 2 mm！打首点时重物已有初速度，按静止起点算会出现 ΔEₖ > ΔEₚ。'
             : '⚠ 小于 1.5 mm，可能处于静止叠点区，请点选第 1 个下落清晰点作为起点 O。') }));
       if (d12Mm > 2.60) this.twoMmBox.appendChild(h('button.link', { type: 'button', onclick: function () { openTry('E1'); } }, '为什么会这样？试一试 →'));
 
-      this.hint.innerHTML = '已选起点 <b>O（点 #' + st.O + '）</b>。可点击纸带上其他点更改起点，拖动平移纸带，<b>按住</b>呼出 3× 放大镜看局部毫米刻线。';
-      var count = [], labels = [];
-      if (res.valid) {
-        count = res.meas.idx.map(function (k) { return st.O + k; });
-        labels = count.map(function (_, k) { return k === 0 ? 'O' : String(k); });
-      }
+      this.hint.textContent = '点按点迹选择起点，拖动平移纸带，按住查看 3× 放大镜。' +
+        (this.firstClear > 0 ? '纸带开头的点迹重叠，可用「上一点」「下一点」按打点顺序逐个选。' : '');
+      this.originStatus.textContent = '已选起点 O（点 #' + st.O + '）';
+      this.prevPoint.disabled = st.O === 0;
+      this.nextPoint.disabled = !hasNext;
+      var count = res.valid ? res.meas.idx.map(function (k) { return st.O + k; }) : [st.O];
+      var labels = count.map(function (_, k) { return k === 0 ? 'O' : String(k); });
       this.strip.set({ dots: dots, timer: this.tape.timer, count: count, labels: labels, ruler: true,
-        marks: st.O + 1 < dots.length ? [{ from: dots[st.O], to: dots[st.O + 1], color: ok2mm ? '#25A870' : '#C7374B', text: 'Δs₁₂=' + d12Mm.toFixed(2) + 'mm' }] : null });
+        // 重叠的静止点用按钮逐个选；纸带上的这处点迹按首个清晰段的起点命中。
+        hitStart: this.firstClear, minLabelGap: 16,
+        marks: hasNext ? [{ from: dots[st.O], to: dots[st.O + 1], color: ok2mm ? '#25A870' : '#C7374B' }] : null });
       this.renderCtl();
       this.renderOut();
     },

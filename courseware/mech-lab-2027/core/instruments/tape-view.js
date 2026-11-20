@@ -15,8 +15,11 @@
     var cy = y + hh / 2;
     (o.dots || []).forEach(function (s) { var x = X(s); if (x < L - 4 || x > L + W + 4) return; ctx.beginPath(); ctx.arc(x, cy, r, 0, Math.PI * 2); ctx.fill(); });
     ctx.globalAlpha = 1;
+    var lastLabelX = -Infinity;
     if (o.count) o.count.forEach(function (i, k) {
       var x = X(o.dots[i]); if (x < L - 20 || x > L + W + 20) return;
+      if (o.minLabelGap && x - lastLabelX < o.minLabelGap) return;
+      lastLabelX = x;
       ctx.strokeStyle = '#1661FF'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(x, y + 3); ctx.lineTo(x, y + 10); ctx.moveTo(x, y + hh - 10); ctx.lineTo(x, y + hh - 3); ctx.stroke();
       ctx.beginPath(); ctx.arc(x, cy, 5, 0, Math.PI * 2); ctx.stroke();
       D.text(ctx, (o.labels && o.labels[k]) || String(k), x, y - 5, { align: 'center', size: 12, weight: 700, color: '#1661FF' });
@@ -91,8 +94,11 @@
     this.offset = (sCenter == null ? this.offset : sCenter - (w / 2 - 16) / scale); this.clampOffset(); this.stage.invalidate();
   };
   TapeStrip.prototype.hit = function (x) {
-    var best = -1, bd = 12, self = this;
-    this.d.dots.forEach(function (s, i) { var dx = Math.abs(self.X(s) - x); if (dx < bd - 1e-6 || (Math.abs(dx - bd) < 1e-6 && best >= 0)) { bd = dx; best = i; } });
+    var best = -1, bd = 12, dots = this.d.dots;
+    for (var i = this.d.hitStart || 0; i < dots.length; i++) {
+      var dx = Math.abs(this.X(dots[i]) - x);
+      if (dx < bd - 1e-6 || (Math.abs(dx - bd) < 1e-6 && best >= 0)) { bd = dx; best = i; }
+    }
     return best;
   };
   TapeStrip.prototype.showMag = function (p) {
@@ -101,7 +107,7 @@
   };
   TapeStrip.prototype.draw = function (ctx, w, hh) {
     var d = this.d, ty = 22, self = this;
-    drawTape(ctx, { x0: 0, y: ty, w: w, hh: 36, scale: this.scale, offset: this.offset, dots: d.dots, timer: d.timer, count: d.count, labels: d.labels, marks: d.marks, blank: d.dots.length ? '' : (d.blankText || '（纸带上没有点）') });
+    drawTape(ctx, { x0: 0, y: ty, w: w, hh: 36, scale: this.scale, offset: this.offset, dots: d.dots, timer: d.timer, count: d.count, labels: d.labels, marks: d.marks, minLabelGap: d.minLabelGap, blank: d.dots.length ? '' : (d.blankText || '（纸带上没有点）') });
     if (d.ruler && d.count && d.count.length) {
       var zero = this.X(d.dots[d.count[0]]);
       drawRuler(ctx, 0, ty + 40, w, zero, this.scale);

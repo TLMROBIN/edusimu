@@ -33,6 +33,7 @@
 .ana-tapes,.ana-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0}
 .ana-tags .tag{cursor:pointer;min-height:30px}
 .ana-hint{background:#EEF4FF;border-radius:var(--rs);padding:8px 12px;margin:8px 0;font-size:14px}
+.ana-point-picker:not([hidden]){display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}
 .twomm-badge{border-radius:var(--rs);padding:8px 12px;margin:8px 0;font-size:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .twomm-badge.ok{background:#EEF9F4;border:1px solid #BCE6D2;color:#17784F}
 .twomm-badge.bad{background:#FFF4F5;border:1px solid #F2BFC8;color:#A12738}
