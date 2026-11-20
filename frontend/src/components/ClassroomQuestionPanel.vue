@@ -1,9 +1,8 @@
 <template>
   <div class="classroom-question-panel" :class="{ compact }">
-    <section v-if="realtimeOpen" class="realtime-section">
+    <section v-if="canPost" class="realtime-section">
       <div class="section-heading">
-        <strong>当堂提问</strong>
-        <span>剩余 {{ remainingLabel }}</span>
+        <strong>提出问题</strong>
       </div>
       <div class="quick-questions">
         <el-button
@@ -43,13 +42,12 @@
           >我也有这个疑问 ({{ item.upvote_count }})</el-button>
         </div>
       </div>
-      <el-empty v-else description="当堂还没有提问" :image-size="48" />
       <el-divider />
     </section>
 
     <section class="history-section">
       <div class="section-heading history-heading">
-        <strong>历史提问墙</strong>
+        <strong>提问墙</strong>
         <el-button text type="primary" size="small" :loading="loading" @click="reloadHistory">刷新</el-button>
       </div>
       <div class="history-filters">
@@ -75,7 +73,7 @@
 
       <div v-loading="loading" class="history-list">
         <el-alert v-if="historyError" :title="historyError" type="info" :closable="false" />
-        <el-empty v-else-if="!historyItems.length && !loading" description="暂无历史提问" :image-size="64" />
+        <el-empty v-else-if="!historyItems.length && !loading" description="暂无提问" :image-size="64" />
         <article v-for="item in historyItems" v-else :key="item.id" class="history-item">
           <div class="history-meta">
             <span>{{ item.display_name }} · {{ formatTime(item.created_at) }}</span>
@@ -144,13 +142,12 @@ const props = defineProps({
   classes: { type: Array, default: () => [] },
   isTeacher: { type: Boolean, default: false },
   compact: { type: Boolean, default: false },
-  realtimeOpen: { type: Boolean, default: false },
+  canPost: { type: Boolean, default: false },
   realtimeMessages: { type: Array, default: () => [] },
-  remainingSeconds: { type: Number, default: 0 },
   refreshKey: { type: Number, default: 0 }
 })
 
-const emit = defineEmits(['sent', 'upvote-changed', 'message-moderated', 'total-change'])
+const emit = defineEmits(['sent', 'upvote-changed', 'message-moderated'])
 
 const quickQuestions = ['这里没看懂', '实验现象不明显', '数据算不对', '求讲这道题']
 const draft = ref('')
@@ -160,7 +157,7 @@ const cooldownRemaining = ref(0)
 let cooldownTimer = null
 
 const scope = ref('class')
-const sort = ref('hot')
+const sort = ref(props.isTeacher ? 'hot' : 'latest')
 const historyClass = ref(props.className)
 const page = ref(1)
 const pageSize = computed(() => props.compact ? 5 : 10)
@@ -173,19 +170,15 @@ const moderating = ref({})
 const replyDrafts = ref({})
 let historyRequest = 0
 
-const remainingLabel = computed(() => {
-  const seconds = Math.max(0, props.remainingSeconds)
-  return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
-})
-
 const loadHistory = async () => {
+  const requestId = ++historyRequest
   if (!props.animationId || (scope.value === 'class' && !historyClass.value)) {
     historyItems.value = []
     historyTotal.value = 0
-    emit('total-change', 0)
+    loading.value = false
+    historyError.value = ''
     return
   }
-  const requestId = ++historyRequest
   loading.value = true
   historyError.value = ''
   try {
@@ -204,13 +197,11 @@ const loadHistory = async () => {
     const drafts = { ...replyDrafts.value }
     for (const item of response.data.items) drafts[item.id] = item.teacher_reply || ''
     replyDrafts.value = drafts
-    emit('total-change', response.data.total)
   } catch (error) {
     if (requestId !== historyRequest) return
     historyItems.value = []
     historyTotal.value = 0
     historyError.value = error.response?.data?.detail || '历史提问加载失败'
-    emit('total-change', 0)
   } finally {
     if (requestId === historyRequest) loading.value = false
   }
@@ -232,9 +223,6 @@ watch(
   },
   { immediate: true }
 )
-watch(() => props.realtimeMessages.length, (current, previous) => {
-  if (current > previous) loadHistory()
-})
 watch(() => props.refreshKey, loadHistory)
 
 const startCooldown = () => {
@@ -252,7 +240,7 @@ const startCooldown = () => {
 
 const sendQuestion = async () => {
   const content = draft.value.trim()
-  if (!content || sending.value || cooldownRemaining.value > 0) return
+  if (!props.canPost || !content || sending.value || cooldownRemaining.value > 0) return
   sending.value = true
   try {
     const response = await axios.post(`/api/classroom/animations/${props.animationId}/danmaku/messages`, {
@@ -263,6 +251,10 @@ const sendQuestion = async () => {
     questionInput.value?.blur()
     nextTick(() => questionInput.value?.blur())
     startCooldown()
+    scope.value = 'class'
+    historyClass.value = props.className
+    sort.value = 'latest'
+    page.value = 1
     emit('sent', response.data)
   } catch (error) {
     ElMessage.warning(error.response?.data?.detail || '提问发送失败，请稍后重试')
@@ -329,7 +321,6 @@ const removeMessage = async item => {
   if (!updated) return
   historyItems.value = historyItems.value.filter(message => message.id !== item.id)
   historyTotal.value = Math.max(0, historyTotal.value - 1)
-  emit('total-change', historyTotal.value)
 }
 
 const saveReply = async item => {
@@ -360,11 +351,6 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   gap: 8px;
   margin-bottom: 12px;
-}
-
-.section-heading > span {
-  color: #909399;
-  font-size: 12px;
 }
 
 .quick-questions {

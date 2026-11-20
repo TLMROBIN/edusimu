@@ -34,9 +34,8 @@
           <el-button v-if="realtimeOpen" size="small" :aria-pressed="danmakuVisible" @click="danmakuVisible = !danmakuVisible">
             弹幕{{ danmakuVisible ? '：开' : '：关' }}
           </el-button>
-          <el-button v-if="realtimeOpen" size="small" @click="questionDrawerVisible = true">
-            课堂提问<template v-if="!isTeacher"> · {{ remainingLabel }}</template>
-          </el-button>
+          <el-button v-if="isTeacher" size="small" @click="questionDrawerVisible = true">课堂讨论</el-button>
+          <el-button v-else size="small" @click="discussionSection?.scrollIntoView()">课堂讨论</el-button>
           <el-button v-if="isTeacher && animation?.has_quiz" size="small" @click="quizStatsDrawerVisible = true">
             作答统计
           </el-button>
@@ -94,13 +93,10 @@
         <el-button v-if="realtimeOpen" size="small" :aria-pressed="danmakuVisible" @click="danmakuVisible = !danmakuVisible">
           弹幕{{ danmakuVisible ? '：开' : '：关' }}
         </el-button>
-        <el-button v-if="realtimeOpen" size="small" type="primary" @click="questionDrawerVisible = true">
-          课堂提问
-        </el-button>
+        <el-button size="small" @click="questionDrawerVisible = true">课堂讨论</el-button>
         <el-button v-if="isTeacher && animation?.has_quiz" size="small" @click="quizStatsDrawerVisible = true">
           作答统计
         </el-button>
-        <el-button size="small" @click="questionDrawerVisible = true">历史提问 ({{ historyTotal }})</el-button>
       </div>
       <ClassroomDanmakuOverlay
         v-if="realtimeOpen"
@@ -109,9 +105,10 @@
         :messages="danmakuMessages"
       />
       <el-drawer
+        v-if="isTeacher || isPresentationMode"
         v-model="questionDrawerVisible"
-        title="课堂提问与历史提问墙"
-        size="420px"
+        title="课堂讨论"
+        size="min(420px, 100vw)"
         :append-to-body="false"
         class="classroom-drawer"
       >
@@ -120,14 +117,12 @@
           :class-name="selectedClass"
           :classes="availableClasses"
           :is-teacher="isTeacher"
-          :realtime-open="realtimeOpen"
+          :can-post="Boolean(selectedClass)"
           :realtime-messages="danmakuMessages"
-          :remaining-seconds="remainingSeconds"
           :refresh-key="classroomRefreshKey"
           @sent="handleRealtimeSent"
           @upvote-changed="handleUpvoteChanged"
           @message-moderated="handleMessageModerated"
-          @total-change="historyTotal = $event"
         />
       </el-drawer>
       <el-drawer
@@ -159,6 +154,25 @@
         </el-col>
         
         <el-col v-if="!isPresentationMode" :xs="24" :sm="24" :lg="6">
+          <section ref="discussionSection">
+            <el-card class="question-wall-card">
+              <template #header>
+                <span>课堂讨论</span>
+              </template>
+              <ClassroomQuestionPanel
+                compact
+                :animation-id="animationId"
+                :class-name="selectedClass"
+                :classes="availableClasses"
+                :is-teacher="isTeacher"
+                :can-post="!isTeacher && Boolean(selectedClass)"
+                :refresh-key="classroomRefreshKey"
+                @sent="handleRealtimeSent"
+                @upvote-changed="handleUpvoteChanged"
+                @message-moderated="handleMessageModerated"
+              />
+            </el-card>
+          </section>
           <el-card style="margin-bottom: 20px">
             <template #header>
               <span>动画信息</span>
@@ -179,24 +193,6 @@
             <p><strong>评分：</strong>{{ animation?.avg_rating || '暂无评分' }}</p>
           </el-card>
 
-          <el-card class="question-wall-card">
-            <template #header>
-              <span>课件历史弹幕区 / 提问墙</span>
-            </template>
-            <ClassroomQuestionPanel
-              compact
-              :animation-id="animationId"
-              :class-name="selectedClass"
-              :classes="availableClasses"
-              :is-teacher="isTeacher"
-              :realtime-open="false"
-              :refresh-key="classroomRefreshKey"
-              @upvote-changed="handleUpvoteChanged"
-              @message-moderated="handleMessageModerated"
-              @total-change="historyTotal = $event"
-            />
-          </el-card>
-          
           <el-card>
             <template #header>
               <span>评分与评论</span>
@@ -355,8 +351,8 @@ const danmakuState = ref({ is_open: false, session_id: null })
 const danmakuMessages = ref([])
 const danmakuVisible = ref(true)
 const remainingSeconds = ref(0)
-const historyTotal = ref(0)
 const classroomRefreshKey = ref(0)
+const discussionSection = ref(null)
 const questionDrawerVisible = ref(false)
 const quizStatsDrawerVisible = ref(false)
 const sessionActionLoading = ref(false)
@@ -421,6 +417,7 @@ const applyDanmakuState = data => {
     danmakuMessages.value = Array.from(merged.values())
       .map(message => ({ ...message, upvoted_by_me: upvotedIds.has(message.id) }))
       .sort((a, b) => a.id - b.id)
+    if (data.messages?.length) classroomRefreshKey.value++
   }
   danmakuState.value = {
     is_open: Boolean(data.is_open),
@@ -487,7 +484,7 @@ const toggleDanmakuSession = async () => {
 
 const handleRealtimeSent = message => {
   // A local send can have a higher ID than unseen messages from classmates.
-  if (message.session_id === danmakuState.value.session_id && !danmakuMessages.value.some(item => item.id === message.id)) {
+  if (message.session_id && message.session_id === danmakuState.value.session_id && !danmakuMessages.value.some(item => item.id === message.id)) {
     danmakuMessages.value = [...danmakuMessages.value, message].sort((a, b) => a.id - b.id)
   }
   classroomRefreshKey.value++
@@ -525,8 +522,8 @@ const initializeClassroom = async user => {
     .map(name => name.trim())
     .filter(Boolean)
   if (!isTeacher.value) {
-    availableClasses.value = ownClasses
-    selectedClass.value = ownClasses[0] || ''
+    selectedClass.value = String(user.class_name || '').trim()
+    availableClasses.value = selectedClass.value ? [selectedClass.value] : []
     restartDanmakuPolling()
     return
   }

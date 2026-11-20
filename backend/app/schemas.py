@@ -298,7 +298,7 @@ class DanmakuMessagePatch(BaseModel):
 
 class DanmakuMessageResponse(BaseModel):
     id: int
-    session_id: int
+    session_id: Optional[int]
     animation_id: int
     class_name: str
     user_id: Optional[int] = None

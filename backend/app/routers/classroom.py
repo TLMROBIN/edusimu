@@ -59,7 +59,7 @@ def resolve_class_name(current_user: User, requested: Optional[str]) -> str:
         if not own_class:
             raise HTTPException(status_code=400, detail="当前账号尚未分配班级")
         if requested and requested != own_class:
-            raise HTTPException(status_code=403, detail="只能参与本班课堂弹幕")
+            raise HTTPException(status_code=403, detail="只能参与本班课堂讨论")
         return own_class
     if not requested and current_user.role == "teacher":
         allowed = teacher_classes(current_user)
@@ -293,12 +293,11 @@ async def create_danmaku_message(
     get_animation(db, animation_id, current_user)
     class_name = resolve_class_name(current_user, payload.class_name)
     session = active_session(db, animation_id, class_name)
-    if not session:
-        raise HTTPException(status_code=409, detail="本班弹幕尚未开启或已结束")
     now = utc_now()
     if current_user.role == "student":
         latest = db.query(DanmakuMessage).filter(
-            DanmakuMessage.session_id == session.id,
+            DanmakuMessage.animation_id == animation_id,
+            DanmakuMessage.class_name == class_name,
             DanmakuMessage.user_id == current_user.id,
         ).order_by(DanmakuMessage.id.desc()).first()
         if latest:
@@ -311,11 +310,12 @@ async def create_danmaku_message(
                     headers={"Retry-After": str(retry_after)},
                 )
     message = DanmakuMessage(
-        session_id=session.id,
+        session_id=session.id if session else None,
         animation_id=animation_id,
         class_name=class_name,
         user_id=current_user.id,
         content=payload.content,
+        created_at=now,
         upvote_count=0,
         is_pinned=False,
         is_deleted=False,

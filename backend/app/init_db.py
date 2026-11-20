@@ -1,8 +1,9 @@
 from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
+from sqlalchemy.schema import CreateTable
 
 from .database import Base, SessionLocal, engine, settings
-from .models import Subject, TextbookNode, User
+from .models import DanmakuMessage, Subject, TextbookNode, User
 from .physics_catalog import PHYSICS_CATALOG
 from .subject_catalogs import BIOLOGY_CATALOG, CHEMISTRY_CATALOG, MATH_CATALOG
 
@@ -78,6 +79,30 @@ def ensure_textbook_nodes_table(db: Session):
     db.commit()
 
 
+def allow_questions_without_danmaku_session(db: Session):
+    connection = db.connection()
+    table = DanmakuMessage.__table__
+    columns = inspect(connection).get_columns(table.name)
+    if next(column for column in columns if column["name"] == "session_id")["nullable"]:
+        return
+
+    if connection.dialect.name == "sqlite":
+        # SQLite needs a table rebuild to relax an existing NOT NULL constraint.
+        connection.exec_driver_sql("BEGIN IMMEDIATE")
+        temporary_table = "danmaku_messages_new"
+        ddl = str(CreateTable(table).compile(dialect=connection.dialect))
+        connection.exec_driver_sql(ddl.replace(f"CREATE TABLE {table.name}", f"CREATE TABLE {temporary_table}", 1))
+        column_names = ", ".join(column.name for column in table.columns)
+        connection.exec_driver_sql(f"INSERT INTO {temporary_table} ({column_names}) SELECT {column_names} FROM {table.name}")
+        connection.exec_driver_sql(f"DROP TABLE {table.name}")
+        connection.exec_driver_sql(f"ALTER TABLE {temporary_table} RENAME TO {table.name}")
+        for index in table.indexes:
+            index.create(connection)
+    else:
+        db.execute(text("ALTER TABLE danmaku_messages ALTER COLUMN session_id DROP NOT NULL"))
+    db.commit()
+
+
 def seed_textbook_nodes(db: Session):
     existing_count = db.query(TextbookNode).count()
     if existing_count > 0:
@@ -142,6 +167,7 @@ def init_database(db: Session):
     ensure_user_columns(db)
     ensure_animation_columns(db)
     ensure_textbook_nodes_table(db)
+    allow_questions_without_danmaku_session(db)
     
     admin = db.query(User).filter(User.username == settings.admin_username).first()
     if not admin:

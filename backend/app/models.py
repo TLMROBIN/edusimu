@@ -221,7 +221,7 @@ class DanmakuMessage(Base):
     )
 
     id = Column(Integer, primary_key=True, index=True)
-    session_id = Column(Integer, ForeignKey("danmaku_sessions.id"), nullable=False, index=True)
+    session_id = Column(Integer, ForeignKey("danmaku_sessions.id"), index=True)
     animation_id = Column(Integer, ForeignKey("animations.id"), nullable=False, index=True)
     class_name = Column(String(50), nullable=False, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)

@@ -89,9 +89,10 @@ class ClassroomRouterTests(unittest.IsolatedAsyncioTestCase):
     async def test_default_closed_open_cooldown_incremental_and_early_close(self):
         initial = await self.state()
         self.assertFalse(initial.is_open)
-        with self.assertRaises(HTTPException) as closed_error:
-            await self.send()
-        self.assertEqual(closed_error.exception.status_code, 409)
+        discussion_only = await self.send("弹幕关闭时的提问", user=self.s2)
+        self.assertIsNone(discussion_only.session_id)
+        self.assertEqual((await self.history()).items[0].id, discussion_only.id)
+        self.assertEqual((await self.state()).messages, [])
 
         with self.assertRaises(HTTPException) as class_error:
             await self.open_session(CLASS_TWO)
@@ -104,6 +105,10 @@ class ClassroomRouterTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(opened.is_open)
         self.assertLessEqual(opened.remaining_seconds, 2400)
         self.assertGreater(opened.remaining_seconds, 2390)
+        self.assertEqual(opened.messages, [])
+        with self.assertRaises(HTTPException) as opening_cooldown:
+            await self.send("开启后仍在冷却", user=self.s2)
+        self.assertEqual(opening_cooldown.exception.status_code, 429)
 
         message = await self.send()
         self.assertEqual(message.display_name, "学生甲")
@@ -124,11 +129,13 @@ class ClassroomRouterTests(unittest.IsolatedAsyncioTestCase):
             db=self.db,
         )
         self.assertFalse(closed.is_open)
-        with self.assertRaises(HTTPException):
-            await self.send("关闭后不能发送", user=self.s2)
+        with self.assertRaises(HTTPException) as closing_cooldown:
+            await self.send("关闭后仍在冷却")
+        self.assertEqual(closing_cooldown.exception.status_code, 429)
+        after_close = await self.send("关闭后仍可提问", user=self.teacher)
+        self.assertIsNone(after_close.session_id)
         history = await self.history()
-        self.assertEqual(history.total, 1)
-        self.assertEqual(history.items[0].content, "这里没看懂")
+        self.assertEqual({item.id for item in history.items}, {discussion_only.id, message.id, after_close.id})
 
     async def test_expired_session_still_allows_history_and_toggle_upvotes(self):
         await self.open_session()
@@ -140,9 +147,8 @@ class ClassroomRouterTests(unittest.IsolatedAsyncioTestCase):
         expired = await self.state()
         self.assertFalse(expired.is_open)
         self.assertEqual(expired.remaining_seconds, 0)
-        with self.assertRaises(HTTPException) as send_error:
-            await self.send("过期消息", user=self.s2)
-        self.assertEqual(send_error.exception.status_code, 409)
+        after_expiry = await self.send("弹幕到期后仍可提问", user=self.s2)
+        self.assertIsNone(after_expiry.session_id)
 
         upvoted = await classroom.toggle_danmaku_upvote(
             self.animation.id, message.id, current_user=self.s2, db=self.db
@@ -152,6 +158,7 @@ class ClassroomRouterTests(unittest.IsolatedAsyncioTestCase):
         history = await self.history(user=self.s2)
         self.assertTrue(history.items[0].upvoted_by_me)
         self.assertEqual(history.items[0].upvote_count, 1)
+        self.assertEqual(history.total, 2)
 
         cancelled = await classroom.toggle_danmaku_upvote(
             self.animation.id, message.id, current_user=self.s2, db=self.db
