@@ -324,7 +324,7 @@
       chartX: 'omega2',
       lastSim: null
     };
-    this.doneA = { P1: true, P2: true };
+    this.doneA = {};
     this.doneB = {};
 
     var modeChips = h('div.seg',
@@ -430,14 +430,16 @@
   Bench.prototype.applyPresetA = function (pre, silent) {
     var sa = this.stA;
     sa.preset = pre;
-    if (pre === 'Fm') {
-      sa.mL = 'steel'; sa.mR = 'al'; sa.slotL = 'inner'; sa.stepL = 0; sa.stepR = 0;
-    } else if (pre === 'Fr') {
-      sa.mL = 'al'; sa.mR = 'al'; sa.slotL = 'outer'; sa.stepL = 0; sa.stepR = 0;
-    } else {
-      sa.mL = 'al'; sa.mR = 'al'; sa.slotL = 'inner'; sa.stepL = 0; sa.stepR = 1;
+    if (!this.guided()) {
+      if (pre === 'Fm') {
+        sa.mL = 'steel'; sa.mR = 'al'; sa.slotL = 'inner'; sa.stepL = 0; sa.stepR = 0;
+      } else if (pre === 'Fr') {
+        sa.mL = 'al'; sa.mR = 'al'; sa.slotL = 'outer'; sa.stepL = 0; sa.stepR = 0;
+      } else {
+        sa.mL = 'al'; sa.mR = 'al'; sa.slotL = 'inner'; sa.stepL = 0; sa.stepR = 1;
+      }
     }
-    this.doneA.P2 = true; this.doneA.P3 = true;
+    this.doneA.P2 = false; this.doneA.P3 = false;
     if (!silent) {
       this.refreshReadout();
       this.stage.invalidate();
@@ -487,8 +489,21 @@
         sa.dispDivR = 0;
       }
     } else {
-      this.stB.lastSim = this.curSimB();
+      if (this.guided() && !this.hasGateSample()) {
+        this.stB.gateSample = null; this.stB.flashT = 0;
+      } else if (!this.guided()) this.stB.lastSim = this.curSimB();
+      this.updateLiveText();
     }
+  };
+
+  Bench.prototype.gateSettings = function () {
+    var sb = this.stB;
+    return [sb.m, sb.r, sb.dMm, sb.w, sb.trackFriction, sb.calDone, S.ideal].join(':');
+  };
+
+  Bench.prototype.hasGateSample = function () {
+    var sample = this.stB.gateSample;
+    return !!sample && sample.settings === this.gateSettings();
   };
 
   /* ---------- 物理动画推进（按需启动，静止即停） ---------- */
@@ -516,11 +531,14 @@
     }
     var sb = this.stB;
     if (!sb.running) return false;
-    var prev = sb.theta;
-    sb.theta = (sb.theta + sb.w * dt) % (Math.PI * 2);
-    if (prev > Math.PI * 1.5 && sb.theta <= Math.PI * 0.5) {
+    var turn = 2 * Math.PI, next = sb.theta + sb.w * dt;
+    var crossed = Math.floor(next / turn) > Math.floor(sb.theta / turn);
+    sb.theta = (next % turn + turn) % turn;
+    if (crossed) {
       sb.flashT = 0.22;
       sb.lastSim = this.curSimB();
+      sb.hasRun = true;
+      sb.gateSample = { settings: this.gateSettings(), reading: sb.lastSim };
       this.updateLiveText();
     }
     if (sb.flashT > 0) sb.flashT = Math.max(0, sb.flashT - dt);
@@ -564,6 +582,12 @@
     var dR = res ? res.meanR : sim.divR;
     var tags = this.detectTagsA();
     var pname = sa.preset === 'Fm' ? '探 F-m' : sa.preset === 'Fr' ? '探 F-r' : '探 F-ω';
+    var controlled = sa.preset === 'Fm'
+      ? sa.mL !== sa.mR && sa.slotL === 'inner' && sa.stepL === sa.stepR
+      : sa.preset === 'Fr' ? sa.mL === sa.mR && sa.slotL === 'outer' && sa.stepL === sa.stepR
+      : sa.mL === sa.mR && sa.slotL === 'inner' && sa.stepL !== sa.stepR;
+    if (this.guided() && !controlled) { this.block('当前两侧设置不符合所选探究变量的控制条件，请先调整小球、槽位和塔轮。', 'E1'); return; }
+    this.doneA.P2 = controlled; this.doneA.P3 = controlled;
     this.rowsA.push({
       preset: pname,
       mL: sim.mL, mR: sim.mR, rL: sim.rL, rR: sim.rR, RL: sim.RL, RR: sim.RR,
@@ -587,7 +611,10 @@
       openCaliperModal(function (d) { sb.dMm = d; sb.calDone = true; bench.doneB.P6 = true; bench.renderSide(); }, 10.0);
       return;
     }
-    var sim = this.curSimB();
+    if (this.guided() && !this.hasGateSample()) {
+      this.block('请在当前参数下启动旋转，等遮光条通过光电门后再采集。'); return;
+    }
+    var sim = this.guided() ? sb.gateSample.reading : this.curSimB();
     sb.hasRun = true;
     sb.lastSim = sim;
     this.rowsB.push(Object.assign({}, sim, { friction: sb.trackFriction }));
@@ -846,7 +873,7 @@
     this.hot.push({ id: 'sliderB', x: sx - 24, y: sy - 24, w: 48, h: 48 });
 
     // 右上角实时数字化表头 HUD
-    var activeB = sb.running || sb.hasRun || this.rowsB.length > 0;
+    var activeB = this.guided() ? this.hasGateSample() : (sb.running || sb.hasRun || this.rowsB.length > 0);
     var hx = w - 168, hy = 12;
     ctx.fillStyle = '#0F1C2E';
     D.rr(ctx, hx, hy, 154, 102, 10); ctx.fill();
@@ -983,7 +1010,8 @@
         type: 'button',
         onclick: function () {
           sb.running = !sb.running;
-          if (sb.running) { sb.hasRun = true; self.loop.start(); } else self.loop.stop();
+          if (sb.running) { sb.gateSample = null; sb.flashT = 0; self.loop.start(); } else self.loop.stop();
+          self.stage.invalidate('fg');
           self.renderStageActs(); self.renderSide();
         }
       }, sb.running ? '停止转动' : '启动旋转');
@@ -1002,10 +1030,10 @@
         '左标尺 = <b>' + sa.dispDivL.toFixed(2) + '</b> 格 ｜ 右标尺 = <b>' + sa.dispDivR.toFixed(2) + '</b> 格 ｜ 比值 = <b>' + rStr + '</b>';
     } else {
       var sb = this.stB, simB = sb.lastSim || this.curSimB();
-      var activeB = sb.running || sb.hasRun || this.rowsB.length > 0;
+      var activeB = this.guided() ? this.hasGateSample() : (sb.running || sb.hasRun || this.rowsB.length > 0);
       this.liveEl.innerHTML = activeB
         ? ('F = <b>' + simB.F.toFixed(3) + ' N</b> ｜ Δt = <b>' + (simB.dt * 1000).toFixed(2) + ' ms</b> ｜ ω = <b>' + simB.wMeas.toFixed(2) + ' rad/s</b>')
-        : ('静止待机（未旋转）：预设 ω = <b>' + sb.w.toFixed(1) + ' rad/s</b> ｜ 点“启动旋转”或“采集当前组”测 <i>F</i> 与 Δt');
+        : ((sb.running ? '等待遮光条通过光电门' : '等待启动旋转') + ' ｜ 预设 ω = <b>' + sb.w.toFixed(1) + '</b> rad/s');
     }
   };
 
@@ -1027,6 +1055,10 @@
         chip('① 探 F-m', sa.preset === 'Fm', function () { self.applyPresetA('Fm'); }),
         chip('② 探 F-r', sa.preset === 'Fr', function () { self.applyPresetA('Fr'); }),
         chip('③ 探 F-ω', sa.preset === 'Fw', function () { self.applyPresetA('Fw'); })));
+      if (this.guided()) ctl.appendChild(row(h('span.side-l', '实验前检查'),
+        chip(this.doneA.P1 ? '✓ 已检查零点与顺滑度' : '检查两标尺零点与套筒', this.doneA.P1, function () {
+          self.doneA.P1 = true; ML.toast('静止时两标尺归零，套筒可顺畅移动。', 'ok'); self.renderSide();
+        })));
       ctl.appendChild(row(h('span.side-l', '左球'),
         chip('A · m', sa.mL === 'al', function () { self.setBall('L', 'al'); }),
         chip('B · 2m', sa.mL === 'steel', function () { self.setBall('L', 'steel'); }),
@@ -1080,7 +1112,7 @@
         })));
       ctl.appendChild(row(h('span.side-l', '遮光条 d'),
         chip(sb.calDone ? '✓ 已测 d = 10.0 mm' : '用游标卡尺测 d', sb.calDone, function () {
-          openCaliperModal(function (d) { sb.dMm = d; sb.calDone = true; self.doneB.P6 = true; self.renderSide(); }, 10.0);
+          openCaliperModal(function (d) { sb.dMm = d; sb.calDone = true; self.doneB.P6 = true; self.renderSide(); self.stage.invalidate('fg'); }, 10.0);
         })));
       if (!this.guided()) {
         ctl.appendChild(row(h('span.side-l', '导轨摩擦'),
@@ -1092,9 +1124,9 @@
       ctl.appendChild(this.liveEl);
 
       ctl.appendChild(h('div.side-acts',
-        h('button.btn.primary', { type: 'button', onclick: function () { self.sweepBAll(); } }, '自动扫速采 7 组'),
+        !this.guided() ? h('button.btn.primary', { type: 'button', onclick: function () { self.sweepBAll(); } }, '自由演示：扫速采 7 组') : null,
         h('button.btn', { type: 'button', onclick: function () {
-          self.loop.stop(); sb.running = false; sb.hasRun = false; sb.lastSim = null; sb.theta = -Math.PI * 0.75;
+          self.loop.stop(); sb.running = false; sb.hasRun = false; sb.lastSim = null; sb.gateSample = null; sb.flashT = 0; sb.theta = -Math.PI * 0.75;
           self.rowsB = []; self.analysis.hidden = true; self.updateAnaBtn(); self.setBanner(null); self.stage.invalidate('fg'); self.renderStageActs(); self.renderSide();
         } }, '清空重测')));
     }

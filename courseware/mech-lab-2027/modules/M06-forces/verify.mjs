@@ -96,7 +96,35 @@ const pct = x => (x * 100).toFixed(4) + '%';
     `2.00→${dOk.code}, 2.0→${dNoEst.code}`);
 }
 
-// 7. content.json 与 questions.json 全题自检
+// 7. 学生自由结点模型：两表方向与伸长独立，结点由实际合力驱动
+{
+  const target = { x: 0, y: FF.Y_O };
+  const hands = FF.equilibriumHands(target, 35, 45);
+  const f0 = FF.pullForces(target, hands);
+  const k0 = { x: 0.012, y: 0.142 }, v0 = { x: 0, y: 0 };
+  for (let i = 0; i < 6000; i++) FF.stepPullKnot(k0, v0, hands, 0.001);
+  check('7a 双表独立伸长与方向可共同使自由结点稳定到 O',
+    f0.mag < 1e-9 && Math.hypot(k0.x - target.x, k0.y - target.y) < 1e-5,
+    `初态合力=${f0.mag.toExponential(2)} N，稳定结点=(${k0.x.toFixed(6)}, ${k0.y.toFixed(6)}) m`);
+
+  const moved = hands.map(p => ({ x: p.x, y: p.y })); moved[0].x -= 0.015;
+  const f1 = FF.pullForces(target, moved);
+  const k1 = { x: target.x, y: target.y }, v1 = { x: 0, y: 0 };
+  for (let i = 0; i < 1000; i++) FF.stepPullKnot(k1, v1, moved, 0.001);
+  check('7b 只移动一只手会改变合力并使结点离开 O',
+    f1.mag > 0.1 && Math.hypot(k1.x - target.x, k1.y - target.y) > 0.005,
+    `合力=${f1.mag.toFixed(4)} N，结点偏移=${(Math.hypot(k1.x - target.x, k1.y - target.y) * 100).toFixed(3)} cm`);
+
+  const singleHand = [{ x: 0, y: FF.Y_O + FF.METER_REST + FF.F_EQ_STD / FF.METER_K }];
+  const singleK = { x: 0.008, y: 0.145 }, singleV = { x: 0, y: 0 };
+  for (let i = 0; i < 6000; i++) FF.stepPullKnot(singleK, singleV, singleHand, 0.001);
+  check('7c 单表手位置在拖拽范围内，且能实际拉回同一 O',
+    singleHand[0].y < 0.36 && Math.abs(FF.meterTension(target, singleHand[0]).mag - FF.F_EQ_STD) < 1e-9 &&
+    Math.hypot(singleK.x - target.x, singleK.y - target.y) < 1e-5,
+    `手位置 y=${singleHand[0].y.toFixed(6)} m，拉力=${FF.meterTension(target, singleHand[0]).mag.toFixed(4)} N`);
+}
+
+// 8. content.json 与 questions.json 全题自检
 {
   const content = JSON.parse(fs.readFileSync(path.join(here, 'content.json'), 'utf8'));
   const qs = JSON.parse(fs.readFileSync(path.join(here, 'questions.json'), 'utf8'));

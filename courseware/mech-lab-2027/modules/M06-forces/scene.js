@@ -58,6 +58,48 @@
     return c > 1e-6 ? F_eq / (2 * c) : NaN;
   }
 
+  /* 学生拉拽模型：手的位置决定测力计方向与伸长量，结点由三力合力驱动。 */
+  var METER_REST = 0.080; // 细绳、外壳与未拉伸弹簧的等效长度 8 cm
+  var METER_K = 35.0;     // 测力计弹簧劲度系数 35 N/m
+  function meterTension(knot, hand) {
+    var dx = hand.x - knot.x, dy = hand.y - knot.y;
+    var dist = Math.hypot(dx, dy);
+    var mag = Math.max(0, (dist - METER_REST) * METER_K);
+    return { dist: dist, mag: mag, ux: dist > 1e-9 ? dx / dist : 0, uy: dist > 1e-9 ? dy / dist : 1 };
+  }
+  function pullForces(knot, hands) {
+    var band = rubberBandForce(knot.x, knot.y, K_BAND, L0);
+    var L = Math.max(1e-9, Math.hypot(knot.x, knot.y));
+    var fx = -band.mag * knot.x / L, fy = -band.mag * knot.y / L;
+    var meters = hands.map(function (hand) {
+      var t = meterTension(knot, hand);
+      fx += t.mag * t.ux; fy += t.mag * t.uy;
+      return t;
+    });
+    return { band: band, meters: meters, fx: fx, fy: fy, mag: Math.hypot(fx, fy) };
+  }
+  function stepPullKnot(knot, velocity, hands, dt) {
+    var f = pullForces(knot, hands);
+    var mass = 0.035, damping = 9.0;
+    velocity.x += f.fx / mass * dt;
+    velocity.y += f.fy / mass * dt;
+    var damp = Math.exp(-damping * dt);
+    velocity.x *= damp; velocity.y *= damp;
+    knot.x = P.clamp(knot.x + velocity.x * dt, -0.15, 0.15);
+    knot.y = P.clamp(knot.y + velocity.y * dt, 0.065, 0.29);
+    f.speed = Math.hypot(velocity.x, velocity.y);
+    return f;
+  }
+  function equilibriumHands(target, theta1Deg, theta2Deg) {
+    var two = twoForceEquilibrium(K_BAND * (Math.hypot(target.x, target.y) - L0), theta1Deg, theta2Deg);
+    var d1 = METER_REST + two.F1 / METER_K, d2 = METER_REST + two.F2 / METER_K;
+    var r1 = theta1Deg * Math.PI / 180, r2 = theta2Deg * Math.PI / 180;
+    return [
+      { x: target.x - Math.sin(r1) * d1, y: target.y + Math.cos(r1) * d1 },
+      { x: target.x + Math.sin(r2) * d2, y: target.y + Math.cos(r2) * d2 }
+    ];
+  }
+
   function solveExperiment(params, seed) {
     params = params || {};
     var kBand = params.kBand != null ? params.kBand : K_BAND;
@@ -140,6 +182,9 @@
     twoForceEquilibrium: twoForceEquilibrium,
     dynamicEquilibrium: dynamicEquilibrium,
     symmetricForce: symmetricForce,
+    METER_REST: METER_REST, METER_K: METER_K,
+    meterTension: meterTension, pullForces: pullForces,
+    stepPullKnot: stepPullKnot, equilibriumHands: equilibriumHands,
     solveExperiment: solveExperiment
   };
 })(typeof window !== 'undefined' ? (window.ML = window.ML || {}) : (globalThis.ML = globalThis.ML || {}));
@@ -1164,30 +1209,12 @@
     },
     restore: function () {
       if (!bench) { S.mode = 'guided'; ML.store.save(); return; }
-      bench.setMode('guided');
-      bench.st.zeroErr1 = 0; bench.st.zeroErr2 = 0; bench.st.liftDeg = 0; bench.st.markDist = 0.120;
-      bench.st.theta1Deg = 35; bench.st.theta2Deg = 45; bench.st.pullPct = 1.0;
-      bench.st.singleKnotX = 0; bench.st.singleKnotY = FF.Y_O;
-      bench.setStage('two', true);
-      bench.setBanner(null);
-      bench.stage.invalidate(); bench.renderStageActs(); bench.renderSide();
+      bench.setMode('guided', true); bench.resetExperiment(false);
     },
     replay: function (errId) {
       var e = ERR[errId]; if (!e) return;
       shell.go('bench');
-      bench.setMode('free', true);
-      var st = bench.st;
-      st.zeroErr1 = 0; st.zeroErr2 = 0; st.liftDeg = 0; st.markDist = 0.120;
-      st.theta1Deg = 35; st.theta2Deg = 45; st.pullPct = 1.0;
-      st.singleKnotX = 0; st.singleKnotY = FF.Y_O;
-      if (errId === 'E1') { st.singleKnotX = 0.008; st.singleKnotY = FF.Y_O + 0.014; bench.setStage('single', true); }
-      else if (errId === 'E2') { st.zeroErr1 = 0.30; st.zeroErr2 = 0; bench.setStage('cal', true); }
-      else if (errId === 'E3') { st.liftDeg = 22; bench.setStage('plot', true); }
-      else if (errId === 'E4') { st.markDist = 0.025; bench.setStage('two', true); }
-      else if (errId === 'E5') { st.theta1Deg = 72.5; st.theta2Deg = 72.5; bench.setStage('two', true); }
-      else if (errId === 'E6') { st.theta1Deg = 30; st.theta2Deg = 50; bench.setStage('plot', true); }
-      bench.stage.invalidate(); bench.renderStageActs(); bench.renderSide();
-      bench.setBanner('<b>复现：' + e.name + '</b>　已为你预设自由模式实验台，可直接观察误差或点“查看数据分析”。');
+      if (bench.applyReplay) bench.applyReplay(errId, e);
       if (shell.main) shell.main.scrollTop = 0;
     }
   };
@@ -1347,7 +1374,7 @@
     title: C.title, sub: C.sub, summary: C.summary,
     tabs: [
       { id: 'learn', label: '学·原理', mount: function (el) { ML.Learn(el, C.learn, C.equipment, { onPage: learnWidget, onFinish: function () { shell.go('bench'); } }); } },
-      { id: 'bench', label: '做·实验', mount: function (el) { bench = new Bench(el); } },
+      { id: 'bench', label: '做·实验', mount: function (el) { bench = new ML.M06StudentBench(el); } },
       { id: 'diag', label: '诊·误差', mount: function (el) {
         var wrap = h('div.diag'); el.appendChild(wrap);
         wrap.appendChild(h('h2.diag-h', 'A. 错误操作实验室'));
@@ -1381,7 +1408,7 @@
     if (tabId !== 'learn' && learnStopFn) learnStopFn();
     if (tabId !== 'bench' && bench && bench.mag) bench.mag.hide();
   });
-  shell.go(S.tab);
+  setTimeout(function () { shell.go(S.tab); }, 0);
   ML.perf.probe();
   ML.m06 = { bench: function () { return bench; }, adapter: adapter, shell: shell };
 })(typeof window !== 'undefined' ? (window.ML = window.ML || {}) : (globalThis.ML = globalThis.ML || {}));

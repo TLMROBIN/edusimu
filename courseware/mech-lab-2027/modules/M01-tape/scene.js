@@ -500,7 +500,7 @@
       opts = opts || {};
       var self = this, el = bn.analysis; this.bn = bn; this.tape = tape; el.hidden = false; ML.clear(el);
       this.baseTags = (tape.tags || []).filter(function (id) { return id !== 'E3' && id !== 'E4' && id !== 'E5'; });
-      this.st = { O: null, every: 5, method: 'origin', Tcalc: null, meas: null };
+      this.st = { O: null, every: 5, method: 'origin', Tcalc: null, meas: null, readingsChecked: false };
       var tapesBar = h('div.ana-tapes', h('b', '我的纸带：'), bn.tapes.map(function (t) {
         return h('button.chip' + (t === tape ? '.on' : ''), { type: 'button', onclick: function () { self.show(t, bn); } }, '纸带 ' + t.no + '（' + TIMER_NAME[t.timer || 'em'].slice(0, 2) + '）');
       }));
@@ -565,6 +565,7 @@
     syncP9: function () {
       var dots = this.tape.run.dots, st = this.st;
       if (!this.bn || st.O == null) return;
+      this.bn.done.P10 = false; this.bn.done.P11 = false;
       var dense = st.O + 1 < dots.length && dots[st.O + 1] - dots[st.O] < 1e-3;
       this.bn.done.P9 = !dense && st.every === 5;
       this.bn.renderSide();
@@ -578,7 +579,7 @@
       }
       this.st.O = i; this.st.meas = null; this.st.Tcalc = null;
       if (dense) ML.toast('这里的点太密了，相邻间距不到 1 mm', 'warn');
-      if (this.bn) { this.bn.done.P9 = !dense && this.st.every === 5; this.bn.renderSide(); }
+      if (this.bn) { this.bn.done.P10 = false; this.bn.done.P11 = false; this.bn.done.P9 = !dense && this.st.every === 5; this.bn.renderSide(); }
       this.update();
     },
     update: function () {
@@ -592,17 +593,21 @@
     },
     measure: function () {
       var st = this.st, dots = this.tape.run.dots;
-      var m = T.measure(dots, { start: st.O, every: st.every, n: 6, method: st.method, ideal: S.ideal, seed: 5 + st.O });
+      var m = T.measure(dots, { start: st.O, every: st.every, n: 6, method: st.method, ideal: S.ideal || (this.bn && this.bn.guided()), seed: 5 + st.O });
       if (m.segs.length < 4) { ML.toast('计数点不够（至少需要 4 段），换一个更靠前的起点或换条纸带', 'warn'); return; }
       st.meas = m;
+      st.readingsChecked = !this.bn || !this.bn.guided();
       if (this.bn) {
         var dense = st.O + 1 < dots.length && dots[st.O + 1] - dots[st.O] < 1e-3;
         this.bn.done.P9 = !dense && st.every === 5;
-        this.bn.done.P10 = st.method === 'origin';
+        this.bn.done.P10 = st.method === 'origin' && st.readingsChecked;
         this.bn.renderSide();
       }
-      // 测量动画：刻度尺滑入并在放大镜依次闪示读数
       this.update();
+      if (this.bn && this.bn.guided()) {
+        ML.toast('刻度尺已放好。请逐点用放大镜读数，在下方填写各计数点读数。', 'info'); return;
+      }
+      // 自由演示：刻度尺滑入并在放大镜依次闪示读数
       var self = this, k = 0, gen = (this._animGen = (this._animGen || 0) + 1);
       (function step() {
         if (self._animGen !== gen || !self.st.meas || !self.strip.el.isConnected) { if (self.strip && self.strip.mag) self.strip.mag.hide(); return; }
@@ -619,6 +624,23 @@
     renderOut: function () {
       var self = this, st = this.st, out = this.out, m = st.meas; ML.clear(out);
       if (!m) return;
+      if (this.bn && this.bn.guided() && !st.readingsChecked) {
+        var inputs = m.pos.map(function (_, i) { return h('input', { type: 'number', step: '0.01', min: '0', 'aria-label': 'd' + i + '（cm）', style: { width: '82px' } }); });
+        var fb = h('div.ana-hint');
+        out.appendChild(h('div.ana-block', h('h3', '我的刻度尺读数'),
+          h('div.muted', '从同一起点 O 对零，依次读取已标出的计数点；单位 cm，估读到 0.01 cm。程序此时尚未代填数据。'),
+          h('div.side-row', inputs.map(function (inp, i) { return h('label', 'd' + sub(i) + ' ', inp); })),
+          h('button.btn.primary', { type: 'button', onclick: function () {
+            var vals = inputs.map(function (inp) { return Number(inp.value); });
+            var ok = vals.every(function (v, i) { return inputs[i].value !== '' && isFinite(v) && Math.abs(v - m.pos[i] * 100) <= 0.011; });
+            if (!ok) { fb.textContent = '有读数不符，请检查对零、计数点、单位与估读位数。'; return; }
+            st.meas.pos = vals.map(function (v) { return v / 100; });
+            st.meas.segs = st.meas.pos.slice(1).map(function (v, i) { return v - st.meas.pos[i]; });
+            st.readingsChecked = true; self.bn.done.P10 = st.method === 'origin'; self.bn.renderSide(); self.update();
+            ML.toast('原始读数已记录。现在选择计数间隔，再计算速度和加速度。', 'ok');
+          } }, '提交读数并核对'), fb));
+        return;
+      }
       var n = m.segs.length;
       var head = h('tr', h('th', '计数点'), m.pos.map(function (_, i) { return h('th', i === 0 ? 'O' : String(i)); }));
       var rowD = h('tr', h('th', '到 O 的距离 d / cm'), m.pos.map(function (x) { return h('td', cm(x)); }));

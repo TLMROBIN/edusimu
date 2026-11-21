@@ -194,6 +194,8 @@ def build(key, publish=False):
         css += "\n" + (mdir / "scene.css").read_text("utf-8")
     css += "\n" + (CORE / "layout.css").read_text("utf-8")
     js_files = [(f, (CORE / f).read_text("utf-8")) for f in CORE_JS] + [("scene.js", (mdir / "scene.js").read_text("utf-8"))]
+    if (mdir / "student.js").exists():
+        js_files.append(("student.js", (mdir / "student.js").read_text("utf-8")))
 
     for name, js in js_files:
         code = strip_js_comments_and_strings(js)

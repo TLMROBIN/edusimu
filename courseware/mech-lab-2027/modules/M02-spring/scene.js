@@ -359,6 +359,7 @@
     this.idealChip = h('button.chip', {
       type: 'button', title: '理想条件：无读数高斯噪声',
       onclick: function () {
+        self.pendingReading = null;
         S.ideal = !S.ideal; ML.store.save();
         self.idealChip.classList.toggle('on', S.ideal);
         self.idealChip.textContent = S.ideal ? '理想条件' : '真实条件';
@@ -444,7 +445,7 @@
   Bench.prototype.curReading = function (seedOffset) {
     var lInst = this.curLengthInst();
     return SP.readScale(lInst, {
-      ideal: S.ideal,
+      ideal: S.ideal || this.guided(),
       viewAngleDeg: this.viewAngleDeg,
       rulerTiltDeg: this.rulerTiltDeg,
       seed: this.seedCounter + (seedOffset || 0)
@@ -452,6 +453,7 @@
   };
 
   Bench.prototype.setMode = function (m, silent) {
+    this.pendingReading = null;
     this.mode = m; S.mode = m; ML.store.save();
     ML.$$('.chip', this.modeChips).forEach(function (c) { c.classList.toggle('on', c.dataset.v === m); });
     if (m === 'guided') {
@@ -498,6 +500,7 @@
       this.badConnect = false;
     }
     this.l0Measured = null;
+    this.pendingReading = null;
     this.rows = [];
     this.showAna = false;
     this.analysis.hidden = true;
@@ -516,6 +519,7 @@
       return;
     }
     var prevN = this.nWeights;
+    this.pendingReading = null;
     this.nWeights = n;
     if (nextF > this.fMax) this.fMax = nextF;
     this.seedCounter += 7;
@@ -558,14 +562,21 @@
         return;
       }
     }
-    var lBase = this.l0Mode === 'horiz' ? this.spring.l0Horiz : SP.l0Hang(this.spring, SP.G);
+    var lBase = this.l0Mode === 'horiz' ? this.spring.l0Horiz : this.curLengthEq();
     if (this.nWeights > 0 && this.l0Mode === 'hang') lBase = this.curLengthInst();
-    this.l0Measured = SP.readScale(lBase, {
-      ideal: S.ideal,
+    var readingSeed = this.seedCounter;
+    if (!this.guided()) this.seedCounter++;
+    var measured = SP.readScale(lBase, {
+      ideal: S.ideal || this.guided(),
       viewAngleDeg: this.viewAngleDeg,
       rulerTiltDeg: this.rulerTiltDeg,
-      seed: this.seedCounter++
+      seed: readingSeed
     });
+    if (this.guided()) {
+      this.pendingReading = { kind: 'l0', expected: measured };
+      this.renderSide(); ML.toast('请从标尺读取原长，以 cm 为单位保留两位小数。', 'info'); return;
+    }
+    this.l0Measured = measured;
     this.updateDone();
     this.renderSide();
     ML.toast((this.l0Mode === 'horiz' ? '水平平放' : '竖直悬挂') + '测得原长 l₀ = ' + cmStr(this.l0Measured) + ' cm', this.l0Mode === 'horiz' ? 'warn' : 'ok');
@@ -589,23 +600,27 @@
     var l0 = this.l0Measured != null ? this.l0Measured : SP.l0Hang(this.spring, SP.G);
     if (this.l0Measured == null) this.l0Measured = l0;
     var wasOsc = !!this.oscAmp;
-    var lMeas = this.curReading(this.rows.length * 13);
+    var lMeas = this.curReading(this.guided() ? 0 : this.rows.length * 13);
     var F = this.curForce();
-    var x = lMeas - l0;
     var tags = [];
     if (F > this.spring.fYield || this.fMax > this.spring.fYield) tags.push('E1');
     if (this.l0Mode === 'horiz') tags.push('E2');
     if (wasOsc) tags.push('E3');
     if (this.viewAngleDeg !== 0) tags.push('E4');
     if (this.rulerTiltDeg !== 0) tags.push('E5');
+    var row = { n: this.nWeights, F: F, l: lMeas, l0: l0, x: lMeas - l0,
+      overloaded: F > this.spring.fYield, osc: wasOsc, tags: tags };
+    if (this.guided()) {
+      this.pendingReading = { kind: 'row', expected: lMeas, row: row };
+      this.renderSide(); ML.toast('请从指针与毫米刻度尺读数，估读到 0.01 cm 后提交。', 'info'); return;
+    }
+    this.commitRow(row);
+  };
 
-    var row = {
-      n: this.nWeights, F: F, l: lMeas, l0: l0, x: x,
-      overloaded: F > this.spring.fYield, osc: wasOsc, tags: tags
-    };
+  Bench.prototype.commitRow = function (row) {
     var idx = -1;
     for (var i = 0; i < this.rows.length; i++) {
-      if (this.rows[i].n === this.nWeights) { idx = i; break; }
+      if (this.rows[i].n === row.n) { idx = i; break; }
     }
     if (idx >= 0) this.rows[idx] = row;
     else {
@@ -615,7 +630,28 @@
     this.updateDone();
     this.renderSide();
     if (this.showAna) this.renderAnalysis(true);
-    ML.toast('已记录 n=' + this.nWeights + '（F=' + F.toFixed(2) + ' N, l=' + cmStr(lMeas) + ' cm）', tags.length ? 'warn' : 'ok');
+    ML.toast('已记录 n=' + row.n + '（F=' + row.F.toFixed(2) + ' N, l=' + cmStr(row.l) + ' cm）', row.tags.length ? 'warn' : 'ok');
+  };
+
+  Bench.prototype.confirmReading = function (value) {
+    var p = this.pendingReading; if (!p) return;
+    if (this.oscAmp || this.nWeights !== (p.kind === 'l0' ? 0 : p.row.n)) {
+      this.pendingReading = null;
+      this.renderSide();
+      ML.toast('装置状态已改变，请按当前画面重新记录并读数。', 'warn');
+      return;
+    }
+    var v = Number(value);
+    if (!isFinite(v) || Math.abs(v - p.expected * 100) > 0.011) {
+      ML.toast('读数不符。请正视指针，毫米尺以 cm 记录时保留两位小数。', 'warn'); return;
+    }
+    this.pendingReading = null;
+    if (p.kind === 'l0') {
+      this.l0Measured = v / 100; this.updateDone(); this.renderSide();
+      ML.toast('原长读数已记录：l₀ = ' + v.toFixed(2) + ' cm', 'ok');
+    } else {
+      p.row.l = v / 100; p.row.x = p.row.l - p.row.l0; this.commitRow(p.row);
+    }
   };
 
   Bench.prototype.collectSix = function () {
@@ -865,7 +901,7 @@
     if (!this.magLocked) { this.mag.hide(); return; }
     var pos = this.pointerPosForMag();
     var lShow = this.curReading(0);
-    this.mag.show([this.stage.layer('bg').canvas, this.stage.layer('fg').canvas], pos.x, pos.y, this.stage.dpr, 'l ≈ ' + cmStr(lShow) + ' cm');
+    this.mag.show([this.stage.layer('bg').canvas, this.stage.layer('fg').canvas], pos.x, pos.y, this.stage.dpr, this.guided() ? '从指针与标尺读数' : 'l ≈ ' + cmStr(lShow) + ' cm');
   };
 
   Bench.prototype.bindPointer = function () {
@@ -900,7 +936,7 @@
         if (self.drag.kind === 'mag') {
           if (a.pressed) {
             var lShow = self.curReading(0);
-            self.mag.show([self.stage.layer('bg').canvas, self.stage.layer('fg').canvas], p.x, p.y, self.stage.dpr, 'l ≈ ' + cmStr(lShow) + ' cm');
+            self.mag.show([self.stage.layer('bg').canvas, self.stage.layer('fg').canvas], p.x, p.y, self.stage.dpr, self.guided() ? '从指针与标尺读数' : 'l ≈ ' + cmStr(lShow) + ' cm');
           }
           return;
         }
@@ -909,7 +945,7 @@
       },
       press: function (p) {
         var lShow = self.curReading(0);
-        self.mag.show([self.stage.layer('bg').canvas, self.stage.layer('fg').canvas], p.x, p.y, self.stage.dpr, 'l ≈ ' + cmStr(lShow) + ' cm');
+        self.mag.show([self.stage.layer('bg').canvas, self.stage.layer('fg').canvas], p.x, p.y, self.stage.dpr, self.guided() ? '从指针与标尺读数' : 'l ≈ ' + cmStr(lShow) + ' cm');
       },
       up: function (p) {
         var d = self.drag; self.drag = null;
@@ -948,7 +984,9 @@
       : '<span style="color:#17784F;font-weight:700">静止 ✓</span>';
 
     this.readoutEl.innerHTML = '钩码 <b>' + this.nWeights + ' 个</b>（<i>F</i> = <b>' + F.toFixed(2) + ' N</b>） · ' + statusHtml + '<br>' +
-      '示数 <i>l</i> = <b>' + cmStr(lShow) + ' cm</b> · 原长 <i>l</i>₀ = <b>' + (l0Ref != null ? cmStr(l0Ref) + ' cm' : '未测') + '</b> · 伸长 <i>x</i> = <b>' + (isFinite(xShow) ? cmStr(xShow) + ' cm' : '—') + '</b>';
+      (this.guided()
+        ? '长度读数请从指针与标尺获得并手工提交；已记原长 <b>' + (l0Ref != null ? cmStr(l0Ref) + ' cm' : '未测') + '</b>。'
+        : '示数 <i>l</i> = <b>' + cmStr(lShow) + ' cm</b> · 原长 <i>l</i>₀ = <b>' + (l0Ref != null ? cmStr(l0Ref) + ' cm' : '未测') + '</b> · 伸长 <i>x</i> = <b>' + (isFinite(xShow) ? cmStr(xShow) + ' cm' : '—') + '</b>');
   };
 
   Bench.prototype.renderSide = function () {
@@ -959,6 +997,12 @@
     side.appendChild(this.readoutEl);
 
     var ctl = h('div.side-ctl');
+    if (this.pendingReading) {
+      var readingInput = h('input', { type: 'text', inputmode: 'decimal', placeholder: '例如 13.14', 'aria-label': '弹簧长度读数（cm）', style: { width: '100px' } });
+      ctl.appendChild(h('div.side-row', h('span.side-l', this.pendingReading.kind === 'l0' ? '原长 l₀' : '当前长度 l'), readingInput, h('span', 'cm'),
+        h('button.btn.primary.sm', { type: 'button', onclick: function () { self.confirmReading(readingInput.value); } }, '提交读数')));
+      ctl.appendChild(h('div.side-tip', '请正视指针，借助标尺放大观察；毫米刻度尺以 cm 记录时要保留两位小数。'));
+    }
     ctl.appendChild(h('div.side-row',
       h('span.side-l', '钩码'),
       h('button.chip', { type: 'button', 'aria-label': '减少1个50g钩码', disabled: this.nWeights <= 0, onclick: function () { self.setWeights(self.nWeights - 1); } }, '−1 钩码'),
@@ -1016,7 +1060,7 @@
 
     ctl.appendChild(h('div.side-acts',
       h('button.btn.primary', { type: 'button', onclick: function () { self.recordRow(); } }, '记录当前数据'),
-      h('button.btn', { type: 'button', onclick: function () { self.collectSix(); } }, '一键采齐 6 组'),
+      !this.guided() ? h('button.btn', { type: 'button', onclick: function () { self.collectSix(); } }, '自由演示：采齐 6 组') : null,
       h('button.btn.cyan', {
         type: 'button',
         disabled: this.rows.length < 2,

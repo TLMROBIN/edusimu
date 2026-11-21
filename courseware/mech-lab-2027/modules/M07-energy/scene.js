@@ -39,6 +39,10 @@
     if (countN < 3) return { valid: false, rows: [], aTape: NaN, kHalf: NaN, kV2: NaN, d12: 0 };
     var slice = dots.slice(st, st + countN + 1);
     var meas = T.measure(slice, { start: 0, every: 1, n: countN, method: 'origin', ideal: !!opts.ideal, seed: opts.seed || 7 });
+    if (opts.readings) {
+      opts.readings.heights.forEach(function (h, i) { meas.pos[opts.readings.first + i] = h; });
+      meas.segs = meas.pos.slice(1).map(function (h, i) { return h - meas.pos[i]; });
+    }
     var pos = meas.pos;
     var midTs = [], midVs = [];
     for (i = 1; i < pos.length - 1; i++) {
@@ -65,7 +69,7 @@
       hs.push(hVal); halfV2s.push(ek); v2s.push(2 * ek);
     }
     var fitHalf = P.linfit(hs, halfV2s), fitV2 = P.linfit(hs, v2s);
-    var d12 = st + 1 < dots.length ? dots[st + 1] - dots[st] : 0;
+    var d12 = opts.readings ? opts.readings.d12 : (st + 1 < dots.length ? dots[st + 1] - dots[st] : 0);
     return { valid: rows.length >= 2, st: st, meas: meas, rows: rows, aTape: aTape, gUsed: gUsed,
       fitHalf: fitHalf, fitV2: fitV2, d12: d12, refIdx: st + refRel, vRef: vRef };
   }
@@ -702,7 +706,7 @@
       var self = this, el = bn.analysis; this.bn = bn; this.tape = tape; el.hidden = false; ML.clear(el);
       var stAuto = firstMotionIndex(tape.run);
       this.firstClear = stAuto;
-      this.st = { O: stAuto, nonzero: false, showMass: false, speedMethod: 'mid', useTapeA: false, graphMode: 'halfv2' };
+      this.st = { O: stAuto, nonzero: false, showMass: false, speedMethod: 'mid', useTapeA: false, graphMode: 'halfv2', readings: null, readingsChecked: !bn.guided() };
       var tapesBar = h('div.ana-tapes', h('b', '我的纸带：'), bn.tapes.map(function (t) {
         return h('button.chip' + (t === tape ? '.on' : ''), { type: 'button', onclick: function () { self.show(t, bn); } }, '纸带 ' + t.no + '（' + BOB_INFO[t.bob || 'iron'].name + '）');
       }));
@@ -738,7 +742,12 @@
       var dots = this.tape.run.dots; if (i < 0 || i >= dots.length) return;
       var x = this.strip.X(dots[i]);
       if (x < 8 || x > this.strip.stage.w - 8) this.strip.zoomTo(this.strip.scale, dots[i]);
-      this.st.O = i; this.update();
+      this.st.O = i;
+      if (this.bn && this.bn.guided()) {
+        this.st.readingsChecked = false; this.st.readings = null;
+        this.bn.done.P7 = this.bn.done.P8 = this.bn.done.P9 = false; this.bn.renderSide();
+      }
+      this.update();
     },
     update: function () {
       var st = this.st, run = this.tape.run, dots = run.dots;
@@ -753,7 +762,7 @@
       } else {
         this.tagBox.appendChild(h('span.tag.ok', '✓ 操作与算法规范'));
       }
-      var res = dots.length && this.tape.threaded ? computeEnergy(run, { startIdx: st.O, nonzero: st.nonzero, speedMethod: st.speedMethod, useTapeA: st.useTapeA, ideal: S.ideal, seed: 5 + st.O }) : { valid: false, d12: 0 };
+      var res = dots.length && this.tape.threaded ? computeEnergy(run, { startIdx: st.O, nonzero: st.nonzero, speedMethod: st.speedMethod, useTapeA: st.useTapeA, ideal: S.ideal || this.bn.guided(), seed: 5 + st.O, readings: st.readings }) : { valid: false, d12: 0 };
       this.res = res;
       if (!dots.length || !this.tape.threaded) {
         this.twoMmBox.hidden = true;
@@ -765,16 +774,23 @@
       this.pointPicker.hidden = false;
       this.twoMmBox.hidden = false;
       var hasNext = st.O + 1 < dots.length;
-      var d12Mm = hasNext ? Math.abs(dots[st.O + 1] - dots[st.O]) * 1000 : 0;
+      var d12Mm = st.readings ? st.readings.d12 * 1000 : (hasNext ? Math.abs(dots[st.O + 1] - dots[st.O]) * 1000 : 0);
       var ok2mm = d12Mm >= 1.50 && d12Mm <= 2.60;
       this.twoMmBox.className = 'twomm-badge ' + (ok2mm ? 'ok' : 'bad');
       ML.clear(this.twoMmBox);
+      if (this.bn && this.bn.guided() && !st.readingsChecked) {
+        this.twoMmBox.className = 'twomm-badge';
+        var kHint = res.valid ? Math.min(5, res.meas.pos.length - 2) : 5;
+        var hHint = kHint >= 2 ? ' h' + sub(kHint - 1) + '、h' + sub(kHint) + '、h' + sub(kHint + 1) : ' 下方指定的三个高度';
+        this.twoMmBox.appendChild(h('span', '请先用刻度尺测量 Δs₁₂ 和' + hHint + '，在下方填写原始读数；核对前不显示程序测量值。'));
+      } else {
       this.twoMmBox.appendChild(h('span', { html: !hasNext ? '已选末点，后面没有点可用于测量首段间距。' :
         '<b>起点与下一点的间距 Δs₁₂ = ' + d12Mm.toFixed(2) + ' mm</b>　' +
         (ok2mm ? '✓ 接近理论值 h₁ = ½gT² = 1.96 mm ≈ 2 mm，可视为初速度为零的起点。'
           : d12Mm > 2.60 ? '⚠ 明显大于 2 mm！打首点时重物已有初速度，按静止起点算会出现 ΔEₖ > ΔEₚ。'
             : '⚠ 小于 1.5 mm，可能处于静止叠点区，请点选第 1 个下落清晰点作为起点 O。') }));
       if (d12Mm > 2.60) this.twoMmBox.appendChild(h('button.link', { type: 'button', onclick: function () { openTry('E1'); } }, '为什么会这样？试一试 →'));
+      }
 
       this.hint.textContent = '点按点迹选择起点，拖动平移纸带，按住查看 3× 放大镜。' +
         (this.firstClear > 0 ? '纸带开头的点迹重叠，可用「上一点」「下一点」按打点顺序逐个选。' : '');
@@ -810,6 +826,30 @@
     renderOut: function () {
       var self = this, st = this.st, out = this.out, res = this.res; ML.clear(out);
       if (!res || !res.valid) { out.appendChild(h('div.warnline', '清晰落体点太少（至少需要 4 个下落点），请尝试把重物靠近计时器重做。')); return; }
+      if (this.bn && this.bn.guided() && !st.readingsChecked) {
+        var dots = this.tape.run.dots;
+        var kRef = Math.min(5, res.meas.pos.length - 2);
+        if (kRef < 2) { out.appendChild(h('div.warnline', '可用点不足，请重选更早的起点或重新实验。')); return; }
+        var expected = [Math.abs(dots[st.O + 1] - dots[st.O]) * 1000,
+          res.meas.pos[kRef - 1] * 100, res.meas.pos[kRef] * 100, res.meas.pos[kRef + 1] * 100];
+        var labels = ['Δs₁₂ / mm', 'h' + sub(kRef - 1) + ' / cm', 'h' + sub(kRef) + ' / cm', 'h' + sub(kRef + 1) + ' / cm'];
+        var inputs = expected.map(function (_, i) { return h('input', { type: 'number', step: '0.01', min: '0', 'aria-label': labels[i], style: { width: '90px' } }); });
+        var fb = h('div.ana-hint');
+        out.appendChild(h('div.ana-block', h('h3', '先读尺并记录原始数据'),
+          h('div.muted', '用刻度尺和放大镜读取首段间距，以及 O 到第 ' + (kRef - 1) + '、' + kRef + '、' + (kRef + 1) + ' 点的距离；以指定单位保留两位小数。'),
+          h('div.side-row', labels.map(function (lab, i) { return h('label', lab + ' ', inputs[i]); })),
+          h('button.btn.primary', { type: 'button', onclick: function () {
+            var vals = inputs.map(function (inp) { return Number(inp.value); });
+            var ok = vals.every(function (v, i) { return isFinite(v) && inputs[i].value !== '' && Math.abs(v - expected[i]) <= 0.011; });
+            if (!ok) { fb.textContent = '有读数不符，请核对起点、刻线、单位和估读位数。'; return; }
+            st.readings = { d12: vals[0] / 1000, first: kRef - 1, heights: vals.slice(1).map(function (v) { return v / 100; }) };
+            st.readingsChecked = true; self.bn.done.P7 = vals[0] >= 1.50 && vals[0] <= 2.60; self.bn.done.P8 = true;
+            self.bn.renderSide();
+            self.update(); ML.toast('原始读数已记录，下面可用中间时刻法计算并核对。', 'ok');
+          } }, '提交原始读数并计算'), fb));
+        return;
+      }
+      if (st.readings) out.appendChild(h('div.muted', '首段间距和已填写的三个高度采用你的读数。全纸带图像还使用其余点迹的辅助尺读数。'));
       var mKg = st.showMass ? BOB_INFO[this.tape.bob || 'iron'].massKg : 1;
       var unitE = st.showMass ? 'J' : 'm²·s⁻²';
       var epTitle = (st.useTapeA ? 'a纸带' : 'g') + (st.showMass ? '·m' : '') + (st.nonzero ? 'Δh' : 'hₙ') + ' / ' + unitE;
@@ -841,7 +881,9 @@
         out.appendChild(w4);
         ML.$('.link', w4).onclick = function () { openTry('E4'); };
       } else if (this.bn && this.tape.bob !== 'wood' && st.speedMethod === 'mid' && this.tape.tags.length === 0) {
-        this.bn.done.P7 = true; this.bn.done.P8 = true; this.bn.done.P9 = true; this.bn.renderSide();
+        // 引导模式的 P7 已由学生提交的首段原始读数判定，不能被自动计算覆盖。
+        if (!this.bn.guided()) this.bn.done.P7 = true;
+        this.bn.done.P8 = true; this.bn.done.P9 = true; this.bn.renderSide();
       }
 
       // 图像法对比区

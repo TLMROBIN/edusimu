@@ -935,8 +935,12 @@
       return;
     }
 
+    if (this.guided() && sb.dots.some(function (dot) { return Math.abs(dot.plateY - sb.plateY) < 0.005; })) {
+      ML.toast('这一高度已有描点，请移动挡板到另一高度后再释放。', 'warn'); return;
+    }
     var hit = launch.hitAtPlateY(sb.plateY);
     if (!hit.valid) return;
+    hit.plateY = sb.plateY;
     if (instant) {
       sb.dots.push(hit);
       this.afterDot();
@@ -964,9 +968,18 @@
     ML.toast('已记录 ' + sb.dots.length + ' 个轨迹印迹点，可点击“平滑连线与分析”', 'ok');
   };
 
+  Bench.prototype.enoughCatcherHeights = function () {
+    var heights = [];
+    this.stB.dots.forEach(function (dot) {
+      var y = dot.plateY != null ? dot.plateY : (dot.y0 != null ? dot.y0 : dot.y);
+      if (heights.every(function (h) { return Math.abs(y - h) >= 0.01; })) heights.push(y);
+    });
+    return heights.length >= 5;
+  };
+
   Bench.prototype.afterDot = function () {
     var sb = this.stB;
-    if (sb.dots.length >= 5) this.doneB.P5 = true;
+    if (this.enoughCatcherHeights()) this.doneB.P5 = true;
     this.doneB.P2 = sb.plumbCalibrated;
     this.doneB.P3 = sb.originMode === 'center';
     this.doneB.P4 = !sb.randomHeight;
@@ -1163,15 +1176,15 @@
         chip('↑ −3cm', false, function () { sb.plateY = P.clamp(sb.plateY - 0.03, 0.04, 0.42); self.stage.invalidate('fg'); self.renderSide(); }),
         h('b.side-v', (sb.plateY * 100).toFixed(0) + ' cm'),
         chip('↓ +3cm', false, function () { sb.plateY = P.clamp(sb.plateY + 0.03, 0.04, 0.42); self.stage.invalidate('fg'); self.renderSide(); }),
-        h('span.muted', '已记 ' + sb.dots.length + ' 点')));
+        h('span.muted', '已记 ' + sb.dots.length + (this.guided() ? ' 个高度' : ' 点'))));
     }
     ctl.appendChild(h('div.side-acts',
       h('button.btn.primary', { type: 'button', disabled: busy, onclick: function () { self.fireB(false); } }, sb.subMode === 'strobe' ? '频闪发射' : '释放小球'),
+      sb.subMode === 'catcher' && !this.guided()
+        ? h('button.btn', { type: 'button', disabled: busy || sb.dots.length >= 5, onclick: function () { self.fillFive(); } }, '自由演示：补齐 5 点')
+        : sb.subMode === 'strobe' ? h('button.btn', { type: 'button', disabled: !sb.strobePts, onclick: function () { sb.analyzed = true; self.renderAnalysis(); } }, '分析频闪') : null,
       sb.subMode === 'catcher'
-        ? h('button.btn', { type: 'button', disabled: busy || sb.dots.length >= 5, onclick: function () { self.fillFive(); } }, '一键补齐 5 点')
-        : h('button.btn', { type: 'button', disabled: !sb.strobePts, onclick: function () { sb.analyzed = true; self.renderAnalysis(); } }, '分析频闪'),
-      sb.subMode === 'catcher'
-        ? h('button.btn.cyan', { type: 'button', disabled: sb.dots.length < 5, onclick: function () { sb.analyzed = true; self.doneB.P6 = true; self.doneB.P7 = true; self.stage.invalidate('fg'); self.renderSide(); self.renderAnalysis(); } }, '平滑连线与分析')
+        ? h('button.btn.cyan', { type: 'button', disabled: self.guided() ? !self.enoughCatcherHeights() : sb.dots.length < 5, onclick: function () { sb.analyzed = true; self.doneB.P6 = true; self.doneB.P7 = true; self.stage.invalidate('fg'); self.renderSide(); self.renderAnalysis(); } }, '平滑连线与分析')
         : null,
       h('button.btn', { type: 'button', onclick: function () {
         self.loop.stop(); sb.ball = null; clearRecorded();

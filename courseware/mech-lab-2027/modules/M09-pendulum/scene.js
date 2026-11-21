@@ -376,7 +376,8 @@
       lastMeas: lastRow ? Object.assign({ src: this.timing }, lastRow) : null
     };
     var hasMeas = this.rows.length > 0;
-    this.done = { P1: true, P2: this.b.calDone, P3: true, P4: true, P5: hasMeas, P6: hasMeas };
+    this.touched = {};
+    this.done = { P2: this.b.calDone, P5: hasMeas, P6: hasMeas };
 
     var modeChips = h('div.seg',
       h('button.chip', { type: 'button', data: { v: 'guided' }, onclick: function () { self.setMode('guided'); } }, '引导模式'),
@@ -460,6 +461,7 @@
       this.renderStageActs();
     }
     if (!silent) { this.setBanner(null); ML.toast(m === 'guided' ? '引导模式：按实验规范校验每一步' : '自由模式：任意参数都可运行，由物理模型给出真实后果'); }
+    this.renderStageActs();
     this.renderSide();
   };
 
@@ -481,7 +483,7 @@
       this.block('悬点不能仅绕在横杆上，要用铁夹夹紧，否则摆动中摆长会变化。', 'E4');
       return;
     }
-    this.b.pivot = pv; this.setBanner(null); this.updateDone(); this.saveBench(); this.stage.invalidate(); this.renderSide();
+    this.b.pivot = pv; this.touched.P1 = true; this.setBanner(null); this.updateDone(); this.saveBench(); this.stage.invalidate(); this.renderSide();
   };
 
   Bench.prototype.setBob = function (bob) {
@@ -492,13 +494,13 @@
     }
     this.b.bob = bob;
     this.b.dMm = bob === 'foam' ? 38.0 : 19.0;
-    this.setBanner(null); this.updateDone(); this.saveBench(); this.stage.invalidate(); this.renderSide();
+    this.touched.P1 = true; this.setBanner(null); this.updateDone(); this.saveBench(); this.stage.invalidate(); this.renderSide();
   };
 
   Bench.prototype.setLength = function (l) {
     if (this.b.running) { ML.toast('请先停止摆动再调摆线长', 'warn'); return; }
     this.b.l = P.clamp(Math.round(l * 100) / 100, 0.50, 1.20);
-    this.b.lastMeas = null;
+    this.b.lastMeas = null; this.touched.P3 = true;
     this.updateDone(); this.saveBench(); this.stage.invalidate(); this.renderSide();
   };
 
@@ -507,7 +509,7 @@
       this.block('摆长是从悬点到摆球球心的距离，应记录 L = l + d/2。', 'E3');
       return;
     }
-    this.b.LMode = lm;
+    this.b.LMode = lm; this.touched.P3 = true;
     this.setBanner(null);
     if (this.b.lastMeas) {
       this.b.lastMeas.L = this.curLRec();
@@ -524,17 +526,17 @@
       this.block('单摆做简谐运动的条件是摆角小于 5°，摆角过大周期会变长。', 'E5');
       return;
     }
-    this.b.thetaDeg = deg;
+    this.b.thetaDeg = deg; this.touched.P4 = true;
     this.setBanner(null);
     this.updateDone(); this.saveBench(); this.stage.invalidate('fg'); this.renderSide();
   };
 
   Bench.prototype.updateDone = function () {
     var b = this.b;
-    this.done.P1 = b.pivot === 'clamp' && b.bob === 'steel';
+    this.done.P1 = !!this.touched.P1 && b.pivot === 'clamp' && b.bob === 'steel';
     this.done.P2 = b.calDone;
-    this.done.P3 = b.LMode === 'l+r';
-    this.done.P4 = Math.abs(b.thetaDeg) <= 5.01;
+    this.done.P3 = !!this.touched.P3 && b.LMode === 'l+r';
+    this.done.P4 = !!this.touched.P4 && Math.abs(b.thetaDeg) <= 5.01;
     this.done.P5 = (!!this.done.P5 || this.rows.length > 0) && b.timingPos !== 'high' && !b.countOffset && !b.swBadStart;
     this.done.P6 = !!this.done.P6 || !!b.lastMeas || this.rows.length > 0;
     this.done.P7 = this.rows.length >= 5;
@@ -877,14 +879,16 @@
   Bench.prototype.startManualSw = function () {
     var b = this.b;
     if (!b.running || b.swActive) return;
+    var amp = Math.max(0.005, Math.abs(b.sim.theta0 || (b.thetaDeg * Math.PI / 180)));
+    var offCenter = b.timingPos === 'high' || Math.abs(b.sim.theta) > Math.min(0.045, amp * 0.35);
+    if (this.guided() && offCenter) { ML.toast('请在摆球经过最低点时开始计时。', 'warn'); return; }
     b.swActive = true;
     b.swStart = b.t;
     b.lastCrossT = b.t;
     b.swDir = b.sim.omega >= 0 ? 1 : -1;
     b.swCount = 0;
     b.autoTarget = 0;
-    var amp = Math.max(0.05, Math.abs(b.sim.theta0 || (b.thetaDeg * Math.PI / 180)));
-    b.swBadStart = b.timingPos === 'high' || Math.abs(b.sim.theta) > Math.min(0.045, amp * 0.45);
+    b.swBadStart = offCenter;
     if (b.swBadStart) {
       ML.toast('注意：你按表时摆球不在最低点（或设了最高点计时），会引入较大的计时误差！', 'warn');
     } else {
@@ -897,6 +901,12 @@
     var b = this.b;
     if (!b.swActive) return;
     if (b.swCount < 1) { ML.toast('至少完成 1 次全振动（同向再次过计时点）后再停表', 'warn'); return; }
+    var nearLastCrossing = b.t - b.lastCrossT <= b.params.T0 * 0.06 &&
+      (b.sim.omega >= 0 ? 1 : -1) === b.swDir;
+    if (this.guided() && !nearLastCrossing) {
+      ML.toast('请等摆球下一次沿计时起始方向经过最低点，再按停表。', 'warn'); return;
+    }
+    if (!nearLastCrossing && b.timingPos === 'low') b.swBadStart = true;
     var shownN = Math.max(1, b.swCount - (b.countOffset || 0));
     var dt = +(b.t - b.swStart).toFixed(1);
     if (!S.ideal && b.swBadStart) {
@@ -1023,8 +1033,8 @@
     ML.clear(box);
     if (!b.running) {
       box.appendChild(h('button.btn.primary.big', { type: 'button', onclick: function () { self.startSwing(); } }, '由静止释放摆球'));
-      if (this.timing === 'stopwatch') {
-        box.appendChild(h('button.btn.cyan', { type: 'button', onclick: function () { self.autoMeasure30(); } }, '一键自动测 30 次'));
+      if (this.timing === 'stopwatch' && !this.guided()) {
+        box.appendChild(h('button.btn.cyan', { type: 'button', onclick: function () { self.autoMeasure30(); } }, '自由演示：自动测 30 次'));
       }
       return;
     }
@@ -1036,7 +1046,7 @@
           ? '过最高点：开始计时（错点 E1）'
           : '过最低点：开始计时（从 ' + (b.countOffset ? '1' : '0') + ' 数起）';
         box.appendChild(h('button.btn.primary.big', { type: 'button', onclick: function () { self.startManualSw(); } }, startLbl));
-        box.appendChild(h('button.btn.cyan', { type: 'button', onclick: function () { self.autoMeasure30(); } }, '自动测完 30 次'));
+        if (!this.guided()) box.appendChild(h('button.btn.cyan', { type: 'button', onclick: function () { self.autoMeasure30(); } }, '自由演示：自动测完 30 次'));
       } else {
         var stopLbl = b.timingPos === 'high' ? '过最高点：停止计时' : '过最低点：停止计时';
         box.appendChild(h('button.btn.big.pulse', { type: 'button', onclick: function () { self.stopManualSw(); } }, stopLbl));
@@ -1091,7 +1101,7 @@
 
     ctl.appendChild(h('div.side-acts',
       h('button.btn.primary', { type: 'button', onclick: function () { self.recordCurrentRow(); }, disabled: !b.lastMeas }, '记入多组表 (' + this.rows.length + ')'),
-      h('button.btn', { type: 'button', onclick: function () { self.collect5Groups(); } }, '快速采齐 5 组'),
+      !this.guided() ? h('button.btn', { type: 'button', onclick: function () { self.collect5Groups(); } }, '自由演示：快速采齐 5 组') : null,
       h('button.btn.sm.full', { type: 'button', onclick: function () { self.resetAll(); } }, '清空数据表并复位')));
     side.appendChild(ctl);
 
@@ -1191,7 +1201,8 @@
     this.b.lastMeas = null;
     this.b.pivot = 'clamp'; this.b.bob = 'steel'; this.b.dMm = 19.0; this.b.LMode = 'l+r';
     this.b.thetaDeg = 4; this.b.l = 0.80; this.b.countOffset = 0; this.b.timingPos = 'low'; this.b.swBadStart = false;
-    this.done = { P1: true, P2: this.b.calDone, P3: true, P4: true };
+    this.touched = {};
+    this.done = { P2: this.b.calDone };
     this.analysis.hidden = true;
     this.setBanner(null);
     this.saveBench(); this.stage.invalidate(); this.renderStageActs(); this.renderSide();

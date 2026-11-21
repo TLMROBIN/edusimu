@@ -836,11 +836,30 @@
         if (a.moved || a.pressed) return;
         var hit = self.hitTest(p);
         if (self.scheme === 'chute') {
+          if (self.ch.manualFit) { self.manualAt(p); return; }
           if (hit === 'release1') self.shoot(1);
           else if (hit === 'toggleM2') { self.ch.hasM2 = !self.ch.hasM2; self.renderSide(); self.stage.invalidate('fg'); }
         }
       }
     });
+  };
+  Bench.prototype.manualAt = function (p) {
+    var ch = this.ch, id = ch.manualFit, g = this.chuteGeo(this.stage.w, this.stage.h);
+    if (!id) return;
+    if (p.y < g.paperTop || p.y > g.paperTop + g.paperH) { ML.toast('请在下方白纸的对应点簇内确定圆心。', 'warn'); return; }
+    var cx = (p.x - g.ox) / g.pxPerM, cy = (p.y - g.paperMidY) / 180;
+    var dots = id === 'P' ? ch.pDots : id === 'M' ? ch.mDots : ch.nDots;
+    if (dots.length < 3) { this.cancelCircleSelection(); ML.toast('落点已改变，请重新采样再定圆心。', 'warn'); return; }
+    var ref = PH.minCircle(dots);
+    if (Math.hypot((cx - ref.cx) * g.pxPerM, (cy - ref.cy) * 180) > 18) {
+      ML.toast('这个圆心不能合理代表点簇的平均位置，请观察落点分布后重试。', 'warn'); return;
+    }
+    var radius = Math.max.apply(null, dots.map(function (d) { return Math.hypot(d.x - cx, d.y - cy); }));
+    ch[id] = { cx: cx, cy: cy, r: radius, dist: Math.hypot(cx, cy), manual: true };
+    ch.manualFit = ch.manualQueue && ch.manualQueue.length ? ch.manualQueue.shift() : null;
+    if (ch.P && ch.M && ch.N) this.done.P6 = true;
+    this.setBanner(ch.manualFit ? '<b>继续作图：</b>请在白纸上点击 ' + ch.manualFit + ' 点簇的平均落点。' : '<b>作图记录完成：</b>三个平均落点均由你点击确定，下方距离由刻度尺坐标计算。');
+    this.stage.invalidate('fg'); this.renderSide();
   };
   Bench.prototype.showMag = function (p) {
     var g = this.chuteGeo(this.stage.w, this.stage.h);
@@ -885,6 +904,18 @@
       if (!a.nAdded) { pushDotCap(ch.nDots, res.nDot); a.nAdded = true; }
     }
   };
+  Bench.prototype.cancelCircleSelection = function () {
+    if (this.ch.manualFit) this.setBanner(null);
+    this.ch.manualFit = null; this.ch.manualQueue = [];
+  };
+
+  Bench.prototype.invalidateCircles = function (solo) {
+    if (solo) this.ch.P = null;
+    else { this.ch.M = null; this.ch.N = null; }
+    this.done.P6 = false; this.done.P7 = false;
+    this.cancelCircleSelection();
+  };
+
   Bench.prototype.shoot = function (n) {
     var ch = this.ch;
     if (this.guided()) {
@@ -894,7 +925,8 @@
       }
       if (ch.releaseJitter) { this.block('每次释放位置必须固定在 S 处，不能忽高忽低！', 'E2'); return; }
     }
-    if (ch.anim) { this.commitChuteAnim(ch.anim); ch.anim = null; }
+    if (ch.anim) { ML.toast('请等待这一发落到白纸后再释放。', 'warn'); return; }
+    this.invalidateCircles(!ch.hasM2);
     this.setBanner(null);
     var p = this.chuteParams();
     if (n === 1) {
@@ -921,8 +953,17 @@
     }
   };
   Bench.prototype.fitCircles = function () {
-    var ch = this.ch;
-    var okAny = false;
+    var ch = this.ch, okAny = false;
+    if (ch.anim) { ML.toast('请等这一发落地后再定圆心。', 'warn'); return; }
+    if (this.guided()) {
+      var canP = ch.pDots.length >= 3, canMN = ch.mDots.length >= 3 && ch.nDots.length >= 3;
+      if (!canP && !canMN) { this.block('请先逐次释放，每类落点至少 3 发，再徒手定圆心。', 'E4'); return; }
+      ch.manualQueue = [canP && !ch.P ? 'P' : null, canMN && !ch.M ? 'M' : null, canMN && !ch.N ? 'N' : null].filter(Boolean);
+      if (!ch.manualQueue.length) { this.autoFitCheck(); return; }
+      ch.manualFit = ch.manualQueue.shift();
+      this.setBanner('<b>学生作图：</b>用圆规尝试包住 ' + ch.manualFit + ' 点簇，在白纸上点击你确定的圆心；随后用刻度尺读圆心到 O 的距离。');
+      ML.toast('请在下半部白纸上点击 ' + ch.manualFit + ' 的圆心位置', 'info'); this.stage.invalidate('fg'); this.renderSide(); return;
+    }
     if (ch.pDots.length >= 3) { ch.P = PH.minCircle(ch.pDots); okAny = true; }
     if (ch.mDots.length >= 3 && ch.nDots.length >= 3) {
       ch.M = PH.minCircle(ch.mDots); ch.N = PH.minCircle(ch.nDots); okAny = true;
@@ -937,10 +978,21 @@
     this.stage.invalidate('fg');
     this.renderSide();
   };
+  Bench.prototype.autoFitCheck = function () {
+    var ch = this.ch;
+    if (!ch.P || !ch.M || !ch.N) return;
+    var refs = { P: PH.minCircle(ch.pDots), M: PH.minCircle(ch.mDots), N: PH.minCircle(ch.nDots) };
+    var msg = ['P', 'M', 'N'].map(function (id) {
+      return id + '：手工 ' + (ch[id].dist * 100).toFixed(2) + ' cm / 拟合 ' + (refs[id].dist * 100).toFixed(2) + ' cm';
+    }).join('；');
+    this.setBanner('<b>自动拟合核对（不替换你的作图）：</b>' + msg);
+    ML.toast('拟合结果仅作核对，手工圆心与距离记录保持不变。', 'ok');
+  };
   Bench.prototype.clearDots = function () {
     var ch = this.ch;
     ch.pDots = []; ch.mDots = []; ch.nDots = [];
-    ch.P = null; ch.M = null; ch.N = null; ch.anim = null;
+    ch.P = null; ch.M = null; ch.N = null; ch.anim = null; ch.lastRes = null;
+    this.done.P6 = false; this.done.P7 = false; this.cancelCircleSelection();
     this.stage.invalidate('fg'); this.renderSide();
   };
 
@@ -1045,7 +1097,8 @@
     ctl.appendChild(h('div.side-row', h('span.side-l', '入射球 m₁'),
       ['steel', 'al', 'glass'].map(function (k) {
         return h('button.chip' + (ch.m1 === k ? '.on' : ''), { type: 'button', onclick: function () {
-          ch.m1 = k; ch.P = ch.M = ch.N = null; ch.pDots = []; ch.mDots = []; ch.nDots = [];
+          if (ch.m1 === k) return;
+          ch.m1 = k; self.clearDots();
           self.saveBench(); self.stage.invalidate(); self.renderSide();
         } }, ballLabel(k));
       })));
@@ -1053,21 +1106,22 @@
       h('button.chip' + (!ch.hasM2 ? '.on' : ''), { type: 'button', onclick: function () { ch.hasM2 = false; self.stage.invalidate('fg'); self.renderSide(); } }, '无(测 P)'),
       ['steel', 'al', 'glass'].map(function (k) {
         return h('button.chip' + (ch.hasM2 && ch.m2 === k ? '.on' : ''), { type: 'button', onclick: function () {
-          ch.hasM2 = true; ch.m2 = k; ch.M = ch.N = null; ch.mDots = []; ch.nDots = [];
+          ch.hasM2 = true;
+          if (ch.m2 !== k) { ch.m2 = k; ch.anim = null; ch.mDots = []; ch.nDots = []; self.invalidateCircles(false); }
           self.saveBench(); self.stage.invalidate(); self.renderSide();
         } }, ballLabel(k));
       })));
     ctl.appendChild(h('div.side-row', h('span.side-l', '碰撞与槽口'),
-      h('button.chip' + (ch.e >= 0.9 ? '.on' : ''), { type: 'button', onclick: function () { ch.e = 0.98; ch.M = ch.N = null; ch.mDots = []; ch.nDots = []; ch.anim = null; self.saveBench(); self.stage.invalidate(); self.renderSide(); } }, '弹性 e=0.98'),
-      h('button.chip' + (ch.e < 0.9 ? '.on' : ''), { type: 'button', onclick: function () { ch.e = 0.75; ch.M = ch.N = null; ch.mDots = []; ch.nDots = []; ch.anim = null; self.saveBench(); self.stage.invalidate(); self.renderSide(); } }, '非弹性 0.75'),
+      h('button.chip' + (ch.e >= 0.9 ? '.on' : ''), { type: 'button', onclick: function () { if (ch.e === 0.98) return; ch.e = 0.98; ch.mDots = []; ch.nDots = []; ch.anim = null; self.invalidateCircles(false); self.saveBench(); self.stage.invalidate(); self.renderSide(); } }, '弹性 e=0.98'),
+      h('button.chip' + (ch.e < 0.9 ? '.on' : ''), { type: 'button', onclick: function () { if (ch.e === 0.75) return; ch.e = 0.75; ch.mDots = []; ch.nDots = []; ch.anim = null; self.invalidateCircles(false); self.saveBench(); self.stage.invalidate(); self.renderSide(); } }, '非弹性 0.75'),
       h('button.chip' + (ch.tiltDeg === 0 ? '.on' : ''), { type: 'button', onclick: function () { ch.tiltDeg = ch.tiltDeg === 0 ? 12 : ch.tiltDeg === 12 ? 18 : 0; self.clearDots(); self.stage.invalidate(); self.renderSide(); } }, ch.tiltDeg === 0 ? '末端水平 0°' : '上翘 +' + ch.tiltDeg + '°'),
       h('button.chip' + (!ch.releaseJitter ? '.on' : ''), { type: 'button', onclick: function () { ch.releaseJitter = !ch.releaseJitter; self.clearDots(); self.stage.invalidate(); self.renderSide(); } }, ch.releaseJitter ? '释放不固定' : '固定 S 释放'),
       h('button.chip' + (Math.abs(ch.H - 0.50) < 0.05 ? '.on' : ''), { type: 'button', onclick: function () { ch.H = Math.abs(ch.H - 0.50) < 0.05 ? 0.800 : 0.500; self.clearDots(); self.stage.invalidate(); self.renderSide(); } }, '高 H=' + ch.H.toFixed(2) + 'm')));
 
     ctl.appendChild(h('div.side-acts',
       h('button.btn', { type: 'button', onclick: function () { self.shoot(1); } }, '打 1 发'),
-      h('button.btn.primary', { type: 'button', onclick: function () { self.shoot(10); } }, '连打 10 发'),
-      h('button.btn.cyan', { type: 'button', onclick: function () { self.fitCircles(); } }, '画最小圆定圆心'),
+      !this.guided() ? h('button.btn.primary', { type: 'button', onclick: function () { self.shoot(10); } }, '自由演示：连打 10 发') : null,
+      h('button.btn.cyan', { type: 'button', onclick: function () { self.fitCircles(); } }, this.guided() ? '用圆规定 P/M/N 圆心' : '画最小圆定圆心'),
       h('button.btn', { type: 'button', onclick: function () { self.clearDots(); } }, '清空落点')));
 
     // 实时校验结果卡

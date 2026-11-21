@@ -121,6 +121,7 @@
     this.idealChip = h('button.chip', {
       type: 'button', title: '理想：无摩擦、无纸带阻力、无读数噪声',
       onclick: function () {
+        self.balancedChecked = false;
         S.ideal = !S.ideal; ML.store.save();
         self.idealChip.classList.toggle('on', S.ideal);
         self.idealChip.textContent = S.ideal ? '理想条件' : '真实条件';
@@ -211,6 +212,7 @@
       running: false, t: 0, run: null, done: false, warn: '',
       recorded: false
     };
+    if (prev.theta !== this.b.theta || prev.timer !== this.b.timer || (this.b.M !== prev.M && !this.isBalanced())) this.balancedChecked = false;
     this.gate = null;
     if (this.loop) this.loop.stop();
     if (this.holdBtn) this.holdBtn.hidden = true;
@@ -248,6 +250,8 @@
     this.renderSide();
   };
 
+  Bench.prototype.guided = function () { return this.mode === 'guided'; };
+
   Bench.prototype.setPhase = function (ph, silent) {
     this.phase = ph;
     this.setBanner(null);
@@ -263,7 +267,7 @@
     this.syncTopChips();
     this.saveBench();
     if (!silent) {
-      if (ph === 'af' && this.mode === 'guided' && !this.isBalanced()) {
+      if (ph !== 'balance' && this.guided() && !this.balancedChecked) {
         this.showBalanceHint();
       }
       this.renderAnalysis();
@@ -272,9 +276,12 @@
 
   Bench.prototype.showBalanceHint = function () {
     var self = this, ref = this.refAngle();
-    this.setBanner('<b>提醒：</b>当前倾角 θ = ' + this.b.theta.toFixed(2) + '° 尚未补偿阻力（参考平衡角约 ' + ref.toFixed(2) + '°）。建议先回“① 验平衡”轻推检验，或 <button class="link" type="button" id="m03-autobal">直接调至参考平衡角 (' + ref.toFixed(2) + '°)</button> / <button class="link" type="button" data-try="' + (this.b.theta > ref ? 'E2' : 'E1') + '">看未补偿会怎样 →</button>');
+    var guided = this.guided();
+    this.setBanner(guided
+      ? '<b>提醒：</b>尚未通过轻推实验确认阻力补偿。请回“① 验平衡”，改变倾角后轻推小车，用两光电门时间或纸带点距自行判断；不要直接采用计算出的参考角。 <button class="link" type="button" data-try="' + (this.b.theta > ref ? 'E2' : 'E1') + '">看未补偿会怎样 →</button>'
+      : '<b>自由演示：</b>当前倾角 θ = ' + this.b.theta.toFixed(2) + '°，参考平衡角约 ' + ref.toFixed(2) + '°。 <button class="link" type="button" id="m03-autobal">演示：直接调至参考角</button>');
     var ab = ML.$('#m03-autobal', this.bannerEl);
-    if (ab) ab.onclick = function () { self.setTheta(ref); self.balancedChecked = true; self.setBanner(null); ML.toast('已将木板倾角调至参考平衡角 ' + ref.toFixed(2) + '°', 'ok'); };
+    if (ab) ab.onclick = function () { self.setTheta(ref); self.setBanner(null); ML.toast('自由演示：已调至参考平衡角 ' + ref.toFixed(2) + '°', 'ok'); };
     var tb = ML.$('[data-try]', this.bannerEl);
     if (tb) tb.onclick = function () { openTry(tb.getAttribute('data-try')); };
   };
@@ -285,6 +292,7 @@
   };
 
   Bench.prototype.setApparatus = function (a) {
+    if (this.apparatus !== a) this.balancedChecked = false;
     this.apparatus = a;
     this.syncTopChips();
     this.reset({ startAt: 0, threaded: true });
@@ -628,6 +636,7 @@
   /* ---------- 控制操作 ---------- */
   Bench.prototype.setTimer = function (t) {
     if (this.b.released) return;
+    if (this.b.timer !== t) this.balancedChecked = false;
     this.b.timer = t;
     this.b.power = t === 'em' ? 'ac8' : 'ac220';
     this.b.powered = false;
@@ -687,6 +696,7 @@
 
   Bench.prototype.setTheta = function (th, silent) {
     if (this.b.released) return;
+    if (this.b.theta !== roundDeg(th)) this.balancedChecked = false;
     this.b.theta = roundDeg(th);
     if (this.phase === 'am' && this.mode === 'guided' && this.lastThetaForAM != null && Math.abs(this.b.theta - this.lastThetaForAM) > 0.08 && !silent) {
       ML.toast('提示：改变小车质量 M 时，通常无需重调倾角 θ', 'info');
@@ -734,6 +744,7 @@
     var b = this.b; if (b.released) return;
     if (b.m === 0) { ML.toast('槽码质量为 0，若要检验平衡请点“轻推小车”或先挂槽码', 'warn'); return; }
     if (this.mode === 'guided') {
+      if (!this.balancedChecked || !this.isBalanced()) { this.showBalanceHint(); return; }
       if (this.apparatus === 'timer' && !b.threaded) { ML.toast('请先穿纸带', 'warn'); return; }
       if (this.apparatus === 'timer' && !b.powered) { ML.toast('应先接通电源，待打点稳定后再释放小车', 'warn'); return; }
       if (b.startAt > 0.03) { ML.toast('释放前建议将小车停在靠近打点计时器的位置', 'warn'); return; }
@@ -797,7 +808,14 @@
       b.warn = '小车撞上滑轮（提醒：在末端前按住可保护器材）';
       var self = this; setTimeout(function () { self.b.warn = ''; self.stage.invalidate(); }, 2500);
     }
-    if (this.phase === 'balance' && this.isBalanced()) this.balancedChecked = true;
+    if (this.phase === 'balance' && b.m === 0 && b.v0 > 0) {
+      var measuredA = this.apparatus === 'gate' && this.gate ? this.gate.a1 : NaN;
+      if (this.apparatus === 'timer' && b.threaded && b.run && b.run.dots.length) {
+        var sample = measureRun(b.run, { ideal: true });
+        if (sample.m.segs.length >= 4) measuredA = sample.an.fit.k;
+      }
+      this.balancedChecked = isFinite(measuredA) && Math.abs(measuredA) <= 0.025;
+    }
     this.renderSide(); this.stage.invalidate();
   };
 
@@ -1030,7 +1048,8 @@
     // 动作区
     var act1 = this.apparatus === 'timer'
       ? h('button.btn' + (b.powered ? '.cyan' : ''), { type: 'button', onclick: function () { self.powerOn(); }, disabled: b.done }, b.powered ? '已通电' : '接通电源')
-      : h('button.btn', { type: 'button', onclick: function () { self.setTheta(self.refAngle()); }, disabled: b.released }, '设为平衡角');
+      : this.mode === 'guided' ? h('button.btn', { type: 'button', disabled: true }, '轻推后读两光电门时间验平衡')
+      : h('button.btn', { type: 'button', onclick: function () { self.setTheta(self.refAngle()); }, disabled: b.released }, '自由演示：设为参考平衡角');
     var act2 = b.m === 0
       ? h('button.btn.primary', { type: 'button', onclick: function () { self.pushCart(); }, disabled: b.released }, '轻推小车 (m=0)')
       : h('button.btn.primary', { type: 'button', onclick: function () { self.release(); }, disabled: b.released }, '释放小车');
@@ -1281,10 +1300,10 @@
     var head = h('div.ana-head',
       h('h2.ana-h', isAM ? '③ 控 F 探 a-1/M 数据与图像' : '② 控 M 探 a-F 数据与图像'),
       h('div.side-row',
-        h('button.btn.sm', {
+        this.mode !== 'guided' ? h('button.btn.sm', {
           type: 'button',
           onclick: function () { if (isAM) self.quickBatchAM(); else self.quickBatchAF(); }
-        }, isAM ? '一键采集 6 组变质量 (200~800g)' : '一键采集 8 组槽码 (10~250g)'),
+        }, isAM ? '自由演示：采集 6 组变质量' : '自由演示：采集 8 组槽码') : null,
         list.length ? h('button.btn.sm', {
           type: 'button',
           onclick: function () { if (isAM) self.dataAM = []; else self.dataAF = []; self.renderAnalysis(); }
@@ -1292,7 +1311,9 @@
     box.appendChild(head);
 
     if (!list.length) {
-      box.appendChild(h('div.muted', '暂无已记录数据。在上方释放小车测出加速度后点击“记入实验数据”，或直接点击右上“一键采集”生成实时物理模型数据对比规律。'));
+      box.appendChild(h('div.muted', this.mode === 'guided'
+        ? '暂无已记录数据。请每次调整质量或槽码后实际释放小车，读取纸带或光电门数据，再点击“记入实验数据”。'
+        : '暂无数据。可逐次实验记录，也可使用上方“自由演示”批量生成对照数据。'));
       el.appendChild(box);
       return;
     }
