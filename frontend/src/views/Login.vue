@@ -1,41 +1,42 @@
 <template>
   <div class="login-container">
     <div class="login-layout">
-      <section class="login-brand glass-panel">
-        <div class="brand-chip">EDUSIMU PLATFORM</div>
-        <div class="toolbox-heading"><ToolboxLink /><h1>教育动画展示系统</h1></div>
-        <p>
-          面向校内平板教学的互动课件平台，支持教材目录绑定、教师上传、平板触控校验与学习数据分析。
-        </p>
-        <div class="brand-metrics">
-          <div>
-            <strong>HTML</strong>
-            <span>离线课件</span>
-          </div>
-          <div>
-            <strong>Tablet</strong>
-            <span>触控优先</span>
-          </div>
-          <div>
-            <strong>Insight</strong>
-            <span>课堂数据</span>
-          </div>
+      <section class="login-brand" aria-labelledby="product-title">
+        <div class="brand-navigation">
+          <ToolboxLink />
         </div>
+
+        <div class="brand-copy">
+          <h1 id="product-title">教育动画展示系统</h1>
+          <p>按教材章节，打开 HTML、PhET 和 GeoGebra 互动课件</p>
+        </div>
+
+        <ul class="brand-capabilities" aria-label="平台能力">
+          <li>
+            <strong>教材定位</strong>
+            <span>按学科与章节找到课件</span>
+          </li>
+          <li>
+            <strong>课堂互动</strong>
+            <span>适配平板触控与全屏播放</span>
+          </li>
+          <li>
+            <strong>课后延续</strong>
+            <span>收藏、评价与学习记录</span>
+          </li>
+        </ul>
       </section>
 
-      <el-card class="login-card">
-        <template #header>
-          <div class="login-card-header">
-            <div class="brand-chip">SECURE ACCESS</div>
-            <h2>统一认证登录</h2>
-            <p>本系统已接入学校统一身份认证平台</p>
-          </div>
-        </template>
+      <section class="login-card" aria-labelledby="login-title">
+        <div class="login-card-header">
+          <h2 id="login-title">统一认证登录</h2>
+          <p>本系统已接入学校统一身份认证平台</p>
+        </div>
 
-        <el-button type="primary" size="large" style="width: 100%" @click="handleSsoLogin">
+        <el-button type="primary" size="large" @click="handleSsoLogin">
           使用统一平台登录
         </el-button>
-      </el-card>
+      </section>
     </div>
   </div>
 </template>
@@ -59,108 +60,159 @@ const handleSsoLogin = () => {
 
 .login-layout {
   width: min(1120px, 100%);
+  min-height: calc(100vh - 64px);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 24px;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  gap: 80px;
+  align-items: center;
 }
 
 .login-brand {
-  padding: 42px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 520px;
+  align-items: flex-start;
 }
 
-.brand-chip {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(15, 44, 81, 0.08);
-  border: 1px solid rgba(22, 97, 255, 0.18);
-  color: #1661ff;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+.brand-navigation {
+  margin-bottom: 64px;
 }
 
-.login-brand h1 {
-  margin-top: 22px;
-  font-size: clamp(32px, 4vw, 54px);
-  line-height: 1.08;
-  color: #0f2341;
+.brand-copy h1 {
+  max-width: 640px;
+  color: var(--app-text);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-wrap: balance;
 }
 
-.login-brand p {
-  margin-top: 18px;
+.brand-copy p {
   max-width: 560px;
-  font-size: 16px;
-  line-height: 1.8;
-  color: #5f7694;
+  margin-top: 20px;
+  color: var(--app-text-secondary);
+  font-size: 18px;
+  line-height: 1.7;
 }
 
-.brand-metrics {
-  margin-top: auto;
+.brand-capabilities {
+  width: 100%;
+  margin-top: 48px;
+  padding-top: 24px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 24px;
+  border-top: 1px solid var(--app-border);
+  list-style: none;
 }
 
-.brand-metrics > div {
-  padding: 18px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.56);
-  border: 1px solid rgba(90, 129, 180, 0.14);
+.brand-capabilities li {
+  min-width: 0;
 }
 
-.brand-metrics strong {
+.brand-capabilities strong {
   display: block;
-  font-size: 22px;
-  color: #0f2341;
+  color: var(--app-text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
-.brand-metrics span {
+.brand-capabilities span {
   display: block;
-  margin-top: 6px;
-  color: #5f7694;
+  margin-top: 4px;
+  color: var(--app-text-muted);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .login-card {
   width: 100%;
-  align-self: center;
+  padding: 32px;
+  border: 1px solid var(--app-border);
+  border-radius: 20px;
+  background: var(--app-surface);
 }
 
 .login-card-header h2 {
-  margin-top: 14px;
-  color: #10233f;
-  font-size: 30px;
+  color: var(--app-text);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.3;
 }
 
 .login-card-header p {
   margin-top: 8px;
-  color: #5f7694;
+  color: var(--app-text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.login-card .el-button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 24px;
 }
 
 @media (max-width: 900px) {
   .login-container {
-    padding: 16px;
+    padding: 48px 24px;
   }
 
   .login-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .login-brand {
+    width: min(640px, 100%);
     min-height: auto;
-    padding: 28px;
+    grid-template-columns: 1fr;
+    gap: 48px;
   }
 
-  .brand-metrics {
+  .brand-navigation {
+    margin-bottom: 48px;
+  }
+}
+
+@media (max-width: 520px) {
+  .login-container {
+    padding: 32px 16px;
+  }
+
+  .login-layout {
+    gap: 32px;
+  }
+
+  .brand-navigation {
+    margin-bottom: 40px;
+  }
+
+  .brand-copy h1 {
+    font-size: 36px;
+  }
+
+  .brand-copy p {
+    font-size: 16px;
+  }
+
+  .brand-capabilities {
+    margin-top: 32px;
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .brand-capabilities li {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .brand-capabilities span {
+    margin-top: 0;
+  }
+
+  .login-card {
+    padding: 24px;
+    border-radius: 16px;
   }
 }
 </style>
